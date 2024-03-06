@@ -9,6 +9,9 @@ spring:
         maximum-pool-size:180
         minimum-idle:10
 
+server:
+    servlet:
+        context-path: /api
 
 #    hikari:
 #        maximum-pool-size:180
