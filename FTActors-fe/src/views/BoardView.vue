@@ -1,13 +1,13 @@
 <template>
   <div>
-    <Board />
+    <BoardAll />
   </div>
   <div>
     <Pagenation />
   </div>
   </template>
   <script setup>
-import Board from '@/components/Board.vue';
+import BoardAll from '@/components/BoardAll.vue';
 import Pagenation from '../components/Pagenation.vue';
 </script>
 

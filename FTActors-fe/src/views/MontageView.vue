@@ -2,7 +2,7 @@
     <div class="profile">
     </div>
     <div>
-      <Montage/>
+      <MontageAll/>
     </div>
     <div>
       <Pagenation />
@@ -10,7 +10,7 @@
   </template>
   
   <script setup>
-  import Montage from '@/components/Montage.vue';
+  import MontageAll from '@/components/MontageAll.vue';
   import Pagenation from '../components/Pagenation.vue';
   </script>
   <style>

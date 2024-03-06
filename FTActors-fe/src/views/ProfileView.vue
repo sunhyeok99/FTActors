@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ProfileList />
+    <ProfileListAll />
   </div>
   <div>
     <Pagenation />
@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import ProfileList from '@/components/ProfileList.vue';
+import ProfileListAll from '@/components/ProfileListAll.vue';
 import Pagenation from '../components/Pagenation.vue';
 </script>
 
