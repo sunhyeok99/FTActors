@@ -7,7 +7,7 @@ import HelloWorld from './components/HelloWorld.vue'
   <header>
     <div>
       <nav>
-        <RouterLink to="/">배우는 사람</RouterLink>
+        <RouterLink to="/" id="name">배우는 사람</RouterLink>
         <RouterLink to="/board">진행중인 공고</RouterLink>
         <RouterLink to="/profile">배우 프로필</RouterLink>
         <RouterLink to="/montage">몽타쥬</RouterLink>
@@ -49,9 +49,13 @@ nav a {
 nav a:first-of-type {
   border: 0;
 }
-.loginbtn{
-
+#loginbtn {
+  border-radius: 25px;
+  /* 그라데이션 적용 */
+  background-image: linear-gradient(to right, rgb(58, 123, 213), rgb(39, 16, 171));
+  border: none; /* 기존 border 설정을 수정 */
 }
+
 @media (min-width: 1024px) {
   nav {
     text-align: left;

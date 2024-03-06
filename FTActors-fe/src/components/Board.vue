@@ -1,5 +1,8 @@
 <template>
-    <h3><b>진행중인 공고</b></h3>
+    <div class="title"><h3><b>진행중인 공고 10개</b></h3>
+    <button type="button" class="btn btn-primary" id="orderbtn">인기순</button>
+    <button type="button" class="btn">내 맞춤 공고 보러가기✔</button>
+  </div>
     <div class="row row-cols-1 row-cols-md-4 g-4">
       <div class="col">
         <div class="card" id="board">
@@ -47,5 +50,15 @@
   <style>
 #board {
     border: none;
+}
+.title {
+  display: flex;
+}
+
+#orderbtn {
+  border-radius: 25px;
+  /* 그라데이션 적용 */
+  background-image: linear-gradient(to right, rgb(58, 123, 213), rgb(39, 16, 171));
+  border: none; /* 기존 border 설정을 수정 */
 }
 </style>
