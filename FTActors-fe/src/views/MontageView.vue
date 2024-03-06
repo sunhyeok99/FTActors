@@ -1,6 +1,7 @@
 <template>
-    <div class="profile">
-    </div>
+  <div>
+    <SearchBar />
+  </div>
     <div>
       <MontageAll/>
     </div>
@@ -12,6 +13,7 @@
   <script setup>
   import MontageAll from '@/components/MontageAll.vue';
   import Pagenation from '../components/Pagenation.vue';
+  import SearchBar from '../components/SearchBar.vue';
   </script>
   <style>
   @media (min-width: 1024px) {
