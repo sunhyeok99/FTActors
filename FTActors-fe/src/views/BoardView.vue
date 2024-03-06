@@ -2,9 +2,13 @@
   <div>
     <Board />
   </div>
+  <div>
+    <Pagenation />
+  </div>
   </template>
   <script setup>
 import Board from '@/components/Board.vue';
+import Pagenation from '../components/Pagenation.vue';
 </script>
 
   <style>

@@ -11,7 +11,9 @@ import HelloWorld from './components/HelloWorld.vue'
         <RouterLink to="/board">진행중인 공고</RouterLink>
         <RouterLink to="/profile">배우 프로필</RouterLink>
         <RouterLink to="/montage">몽타쥬</RouterLink>
+        <button type="button" class="btn btn-dark" id="loginbtn">로그인</button>
       </nav>
+      
     </div>
   </header>
   <RouterView />
@@ -47,7 +49,9 @@ nav a {
 nav a:first-of-type {
   border: 0;
 }
+.loginbtn{
 
+}
 @media (min-width: 1024px) {
   nav {
     text-align: left;

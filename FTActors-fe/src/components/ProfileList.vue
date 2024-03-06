@@ -126,6 +126,24 @@
         </div>
       </div>
     </div>
+    <div class="col">
+      <div class="card">
+        <img src="@/assets/actors/한재훈.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">한재훈</h5>
+          <p class="card-text">25세</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <img src="@/assets/actors/홍정민.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">한재훈</h5>
+          <p class="card-text">25세</p>
+        </div>
+      </div>
+    </div>
 
   </div>
 </template>

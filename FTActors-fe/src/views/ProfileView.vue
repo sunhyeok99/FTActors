@@ -2,10 +2,14 @@
   <div>
     <ProfileList />
   </div>
+  <div>
+    <Pagenation />
+  </div>
 </template>
 
 <script setup>
 import ProfileList from '@/components/ProfileList.vue';
+import Pagenation from '../components/Pagenation.vue';
 </script>
 
 <style>
