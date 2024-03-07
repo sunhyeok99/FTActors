@@ -12,9 +12,11 @@ import java.security.GeneralSecurityException;
 @RequestMapping("/montage")
 public class MontageController {
 
+    private final MontageFileService montageFileService;
 
-    @Autowired
-    private MontageFileService montageFileService;
+    public MontageController(MontageFileService montageFileService){
+        this.montageFileService = montageFileService;
+    }
 
     @GetMapping("/test")
     public String getTest(){
@@ -31,16 +33,6 @@ public class MontageController {
 
         System.out.println(file.getOriginalFilename());
 
-        try {
-            montageFileService.uploadFile(file);
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-        //googleDriveService.getFiles();
-
-        return "";
+        return montageFileService.uploadFile(file);
     }
-
-
 }

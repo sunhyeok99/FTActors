@@ -12,10 +12,10 @@ import java.io.IOException;
 // S3 연결
 @Service
 public class MontageFileService {
-    private final AmazonS3 amazonS3;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
+    private final AmazonS3 amazonS3;
 
     public MontageFileService(AmazonS3 amazonS3) {
         this.amazonS3 = amazonS3;
