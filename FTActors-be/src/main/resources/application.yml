@@ -2,13 +2,18 @@
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
+
         url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
         username: ${DB_USERNAME}
         password: ${DB_PASSWORD}
+
     hikari:
         maximum-pool-size:180
         minimum-idle:10
 
+server:
+    servlet:
+        context-path: /api
 
 #    hikari:
 #        maximum-pool-size:180
