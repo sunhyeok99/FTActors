@@ -1,29 +1,16 @@
-# FTActors-fe
+# Vue 복습
 
-This template should help get you started developing with Vue 3 in Vite.
+* v-bind : 이중 중괄호 구문은 여닫는 HTML 태그에 대해서만 사용할 수 있기 때문에, 속성값에 넣기 위해서는 v-bind구문을 이용해야 함
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+(ex)
+```javaScript
+v-bind:href=”vueLink”
+:href=”vueLink”
 ```
+* v-on : 콜론 뒤에 수신할 이벤트 취함
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
+(ex)
+```javaScript
+v-on:click=”counter++”
+@click=”counter++”
 ```
