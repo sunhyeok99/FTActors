@@ -2,10 +2,12 @@ package com.a602.actors;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
-@EnableJpaAuditing //리스너 넣을 때 사용
+@PropertySource("classpath:/config.yml")
+
 public class FtActorsApplication {
 
 	public static void main(String[] args) {
