@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/profile") //나중에 url 확인!
+@RequestMapping("/profile") //나중에 url 확인!
 @Slf4j
 public class ProfileController {
     private final ProfileService profileService;
