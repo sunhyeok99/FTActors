@@ -1,4 +1,4 @@
-package com.a602.actors.domain.profile.dto;
+package com.a602.actors.domain.profile.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
