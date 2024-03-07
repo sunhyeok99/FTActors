@@ -3,7 +3,7 @@ spring:
         driver-class-name: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://localhost:3306/actors?characterEncoding=UTF-8
         username: root
-        password: 1234
+        password: ssafy
     hikari:
         maximum-pool-size:180
         minimum-idle:10
