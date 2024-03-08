@@ -6,7 +6,10 @@
         <RouterLink to="/board">진행중인 공고</RouterLink>
         <RouterLink to="/profile">배우 프로필</RouterLink>
         <RouterLink to="/montage">몽타쥬</RouterLink>
+        <div class="pageright">
         <button type="button" class="btn btn-dark" id="loginbtn" @click="goToLogin">로그인</button>
+        <MypageDropdown />
+      </div>
       </nav>
       
     </div>
@@ -16,9 +19,10 @@
 
 <script setup>
 import { RouterLink, RouterView, useRouter } from 'vue-router'
+import MypageDropdown from './components/MypageDropdown.vue';
 const router = useRouter();
 const goToLogin = () => {
-  router.push({ name: 'login' });
+  router.push({ name: 'logout' });
 };
 </script>
 
@@ -33,6 +37,7 @@ nav {
   font-size: 20px;
   text-align: left;
   margin-top: 2rem;
+  display: flex;
 }
 
 nav a.router-link-exact-active {
@@ -67,5 +72,10 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
+}
+
+.pageright {
+  display: flex;
+  margin-left: auto;
 }
 </style>

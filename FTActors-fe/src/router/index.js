@@ -5,6 +5,7 @@ import BoardView from '../views/BoardView.vue'
 import MontageView from '../views/MontageView.vue'
 import AboutView from '../views/AboutView.vue'
 import LoginView from '../views/LoginView.vue'
+import LogoutView from '../views/LogoutView.vue'
 import JoinView from '../views/JoinView.vue'
 
 const router = createRouter({
@@ -39,6 +40,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView
+    },
+    {
+      path: '/logout',
+      name: 'logout',
+      component: LogoutView
     },
     {
       path: '/join',
