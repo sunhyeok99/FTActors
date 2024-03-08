@@ -1,6 +1,6 @@
 package com.a602.actors.domain.profile.controller;
 
-import com.a602.actors.domain.profile.dto.Profile;
+import com.a602.actors.domain.profile.entity.Profile;
 import com.a602.actors.domain.profile.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

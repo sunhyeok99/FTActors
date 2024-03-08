@@ -1,6 +1,6 @@
 package com.a602.actors.domain.profile.service;
 
-import com.a602.actors.domain.profile.dto.Profile;
+import com.a602.actors.domain.profile.entity.Profile;
 import com.a602.actors.domain.profile.repository.ProfileCustomRepository;
 import com.a602.actors.domain.profile.repository.ProfileRepository;
 import jakarta.transaction.Transactional;
