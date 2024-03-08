@@ -1,8 +1,3 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-
-</script>
-
 <template>
   <header>
     <div>
@@ -11,13 +6,21 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterLink to="/board">진행중인 공고</RouterLink>
         <RouterLink to="/profile">배우 프로필</RouterLink>
         <RouterLink to="/montage">몽타쥬</RouterLink>
-        <button type="button" class="btn btn-dark" id="loginbtn">로그인</button>
+        <button type="button" class="btn btn-dark" id="loginbtn" @click="goToLogin">로그인</button>
       </nav>
       
     </div>
   </header>
   <RouterView />
 </template>
+
+<script setup>
+import { RouterLink, RouterView, useRouter } from 'vue-router'
+const router = useRouter();
+const goToLogin = () => {
+  router.push({ name: 'login' });
+};
+</script>
 
 <style scoped>
 header {
