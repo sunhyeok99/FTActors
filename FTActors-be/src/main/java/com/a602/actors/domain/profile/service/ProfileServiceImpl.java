@@ -17,8 +17,8 @@ public class ProfileServiceImpl implements ProfileService{
     private final ProfileCustomRepository profileCustomRepository;
 
     @Override
-    public List<Profile> getProfileList() {
-        return profileRepository.findAll();
+    public List<Profile> getProfileList(int sorting) {
+        return profileCustomRepository.findAllLatest(sorting);
     }
 
     @Override

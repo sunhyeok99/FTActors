@@ -11,21 +11,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/profile") //나중에 url 확인!
+@RequestMapping("/profile")
 @Slf4j
 public class ProfileController {
     private final ProfileService profileService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<Profile>> getAllProfileList() { //소팅 기준?
+    public ResponseEntity<List<Profile>> getAllProfileList(@RequestParam(name = "sort") int sorting) {
         log.info("배우,감독 프로필 전체 목록");
 
-        List<Profile> profiles = profileService.getProfileList();
+        List<Profile> profiles = profileService.getProfileList(sorting);
 
         return new ResponseEntity<>(profiles, HttpStatus.OK);
     }

@@ -5,7 +5,7 @@ import com.a602.actors.domain.profile.entity.Profile;
 import java.util.List;
 
 public interface ProfileService {
-    List<Profile> getProfileList();
+    List<Profile> getProfileList(int sorting);
 
     Profile getProfile(Long memberId);
 }
