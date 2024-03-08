@@ -18,9 +18,9 @@ import java.util.Date;
 @Builder
 @EntityListeners(AuditingEntityListener.class) //시간 찍기
 public class Profile extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @Column(name = "member_id")
     private Long memberId;
