@@ -7,6 +7,7 @@ import AboutView from '../views/AboutView.vue'
 import LoginView from '../views/LoginView.vue'
 import LogoutView from '../views/LogoutView.vue'
 import JoinView from '../views/JoinView.vue'
+import MypageView from '@/views/MypageView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +51,11 @@ const router = createRouter({
       path: '/join',
       name: 'join',
       component: JoinView
+    },
+    {
+      path: '/mypage',
+      name: 'mypage',
+      component: MypageView
     }
 
   ]

@@ -6,12 +6,19 @@
         </button>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" href="#">로그아웃</a></li>
-          <li><a class="dropdown-item" href="#">마이페이지</a></li>
+          <li><a class="dropdown-item" href="#" @click="goToMypage">마이페이지</a></li>
         </ul>
       </div>
 </template>
 
 <script setup>
+import {  useRouter } from 'vue-router'
+const router = useRouter();
+const goToMypage = () => {
+  router.push({ name: 'mypage' });
+};
+
+
 </script>
 
 <style>
