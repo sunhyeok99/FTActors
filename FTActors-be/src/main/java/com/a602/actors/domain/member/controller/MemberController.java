@@ -18,7 +18,6 @@ public class MemberController {
     @PostMapping("/register")
     public String registerMember(@RequestBody MemberDTO memberDTO){
         memberService.register(memberDTO);
-        System.out.println("???????????");
         return "User registered successfully";
     }
 

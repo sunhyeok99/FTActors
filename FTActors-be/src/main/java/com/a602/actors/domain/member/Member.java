@@ -1,5 +1,6 @@
 package com.a602.actors.domain.member;
 
+import com.a602.actors.global.common.entity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,11 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Member extends BaseEntity {
 
     @Column(name = "member_id")
     private String memberId;
