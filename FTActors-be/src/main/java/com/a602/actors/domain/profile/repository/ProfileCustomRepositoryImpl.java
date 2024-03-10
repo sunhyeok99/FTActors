@@ -33,6 +33,7 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
 
         return jpaQueryFactory
                 .selectFrom(profile)
+//                .where(profile.memberId.eq(memberId))
                 .where(profile.memberId.eq(memberId))
                 .fetchOne();
     }

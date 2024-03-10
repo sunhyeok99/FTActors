@@ -25,4 +25,17 @@ public class ProfileServiceImpl implements ProfileService{
     public Profile getProfile(Long memberId) {
         return profileCustomRepository.findById(memberId);
     }
+
+    @Override
+    public int canRemoveProfile(Long profileId) {
+        Profile profile = profileCustomRepository.findById(profileId);
+        //프로필이 존재하지 않으면 x
+        if(profile == null) return 404;
+        //로그인이 안 되어 잇으면x
+        //로그인 멤버와 지금 멤버가 다르면x
+
+        //성공하면 프로필 삭제 후 200리턴
+        profileRepository.deleteById(profileId);
+        return 200;
+    }
 }

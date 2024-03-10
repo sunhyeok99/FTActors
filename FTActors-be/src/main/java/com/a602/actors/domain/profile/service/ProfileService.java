@@ -8,4 +8,6 @@ public interface ProfileService {
     List<Profile> getProfileList(int sorting);
 
     Profile getProfile(Long memberId);
+
+    int canRemoveProfile(Long profileId);
 }
