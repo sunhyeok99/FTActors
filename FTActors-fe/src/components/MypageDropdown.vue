@@ -5,7 +5,7 @@
         <img src="@/assets/DefaultProfile.png" alt="">
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">로그아웃</a></li>
+          <li><a class="dropdown-item" href="#" @click="goToLogout">로그아웃</a></li>
           <li><a class="dropdown-item" href="#" @click="goToMypage">마이페이지</a></li>
         </ul>
       </div>
@@ -16,6 +16,10 @@ import {  useRouter } from 'vue-router'
 const router = useRouter();
 const goToMypage = () => {
   router.push({ name: 'mypage' });
+};
+
+const goToLogout = () => {
+  router.push({ name: 'logout' });
 };
 
 

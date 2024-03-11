@@ -8,7 +8,10 @@
           <RouterLink to="/profile">배우 프로필</RouterLink>
           <RouterLink to="/montage">몽타쥬</RouterLink>
           <div class="pageright">
-            <img src="@/assets/Alarm.png" alt="">
+            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <img src="@/assets/Alarm.png" alt="">
+            </button>
+            <AlarmModal />
             <button type="button" class="btn btn-dark" id="loginbtn" @click="goToLogin">로그인</button>
             <MypageDropdown />
           </div>
@@ -16,11 +19,12 @@
 
       </div>
     </header>
-
+    
     <RouterView />
     <button id="floating-map-button">
-      <img width="20" src="@/assets/Message.png" alt="map icon">
+      <img width="20" src="@/assets/Message.png" alt="message icon">
     </button>
+    
   </div>
   <footer>
     <FooterBox />
@@ -31,6 +35,7 @@
 import { RouterLink, RouterView, useRouter } from 'vue-router'
 import MypageDropdown from './components/MypageDropdown.vue';
 import FooterBox from './components/FooterBox.vue';
+import AlarmModal from './components/AlarmModal.vue';
 
 const router = useRouter();
 const goToLogin = () => {
@@ -93,7 +98,10 @@ nav a:first-of-type {
   margin-left: auto;
   align-items: center;
 }
-
+.pageright button img {
+  width: 24px;
+  height: 24px;
+}
 .pageright img {
   width: 24px;
   height: 24px;
@@ -110,7 +118,7 @@ nav a:first-of-type {
   align-items: center;
   left: 90%;
   bottom: 10%;
-  background-image: radial-gradient(circle, rgb(191, 198, 207), rgb(39, 16, 171));
+  background-image: radial-gradient(circle, rgb(255, 255, 255), rgb(39, 16, 171));
   border-radius: 50%;
   transform: translateX(-50%);
   color: rgb(39, 16, 171);
