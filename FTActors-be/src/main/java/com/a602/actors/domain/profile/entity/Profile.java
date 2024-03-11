@@ -24,10 +24,6 @@ public class Profile extends BaseEntity {
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    private Long id;
 
-//    @ManyToOne
-//    @Column(name = "member_id")
-//    private Long memberId;
-
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member; //회원 번호 (member테이블에서 가져옴)
