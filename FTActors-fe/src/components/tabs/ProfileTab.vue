@@ -2,7 +2,7 @@
 <template>
   <div class="wrapper">
         <div class="row row-cols-1 row-cols-md-4 g-4">
-          <div class="col">
+          <div class="col" @click="goToProfileDetail">
             <div class="card h-100">
               <img src="@/assets/DefaultProfile.png" class="card-img-top" alt="...">
               <div class="card-body">
@@ -11,7 +11,7 @@
               </div>
             </div>
           </div>
-          <div class="col">
+          <div class="col" @click="goToProfileDetail">
             <div class="card h-100">
               <img src="@/assets/DefaultProfile.png" class="card-img-top" alt="...">
               <div class="card-body">
@@ -20,7 +20,7 @@
               </div>
             </div>
           </div>
-          <div class="col">
+          <div class="col" @click="goToProfileDetail">
             <div class="card h-100">
               <img src="@/assets/DefaultProfile.png" class="card-img-top" alt="...">
               <div class="card-body">
@@ -29,7 +29,7 @@
               </div>
             </div>
           </div>
-          <div class="col">
+          <div class="col" @click="goToProfileDetail">
             <div class="card h-100">
               <img src="@/assets/DefaultProfile.png" class="card-img-top" alt="...">
               <div class="card-body">
@@ -44,6 +44,11 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter();
+const goToProfileDetail = () => {
+  router.push({ name: 'profileDetail' });
+};
 </script>
 
 <style>
