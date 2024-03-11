@@ -1,4 +1,4 @@
-package com.a602.actors.domain.chat;
+package com.a602.actors.domain.chat.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -8,6 +8,9 @@ spring:
     hikari:
         maximum-pool-size:180
         minimum-idle:10
+    devtools:
+        livereload:
+            enabled: true
 
 
 #    hikari:

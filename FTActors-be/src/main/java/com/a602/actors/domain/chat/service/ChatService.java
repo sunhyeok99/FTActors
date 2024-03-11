@@ -1,4 +1,4 @@
-package com.a602.actors.domain.chat;
+package com.a602.actors.domain.chat.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import com.a602.actors.domain.chat.dto.ChatRoomDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.annotation.PostConstruct;
@@ -30,6 +31,7 @@ public class ChatService {
 	}
 
 	public ChatRoomDto createRoom(String name){
+		// uuid 대신, pk값 중 max를 리턴해서 +1로 쓰자. (이거 트랜젝션 관리 잘 해야될듯)
 		String randomId = UUID.randomUUID().toString();
 		ChatRoomDto chatRoomDto = ChatRoomDto.builder()
 			.roomId(randomId)
