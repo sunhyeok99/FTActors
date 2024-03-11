@@ -1,5 +1,7 @@
 <template>
-  <h3><b>배우 프로필</b></h3>
+  <div class="title"><h3><b>배우 프로필</b></h3>
+    <button type="button" class="btn pageright">▶️더보기</button>
+  </div>
   <div class="row row-cols-1 row-cols-md-4 g-4">
     <div class="col">
       <div class="card">
@@ -151,3 +153,13 @@
 <script setup>
 
 </script>
+
+<style>
+.title {
+  display: flex;  
+}
+.pageright {
+  display: flex;
+  margin-left: auto;
+}
+</style>

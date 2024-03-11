@@ -1,4 +1,5 @@
 <template>
+  <div class="wrapper">
   <header>
     <div>
       <nav>
@@ -7,6 +8,7 @@
         <RouterLink to="/profile">배우 프로필</RouterLink>
         <RouterLink to="/montage">몽타쥬</RouterLink>
         <div class="pageright">
+          <img src="@/assets/Alarm.png" alt="">
         <button type="button" class="btn btn-dark" id="loginbtn" @click="goToLogin">로그인</button>
         <MypageDropdown />
       </div>
@@ -14,15 +16,25 @@
       
     </div>
   </header>
+
   <RouterView />
+   <button id="floating-map-button">
+        <img width="20" src="@/assets/Message.png" alt="map icon" >
+    </button>
+</div>
+  <footer>
+    <FooterBox /> 
+  </footer>
 </template>
 
 <script setup>
 import { RouterLink, RouterView, useRouter } from 'vue-router'
 import MypageDropdown from './components/MypageDropdown.vue';
+import FooterBox from './components/FooterBox.vue';
+
 const router = useRouter();
 const goToLogin = () => {
-  router.push({ name: 'logout' });
+  router.push({ name: 'login' });
 };
 </script>
 
@@ -77,5 +89,28 @@ nav a:first-of-type {
 .pageright {
   display: flex;
   margin-left: auto;
+  align-items: center;
+}
+.pageright img{
+  width: 24px;
+  height: 24px;
+}
+.wrapper {
+  padding: 2rem;
+}
+#floating-map-button {
+  position: fixed;
+  display: flex;
+  padding: 14px 19px;
+  align-items:center;
+  left: 90%;
+  bottom: 10%;
+  background-color: lightgrey;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  color: black;
+  gap: 8px;
+  cursor: pointer;
+
 }
 </style>
