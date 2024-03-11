@@ -111,7 +111,6 @@ CREATE TABLE `montage` (
                            `member_id` bigint NOT NULL,
                            `title` varchar(50) NOT NULL,
                            `link` varchar(100) NOT NULL,
-                           `like_count` int NULL DEFAULT 0,
                            `created_at` timestamp NOT NULL DEFAULT current_timestamp,
                            `updated_at` timestamp NOT NULL DEFAULT current_timestamp,
                            PRIMARY KEY (`id`),
