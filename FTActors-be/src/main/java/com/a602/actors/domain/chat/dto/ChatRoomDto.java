@@ -9,12 +9,12 @@ import lombok.Getter;
 @Builder
 public class ChatRoomDto {
 	private String roomId;
-	private String name;
+	private String title;
 
-	public static ChatRoomDto createChatRoomDto(String name){
+	public static ChatRoomDto createChatRoomDto(String title){
 		return ChatRoomDto.builder()
 			.roomId(UUID.randomUUID().toString())
-			.name(name)
+			.title(title)
 			.build();
 	}
 }

@@ -30,12 +30,12 @@ public class ChatService {
 		chatRooms = new HashMap<>();
 	}
 
-	public ChatRoomDto createRoom(String name){
+	public ChatRoomDto createRoom(String title){
 		// uuid 대신, pk값 중 max를 리턴해서 +1로 쓰자. (이거 트랜젝션 관리 잘 해야될듯)
 		String randomId = UUID.randomUUID().toString();
 		ChatRoomDto chatRoomDto = ChatRoomDto.builder()
 			.roomId(randomId)
-			.name(name)
+			.title(title)
 			.build();
 
 		chatRooms.put(randomId, chatRoomDto);
