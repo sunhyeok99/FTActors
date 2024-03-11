@@ -52,6 +52,8 @@ import BoardTab from '@/components/tabs/BoardTab.vue';
 import MontageTab from '@/components/tabs/MontageTab.vue';
 import CompanionTab from '@/components/tabs/CompanionTab.vue';
 
+
+
 </script>
 
 <style>

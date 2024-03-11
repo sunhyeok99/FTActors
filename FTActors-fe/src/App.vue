@@ -1,29 +1,29 @@
 <template>
   <div class="wrapper">
-  <header>
-    <div>
-      <nav>
-        <RouterLink to="/" id="name">배우는 사람</RouterLink>
-        <RouterLink to="/board">진행중인 공고</RouterLink>
-        <RouterLink to="/profile">배우 프로필</RouterLink>
-        <RouterLink to="/montage">몽타쥬</RouterLink>
-        <div class="pageright">
-          <img src="@/assets/Alarm.png" alt="">
-        <button type="button" class="btn btn-dark" id="loginbtn" @click="goToLogin">로그인</button>
-        <MypageDropdown />
-      </div>
-      </nav>
-      
-    </div>
-  </header>
+    <header>
+      <div>
+        <nav>
+          <RouterLink to="/" id="name">배우는 사람</RouterLink>
+          <RouterLink to="/board">진행중인 공고</RouterLink>
+          <RouterLink to="/profile">배우 프로필</RouterLink>
+          <RouterLink to="/montage">몽타쥬</RouterLink>
+          <div class="pageright">
+            <img src="@/assets/Alarm.png" alt="">
+            <button type="button" class="btn btn-dark" id="loginbtn" @click="goToLogin">로그인</button>
+            <MypageDropdown />
+          </div>
+        </nav>
 
-  <RouterView />
-   <button id="floating-map-button">
-        <img width="20" src="@/assets/Message.png" alt="map icon" >
+      </div>
+    </header>
+
+    <RouterView />
+    <button id="floating-map-button">
+      <img width="20" src="@/assets/Message.png" alt="map icon">
     </button>
-</div>
+  </div>
   <footer>
-    <FooterBox /> 
+    <FooterBox />
   </footer>
 </template>
 
@@ -69,11 +69,13 @@ nav a {
 nav a:first-of-type {
   border: 0;
 }
+
 #loginbtn {
   border-radius: 25px;
   /* 그라데이션 적용 */
   background-image: linear-gradient(to right, rgb(58, 123, 213), rgb(39, 16, 171));
-  border: none; /* 기존 border 설정을 수정 */
+  border: none;
+  /* 기존 border 설정을 수정 */
 }
 
 @media (min-width: 1024px) {
@@ -91,26 +93,29 @@ nav a:first-of-type {
   margin-left: auto;
   align-items: center;
 }
-.pageright img{
+
+.pageright img {
   width: 24px;
   height: 24px;
 }
+
 .wrapper {
   padding: 2rem;
 }
+
 #floating-map-button {
   position: fixed;
   display: flex;
-  padding: 14px 19px;
-  align-items:center;
+  padding: 14px 14px;
+  align-items: center;
   left: 90%;
   bottom: 10%;
-  background-color: lightgrey;
+  background-image: radial-gradient(circle, rgb(191, 198, 207), rgb(39, 16, 171));
   border-radius: 50%;
   transform: translateX(-50%);
-  color: black;
+  color: rgb(39, 16, 171);
   gap: 8px;
   cursor: pointer;
-
+  z-index: 10;
 }
 </style>

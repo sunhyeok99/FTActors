@@ -20,7 +20,7 @@
         </form>
       </div>
 
-      <button type="button" class="btn" >아직 회원이 아니라면?</button>
+      <button type="button" class="btn" @click="goToJoin">아직 회원이 아니라면?</button>
 
 
 
@@ -29,12 +29,12 @@
 
 </template>
 
-<script>
-// import { useRouter } from 'vue-router'
-// const router = useRouter();
-// const goToJoin = () => {
-//   router.push({ name: 'join' });
-// };
+<script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter();
+const goToJoin = () => {
+  router.push({ name: 'join' });
+};
 
 </script>
 <style>
