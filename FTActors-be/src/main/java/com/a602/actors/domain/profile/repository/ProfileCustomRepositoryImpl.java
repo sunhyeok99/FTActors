@@ -38,7 +38,7 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
     }
 
     @Override
-    public Profile findProfileById(Long memberId, Character condition) {
+    public Profile findProfileByIdAndCondition(Long memberId, Character condition) {
         QProfile profile = QProfile.profile;
         BooleanBuilder whereClause = new BooleanBuilder();
         whereClause.and(profile.type.eq(condition));
@@ -46,6 +46,16 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
         return jpaQueryFactory
                 .selectFrom(profile)
                 .where(profile.member.id.eq(memberId).and(whereClause))
+                .fetchOne();
+    }
+
+    @Override
+    public Profile findProfileById(Long profileId) {
+        QProfile profile = QProfile.profile;
+
+        return jpaQueryFactory
+                .selectFrom(profile)
+                .where(profile.id.eq(profileId))
                 .fetchOne();
     }
 

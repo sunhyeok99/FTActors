@@ -2,6 +2,7 @@ package com.a602.actors.domain.profile.controller;
 
 import com.a602.actors.domain.profile.entity.Profile;
 import com.a602.actors.domain.profile.service.ProfileService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -51,10 +52,10 @@ public class ProfileController {
 //
     //프로필 삭제
     @DeleteMapping("/myprofile")
-    public ResponseEntity<String> removeProfile(@RequestParam(name = "profile_id") Long profileId) {
+    public ResponseEntity<String> removeProfile(@RequestParam(name = "profile_id") Long profileId, HttpSession session) {
         log.info("프로필 삭제하기!");
 
-        int canRemove = profileService.canRemoveProfile(profileId);
+        int canRemove = profileService.canRemoveProfile(profileId, session);
         if( canRemove == 200 ) return new ResponseEntity<>("프로필 삭제 성공 "+profileId, HttpStatus.OK);
         else return new ResponseEntity<>("프로필 삭제 실패 "+profileId, HttpStatus.INTERNAL_SERVER_ERROR);
     }
