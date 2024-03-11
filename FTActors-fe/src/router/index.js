@@ -8,6 +8,15 @@ import LoginView from '../views/LoginView.vue'
 import LogoutView from '../views/LogoutView.vue'
 import JoinView from '../views/JoinView.vue'
 import MypageView from '@/views/MypageView.vue'
+import BoardDetail from '@/views/BoardDetail.vue'
+import MontageDetail from '@/views/MontageDetail.vue'
+import ProfileDetail from '@/views/ProfileDetail.vue'
+import BoardCreate from '@/views/BoardCreate.vue'
+import BoardUpdate from '@/views/BoardUpdate.vue'
+import MontageCreate from '@/views/MontageCreate.vue'
+import MontageUpdate from '@/views/MontageUpdate.vue'
+import ProfileCreate from '@/views/ProfileCreate.vue'
+import ProfileUpdate from '@/views/ProfileUpdate.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,8 +65,55 @@ const router = createRouter({
       path: '/mypage',
       name: 'mypage',
       component: MypageView
-    }
+    },
+    {
+      path: '/boardDetail',
+      name: 'boardDetail',
+      component: BoardDetail
+    },
+    {
+      path: '/boardCreate',
+      name: 'boardCreate',
+      component: BoardCreate
+    },
+    {
+      path: '/boardUpdate',
+      name: 'boardUpdate',
+      component: BoardUpdate
+    },
 
+    {
+      path: '/montageDetail',
+      name: 'montageDetail',
+      component: MontageDetail
+    }
+    ,
+    {
+      path: '/montageCreate',
+      name: 'montageCreate',
+      component: MontageCreate
+    },
+    {
+      path: '/montageUpdate',
+      name: 'montageUpdate',
+      component: MontageUpdate
+    },
+    {
+      path: '/profileDetail',
+      name: 'profileDetail',
+      component: ProfileDetail
+    },
+    
+    {
+      path: '/profileCreate',
+      name: 'profileCreate',
+      component: ProfileCreate
+    },
+    {
+      path: '/profileUpdate',
+      name: 'profileUpdate',
+      component: ProfileUpdate
+    },
   ]
 })
 

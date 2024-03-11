@@ -1,7 +1,7 @@
 <template>
     <h3><b>진행중인 공고</b></h3>
     <div class="row row-cols-1 row-cols-md-4 g-4">
-      <div class="col">
+      <div class="col" @click="goToBoardDetail">
         <div class="card" id="board">
           <img src="@/assets/board/공고1.jpg" class="card-img-top" alt="...">
           <div class="card-body">
@@ -152,7 +152,11 @@
   </template>
   
   <script setup>
-  
+  import { useRouter } from 'vue-router'
+  const router = useRouter();
+const goToBoardDetail = () => {
+  router.push({ name: 'login' });
+};
   </script>
   <style>
 #board {
