@@ -7,7 +7,7 @@ import java.util.List;
 public interface ProfileService {
     List<Profile> getProfileList(int sorting, Character condition);
 
-    Profile getProfile(Long memberId);
+    Profile getProfile(Long memberId, Character condition);
 
     int canRemoveProfile(Long profileId);
 }

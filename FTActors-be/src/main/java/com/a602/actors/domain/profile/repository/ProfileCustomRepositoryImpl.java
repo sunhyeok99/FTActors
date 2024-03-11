@@ -30,7 +30,6 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
         if(condition != 'E') {
             whereClause.and(profile.type.eq(condition)); //condition에 맞는 조건 넣어주기
         }
-        log.info("배우,감독 프로필 전체 목록 - 리포지토리");
         return jpaQueryFactory
                 .selectFrom(profile)
                 .where(whereClause)
@@ -39,12 +38,14 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
     }
 
     @Override
-    public Profile findProfileById(Long memberId) {
+    public Profile findProfileById(Long memberId, Character condition) {
         QProfile profile = QProfile.profile;
-        QMember member = QMember.member;
+        BooleanBuilder whereClause = new BooleanBuilder();
+        whereClause.and(profile.type.eq(condition));
 
         return jpaQueryFactory
                 .selectFrom(profile)
+                .where(profile.member.id.eq(memberId).and(whereClause))
                 .fetchOne();
     }
 

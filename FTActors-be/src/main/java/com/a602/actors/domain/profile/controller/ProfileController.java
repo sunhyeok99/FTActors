@@ -21,16 +21,16 @@ public class ProfileController {
     public ResponseEntity<List<Profile>> getAllProfileList(@RequestParam(name = "sort") int sorting, @RequestParam(name = "condition") Character condition) {
         log.info("배우,감독 프로필 전체 목록 - 컨트롤러");
 
-        List<Profile> profiles = profileService.getProfileList(sorting, condition);
+        List<Profile> profiles = profileService.getProfileList(sorting, condition); //null 가능
 
         return new ResponseEntity<>(profiles, HttpStatus.OK);
     }
 
     @GetMapping("/detail")
-    public ResponseEntity<Profile> getDetailProfile(@RequestParam(name = "member_id") Long memberId) {
+    public ResponseEntity<Profile> getDetailProfile(@RequestParam(name = "member_id") Long memberId, @RequestParam(name = "condition") Character condition) {
         log.info("프로필 상세 페이지");
 
-        Profile profile = profileService.getProfile(memberId);
+        Profile profile = profileService.getProfile(memberId, condition); //null 가능
 
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
