@@ -3,12 +3,9 @@ package com.a602.actors.domain.montage.service;
 
 import com.a602.actors.domain.montage.dto.MontageDto;
 import com.a602.actors.domain.montage.entity.Montage;
-import com.a602.actors.domain.montage.repository.MontageRepository;
+import com.a602.actors.domain.montage.repository.MontageResourceRepository;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ListObjectsV2Request;
-import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -25,31 +22,24 @@ public class MontageFileService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
     private final AmazonS3 amazonS3;
-    private final MontageRepository montageRepository;
+    private final MontageResourceRepository montageRepository;
 
-    public MontageFileService(AmazonS3 amazonS3, MontageRepository montageRepository) {
+    public MontageFileService(AmazonS3 amazonS3, MontageResourceRepository montageRepository) {
         this.amazonS3 = amazonS3;
         this.montageRepository = montageRepository;
     }
     public List<MontageDto.MontageInfo> getAllMontageList(){
-
-        List<MontageDto.MontageInfo> montagesList = montageRepository.findAll().stream().map(MontageDto.MontageInfo::toDto).toList();
-        return montagesList;
+        return montageRepository.findAll().stream().map(MontageDto.MontageInfo::toDto).toList();
     }
 
-//    public ResponseEntity<UrlResource> downloadImage(String originalFilename) {
-//        UrlResource urlResource = new UrlResource(amazonS3.getUrl(bucket, originalFilename));
-//
-//        String contentDisposition = "attachment; filename=\"" +  originalFilename + "\"";
-//
-//        // header에 CONTENT_DISPOSITION 설정을 통해 클릭 시 다운로드 진행
-//        return ResponseEntity.ok()
-//                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
-//                .body(urlResource);
+//    public List<MontageDto.MontageInfo> getMyMontage(Integer memberId){
+//        //return montageRepository.findByMemberId(memberId).stream().map(MontageDto.MontageInfo::toDto).toList();
+//        return null;
 //    }
 
+
     public String uploadFile(MultipartFile multipartFile) throws IOException {
-        String originalFilename = "videos/" + multipartFile.getOriginalFilename();
+        String originalFilename = "montages/" + multipartFile.getOriginalFilename();
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(multipartFile.getSize());

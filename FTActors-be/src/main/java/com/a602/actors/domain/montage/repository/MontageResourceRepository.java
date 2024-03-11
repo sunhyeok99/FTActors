@@ -5,7 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface MontageRepository extends JpaRepository<Montage, Long> {
+public interface MontageResourceRepository extends JpaRepository<Montage, Long> {
 
     List<Montage> findAll();
+    //List<Montage> findByMemberId(Integer memberId);
 }
