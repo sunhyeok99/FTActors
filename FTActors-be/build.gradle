@@ -30,9 +30,9 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
-//	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-core'
 
-//	implementation 'org.flywaydb:flyway-mysql'
+	implementation 'org.flywaydb:flyway-mysql'
 
 	compileOnly 'org.projectlombok:lombok'
 
