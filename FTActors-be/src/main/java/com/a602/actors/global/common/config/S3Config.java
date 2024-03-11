@@ -1,4 +1,4 @@
-package com.a602.actors.domain.montage.config;
+package com.a602.actors.global.common.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
