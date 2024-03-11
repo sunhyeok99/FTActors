@@ -1,6 +1,6 @@
 <template>
   <div class="title"><h3><b>배우 프로필</b></h3>
-    <button type="button" class="btn pageright">▶️더보기</button>
+    <button type="button" class="btn pageright" @click="goToProfilePage">▶️더보기</button>
   </div>
   <div class="row row-cols-1 row-cols-md-4 g-4">
     <div class="col">
@@ -151,7 +151,11 @@
 </template>
 
 <script setup>
-
+import { useRouter } from 'vue-router'
+const router = useRouter();
+const goToProfilePage = () => {
+  router.push({ name: 'profile' });
+};
 </script>
 
 <style>

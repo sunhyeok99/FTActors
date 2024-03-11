@@ -67,50 +67,50 @@ const router = createRouter({
       component: MypageView
     },
     {
-      path: '/boardDetail',
+      path: '/boarddetail',
       name: 'boardDetail',
       component: BoardDetail
     },
     {
-      path: '/boardCreate',
+      path: '/boardcreate',
       name: 'boardCreate',
       component: BoardCreate
     },
     {
-      path: '/boardUpdate',
+      path: '/boardupdate',
       name: 'boardUpdate',
       component: BoardUpdate
     },
 
     {
-      path: '/montageDetail',
+      path: '/montagedetail',
       name: 'montageDetail',
       component: MontageDetail
     }
     ,
     {
-      path: '/montageCreate',
+      path: '/montagecreate',
       name: 'montageCreate',
       component: MontageCreate
     },
     {
-      path: '/montageUpdate',
+      path: '/montageupdate',
       name: 'montageUpdate',
       component: MontageUpdate
     },
     {
-      path: '/profileDetail',
+      path: '/profiledetail',
       name: 'profileDetail',
       component: ProfileDetail
     },
     
     {
-      path: '/profileCreate',
+      path: '/profilecreate',
       name: 'profileCreate',
       component: ProfileCreate
     },
     {
-      path: '/profileUpdate',
+      path: '/profileupdate',
       name: 'profileUpdate',
       component: ProfileUpdate
     },

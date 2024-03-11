@@ -1,6 +1,6 @@
 <template>
   <div class="title"><h3><b>몽타쥬</b></h3>
-    <button type="button" class="btn pageright">▶️더보기</button>
+    <button type="button" class="btn pageright" @click="goToMontagePage">▶️더보기</button>
   </div>
     <div class="row row-cols-1 row-cols-md-4 g-4">
       <div class="col">
@@ -33,7 +33,11 @@
   </template>
   
   <script setup>
-  
+  import { useRouter } from 'vue-router'
+const router = useRouter();
+const goToMontagePage=() => {
+  router.push({ name: 'montage' });
+};
   </script>
   <style>
 #board {
