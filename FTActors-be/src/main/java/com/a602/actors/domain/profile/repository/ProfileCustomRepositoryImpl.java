@@ -1,5 +1,6 @@
 package com.a602.actors.domain.profile.repository;
 
+import com.a602.actors.domain.member.QMember;
 import com.a602.actors.domain.profile.entity.Profile;
 import com.a602.actors.domain.profile.entity.QProfile;
 import com.querydsl.core.types.OrderSpecifier;
@@ -15,7 +16,7 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Profile> findAllLatest(int sorting) {
+    public List<Profile> findAllLatest(int sorting, int condition) {
         QProfile profile = QProfile.profile;
 
         //조건에 따라 order by문 변화
@@ -28,13 +29,12 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
     }
 
     @Override
-    public Profile findById(Long memberId) {
+    public Profile findProfileById(Long memberId) {
         QProfile profile = QProfile.profile;
+        QMember member = QMember.member;
 
         return jpaQueryFactory
                 .selectFrom(profile)
-//                .where(profile.memberId.eq(memberId))
-                .where(profile.memberId.eq(memberId))
                 .fetchOne();
     }
 

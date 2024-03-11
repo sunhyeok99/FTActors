@@ -17,18 +17,18 @@ public class ProfileServiceImpl implements ProfileService{
     private final ProfileCustomRepository profileCustomRepository;
 
     @Override
-    public List<Profile> getProfileList(int sorting) {
-        return profileCustomRepository.findAllLatest(sorting);
+    public List<Profile> getProfileList(int sorting, int condition) {
+        return profileCustomRepository.findAllLatest(sorting, condition);
     }
 
     @Override
     public Profile getProfile(Long memberId) {
-        return profileCustomRepository.findById(memberId);
+        return profileCustomRepository.findProfileById(memberId);
     }
 
     @Override
     public int canRemoveProfile(Long profileId) {
-        Profile profile = profileCustomRepository.findById(profileId);
+        Profile profile = profileCustomRepository.findProfileById(profileId);
         //프로필이 존재하지 않으면 x
         if(profile == null) return 404;
         //로그인이 안 되어 잇으면x

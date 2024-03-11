@@ -5,7 +5,7 @@ import com.a602.actors.domain.profile.entity.Profile;
 import java.util.List;
 
 public interface ProfileCustomRepository {
-    Profile findById(Long memberId);
+    List<Profile> findAllLatest(int sorting, int condition);
 
-    List<Profile> findAllLatest(int sorting);
+    Profile findProfileById(Long memberId);
 }

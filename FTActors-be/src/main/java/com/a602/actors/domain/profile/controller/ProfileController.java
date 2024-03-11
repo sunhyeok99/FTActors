@@ -18,10 +18,10 @@ public class ProfileController {
     private final ProfileService profileService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<Profile>> getAllProfileList(@RequestParam(name = "sort") int sorting) {
+    public ResponseEntity<List<Profile>> getAllProfileList(@RequestParam(name = "sort") int sorting, @RequestParam(name = "condition") int condition) {
         log.info("배우,감독 프로필 전체 목록");
 
-        List<Profile> profiles = profileService.getProfileList(sorting);
+        List<Profile> profiles = profileService.getProfileList(sorting, condition);
 
         return new ResponseEntity<>(profiles, HttpStatus.OK);
     }
