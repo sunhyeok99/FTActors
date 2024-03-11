@@ -22,7 +22,7 @@
     
     <RouterView />
     <button id="floating-map-button">
-      <img width="20" src="@/assets/Message.png" alt="message icon">
+      <img width="40" src="@/assets/Message.png" alt="message icon">
     </button>
     
   </div>
@@ -55,6 +55,7 @@ nav {
   text-align: left;
   margin-top: 2rem;
   display: flex;
+  align-items: center;
 }
 
 nav a.router-link-exact-active {
@@ -116,13 +117,13 @@ nav a:first-of-type {
   display: flex;
   padding: 14px 14px;
   align-items: center;
-  left: 90%;
+  left: 88%;
   bottom: 10%;
-  background-image: radial-gradient(circle, rgb(255, 255, 255), rgb(39, 16, 171));
+  background: white;
   border-radius: 50%;
   transform: translateX(-50%);
   color: rgb(39, 16, 171);
-  gap: 8px;
+  gap: 20px;
   cursor: pointer;
   z-index: 10;
 }
