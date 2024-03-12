@@ -2,6 +2,8 @@ package com.a602.actors.domain.chat.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,32 +22,21 @@ public class ChatController {
 	private final ChatService chatService;
 
 	@PostMapping
-	public void createRoom(@RequestParam String title){
+	public ResponseEntity<String> createRoom(@RequestParam String title){
 		chatService.createChatRoom(title);
+		return new ResponseEntity<>("생성 완료", HttpStatus.OK);
 	}
 
 	@GetMapping("/all")
-	public List<ChatRoomDto> findAllChatRooms(){
-		return chatService.findAllChatRooms();
+	public ResponseEntity<List<ChatRoomDto>> findAllChatRooms(){
+		return new ResponseEntity<>(chatService.findAllChatRooms(), HttpStatus.OK);
 	}
 
 	@GetMapping("/id")
-	public ChatRoomDto findRoomById(@RequestParam Long roomId){
-		return chatService.findRoomById(roomId);
+	public ResponseEntity<ChatRoomDto> findRoomById(@RequestParam Long roomId){
+		return new ResponseEntity<>(chatService.findRoomById(roomId), HttpStatus.OK);
 	}
 
-	// @PostMapping
-	// public ChatRoomDto createRoom(@RequestParam String name){
-	// 	return chatService.createRoom(name);
-	// }
-	//
-	// @GetMapping("/all")
-	// public List<ChatRoomDto> findAllChatRooms(){
-	// 	return chatService.findAllChatRooms();
-	// }
-	//
-	// @GetMapping("/id")
-	// public ChatRoomDto findRoomById(@RequestParam String roomId){
-	// 	return chatService.findRoomById(roomId);
-	// }
+	// Todo : 채팅 메시지 암호화 및 메시지큐 활용한 저장
+
 }
