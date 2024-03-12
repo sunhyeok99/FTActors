@@ -8,7 +8,7 @@ spring:
 
     jpa:
         hibernate:
-            ddl-auto: create
+            ddl-auto: none #ddl-auto를 쓸 거면 create가 아니라 none을 쓰기
         properties:
             hibernate:
                 format_sql: true
