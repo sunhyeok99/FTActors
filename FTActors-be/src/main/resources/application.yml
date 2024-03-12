@@ -29,6 +29,10 @@ spring:
         enabled: true
         baseline-on-migrate: true
 
+kakao:
+    REST_KEY: ${KAKAO_REST_KEY}
+    REDIRECT_URI: ${KAKAO_REDIRECT_URI}
+
 cloud:
     aws:
         s3:
