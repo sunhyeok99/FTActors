@@ -29,6 +29,6 @@ public class ChatMessage extends BaseEntity {
 	private Member member;
 
 	String content;
-	String isRead;
+	char isRead;
 	String type;
 }

@@ -25,5 +25,6 @@ public class Participants extends BaseEntity {
 	private ChatRoom chatRoom;
 
 	@Column(nullable = false)
+	@JoinColumn(referencedColumnName = "id", name = "member_id")
 	Long memberId;
 }
