@@ -1,6 +1,7 @@
 package com.a602.actors.domain.montage.service;
 
 
+import com.a602.actors.domain.montage.dto.MontageCommentDto;
 import com.a602.actors.domain.montage.dto.MontageDto;
 import com.a602.actors.domain.montage.entity.Comment;
 import com.a602.actors.domain.montage.repository.MontageCommentRepository;
@@ -22,27 +23,45 @@ public class MontageCommentService {
         this.montageCommentRepository = montageCommentRepository;
     }
 
-    public List<MontageDto.MontageComments> getAllComments(Long montageId){
+    public List<MontageCommentDto.Response> getAllComments(Long montageId){
 
-        List<MontageDto.MontageComments> allComments = new ArrayList<>();
+        List<MontageCommentDto.Response> allComments = new ArrayList<>();
 
         List<Comment> result = montageCommentRepository.findByMontageId(montageId);
 
         for(Comment comment : result){
             Long referenceId = comment.getId();
-            List<MontageDto.MontageReply> replies = new ArrayList<>();
+            List<MontageCommentDto.MontageReply> replies = new ArrayList<>();
             for(Comment findReply : result){
                 if(findReply.getReferenceId() == null || !findReply.getReferenceId().equals(referenceId))
                     continue;
-                
-                replies.add(MontageDto.MontageReply.toReply(findReply));
+
+                replies.add(MontageCommentDto.MontageReply.toReply(findReply));
             }
 
             if(comment.getReferenceId() == null)
-                allComments.add(MontageDto.MontageComments.toDto(comment, replies));
-
+                allComments.add(MontageCommentDto.Response.toDto(comment, replies));
         }
 
         return allComments;
     }
+
+    public String writeComment(MontageCommentDto.Request req){
+
+
+
+
+        return "";
+    }
+
+    public String updateComment(Long montageId){
+        return null;
+    }
+
+    public String deleteComment(Long montageId){
+        // 댓글을 지워도 답글은 놔두도록 해야한다..
+
+        return null;
+    }
+
 }
