@@ -1,5 +1,6 @@
 package com.a602.actors.domain.profile.controller;
 
+import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.entity.Profile;
 import com.a602.actors.domain.profile.service.ProfileService;
 import jakarta.servlet.http.HttpSession;
@@ -37,19 +38,18 @@ public class ProfileController {
     }
 
     //프로필 만드는 거 ?? -> 이거 자기소개는 여기서 쓰게 해야할 거 같은뎅...
-    //비공개 설정은 회원에서 하는거낙>?
 
     //프로필 생성
-//    @PostMapping("/myprofile")
-//    public ResponseEntity<?> createProfile(@RequestParam(name = "member_id") Long memberId,
-//                                           @RequestBody String selfIntroduction) { //파라미터 추후에 변경
-//        log.info("프로필 만들기~! (자기소개만 작성, 나머지는 회원 db에서 가져오기)");
-//
-//
-//
-//        return new ResponseEntity<>(, HttpStatus.OK);
-//    }
-//
+    @PostMapping("/myprofile") //뭐져 왜 F 자동으로 안 들어가져
+    public ResponseEntity<?> createProfile(@RequestBody ProfileRequest profileRequest, HttpSession session) { //파라미터 추후에 변경
+        log.info("프로필 만들기~! ");
+
+        int result = profileService.createProfile(profileRequest, session);
+
+        if (result == 200) return new ResponseEntity<>("프로필 생성 성공", HttpStatus.OK);
+        else return new ResponseEntity<>("프로필 생성 실패!", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     //프로필 삭제
     @DeleteMapping("/myprofile")
     public ResponseEntity<String> removeProfile(@RequestParam(name = "profile_id") Long profileId, HttpSession session) {
@@ -59,9 +59,18 @@ public class ProfileController {
         if( canRemove == 200 ) return new ResponseEntity<>("프로필 삭제 성공 "+profileId, HttpStatus.OK);
         else return new ResponseEntity<>("프로필 삭제 실패 "+profileId, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    //프로필 수정
-//    @PutMapping("/myprofile")
 
-    //프로필 공개-비공개 수정
-//    @PutMapping("/puclicprivate")
+    //프로필 수정
+    @PutMapping("/myprofile")
+    public ResponseEntity<?> modifyProfile(@RequestParam(name = "profile_id") Long profileId, HttpSession session,
+                                           @RequestBody ProfileRequest profileRequest)
+    {
+        log.info("프로필 수정하기~! ");
+
+        int result = profileService.updateProfile(profileId, profileRequest, session);
+
+        if (result == 200) return new ResponseEntity<>("프로필 수정 성공", HttpStatus.OK);
+        else return new ResponseEntity<>("프로필 수정 실패!", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.a602.actors.domain.profile.service;
 
+import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.entity.Profile;
 import jakarta.servlet.http.HttpSession;
 
@@ -11,4 +12,8 @@ public interface ProfileService {
     Profile getProfile(Long memberId, Character condition);
 
     int canRemoveProfile(Long profileId, HttpSession session);
+
+    int createProfile(ProfileRequest profileRequest, HttpSession session);
+
+    int updateProfile(Long profileId, ProfileRequest profileRequest, HttpSession session);
 }

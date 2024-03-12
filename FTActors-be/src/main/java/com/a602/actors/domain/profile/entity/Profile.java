@@ -55,8 +55,8 @@ public class Profile extends BaseEntity {
 
     @Builder
     public Profile (Member member, String content, Character type, String portfolio, Character privatePost) {
-        Assert.notNull(content, "자기소개 작성 요망!");
-        Assert.notNull(type, "배우인가요 관계자인가요?");
+//        Assert.notNull(content, "자기소개 작성 요망!");
+//        Assert.notNull(type, "배우인가요 관계자인가요?");
 
         this.member = member;
         this.content = content;

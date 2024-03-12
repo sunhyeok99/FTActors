@@ -1,11 +1,14 @@
 package com.a602.actors.domain.profile.repository;
 
 import com.a602.actors.domain.member.QMember;
+import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.entity.Profile;
 import com.a602.actors.domain.profile.entity.QProfile;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAUpdateClause;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -17,6 +20,7 @@ import java.util.List;
 @Slf4j
 public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
+    private final EntityManager entityManager;
 
     @Override
     public List<Profile> findAllLatest(int sorting, Character condition) {
@@ -50,6 +54,19 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
     }
 
     @Override
+    public boolean existProfile(Character condition, Long loginMemberId) {
+        QProfile profile = QProfile.profile;
+
+        Profile curProfile = jpaQueryFactory
+                .selectFrom(profile)
+                .where(profile.type.eq(condition).and(profile.member.id.eq(loginMemberId)))
+                .fetchOne();
+        if (curProfile == null) return false;
+
+        return true;
+    }
+
+    @Override
     public Profile findProfileById(Long profileId) {
         QProfile profile = QProfile.profile;
 
@@ -57,6 +74,31 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
                 .selectFrom(profile)
                 .where(profile.id.eq(profileId))
                 .fetchOne();
+    }
+
+    @Override
+    public void updateProfile(Long profileId, ProfileRequest profileRequest) {
+        QProfile profile = QProfile.profile;
+
+        JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, profile); //업데이트?
+
+        if (profileRequest.getSelfIntroduction() != null) {
+            updateClause.set(profile.content, profileRequest.getSelfIntroduction());
+        }
+
+        if (profileRequest.getCondition() != null) {
+            updateClause.set(profile.type, profileRequest.getCondition());
+        }
+
+        if (profileRequest.getPortfolioLink() != null) {
+            updateClause.set(profile.portfolio, profileRequest.getPortfolioLink());
+        }
+
+        if(profileRequest.getPrivateProfile() != null) {
+            updateClause.set(profile.privatePost, profileRequest.getPrivateProfile());
+        }
+
+        updateClause.where(profile.id.eq(profileId)).execute();
     }
 
 }
