@@ -42,6 +42,7 @@ CREATE TABLE `member` (
                           `birth` varchar(100) NOT NULL,
                           `gender` char(1) NOT NULL,
                           `profile_image` varchar(100) NULL,
+                          `stage_name` varchar(100) NULL,
                           `created_at` timestamp NOT NULL DEFAULT current_timestamp,
                           `updated_at` timestamp NOT NULL DEFAULT current_timestamp,
                           `kakao_refresh_token` varchar(100) NULL,
@@ -188,7 +189,6 @@ CREATE TABLE `profile` (
                            `created_at` timestamp NULL DEFAULT current_timestamp,
                            `updated_at` timestamp NULL DEFAULT current_timestamp,
                            `portfolio` varchar(100) NULL DEFAULT '',
-                           `stage_name` varchar(100) NULL,
                            `private_post` varchar(1) NOT NULL DEFAULT 'F',
                            PRIMARY KEY (`id`),
                            CONSTRAINT `FK_Member_TO_profile_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
