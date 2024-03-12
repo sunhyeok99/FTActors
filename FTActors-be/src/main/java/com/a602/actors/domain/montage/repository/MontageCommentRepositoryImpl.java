@@ -39,7 +39,7 @@ public class MontageCommentRepositoryImpl implements MontageCommentRepository {
 
     @Override
     @Transactional
-    public void saveComment(MontageCommentDto.Request req) {
+    public void saveComment(MontageCommentDto.CreateRequest req) {
         // FIX : memberId의 경우 토큰 개발 후 코드에서 가져오는 것으로 로직 변경 수행
         Member member = entityManager.getReference(Member.class, 1);
         Montage montage = entityManager.getReference(Montage.class, req.getMontageId());
@@ -49,10 +49,19 @@ public class MontageCommentRepositoryImpl implements MontageCommentRepository {
                 .member(member)
                 .montage(montage)
                 .content(req.getContent())
-                .referenceId(req.getParentId() == null ? null : req.getParentId())
+                .referenceId(req.getParentId())
                 .build();
 
         entityManager.persist(newComment);
+    }
+
+    @Override
+    @Transactional
+    public void updateComment(MontageCommentDto.UpdateRequest req) {
+        // FIX : memberId의 경우 토큰 개발 후 코드에서 가져오는 것으로 로직 변경 수행
+        Comment comment = entityManager.find(Comment.class, req.getCommentId());
+
+        comment.setContent(req.getContent());
     }
 
 

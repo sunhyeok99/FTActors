@@ -40,4 +40,8 @@ public class Comment extends BaseEntity {
         this.referenceId = referenceId;
     }
 
+    public void setContent(String content){
+        this.content = content;
+    }
+
 }

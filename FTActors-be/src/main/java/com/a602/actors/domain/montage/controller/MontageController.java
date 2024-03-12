@@ -58,13 +58,13 @@ public class MontageController {
     }
 
     @PostMapping("/{montageId}/comment")
-    public ApiResponse<String> writeComment(@RequestBody MontageCommentDto.Request req){
+    public ApiResponse<String> writeComment(@RequestBody MontageCommentDto.CreateRequest req){
         //return null;
         return new ApiResponse<>(HttpStatus.CREATED.value(), "댓글을 작성했습니다.", montageCommentService.writeComment(req));
     }
 
     @PatchMapping("/{montageId}/comment")
-    public ApiResponse<String> updateComment(@RequestBody MontageCommentDto.Request req){
+    public ApiResponse<String> updateComment(@RequestBody MontageCommentDto.UpdateRequest req){
         return new ApiResponse<>(HttpStatus.OK.value(), "댓글을 수정했습니다.", montageCommentService.updateComment(req));
     }
 

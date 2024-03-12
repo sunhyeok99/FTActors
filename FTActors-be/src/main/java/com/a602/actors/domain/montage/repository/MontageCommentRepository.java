@@ -11,5 +11,6 @@ import java.util.List;
 @Repository
 public interface MontageCommentRepository {
     List<Comment> findCommentAndReplies(Long montageId);
-    void saveComment(MontageCommentDto.Request req);
+    void saveComment(MontageCommentDto.CreateRequest req);
+    void updateComment(MontageCommentDto.UpdateRequest req);
 }

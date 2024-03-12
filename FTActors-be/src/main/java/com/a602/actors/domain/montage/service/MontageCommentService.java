@@ -7,12 +7,14 @@ import com.a602.actors.domain.montage.entity.Comment;
 import com.a602.actors.domain.montage.repository.MontageCommentRepository;
 import com.a602.actors.domain.montage.repository.MontageCommentRepositoryImpl;
 import com.a602.actors.domain.montage.repository.MontageCommentRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class MontageCommentService {
 
     private final MontageCommentRepository montageCommentRepository;
@@ -45,16 +47,16 @@ public class MontageCommentService {
         return allComments;
     }
 
-    public String writeComment(MontageCommentDto.Request req){
-        System.out.println("WRITE COMMENT ");
+    public String writeComment(MontageCommentDto.CreateRequest req){
+        log.info("WRITE COMMENT ");
         montageCommentRepository.saveComment(req);
 
         return "";
     }
 
-    public String updateComment(MontageCommentDto.Request req){
-
-        montageCommentRepository.saveComment(req);
+    public String updateComment(MontageCommentDto.UpdateRequest req){
+        log.info("UPDATE COMMENT ");
+        montageCommentRepository.updateComment(req);
 
         return "";
     }

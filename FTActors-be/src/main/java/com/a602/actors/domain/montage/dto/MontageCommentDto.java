@@ -15,9 +15,18 @@ public class MontageCommentDto {
     @Builder
     @Getter
     @Setter
-    public static class Request{
+    public static class CreateRequest{
         private final Long montageId;
         private final Long parentId; //NULL 이면..
+        private final String content;
+    }
+
+    @Builder
+    @Getter
+    @Setter
+    public static class UpdateRequest{
+        private final Long montageId;
+        private final Long commentId;
         private final String content;
     }
 
