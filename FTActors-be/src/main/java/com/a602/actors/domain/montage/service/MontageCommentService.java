@@ -15,11 +15,10 @@ import java.util.List;
 @Service
 public class MontageCommentService {
 
-    private final MontageCommentRepositoryImpl MontageCommentRepositoryImpl;
     private final MontageCommentRepository montageCommentRepository;
 
-    public MontageCommentService(MontageCommentRepositoryImpl MontageCommentRepositoryImpl, MontageCommentRepository montageCommentRepository){
-        this.MontageCommentRepositoryImpl = MontageCommentRepositoryImpl;
+    public MontageCommentService(MontageCommentRepository montageCommentRepository){
+        //this.MontageCommentRepositoryImpl = MontageCommentRepositoryImpl;
         this.montageCommentRepository = montageCommentRepository;
     }
 
@@ -27,7 +26,7 @@ public class MontageCommentService {
 
         List<MontageCommentDto.Response> allComments = new ArrayList<>();
 
-        List<Comment> result = montageCommentRepository.findByMontageId(montageId);
+        List<Comment> result = montageCommentRepository.findCommentAndReplies(montageId);
 
         for(Comment comment : result){
             Long referenceId = comment.getId();
@@ -47,15 +46,17 @@ public class MontageCommentService {
     }
 
     public String writeComment(MontageCommentDto.Request req){
-
-
-
+        System.out.println("WRITE COMMENT ");
+        montageCommentRepository.saveComment(req);
 
         return "";
     }
 
-    public String updateComment(Long montageId){
-        return null;
+    public String updateComment(MontageCommentDto.Request req){
+
+        montageCommentRepository.saveComment(req);
+
+        return "";
     }
 
     public String deleteComment(Long montageId){

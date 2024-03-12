@@ -1,5 +1,6 @@
 package com.a602.actors.domain.montage.controller;
 
+import com.a602.actors.domain.montage.dto.MontageCommentDto;
 import com.a602.actors.domain.montage.dto.MontageDto;
 import com.a602.actors.domain.montage.service.MontageCommentService;
 import com.a602.actors.domain.montage.service.MontageFileService;
@@ -51,10 +52,24 @@ public class MontageController {
 //
 //
     @GetMapping("/{montageId}/comment")
-    public ApiResponse<List<MontageDto.MontageComments>> getAllComments(@PathVariable("montageId") Long montageId){
+    public ApiResponse<List<MontageCommentDto.Response>> getAllComments(@PathVariable("montageId") Long montageId){
         //return null;
-        return new ApiResponse<>(200, "성공적으로 반환했습니다.", montageCommentService.getAllComments(montageId));
+        return new ApiResponse<>(HttpStatus.OK.value(), "모든 댓글을 불러왔습니다.", montageCommentService.getAllComments(montageId));
     }
 
+    @PostMapping("/{montageId}/comment")
+    public ApiResponse<String> writeComment(@RequestBody MontageCommentDto.Request req){
+        //return null;
+        return new ApiResponse<>(HttpStatus.CREATED.value(), "댓글을 작성했습니다.", montageCommentService.writeComment(req));
+    }
 
+    @PatchMapping("/{montageId}/comment")
+    public ApiResponse<String> updateComment(@RequestBody MontageCommentDto.Request req){
+        return new ApiResponse<>(HttpStatus.OK.value(), "댓글을 수정했습니다.", montageCommentService.updateComment(req));
+    }
+
+    @DeleteMapping("/{montageId}/comment")
+    public ApiResponse<String> deleteComment(@PathVariable("montageId") Long montageId){
+        return new ApiResponse<>(HttpStatus.OK.value(), "댓글을 삭제했습니다.", montageCommentService.deleteComment(montageId));
+    }
 }

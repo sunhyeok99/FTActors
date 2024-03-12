@@ -16,8 +16,9 @@ public class MontageCommentDto {
     @Getter
     @Setter
     public static class Request{
+        private final Long montageId;
+        private final Long parentId; //NULL 이면..
         private final String content;
-        private final Boolean isReply;
     }
 
     @Builder
