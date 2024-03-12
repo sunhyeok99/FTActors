@@ -1,19 +1,5 @@
 <template>
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen">
-      <div class="modal-content">
-        <div class="modal-body">
-          <iframe width="1120" height="530" src="https://www.youtube.com/embed/lJXaNYTVjrQ?si=jZHMoe0Tu1yo4tPb"
-        title="YouTube video player" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen></iframe>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn" id="whitebtn" data-bs-dismiss="modal">그만보기</button>
-        </div>
-      </div>
-    </div>
-  </div>
+<MontagePopup />
   <div class="wrapper">
     <header>
       <div>
@@ -66,6 +52,17 @@ onMounted(() => {
     keyboard: false
   });
   modalInstance.show();
+  window.onYouTubeIframeAPIReady = () => {
+    new YT.Player('player', {
+      height: '530',
+      width: '1120',
+      videoId: 'p1', // YouTube 비디오 ID
+      playerVars: {
+        autoplay: 1, // 자동 재생 활성화
+        mute: 1 // 자동 재생 정책에 따라 음소거 필요
+      }
+    });
+  };
 });
 
 </script>
@@ -111,15 +108,7 @@ nav a:first-of-type {
   /* 기존 border 설정을 수정 */
 }
 
-#whitebtn {
-  color: white;
-}
-.modal-content {
-  background-color: black;
-}
-.modal-footer {
-  border-top: 0;
-}
+
 
 
 @media (min-width: 1024px) {
