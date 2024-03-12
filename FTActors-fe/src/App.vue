@@ -1,4 +1,19 @@
 <template>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-body">
+          <iframe width="1120" height="530" src="https://www.youtube.com/embed/lJXaNYTVjrQ?si=jZHMoe0Tu1yo4tPb"
+        title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen></iframe>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" id="whitebtn" data-bs-dismiss="modal">그만보기</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="wrapper">
     <header>
       <div>
@@ -19,12 +34,12 @@
 
       </div>
     </header>
-    
+
     <RouterView />
     <button id="floating-map-button">
       <img width="40" src="@/assets/Message.png" alt="message icon">
     </button>
-    
+
   </div>
   <footer>
     <FooterBox />
@@ -32,15 +47,27 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
 import { RouterLink, RouterView, useRouter } from 'vue-router'
 import MypageDropdown from './components/MypageDropdown.vue';
 import FooterBox from './components/FooterBox.vue';
+import MontagePopup from './components/MontagePopup.vue';
 import AlarmModal from './components/AlarmModal.vue';
 
 const router = useRouter();
 const goToLogin = () => {
   router.push({ name: 'login' });
 };
+
+onMounted(() => {
+  // 페이지가 마운트되면 모달을 보여주는 코드
+  const modalElement = document.getElementById('exampleModal');
+  const modalInstance = new bootstrap.Modal(modalElement, {
+    keyboard: false
+  });
+  modalInstance.show();
+});
+
 </script>
 
 <style scoped>
@@ -84,6 +111,17 @@ nav a:first-of-type {
   /* 기존 border 설정을 수정 */
 }
 
+#whitebtn {
+  color: white;
+}
+.modal-content {
+  background-color: black;
+}
+.modal-footer {
+  border-top: 0;
+}
+
+
 @media (min-width: 1024px) {
   nav {
     text-align: left;
@@ -99,10 +137,12 @@ nav a:first-of-type {
   margin-left: auto;
   align-items: center;
 }
+
 .pageright button img {
   width: 24px;
   height: 24px;
 }
+
 .pageright img {
   width: 24px;
   height: 24px;
