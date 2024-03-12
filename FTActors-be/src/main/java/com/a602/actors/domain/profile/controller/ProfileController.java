@@ -1,5 +1,6 @@
 package com.a602.actors.domain.profile.controller;
 
+import com.a602.actors.domain.profile.dto.ProfileListDto;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.entity.Profile;
 import com.a602.actors.domain.profile.service.ProfileService;
@@ -21,7 +22,7 @@ public class ProfileController {
     private final ProfileService profileService;
 
     @GetMapping("/list")
-    public ApiResponse<List<Profile>> getAllProfileList(@RequestParam(name = "sort") int sorting, @RequestParam(name = "condition") Character condition) {
+    public ApiResponse<List<ProfileListDto>> getAllProfileList(@RequestParam(name = "sort") int sorting, @RequestParam(name = "condition") Character condition) {
         log.info("배우,감독 프로필 전체 목록 - 컨트롤러");
 
 //        List<Profile> profiles = profileService.getProfileList(sorting, condition); //null 가능
@@ -31,7 +32,7 @@ public class ProfileController {
     }
 
     @GetMapping("/detail")
-    public ApiResponse<Profile> getDetailProfile(@RequestParam(name = "member_id") Long memberId, @RequestParam(name = "condition") Character condition) {
+    public ApiResponse<ProfileListDto> getDetailProfile(@RequestParam(name = "member_id") Long memberId, @RequestParam(name = "condition") Character condition) {
         log.info("프로필 상세 페이지");
 
 //        Profile profile = profileService.getProfile(memberId, condition); //null 가능

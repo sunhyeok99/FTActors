@@ -20,9 +20,7 @@ public class ProfileRequest {
     @Builder
     public ProfileRequest(Character condition,
                           String selfIntroduction,
-                          String portfolioLink
-
-    )
+                          String portfolioLink)
 
     {
         this.condition = condition;

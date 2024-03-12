@@ -1,6 +1,7 @@
 package com.a602.actors.domain.profile.service;
 
 import com.a602.actors.domain.member.Member;
+import com.a602.actors.domain.profile.dto.ProfileListDto;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.entity.Profile;
 import com.a602.actors.domain.profile.repository.ProfileCustomRepository;
@@ -24,13 +25,17 @@ public class ProfileServiceImpl implements ProfileService{
     private final TmpMemRepoImpl tmpMemRepo;
 
     @Override
-    public List<Profile> getProfileList(int sorting, Character condition) {
-        return profileCustomRepository.findAllLatest(sorting, condition);
+    public List<ProfileListDto> getProfileList(int sorting, Character condition) {
+        List<Profile> profiles = profileCustomRepository.findAllLatest(sorting, condition);
+
+//        return profileCustomRepository.findAllLatest(sorting, condition);
     }
 
     @Override
-    public Profile getProfile(Long memberId, Character condition) {
-        return profileCustomRepository.findProfileByIdAndCondition(memberId, condition);
+    public ProfileListDto getProfile(Long memberId, Character condition) {
+        Profile profile = profileCustomRepository.findProfileByIdAndCondition(memberId, condition);
+
+//        return profileCustomRepository.findProfileByIdAndCondition(memberId, condition);
     }
     @Override
     public int createProfile(ProfileRequest profileRequest, HttpSession session) {
