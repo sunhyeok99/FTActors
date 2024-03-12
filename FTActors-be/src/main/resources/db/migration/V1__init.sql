@@ -1,3 +1,4 @@
+
 -- Member 테이블 생성
 SET foreign_key_checks = 0;
 
@@ -230,3 +231,4 @@ CREATE TABLE `participants` (
 
 
 SET foreign_key_checks = 1;
+

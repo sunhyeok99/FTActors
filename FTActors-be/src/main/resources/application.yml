@@ -20,27 +20,29 @@ spring:
         maximum-pool-size:180
         minimum-idle:10
 
+
     servlet:
         multipart:
             max-file-size: 50MB
             max-request-size: 50MB
 
-    flyway:
-        enabled: true
-        baseline-on-migrate: true
+#    flyway:
+#        enabled: true
+#        baseline-on-migrate: true
 
-cloud:
-    aws:
-        s3:
-            bucket: ${S3_BUCKET_NAME}
-        credentials:
-            access-key: ${S3_ACCESS_KEY}
-            secret-key: ${S3_SECRET_KEY}
-        region:
-            static: ap-northeast-2
-            auto: false
-        stack:
-            auto: false
+#cloud:
+#    aws:
+#        s3:
+#            bucket: ${S3_BUCKET_NAME}
+#        credentials:
+#            access-key: ${S3_ACCESS_KEY}
+#            secret-key: ${S3_SECRET_KEY}
+#        region:
+#            static: ap-northeast-2
+#            auto: false
+#        stack:
+#            auto: false
+
 
 
 server:
