@@ -28,6 +28,10 @@ public class ProfileController {
 //        List<Profile> profiles = profileService.getProfileList(sorting, condition); //null 가능
 
 //        return new ResponseEntity<>(profiles, HttpStatus.OK);
+
+        //To do: 공개여부 True인 사람은 리스트에 나오면 안 됨
+        //To do: 로그인 한 상태라면: 공개여부가 true라도, 내 꺼는 보이게 해야 함...
+
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", profileService.getProfileList(sorting, condition));
     }
 
