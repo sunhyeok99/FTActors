@@ -21,24 +21,19 @@ public class Montage extends BaseEntity {
     private String title;
     private String link;
 
-    @Column(name="like_count")
-    private Integer likeCount;
-
     public Montage() {
 
     }
 
-    public Montage(String title, String link, Integer likeCount){
+    public Montage(String title, String link){
         this.title = title;
         this.link = link;
-        this.likeCount = likeCount;
     }
 
-    public Montage toEntity(MontageDto.MontageInfo info){
+    public Montage toEntity(MontageDto.Montages montage){
         return Montage.builder()
-                .title(info.getTitle())
-                .link(info.getLink())
-                .likeCount(info.getLikeCount())
+                .title(montage.getTitle())
+                .link(montage.getLink())
                 .build();
 
     }

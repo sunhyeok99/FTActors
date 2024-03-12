@@ -28,8 +28,8 @@ public class MontageFileService {
         this.amazonS3 = amazonS3;
         this.montageRepository = montageRepository;
     }
-    public List<MontageDto.MontageInfo> getAllMontageList(){
-        return montageRepository.findAll().stream().map(MontageDto.MontageInfo::toDto).toList();
+    public List<MontageDto.Montages> getAllMontageList(){
+        return montageRepository.findAll().stream().map(MontageDto.Montages::toDto).toList();
     }
 
 //    public List<MontageDto.MontageInfo> getMyMontage(Integer memberId){
@@ -51,7 +51,6 @@ public class MontageFileService {
         Montage data = Montage.builder()
                 .title(originalFilename)
                 .link(url)
-                .likeCount(0)
                 .build();
 
         montageRepository.save(data);
