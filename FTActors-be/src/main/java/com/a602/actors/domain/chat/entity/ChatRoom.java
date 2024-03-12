@@ -9,20 +9,21 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Table(name = "chat_room")
 public class ChatRoom extends BaseEntity {
 	@Column(nullable = false)
 	String title;
 
-	@OneToMany(mappedBy = "chat_room_id")
+	@OneToMany(mappedBy = "chatRoom")
 	List<Participants> participants = new ArrayList<>();
+
+	public ChatRoom(String title){
+		this.title = title;
+	}
 }

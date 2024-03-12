@@ -20,8 +20,8 @@ public class ChatController {
 	private final ChatService chatService;
 
 	@PostMapping
-	public ChatRoomDto createRoom(@RequestParam String name){
-		return chatService.createRoom(name);
+	public void createRoom(@RequestParam String title){
+		chatService.createChatRoom(title);
 	}
 
 	@GetMapping("/all")
@@ -30,7 +30,22 @@ public class ChatController {
 	}
 
 	@GetMapping("/id")
-	public ChatRoomDto findRoomById(@RequestParam String roomId){
+	public ChatRoomDto findRoomById(@RequestParam Long roomId){
 		return chatService.findRoomById(roomId);
 	}
+
+	// @PostMapping
+	// public ChatRoomDto createRoom(@RequestParam String name){
+	// 	return chatService.createRoom(name);
+	// }
+	//
+	// @GetMapping("/all")
+	// public List<ChatRoomDto> findAllChatRooms(){
+	// 	return chatService.findAllChatRooms();
+	// }
+	//
+	// @GetMapping("/id")
+	// public ChatRoomDto findRoomById(@RequestParam String roomId){
+	// 	return chatService.findRoomById(roomId);
+	// }
 }

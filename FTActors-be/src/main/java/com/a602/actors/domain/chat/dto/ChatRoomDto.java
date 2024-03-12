@@ -1,20 +1,13 @@
 package com.a602.actors.domain.chat.dto;
 
-import java.util.UUID;
-
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
 public class ChatRoomDto {
-	private String roomId;
+	private String id;
 	private String title;
-
-	public static ChatRoomDto createChatRoomDto(String title){
-		return ChatRoomDto.builder()
-			.roomId(UUID.randomUUID().toString())
-			.title(title)
-			.build();
-	}
 }
