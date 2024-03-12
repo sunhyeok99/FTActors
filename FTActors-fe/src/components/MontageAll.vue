@@ -1,5 +1,4 @@
 <template>
-  <h3><b>몽타쥬</b></h3>
   <div class="row row-cols-1 row-cols-md-4 g-4">
     <div class="col" @click="goToMontageDetail">
       <div class="card" id="board">

@@ -1,5 +1,5 @@
 <template>
-  <h3><b>배우 프로필</b></h3>
+  <!-- <h3><b>배우 프로필</b></h3> -->
   <div class="row row-cols-1 row-cols-md-4 g-4">
     <div class="col" @click="goToProfileDetail">
       <div class="card">

@@ -1,5 +1,7 @@
 <template>
-  <div class="title"><h3><b>배우 프로필</b></h3>
+  <div class="profilepage">
+  <div class="title">
+    <h3><b>배우 프로필</b></h3>
     <button type="button" class="btn pageright" @click="goToProfilePage">▶️더보기</button>
   </div>
   <div class="row row-cols-1 row-cols-md-4 g-4">
@@ -148,6 +150,7 @@
     </div>
 
   </div>
+</div>
 </template>
 
 <script setup>
@@ -158,9 +161,14 @@ const goToProfilePage = () => {
 };
 </script>
 
-<style>
+<style scoped> 
 .title {
   display: flex;  
+}
+.profilepage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .pageright {
   display: flex;

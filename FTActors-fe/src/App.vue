@@ -7,7 +7,7 @@
           <RouterLink to="/" id="name">배우는 사람</RouterLink>
           <RouterLink to="/board">진행중인 공고</RouterLink>
           <RouterLink to="/profile">배우 프로필</RouterLink>
-          <RouterLink to="/montage">몽타쥬</RouterLink>
+          <RouterLink to="/montage" class="fontapply">Montage</RouterLink>
           <div class="pageright">
             <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
               <img src="@/assets/Alarm.png" alt="">
@@ -47,7 +47,7 @@ const goToLogin = () => {
 
 onMounted(() => {
   // 페이지가 마운트되면 모달을 보여주는 코드
-  const modalElement = document.getElementById('exampleModal');
+  const modalElement = document.getElementById('montagePopup');
   const modalInstance = new bootstrap.Modal(modalElement, {
     keyboard: false
   });
@@ -108,9 +108,6 @@ nav a:first-of-type {
   /* 기존 border 설정을 수정 */
 }
 
-
-
-
 @media (min-width: 1024px) {
   nav {
     text-align: left;
@@ -139,6 +136,9 @@ nav a:first-of-type {
 
 .wrapper {
   padding: 2rem;
+}
+.fontapply {
+  font-family: cursive ;
 }
 
 #floating-map-button {

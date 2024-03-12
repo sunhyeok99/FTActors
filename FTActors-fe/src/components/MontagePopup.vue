@@ -1,6 +1,5 @@
 <template>
-
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="montagePopup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
         <div class="modal-body">
@@ -17,12 +16,11 @@
 </template>
 
 <script setup>
+
 </script>
 
-<style>
-.modalpopup{
-  z-index: 10;
-}
+<style scoped>
+
 .modal-body {
   display: flex;
   flex-direction: column;
@@ -41,7 +39,7 @@
 #whitebtn {
   color: white;
   width: 10rem;
-}
+} 
 
 
 </style>
