@@ -8,11 +8,13 @@ import com.a602.actors.domain.montage.entity.QComment;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
+@Slf4j
 public class MontageCommentRepositoryImpl implements MontageCommentRepository {
 
     private final JPAQueryFactory queryFactory;
@@ -46,11 +48,12 @@ public class MontageCommentRepositoryImpl implements MontageCommentRepository {
 
         Comment newComment = Comment
                             .builder()
-                .member(member)
-                .montage(montage)
-                .content(req.getContent())
-                .referenceId(req.getParentId())
-                .build();
+                            .member(member)
+                            .montage(montage)
+                            .content(req.getContent())
+                            .isDeleted(req.getIsDeleted())
+                            .referenceId(req.getParentId())
+                            .build();
 
         entityManager.persist(newComment);
     }
@@ -62,6 +65,32 @@ public class MontageCommentRepositoryImpl implements MontageCommentRepository {
         Comment comment = entityManager.find(Comment.class, req.getCommentId());
 
         comment.setContent(req.getContent());
+    }
+
+    @Override
+    @Transactional
+    public void deleteComment(Long montageId, Long commentId){
+
+        QComment comment = QComment.comment;
+
+        // 대댓글(자식 댓글)을 구한다.
+        List<Comment> commentList =
+                queryFactory.selectFrom(comment)
+                        .where(comment.referenceId.eq(commentId))
+                        .fetch();
+
+        if(!commentList.isEmpty()){ // 대댓글이 존재한다면, 댓글만 삭제한다.
+            Comment targetComment = entityManager.find(Comment.class, commentId);
+            targetComment.setIsDeleted(true);
+            log.info("id : {}, state : {}", targetComment.getId(), targetComment.isDeleted());
+            //entityManager.merge(targetComment);
+        }
+        else{ // 대댓글이 존재하지 않으면 댓글 삭제
+            queryFactory.delete(comment)
+                    .where(comment.id.eq(commentId).and(comment.montage.id.eq(montageId)))
+                    .execute();
+        }
+
     }
 
 

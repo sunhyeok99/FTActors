@@ -19,6 +19,7 @@ public class MontageCommentDto {
         private final Long montageId;
         private final Long parentId; //NULL 이면..
         private final String content;
+        private final Boolean isDeleted = false;
     }
 
     @Builder
@@ -38,17 +39,19 @@ public class MontageCommentDto {
         private final Long memberId;
         private final Long commentId;
         private final String content;
+        private final Boolean isDeleted;
         private final List<MontageReply> reply;
 
         private final LocalDateTime created_at;
         private final LocalDateTime updated_at;
 
         //@QueryProjection
-        public Response(Long memberId, Long commentId, String content, List<MontageReply> reply,
+        public Response(Long memberId, Long commentId, String content, Boolean isDeleted, List<MontageReply> reply,
                                LocalDateTime created_at, LocalDateTime updated_at){
             this.memberId = memberId;
             this.commentId = commentId;
             this.content = content;
+            this.isDeleted = isDeleted;
             this.reply = reply;
             this.created_at = created_at;
             this.updated_at = updated_at;
@@ -60,6 +63,7 @@ public class MontageCommentDto {
                     .commentId(comment.getId())
                     .memberId(comment.getMember().getId())
                     .content(comment.getContent())
+                    .isDeleted(comment.isDeleted())
                     .reply(replies)
                     .created_at(comment.getCreatedAt())
                     .updated_at(comment.getUpdatedAt())
@@ -74,16 +78,19 @@ public class MontageCommentDto {
         private final Long commentId;
         private final Long memberId;
         private final String content;
+        private final Boolean isDeleted;
 
         private final LocalDateTime created_at;
         private final LocalDateTime updated_at;
 
         @QueryProjection
         public MontageReply(Long commentId, Long memberId, String content,
+                            Boolean isDeleted,
                             LocalDateTime created_at, LocalDateTime updated_at){
             this.commentId = commentId;
             this.memberId = memberId;
             this.content = content;
+            this.isDeleted = isDeleted;
             this.created_at = created_at;
             this.updated_at = updated_at;
         }
@@ -94,6 +101,7 @@ public class MontageCommentDto {
                     .commentId(comment.getId())
                     .memberId(comment.getMember().getId())
                     .content(comment.getContent())
+                    .isDeleted(comment.isDeleted())
                     .created_at(comment.getCreatedAt())
                     .updated_at(comment.getUpdatedAt())
                     .build();

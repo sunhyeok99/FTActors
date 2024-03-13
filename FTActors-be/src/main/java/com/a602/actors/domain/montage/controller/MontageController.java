@@ -68,8 +68,8 @@ public class MontageController {
         return new ApiResponse<>(HttpStatus.OK.value(), "댓글을 수정했습니다.", montageCommentService.updateComment(req));
     }
 
-    @DeleteMapping("/{montageId}/comment")
-    public ApiResponse<String> deleteComment(@PathVariable("montageId") Long montageId){
-        return new ApiResponse<>(HttpStatus.OK.value(), "댓글을 삭제했습니다.", montageCommentService.deleteComment(montageId));
+    @DeleteMapping("/{montageId}/comment/{commentId}")
+    public ApiResponse<String> deleteComment(@PathVariable("montageId") Long montageId, @PathVariable("commentId") Long commentId){
+        return new ApiResponse<>(HttpStatus.OK.value(), "댓글을 삭제했습니다.", montageCommentService.deleteComment(montageId, commentId));
     }
 }

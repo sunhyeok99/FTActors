@@ -6,12 +6,10 @@ import com.a602.actors.domain.montage.dto.MontageDto;
 import com.a602.actors.global.common.entity.BaseEntity;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import com.querydsl.core.annotations.QueryProjection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name="comment")
@@ -26,22 +24,33 @@ public class Comment extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "montage_id", referencedColumnName = "id")
     private Montage montage;
+
     private String content;
+
     private Long referenceId;
+
+    @ColumnDefault("false")
+    @Column(name = "is_deleted", columnDefinition = "TINYINT")
+    private boolean isDeleted;
 
     public Comment() {
 
     }
     @QueryProjection
-    public Comment(Member member, Montage montage, String content, Long referenceId){
+    public Comment(Member member, Montage montage, String content, Long referenceId, boolean isDeleted){
         this.member = member;
         this.montage = montage;
         this.content = content;
         this.referenceId = referenceId;
+        this.isDeleted = isDeleted;
     }
 
     public void setContent(String content){
         this.content = content;
+    }
+
+    public void setIsDeleted(boolean state){
+        this.isDeleted = state;
     }
 
 }

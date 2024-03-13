@@ -13,4 +13,6 @@ public interface MontageCommentRepository {
     List<Comment> findCommentAndReplies(Long montageId);
     void saveComment(MontageCommentDto.CreateRequest req);
     void updateComment(MontageCommentDto.UpdateRequest req);
+    void deleteComment(Long montageId, Long commentId);
+
 }

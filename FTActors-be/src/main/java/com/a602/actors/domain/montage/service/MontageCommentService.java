@@ -30,6 +30,7 @@ public class MontageCommentService {
 
         List<Comment> result = montageCommentRepository.findCommentAndReplies(montageId);
 
+        // 자기가 자기 자신의 댓글을 달면 어떻게 되나요..
         for(Comment comment : result){
             Long referenceId = comment.getId();
             List<MontageCommentDto.MontageReply> replies = new ArrayList<>();
@@ -61,10 +62,12 @@ public class MontageCommentService {
         return "";
     }
 
-    public String deleteComment(Long montageId){
+    public String deleteComment(Long montageId, Long commentId){
         // 댓글을 지워도 답글은 놔두도록 해야한다..
+        log.info("DELETE COMMENT ");
+        montageCommentRepository.deleteComment(montageId, commentId);
 
-        return null;
+        return "";
     }
 
 }
