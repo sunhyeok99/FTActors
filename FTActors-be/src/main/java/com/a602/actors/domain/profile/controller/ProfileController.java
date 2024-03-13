@@ -49,7 +49,7 @@ public class ProfileController {
 
     //프로필 생성
     @PostMapping("/myprofile") //뭐져 왜 F 자동으로 안 들어가져
-    public ApiResponse<Integer> createProfile(@RequestBody ProfileRequest profileRequest, HttpSession session) { //파라미터 추후에 변경
+    public ApiResponse<String> createProfile(@RequestBody ProfileRequest profileRequest, HttpSession session) { //파라미터 추후에 변경
         log.info("프로필 만들기~! ");
 
 //        int result = profileService.createProfile(profileRequest, session);
@@ -62,7 +62,7 @@ public class ProfileController {
 
     //프로필 삭제
     @DeleteMapping("/myprofile")
-    public ApiResponse<Integer> removeProfile(@RequestParam(name = "profile_id") Long profileId, HttpSession session) {
+    public ApiResponse<String> removeProfile(@RequestParam(name = "profile_id") Long profileId, HttpSession session) {
         log.info("프로필 삭제하기!");
 
 //        int canRemove = profileService.canRemoveProfile(profileId, session);
@@ -74,7 +74,7 @@ public class ProfileController {
 
     //프로필 수정
     @PutMapping("/myprofile")
-    public ApiResponse<Integer> modifyProfile(@RequestParam(name = "profile_id") Long profileId, HttpSession session,
+    public ApiResponse<String> modifyProfile(@RequestParam(name = "profile_id") Long profileId, HttpSession session,
                                               @RequestBody ProfileRequest profileRequest)
 
     {

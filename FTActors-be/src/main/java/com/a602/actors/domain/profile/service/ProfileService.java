@@ -12,9 +12,9 @@ public interface ProfileService {
 
     ProfileListDto getProfile(Long memberId, Character condition);
 
-    int canRemoveProfile(Long profileId, HttpSession session);
+    String canRemoveProfile(Long profileId, HttpSession session);
 
-    int createProfile(ProfileRequest profileRequest, HttpSession session);
+    String createProfile(ProfileRequest profileRequest, HttpSession session);
 
-    int updateProfile(Long profileId, ProfileRequest profileRequest, HttpSession session);
+    String updateProfile(Long profileId, ProfileRequest profileRequest, HttpSession session);
 }
