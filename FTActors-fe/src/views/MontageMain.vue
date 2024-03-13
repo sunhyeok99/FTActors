@@ -42,24 +42,6 @@
   const router = useRouter();
   const route = useRoute();
   
-  const goToPreviousMontage = () => {
-    // 현재 몽타쥬의 ID를 숫자로 변환하고 1을 빼기
-    const currentId = parseInt(route.params.id, 10);
-    const previousId = currentId - 1;
-  
-    // 이전 몽타쥬로 이동
-    router.push({ name: 'montage', params: { id: previousId } });
-  };
-  
-  const goToNextMontage = () => {
-    // 현재 몽타쥬의 ID를 숫자로 변환하고 1을 더하기
-    const currentId = parseInt(route.params.id, 10);
-    const nextId = currentId + 1;
-  
-    // 다음 몽타쥬로 이동
-    router.push({ name: 'montage', params: { id: nextId } });
-  };
-  
   </script>
   <style>
   .montagepage {

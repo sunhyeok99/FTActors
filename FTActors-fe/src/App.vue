@@ -30,9 +30,9 @@
     <!-- 라우팅된 화면 -->
     <RouterView />
     <!-- 메시지 버튼 -->
-    <button id="floating-map-button">
-      <img width="40" src="@/assets/Message.png" alt="message icon">
-    </button>
+    <button class="btn btn-primary" id="floating-map-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+    aria-controls="offcanvasWithBothOptions"> <img width="40" src="@/assets/Message.png" alt="message icon"></button>
+    <SideBars />
   </div>
   <!-- 푸터 -->
   <footer>
@@ -49,6 +49,7 @@ import MontagePopup from './components/MontagePopup.vue';
 import AlarmModal from './components/AlarmModal.vue';
 import BVSideView from './components/BVSideView.vue';
 import BVPagenation from './components/BVPagenation.vue';
+import SideBars from './components/SideBars.vue';
 
 const router = useRouter();
 const goToLogin = () => {
@@ -163,7 +164,7 @@ nav a:first-of-type {
   background: white;
   border-radius: 50%;
   transform: translateX(-50%);
-  color: rgb(39, 16, 171);
+  color: black;
   gap: 20px;
   cursor: pointer;
   z-index: 10;
