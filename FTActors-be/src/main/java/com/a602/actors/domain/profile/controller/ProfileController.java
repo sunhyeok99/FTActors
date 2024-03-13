@@ -1,6 +1,6 @@
 package com.a602.actors.domain.profile.controller;
 
-import com.a602.actors.domain.profile.dto.ProfileListDto;
+import com.a602.actors.domain.profile.dto.ProfileDto;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.service.ProfileService;
 import com.a602.actors.global.common.dto.ApiResponse;
@@ -20,7 +20,10 @@ public class ProfileController {
     private final ProfileService profileService;
 
     @GetMapping("/list")
-    public ApiResponse<List<ProfileListDto>> getAllProfileList(@RequestParam(name = "sort") int sorting, @RequestParam(name = "condition") Character condition, HttpSession session) {
+    public ApiResponse<List<ProfileDto>> getAllProfileList(@RequestParam(name = "sort") int sorting,
+                                                           @RequestParam(name = "condition") Character condition,
+                                                           HttpSession session)
+    {
         log.info("배우,감독 프로필 전체 목록 - 컨트롤러");
 
 //        List<Profile> profiles = profileService.getProfileList(sorting, condition); //null 가능
@@ -34,18 +37,16 @@ public class ProfileController {
     }
 
     @GetMapping("/detail")
-    public ApiResponse<ProfileListDto> getDetailProfile(@RequestParam(name = "member_id") Long memberId, @RequestParam(name = "condition") Character condition) {
+    public ApiResponse<ProfileDto> getDetailProfile(@RequestParam(name = "profile_id") Long profileId,
+                                                        HttpSession session)
+    {
         log.info("프로필 상세 페이지");
 
-        //To do: 비공개여부 True인 사람은 리스트에 나오면 안 됨 => 완료
-        //To do: 로그인 한 상태라면: 공개여부가 true라도, 내 꺼는 보이게 해야 함... => 완료
+        //To do: 비공개여부 True인 사람은 볼 수 없어야 함
+        //To do: 로그인 한 상태라면: 비공개여부가 true라도, 내 꺼는 보이게 해야 함...
 
-        //To do: 엔터티 -> Dto 돌릴 때, member객체에서 member id만 뽑아오는 거 구현체!!!!
-
-        return new ApiResponse<>(HttpStatus.OK.value(), "해당 프로필을 불러왔습니다.", profileService.getProfile(memberId, condition));
+        return new ApiResponse<>(HttpStatus.OK.value(), "해당 프로필을 불러왔습니다.", profileService.getProfile(profileId, session));
     }
-
-    //프로필 만드는 거 ?? -> 이거 자기소개는 여기서 쓰게 해야할 거 같은뎅...
 
     //프로필 생성
     @PostMapping("/myprofile") //뭐져 왜 F 자동으로 안 들어가져
