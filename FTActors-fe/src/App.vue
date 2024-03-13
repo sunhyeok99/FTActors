@@ -9,7 +9,7 @@
           <RouterLink to="/" id="name">배우는 사람</RouterLink>
           <RouterLink to="/board">진행중인 공고</RouterLink>
           <RouterLink to="/profile">배우 프로필</RouterLink>
-          <RouterLink to="/montage" id="fontapply">Montage</RouterLink>
+          <RouterLink to="/montagemain" id="fontapply">Montage</RouterLink>
           <RouterLink to="/report">신고 목록</RouterLink>
           <RouterLink to="/blacklist">블랙리스트</RouterLink>
           <div class="pageright">
