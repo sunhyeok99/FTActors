@@ -21,10 +21,10 @@ a,
     background-color: hsla(236, 100%, 51%, 0.2);
   }
 }
-
 @font-face {
-  font-family: 'Tuesday Night';
-  src: url('~@/assets/fonts/Tuesday Night Regular 400.otf') format('otf');
+  font-family: 'tuesday_nightregular';
+  src: url('tuesday_night_regular_400-webfont.woff2') format('woff2'),
+       url('tuesday_night_regular_400-webfont.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }

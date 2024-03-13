@@ -1,6 +1,6 @@
 <template>
-<!-- 몽타쥬 팝업 -->
-<MontagePopup />
+  <!-- 몽타쥬 팝업 -->
+  <MontagePopup />
   <div class="wrapper">
     <header>
       <div>
@@ -9,7 +9,9 @@
           <RouterLink to="/" id="name">배우는 사람</RouterLink>
           <RouterLink to="/board">진행중인 공고</RouterLink>
           <RouterLink to="/profile">배우 프로필</RouterLink>
-          <RouterLink to="/montage" class="fontapply">Montage</RouterLink>
+          <RouterLink to="/montage" id="fontapply">Montage</RouterLink>
+          <RouterLink to="/report">신고 목록</RouterLink>
+          <RouterLink to="/blacklist">블랙리스트</RouterLink>
           <div class="pageright">
             <!-- 알람 -->
             <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -66,8 +68,8 @@ onMounted(() => {
       width: '1120',
       videoId: 'p1',
       playerVars: {
-        autoplay: 1, 
-        mute: 1 
+        autoplay: 1,
+        mute: 1
       }
     });
   };
@@ -79,6 +81,10 @@ onMounted(() => {
 header {
   line-height: 1.5;
   max-height: 100vh;
+}
+
+#fontapply {
+  font-family: 'tuesday_nightregular', impact;
 }
 
 nav {
@@ -145,9 +151,7 @@ nav a:first-of-type {
 .wrapper {
   padding: 2rem;
 }
-.fontapply {
-  font-family: cursive ;
-}
+
 
 #floating-map-button {
   position: fixed;

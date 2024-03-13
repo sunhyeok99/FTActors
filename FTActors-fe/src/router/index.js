@@ -17,6 +17,8 @@ import MontageCreate from "@/views/MontageCreate.vue";
 import MontageUpdate from "@/views/MontageUpdate.vue";
 import ProfileCreate from "@/views/ProfileCreate.vue";
 import ProfileUpdate from "@/views/ProfileUpdate.vue";
+import BlacklistView from "@/views/BlacklistView.vue";
+import ReportView from "@/views/ReportView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -115,6 +117,16 @@ const router = createRouter({
       path: "/profileupdate",
       name: "profileUpdate",
       component: ProfileUpdate,
+    },
+    {
+      path: "/blacklist",
+      name: "blacklist",
+      component: BlacklistView,
+    },
+    {
+      path: "/report",
+      name: "report",
+      component: ReportView,
     },
   ],
 });

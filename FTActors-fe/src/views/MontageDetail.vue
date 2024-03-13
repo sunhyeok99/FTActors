@@ -1,12 +1,12 @@
 <template>
   <div class="montagepage">
     <div class="montagethumbnail">
-      <img src="@/assets/Next.png" alt="" id="previous">
+      <img src="@/assets/Next.png" alt="" id="previous" @click="goToPreviousMontage">
       <iframe width="1120" height="530" src="https://www.youtube.com/embed/lJXaNYTVjrQ?si=jZHMoe0Tu1yo4tPb"
         title="YouTube video player" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowfullscreen></iframe>
-      <img src="@/assets/Next.png" alt="">
+      <img src="@/assets/Next.png" alt=""id="next" @click="goToNextMontage">
     </div>
     <div class="montagedetail">
       <ul class="list-group list-group-flush">
@@ -17,9 +17,29 @@
     </div>
   </div>
 </template>
-
 <script setup>
+import { useRouter, useRoute } from 'vue-router'
 
+const router = useRouter();
+const route = useRoute();
+
+const goToPreviousMontage = () => {
+  // 현재 몽타쥬의 ID를 숫자로 변환하고 1을 빼기
+  const currentId = parseInt(route.params.id, 10);
+  const previousId = currentId - 1;
+
+  // 이전 몽타쥬로 이동
+  router.push({ name: 'montage', params: { id: previousId } });
+};
+
+const goToNextMontage = () => {
+  // 현재 몽타쥬의 ID를 숫자로 변환하고 1을 더하기
+  const currentId = parseInt(route.params.id, 10);
+  const nextId = currentId + 1;
+
+  // 다음 몽타쥬로 이동
+  router.push({ name: 'montage', params: { id: nextId } });
+};
 
 </script>
 <style>
@@ -49,5 +69,11 @@
 
 #previous {
   transform: rotate(180deg);
+  color-interpolation-filters : white;
+  cursor: pointer;
 }
+#next {
+  cursor: pointer;
+}
+
 </style>
