@@ -23,7 +23,7 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
     private final EntityManager entityManager;
 
     @Override
-    public List<Profile> findAllLatest(int sorting, Character condition) {
+    public List<Profile> findAllLatest(int sorting, Character condition, Long memberId) {
         QProfile profile = QProfile.profile;
 
         //조건에 따라 order by문 변화
@@ -34,6 +34,13 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
         if(condition != 'E') {
             whereClause.and(profile.type.eq(condition)); //condition에 맞는 조건 넣어주기
         }
+
+        // where 절에 id와 memberId가 같은 경우 추가
+        whereClause.and(
+                profile.privatePost.eq('F')
+                        .or(profile.privatePost.eq('T').and(profile.member.id.eq(memberId)))
+        );
+
         return jpaQueryFactory
                 .selectFrom(profile)
                 .where(whereClause)

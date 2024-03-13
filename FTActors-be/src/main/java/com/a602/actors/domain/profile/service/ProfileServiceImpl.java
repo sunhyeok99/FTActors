@@ -27,8 +27,19 @@ public class ProfileServiceImpl implements ProfileService{
     private final ProfileMapper profileMapper;
 
     @Override
-    public List<ProfileListDto> getProfileList(int sorting, Character condition) {
-        List<Profile> profiles = profileCustomRepository.findAllLatest(sorting, condition);
+    public List<ProfileListDto> getProfileList(int sorting, Character condition, HttpSession session) {
+        String nowLoginId = (String) session.getAttribute("memberName");
+        List<Profile> profiles = null;
+        Long memberId = (long) -1;
+
+        //로그인 여부 확인 후, 로그인이 되어 있으면
+        if(nowLoginId != null) {
+            Member loginMember = tmpMemRepo.findByLoginId(nowLoginId);
+            memberId = loginMember.getId();
+        }
+
+        profiles = profileCustomRepository.findAllLatest(sorting, condition, memberId);
+
         return profileMapper.ProfileListToProfileDtoList(profiles);
 //        return profileCustomRepository.findAllLatest(sorting, condition);
     }
@@ -36,8 +47,10 @@ public class ProfileServiceImpl implements ProfileService{
     @Override
     public ProfileListDto getProfile(Long memberId, Character condition) {
         Profile profile = profileCustomRepository.findProfileByIdAndCondition(memberId, condition);
+
+        //To do: 엔터티 -> Dto 돌릴 때, member객체에서 member id만 뽑아오는 거 구현체!!!!
+
         return profileMapper.ProfileToProfileDto(profile);
-//        return profileCustomRepository.findProfileByIdAndCondition(memberId, condition);
     }
     @Override
     public String createProfile(ProfileRequest profileRequest, HttpSession session) {

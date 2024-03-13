@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 
 public interface ProfileService {
-    List<ProfileListDto> getProfileList(int sorting, Character condition);
+    List<ProfileListDto> getProfileList(int sorting, Character condition, HttpSession session);
 
     ProfileListDto getProfile(Long memberId, Character condition);
 

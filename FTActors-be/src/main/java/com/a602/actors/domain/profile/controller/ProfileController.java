@@ -2,14 +2,12 @@ package com.a602.actors.domain.profile.controller;
 
 import com.a602.actors.domain.profile.dto.ProfileListDto;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
-import com.a602.actors.domain.profile.entity.Profile;
 import com.a602.actors.domain.profile.service.ProfileService;
 import com.a602.actors.global.common.dto.ApiResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,26 +20,28 @@ public class ProfileController {
     private final ProfileService profileService;
 
     @GetMapping("/list")
-    public ApiResponse<List<ProfileListDto>> getAllProfileList(@RequestParam(name = "sort") int sorting, @RequestParam(name = "condition") Character condition) {
+    public ApiResponse<List<ProfileListDto>> getAllProfileList(@RequestParam(name = "sort") int sorting, @RequestParam(name = "condition") Character condition, HttpSession session) {
         log.info("배우,감독 프로필 전체 목록 - 컨트롤러");
 
 //        List<Profile> profiles = profileService.getProfileList(sorting, condition); //null 가능
 
 //        return new ResponseEntity<>(profiles, HttpStatus.OK);
 
-        //To do: 공개여부 True인 사람은 리스트에 나오면 안 됨
-        //To do: 로그인 한 상태라면: 공개여부가 true라도, 내 꺼는 보이게 해야 함...
+        //To do: 비공개여부 True인 사람은 리스트에 나오면 안 됨 => 완료
+        //To do: 로그인 한 상태라면: 공개여부가 true라도, 내 꺼는 보이게 해야 함... => 완료
 
-        return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", profileService.getProfileList(sorting, condition));
+        return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", profileService.getProfileList(sorting, condition, session));
     }
 
     @GetMapping("/detail")
     public ApiResponse<ProfileListDto> getDetailProfile(@RequestParam(name = "member_id") Long memberId, @RequestParam(name = "condition") Character condition) {
         log.info("프로필 상세 페이지");
 
-//        Profile profile = profileService.getProfile(memberId, condition); //null 가능
+        //To do: 비공개여부 True인 사람은 리스트에 나오면 안 됨 => 완료
+        //To do: 로그인 한 상태라면: 공개여부가 true라도, 내 꺼는 보이게 해야 함... => 완료
 
-//        return new ResponseEntity<>(profile, HttpStatus.OK);
+        //To do: 엔터티 -> Dto 돌릴 때, member객체에서 member id만 뽑아오는 거 구현체!!!!
+
         return new ApiResponse<>(HttpStatus.OK.value(), "해당 프로필을 불러왔습니다.", profileService.getProfile(memberId, condition));
     }
 
@@ -76,7 +76,6 @@ public class ProfileController {
     @PutMapping("/myprofile")
     public ApiResponse<String> modifyProfile(@RequestParam(name = "profile_id") Long profileId, HttpSession session,
                                               @RequestBody ProfileRequest profileRequest)
-
     {
         log.info("프로필 수정하기~! ");
 

@@ -6,7 +6,7 @@ import com.a602.actors.domain.profile.entity.Profile;
 import java.util.List;
 
 public interface ProfileCustomRepository {
-    List<Profile> findAllLatest(int sorting, Character condition);
+    List<Profile> findAllLatest(int sorting, Character condition, Long memberId);
 
     Profile findProfileByIdAndCondition(Long memberId, Character condition);
 
@@ -15,4 +15,5 @@ public interface ProfileCustomRepository {
     Profile findProfileById(Long profileId);
 
     void updateProfile(Long profileId, ProfileRequest profileRequest);
+
 }
