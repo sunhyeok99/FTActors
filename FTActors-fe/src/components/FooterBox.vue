@@ -8,7 +8,6 @@
         고객센터: 0507-1334-4796
         인재채용 및 사이트관련문의 : support@plfil.com
         © Plfil, Inc.</p>
-        
     </div>
   </template>
   

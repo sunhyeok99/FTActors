@@ -1,32 +1,38 @@
 <template>
+<!-- 몽타쥬 팝업 -->
 <MontagePopup />
   <div class="wrapper">
     <header>
       <div>
+        <!-- 네비게이션 바 -->
         <nav>
           <RouterLink to="/" id="name">배우는 사람</RouterLink>
           <RouterLink to="/board">진행중인 공고</RouterLink>
           <RouterLink to="/profile">배우 프로필</RouterLink>
           <RouterLink to="/montage" class="fontapply">Montage</RouterLink>
           <div class="pageright">
+            <!-- 알람 -->
             <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
               <img src="@/assets/Alarm.png" alt="">
             </button>
             <AlarmModal />
+            <!-- 로그인 -->
             <button type="button" class="btn btn-dark" id="loginbtn" @click="goToLogin">로그인</button>
+            <!-- 마이페이지 -->
             <MypageDropdown />
           </div>
         </nav>
 
       </div>
     </header>
-
+    <!-- 라우팅된 화면 -->
     <RouterView />
+    <!-- 메시지 버튼 -->
     <button id="floating-map-button">
       <img width="40" src="@/assets/Message.png" alt="message icon">
     </button>
-
   </div>
+  <!-- 푸터 -->
   <footer>
     <FooterBox />
   </footer>
@@ -39,14 +45,16 @@ import MypageDropdown from './components/MypageDropdown.vue';
 import FooterBox from './components/FooterBox.vue';
 import MontagePopup from './components/MontagePopup.vue';
 import AlarmModal from './components/AlarmModal.vue';
+import BVSideView from './components/BVSideView.vue';
+import BVPagenation from './components/BVPagenation.vue';
 
 const router = useRouter();
 const goToLogin = () => {
   router.push({ name: 'login' });
 };
 
+// 몽타쥬 팝업 모달
 onMounted(() => {
-  // 페이지가 마운트되면 모달을 보여주는 코드
   const modalElement = document.getElementById('montagePopup');
   const modalInstance = new bootstrap.Modal(modalElement, {
     keyboard: false
@@ -56,10 +64,10 @@ onMounted(() => {
     new YT.Player('player', {
       height: '530',
       width: '1120',
-      videoId: 'p1', // YouTube 비디오 ID
+      videoId: 'p1',
       playerVars: {
-        autoplay: 1, // 자동 재생 활성화
-        mute: 1 // 자동 재생 정책에 따라 음소거 필요
+        autoplay: 1, 
+        mute: 1 
       }
     });
   };

@@ -2,7 +2,7 @@
 
 <template>
     <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-      <div class="modal-dialog">
+      <div class="modal-dialog" @click.stop>
         <div class="modal-content">
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="exampleModalLabel">신고</h1>
@@ -20,7 +20,7 @@
                 <label for="floatingSelect">Works with selects</label>
               </div>
               <div class="form-floating">
-                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                <textarea class="form-control" placeholder="신고 내용" id="floatingTextarea2" style="height: 100px"></textarea>
                 <label for="floatingTextarea2">세부 내용</label>
               </div>
           </div>
