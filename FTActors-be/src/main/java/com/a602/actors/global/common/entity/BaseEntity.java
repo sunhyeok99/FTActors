@@ -1,13 +1,18 @@
 package com.a602.actors.global.common.entity;
 
+import java.time.LocalDateTime;
 
-import jakarta.persistence.*;
-import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @EntityListeners(AuditingEntityListener.class)
@@ -15,6 +20,7 @@ import java.time.LocalDateTime;
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter     // ParticipantsDtoToChatRoom에서 ChatRoom에 id를 넣어줘야해서 추가
     private Long id;
 
     @CreatedDate
