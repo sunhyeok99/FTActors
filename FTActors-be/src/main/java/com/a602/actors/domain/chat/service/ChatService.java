@@ -45,7 +45,7 @@ public class ChatService {
 
 	public void joinChat(Long roomId, Long memberId) {
 		Optional<Participants> participants =
-			participantsRepository.getParticipantsByChatRoomIdAndId(roomId, memberId);
+			participantsRepository.getParticipantsByChatRoomIdAndMemberId(roomId, memberId);
 
 		validateJoinChat(participants);
 
@@ -66,6 +66,7 @@ public class ChatService {
 
 	private void validateJoinChat(Optional<Participants> participants) {
 		if (participants.isPresent()) {
+			log.info("validateJoinChat ========== {}", participants.toString());
 			throw new DataIntegrityViolationException("같은 채팅방에 중복해서 참가할 수 없습니다.");
 		}
 	}
