@@ -10,7 +10,10 @@ import java.util.List;
 public interface MontageRepository {
 
     List<Montage> getAllMontages();
+
+    Montage getMontage(Long montageId);
     void saveMontage(String title, String url);
+    void deleteMontage(Long montageId);
     List<Comment> findCommentAndReplies(Long montageId);
     void saveComment(MontageCommentDto.CreateRequest req);
     void updateComment(MontageCommentDto.UpdateRequest req);

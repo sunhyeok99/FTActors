@@ -6,6 +6,7 @@ import com.a602.actors.domain.montage.service.MontageCommentService;
 import com.a602.actors.domain.montage.service.MontageFileService;
 import com.a602.actors.global.common.dto.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +43,12 @@ public class MontageController {
     public ApiResponse<String> uploadMontageList(@RequestParam(value = "file") MultipartFile file) throws GeneralSecurityException, IOException {
         log.info(file.getOriginalFilename());
         return new ApiResponse<>(HttpStatus.OK.value(), "성공적으로 업로드되었습니다.", montageFileService.uploadFile(file));
+    }
+
+    @DeleteMapping("/{montageId}")
+    public ApiResponse<String> deleteMontage(@PathVariable("montageId") Long montageId) throws IOException {
+        log.info("MONTAGE ID : " + montageId);
+        return new ApiResponse<>(HttpStatus.OK.value(), "파일 삭제를 성공적으로 수행했습니다.", montageFileService.deleteFile(montageId));
     }
 //
 //    @GetMapping("/my-montage")

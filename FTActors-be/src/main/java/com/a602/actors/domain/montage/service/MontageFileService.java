@@ -45,4 +45,13 @@ public class MontageFileService {
         return "";
     }
 
+    public String deleteFile(Long montageId) throws IOException {
+
+        Montage montage = montageRepository.getMontage(montageId);
+        FileUtil.deleteFile(montage.getTitle(), FolderType.MONTAGE_PATH);
+
+        montageRepository.deleteMontage(montageId);
+
+        return "";
+    }
 }
