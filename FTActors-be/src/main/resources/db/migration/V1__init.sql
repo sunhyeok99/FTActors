@@ -135,7 +135,7 @@ CREATE TABLE `montage` (
                            `id` bigint NOT NULL AUTO_INCREMENT,
                            `member_id` bigint NOT NULL,
                            `title` varchar(50) NOT NULL,
-                           `link` varchar(100) NOT NULL,
+                           `link` varchar(255) NOT NULL,
                            `created_at` timestamp NOT NULL DEFAULT current_timestamp,
                            `updated_at` timestamp NOT NULL DEFAULT current_timestamp,
                            PRIMARY KEY (`id`),
@@ -151,7 +151,8 @@ CREATE TABLE `comment` (
                            `reference_id` bigint NULL,
                            `updated_at` timestamp NULL DEFAULT current_timestamp,
                            `created_at` timestamp NOT NULL DEFAULT current_timestamp,
-                           PRIMARY KEY (`id`),
+                           `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
+                            PRIMARY KEY (`id`),
                            CONSTRAINT `FK_Member_TO_Comment_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`),
                            CONSTRAINT `FK_montage_TO_Comment_1` FOREIGN KEY (`montage_id`) REFERENCES `montage` (`id`)
 );
