@@ -4,14 +4,15 @@ package com.a602.actors.domain.montage.service;
 import com.a602.actors.domain.montage.dto.MontageDto;
 import com.a602.actors.domain.montage.entity.Montage;
 import com.a602.actors.domain.montage.repository.MontageRepository;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
+
+import com.a602.actors.global.common.config.FileUtil;
+import com.a602.actors.global.common.enums.FolderType;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 // S3 연결
@@ -35,21 +36,12 @@ public class MontageFileService {
 
 
     public String uploadFile(MultipartFile multipartFile) throws IOException {
-        String originalFilename = "montages/" + multipartFile.getOriginalFilename();
+        String originalFilename = multipartFile.getOriginalFilename();
 
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentLength(multipartFile.getSize());
-        metadata.setContentType(multipartFile.getContentType());
+        String url = FileUtil.uploadFile(multipartFile, FolderType.MONTAGE_PATH);
+        System.out.println("URL : " + url);
 
-//        amazonS3.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
-//        String url = amazonS3.getUrl(bucket, originalFilename).toString();
-
-        Montage data = Montage.builder()
-                .title(originalFilename)
-                .link("")
-                .build();
-
-        montageRepository.saveMontage("", "");
+        montageRepository.saveMontage(originalFilename, url);
         return "";
     }
 
