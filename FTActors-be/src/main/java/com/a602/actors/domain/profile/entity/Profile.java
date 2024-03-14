@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 @Entity(name = "profile")
@@ -34,6 +35,9 @@ public class Profile extends BaseEntity {
 
     private String portfolio; //포트폴리오 링크
 
+//    @Column(name = "additional_images")
+//    private ArrayList<String> additionalImages; //추가 이미지
+
     @Column(name = "private_post")
     private Character privatePost; //'T', 'F' (기본으로 F 설정)
 
@@ -54,7 +58,11 @@ public class Profile extends BaseEntity {
 //    }
 
     @Builder
-    public Profile (Member member, String content, Character type, String portfolio, Character privatePost) {
+    public Profile (Member member, String content,
+                    Character type,
+                    String portfolio,
+//                    ArrayList<String> additionalImages,
+                    Character privatePost) {
 //        Assert.notNull(content, "자기소개 작성 요망!");
 //        Assert.notNull(type, "배우인가요 관계자인가요?");
 
@@ -62,6 +70,7 @@ public class Profile extends BaseEntity {
         this.content = content;
         this.type = type;
         this.portfolio = portfolio;
+//        this.additionalImages = additionalImages;
         this.privatePost = privatePost;
     }
 }

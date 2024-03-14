@@ -23,7 +23,7 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
     private final EntityManager entityManager;
 
     @Override
-    public List<Profile> findAllLatest(int sorting, Character condition, Long memberId) {
+    public List<Profile> findAllLatest(int sorting, Character condition, Long loginnedId) {
         QProfile profile = QProfile.profile;
 
         //조건에 따라 order by문 변화
@@ -35,10 +35,10 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
             whereClause.and(profile.type.eq(condition)); //condition에 맞는 조건 넣어주기
         }
 
-        // where 절에 id와 memberId가 같은 경우 추가
+        // where 절에 id와 loginnedId가 같은 경우 추가
         whereClause.and(
                 profile.privatePost.eq('F')
-                        .or(profile.privatePost.eq('T').and(profile.member.id.eq(memberId)))
+                        .or(profile.privatePost.eq('T').and(profile.member.id.eq(loginnedId)))
         );
 
         return jpaQueryFactory
@@ -49,15 +49,19 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
     }
 
     @Override
-    public Profile findProfileByIdAndCondition(Long memberId, Character condition) {
+    public Profile findProfileByIdAndCondition(Long profileId, Long loginnedId) {
         QProfile profile = QProfile.profile;
-        BooleanBuilder whereClause = new BooleanBuilder();
-        whereClause.and(profile.type.eq(condition));
 
-        return jpaQueryFactory
+        // profileId와 일치하는 Profile을 조회하고,
+        // 그 중 privatePost가 'F'이거나 memberId가 loginnedId와 일치하는 경우에만 반환
+        Profile result = jpaQueryFactory
                 .selectFrom(profile)
-                .where(profile.member.id.eq(memberId).and(whereClause))
+                .where(profile.id.eq(profileId)
+                        .and(profile.privatePost.eq('F')
+                                .or(profile.member.id.eq(loginnedId))))
                 .fetchOne();
+
+        return result;
     }
 
     @Override

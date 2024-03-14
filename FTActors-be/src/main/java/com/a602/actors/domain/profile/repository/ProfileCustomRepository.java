@@ -8,7 +8,7 @@ import java.util.List;
 public interface ProfileCustomRepository {
     List<Profile> findAllLatest(int sorting, Character condition, Long memberId);
 
-    Profile findProfileByIdAndCondition(Long memberId, Character condition);
+    Profile findProfileByIdAndCondition(Long profileId, Long loginnedId);
 
     boolean existProfile(Character condition, Long loginMemberId);
 

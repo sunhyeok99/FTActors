@@ -1,16 +1,42 @@
 package com.a602.actors.domain.profile.mapper;
 
-import com.a602.actors.domain.profile.dto.ProfileListDto;
+import com.a602.actors.domain.profile.dto.ProfileDto;
 import com.a602.actors.domain.profile.entity.Profile;
-import org.mapstruct.Mapper;
-import org.mapstruct.ReportingPolicy;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface ProfileMapper {
-    //To do: Oauth 구현 후, 멤버에서 아이디 추출해서 넣는 구현체 만들기
-    List<ProfileListDto> ProfileListToProfileDtoList(List<Profile> profiles); //멤버에서 -> 아이디 추출해서 넣기 구현체 만들기
+@Component
+public class ProfileMapper {
+    public List<ProfileDto> ProfileListToProfileDtoList(List<Profile> profiles) {
+        if ( profiles == null ) {
+            return null;
+        }
 
-    ProfileListDto ProfileToProfileDto(Profile profile); //멤버에서 -> 아이디 추출해서 넣기 구현체 만들기
+        List<ProfileDto> list = new ArrayList<ProfileDto>( profiles.size() );
+        for ( Profile profile : profiles ) {
+            list.add( ProfileToProfileDto( profile ) );
+        }
+
+        return list;
+    }
+
+    public ProfileDto ProfileToProfileDto(Profile profile) {
+        if ( profile == null ) {
+            return null;
+        }
+
+        ProfileDto.ProfileDtoBuilder profileDto = ProfileDto.builder();
+
+        profileDto.id( profile.getId() );
+        profileDto.memberId( profile.getMember().getMemberId() );
+        profileDto.content( profile.getContent() );
+        profileDto.type( profile.getType() );
+        profileDto.portfolio( profile.getPortfolio() );
+        profileDto.privatePost( profile.getPrivatePost() );
+
+        return profileDto.build();
+    }
+
 }

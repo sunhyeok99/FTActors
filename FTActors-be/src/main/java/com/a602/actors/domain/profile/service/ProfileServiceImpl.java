@@ -1,7 +1,7 @@
 package com.a602.actors.domain.profile.service;
 
 import com.a602.actors.domain.member.Member;
-import com.a602.actors.domain.profile.dto.ProfileListDto;
+import com.a602.actors.domain.profile.dto.ProfileDto;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.entity.Profile;
 import com.a602.actors.domain.profile.mapper.ProfileMapper;
@@ -27,26 +27,35 @@ public class ProfileServiceImpl implements ProfileService{
     private final ProfileMapper profileMapper;
 
     @Override
-    public List<ProfileListDto> getProfileList(int sorting, Character condition, HttpSession session) {
+    public List<ProfileDto> getProfileList(int sorting, Character condition, HttpSession session) {
         String nowLoginId = (String) session.getAttribute("memberName");
         List<Profile> profiles = null;
-        Long memberId = (long) -1;
+        Long loginnedId = (long) -1;
 
         //로그인 여부 확인 후, 로그인이 되어 있으면
         if(nowLoginId != null) {
             Member loginMember = tmpMemRepo.findByLoginId(nowLoginId);
-            memberId = loginMember.getId();
+            loginnedId = loginMember.getId();
         }
 
-        profiles = profileCustomRepository.findAllLatest(sorting, condition, memberId);
+        profiles = profileCustomRepository.findAllLatest(sorting, condition, loginnedId);
 
         return profileMapper.ProfileListToProfileDtoList(profiles);
 //        return profileCustomRepository.findAllLatest(sorting, condition);
     }
 
     @Override
-    public ProfileListDto getProfile(Long memberId, Character condition) {
-        Profile profile = profileCustomRepository.findProfileByIdAndCondition(memberId, condition);
+    public ProfileDto getProfile(Long profileId, HttpSession session) {
+        String nowLoginId = (String) session.getAttribute("memberName");
+        Long loginnedId = (long) -1;
+
+        //로그인 여부 확인 후, 로그인이 되어 있으면
+        if(nowLoginId != null) {
+            Member loginMember = tmpMemRepo.findByLoginId(nowLoginId);
+            loginnedId = loginMember.getId();
+        }
+
+        Profile profile = profileCustomRepository.findProfileByIdAndCondition(profileId, loginnedId);
 
         //To do: 엔터티 -> Dto 돌릴 때, member객체에서 member id만 뽑아오는 거 구현체!!!!
 
