@@ -5,6 +5,7 @@ import com.a602.actors.domain.montage.dto.MontageCommentDto;
 import com.a602.actors.domain.montage.entity.Comment;
 import com.a602.actors.domain.montage.entity.Montage;
 import com.a602.actors.domain.montage.entity.QComment;
+import com.a602.actors.domain.montage.entity.QMontage;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -15,14 +16,39 @@ import java.util.List;
 
 @Repository
 @Slf4j
-public class MontageCommentRepositoryImpl implements MontageCommentRepository {
+public class MontageRepositoryImpl implements MontageRepository {
 
     private final JPAQueryFactory queryFactory;
     private final EntityManager entityManager;
 
-    public MontageCommentRepositoryImpl(JPAQueryFactory queryFactory, EntityManager entityManager) {
+    public MontageRepositoryImpl(JPAQueryFactory queryFactory, EntityManager entityManager) {
         this.queryFactory = queryFactory;
         this.entityManager = entityManager;
+    }
+
+    @Override
+    public List<Montage> getAllMontages() {
+        QMontage montage = QMontage.montage;
+
+        return queryFactory
+                .selectFrom(montage)
+                .fetch();
+    }
+
+    @Override
+    @Transactional
+    public void saveMontage(String title, String url){
+        Integer memberId = 1; // 추후 JWT 완성되면 고치겠습니다.
+
+        Member member = entityManager.getReference(Member.class, memberId);
+        Montage montage =
+                Montage.builder()
+                .member(member)
+                .title(title)
+                .link(url)
+                .build();
+
+        entityManager.persist(montage);
     }
 
     public List<Comment> findCommentAndReplies(Long montageId){
