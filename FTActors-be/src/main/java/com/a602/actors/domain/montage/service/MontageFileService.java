@@ -3,7 +3,7 @@ package com.a602.actors.domain.montage.service;
 
 import com.a602.actors.domain.montage.dto.MontageDto;
 import com.a602.actors.domain.montage.entity.Montage;
-import com.a602.actors.domain.montage.repository.MontageResourceRepository;
+import com.a602.actors.domain.montage.repository.MontageRepository;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.extern.slf4j.Slf4j;
@@ -19,17 +19,13 @@ import java.util.List;
 @Slf4j
 public class MontageFileService {
 
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
-    private final AmazonS3 amazonS3;
-    private final MontageResourceRepository montageRepository;
+    private final MontageRepository montageRepository;
 
-    public MontageFileService(AmazonS3 amazonS3, MontageResourceRepository montageRepository) {
-        this.amazonS3 = amazonS3;
+    public MontageFileService(MontageRepository montageRepository) {
         this.montageRepository = montageRepository;
     }
     public List<MontageDto.Montages> getAllMontageList(){
-        return montageRepository.findAll().stream().map(MontageDto.Montages::toDto).toList();
+        return montageRepository.getAllMontages().stream().map(MontageDto.Montages::toDto).toList();
     }
 
 //    public List<MontageDto.MontageInfo> getMyMontage(Integer memberId){
@@ -45,16 +41,16 @@ public class MontageFileService {
         metadata.setContentLength(multipartFile.getSize());
         metadata.setContentType(multipartFile.getContentType());
 
-        amazonS3.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
-        String url = amazonS3.getUrl(bucket, originalFilename).toString();
+//        amazonS3.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
+//        String url = amazonS3.getUrl(bucket, originalFilename).toString();
 
         Montage data = Montage.builder()
                 .title(originalFilename)
-                .link(url)
+                .link("")
                 .build();
 
-        montageRepository.save(data);
-        return amazonS3.getUrl(bucket, originalFilename).toString();
+        montageRepository.saveMontage("", "");
+        return "";
     }
 
 }

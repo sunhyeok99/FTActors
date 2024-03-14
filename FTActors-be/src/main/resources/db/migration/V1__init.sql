@@ -1,5 +1,4 @@
--- Like_count 테이블 삭제
--- alarm 테이블 삭제
+
 drop table IF EXISTS alarm;
 
 drop table IF EXISTS application;

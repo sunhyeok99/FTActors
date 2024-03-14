@@ -1,16 +1,10 @@
 package com.a602.actors.domain.montage.dto;
 
-import com.a602.actors.domain.montage.entity.Comment;
 import com.a602.actors.domain.montage.entity.Montage;
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 public class MontageDto {
 
