@@ -36,6 +36,16 @@ public class MontageRepositoryImpl implements MontageRepository {
     }
 
     @Override
+    public List<Montage> getMyMontages(Long memberId) {
+        QMontage montage = QMontage.montage;
+
+        return queryFactory
+                .selectFrom(montage)
+                .where(montage.member.id.eq(memberId))
+                .fetch();
+    }
+
+    @Override
     public Montage getMontage(Long montageId) {
         QMontage montage = QMontage.montage;
 
