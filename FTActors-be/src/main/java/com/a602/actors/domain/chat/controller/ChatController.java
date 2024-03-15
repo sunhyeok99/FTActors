@@ -3,6 +3,7 @@ package com.a602.actors.domain.chat.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +43,13 @@ public class ChatController {
 		// Todo : 사용자의 id는 security 만들어지면 SecurityContextHolder에서 가져오는 것으로 변경
 		chatService.joinChat(roomId, memberId);
 		return new ApiResponse<>(HttpStatus.CREATED.value(), "채팅방에 접속 성공", "");
+	}
+
+	@DeleteMapping("/room/out")
+	public ApiResponse<String> quitChat(@RequestParam Long roomId, @RequestParam Long memberId){
+		// Todo : 사용자의 id는 security 만들어지면 SecurityContextHolder에서 가져오는 것으로 변경
+		chatService.quitChat(roomId, memberId);
+		return new ApiResponse<>(HttpStatus.OK.value(), "채팅방 퇴장 성공", "");
 	}
 
 	// Todo : 채팅 메시지 암호화 및 메시지큐 활용한 저장

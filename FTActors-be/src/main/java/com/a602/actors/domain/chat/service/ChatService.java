@@ -64,6 +64,11 @@ public class ChatService {
 		// 					return 값이 0개 또는 1개인 것만 가능. 2개 이상이면 애초에 안빼짐.
 	}
 
+	public void quitChat(Long roomId, Long memberId){
+		Long id = participantsRepository.getParticipantsByChatRoomIdAndMemberId(roomId, memberId).get().getId();
+		participantsRepository.deleteById(id);
+	}
+
 	private void validateJoinChat(Optional<Participants> participants) {
 		if (participants.isPresent()) {
 			log.info("validateJoinChat ========== {}", participants.toString());
