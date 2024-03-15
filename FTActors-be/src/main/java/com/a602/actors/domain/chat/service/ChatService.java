@@ -1,5 +1,6 @@
 package com.a602.actors.domain.chat.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import com.a602.actors.domain.chat.entity.Participants;
 import com.a602.actors.domain.chat.mapper.ChatMapper;
 import com.a602.actors.domain.chat.mapper.ParticipantsMapperImpl;
 import com.a602.actors.domain.chat.repository.ChatRoomRepository;
+import com.a602.actors.domain.chat.repository.ChatRoomRepositoryCustomImpl;
 import com.a602.actors.domain.chat.repository.ParticipantsRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -24,9 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ChatService {
 	private final ChatRoomRepository chatRoomRepository;
+	private final ChatRoomRepositoryCustomImpl chatRoomRepositoryCustom;
 	private final ParticipantsRepository participantsRepository;
 	private final ChatMapper chatMapper;
-	// private final ParticipantsMapper participantsMapper;
 	private final ParticipantsMapperImpl participantsMapper;
 
 	public void createChatRoom(String title) {
@@ -67,6 +69,13 @@ public class ChatService {
 	public void quitChat(Long roomId, Long memberId){
 		Long id = participantsRepository.getParticipantsByChatRoomIdAndMemberId(roomId, memberId).get().getId();
 		participantsRepository.deleteById(id);
+	}
+
+	public List<ChatRoomDto.Response> getMyChatRoomList(Long memberId){
+		List<ChatRoomDto.Response> list = chatRoomRepositoryCustom.getMyChatRoomList(memberId);
+		Collections.sort(list);
+
+		return list;
 	}
 
 	private void validateJoinChat(Optional<Participants> participants) {

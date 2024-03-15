@@ -23,7 +23,7 @@ public class ChatController {
 	private final ChatService chatService;
 
 	@PostMapping
-	public ApiResponse<String> createRoom(@RequestParam String title){
+	public ApiResponse<String> createChatRoom(@RequestParam String title){
 		chatService.createChatRoom(title);
 		return new ApiResponse<>(HttpStatus.OK.value(), "채팅방 생성 완료", "");
 	}
@@ -33,8 +33,14 @@ public class ChatController {
 		return new ApiResponse<>(HttpStatus.OK.value(), "모든 채팅방 리스트 조회 성공", chatService.findAllChatRooms());
 	}
 
+	@GetMapping("/room/my")
+	public ApiResponse<List<ChatRoomDto.Response>> getMyChatRoomList(@RequestParam Long memberId){
+		// Todo : 사용자의 id는 security 만들어지면 SecurityContextHolder에서 가져오는 것으로 변경
+		return new ApiResponse<>(HttpStatus.OK.value(), "현재 참여중인 채팅방 리스트", chatService.getMyChatRoomList(memberId));
+	}
+
 	@GetMapping("/id")
-	public ApiResponse<ChatRoomDto> getRoomByRoomId(@RequestParam Long roomId){
+	public ApiResponse<ChatRoomDto> getChatRoomByRoomId(@RequestParam Long roomId){
 		return new ApiResponse<>(HttpStatus.OK.value(), "id에 해당하는 채팅방 조회 성공", chatService.findRoomByRoomId(roomId));
 	}
 
@@ -50,13 +56,6 @@ public class ChatController {
 		// Todo : 사용자의 id는 security 만들어지면 SecurityContextHolder에서 가져오는 것으로 변경
 		chatService.quitChat(roomId, memberId);
 		return new ApiResponse<>(HttpStatus.OK.value(), "채팅방 퇴장 성공", "");
-	}
-
-	@GetMapping("/room/my")
-	public ApiResponse<String> getMyRoom(@RequestParam Long memberId){
-		// Todo : 사용자의 id는 security 만들어지면 SecurityContextHolder에서 가져오는 것으로 변경
-		// chatService.quitChat(memberId);
-		// return new ApiResponse<>(HttpStatus.OK.value(), "채팅방 퇴장 성공", "");
 	}
 
 	// Todo : 채팅 메시지 암호화 및 메시지큐 활용한 저장
