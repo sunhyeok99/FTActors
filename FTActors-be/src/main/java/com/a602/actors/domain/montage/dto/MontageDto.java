@@ -8,22 +8,20 @@ import lombok.Setter;
 
 public class MontageDto {
 
-    @RequiredArgsConstructor
     @Builder
     @Getter
     @Setter
-    public static class MontageInfo{
+    @RequiredArgsConstructor
+    public static class Montages{
         private final String title;
         private final String link;
         private final Integer likeCount;
 
-        public static MontageDto.MontageInfo toDto(Montage montage){
-            return MontageInfo.builder()
+        public static MontageDto.Montages toDto(Montage montage){
+            return Montages.builder()
                     .title(montage.getTitle())
                     .link(montage.getLink())
-                    .likeCount(montage.getLikeCount())
                     .build();
         }
     }
-
 }

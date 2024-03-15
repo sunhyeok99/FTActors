@@ -1,6 +1,8 @@
 package com.a602.actors.domain.montage.controller;
 
+import com.a602.actors.domain.montage.dto.MontageCommentDto;
 import com.a602.actors.domain.montage.dto.MontageDto;
+import com.a602.actors.domain.montage.service.MontageCommentService;
 import com.a602.actors.domain.montage.service.MontageFileService;
 import com.a602.actors.global.common.dto.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +20,12 @@ import java.util.List;
 public class MontageController {
 
     private final MontageFileService montageFileService;
+    private final MontageCommentService montageCommentService;
 
-    public MontageController(MontageFileService montageFileService){
+    public MontageController(MontageFileService montageFileService,
+                             MontageCommentService montageCommentService){
         this.montageFileService = montageFileService;
+        this.montageCommentService = montageCommentService;
     }
 
     @GetMapping("/test")
@@ -29,7 +34,7 @@ public class MontageController {
     }
 //
     @GetMapping("/list")
-    public ApiResponse<List<MontageDto.MontageInfo>> getMontageList() throws GeneralSecurityException, IOException {
+    public ApiResponse<List<MontageDto.Montages>> getMontageList() throws GeneralSecurityException, IOException {
         return new ApiResponse<>(HttpStatus.OK.value(), "몽타주 리스트를 불러왔습니다.", montageFileService.getAllMontageList());
     }
 
@@ -46,9 +51,25 @@ public class MontageController {
 //    }
 //
 //
-//    @GetMapping("/comment")
-//    public ApiResponse<?> getAllComments(){
-//        return new ApiResponse<>(200, "성공적으로 반환했습니다.");
-//    }
+    @GetMapping("/{montageId}/comment")
+    public ApiResponse<List<MontageCommentDto.Response>> getAllComments(@PathVariable("montageId") Long montageId){
+        //return null;
+        return new ApiResponse<>(HttpStatus.OK.value(), "모든 댓글을 불러왔습니다.", montageCommentService.getAllComments(montageId));
+    }
 
+    @PostMapping("/{montageId}/comment")
+    public ApiResponse<String> writeComment(@RequestBody MontageCommentDto.CreateRequest req){
+        //return null;
+        return new ApiResponse<>(HttpStatus.CREATED.value(), "댓글을 작성했습니다.", montageCommentService.writeComment(req));
+    }
+
+    @PatchMapping("/{montageId}/comment")
+    public ApiResponse<String> updateComment(@RequestBody MontageCommentDto.UpdateRequest req){
+        return new ApiResponse<>(HttpStatus.OK.value(), "댓글을 수정했습니다.", montageCommentService.updateComment(req));
+    }
+
+    @DeleteMapping("/{montageId}/comment/{commentId}")
+    public ApiResponse<String> deleteComment(@PathVariable("montageId") Long montageId, @PathVariable("commentId") Long commentId){
+        return new ApiResponse<>(HttpStatus.OK.value(), "댓글을 삭제했습니다.", montageCommentService.deleteComment(montageId, commentId));
+    }
 }

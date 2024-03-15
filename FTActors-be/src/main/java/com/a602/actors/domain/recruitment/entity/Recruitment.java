@@ -27,9 +27,9 @@ public class Recruitment extends BaseEntity {
     @Column(name = "recruitment_content")
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "member_id")
+//    private Member member;
 
     @Column(name = "recruitment_category")
     private String category;
@@ -55,7 +55,7 @@ public class Recruitment extends BaseEntity {
     ) {
         this.title = title;
         this.content = content;
-        this.member = member;
+        //this.member = member;
         this.category = category;
         this.image = image;
         this.startDate = startDate;
