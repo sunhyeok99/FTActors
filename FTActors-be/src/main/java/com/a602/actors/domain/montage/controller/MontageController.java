@@ -6,6 +6,7 @@ import com.a602.actors.domain.montage.service.MontageCommentService;
 import com.a602.actors.domain.montage.service.MontageFileService;
 import com.a602.actors.global.common.dto.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,14 +44,17 @@ public class MontageController {
         log.info(file.getOriginalFilename());
         return new ApiResponse<>(HttpStatus.OK.value(), "성공적으로 업로드되었습니다.", montageFileService.uploadFile(file));
     }
-//
-//    @GetMapping("/my-montage")
-//    public ApiResponse<List<MontageDto.MontageInfo>> getMyMontage(){
-//        Integer memberId = 1;
-//        return new ApiResponse<>(HttpStatus.OK.value(), "성공적으로 반환했습니다", montageFileService.getMyMontage(memberId));
-//    }
-//
-//
+
+    @DeleteMapping("/{montageId}")
+    public ApiResponse<String> deleteMontage(@PathVariable("montageId") Long montageId) throws IOException {
+        log.info("MONTAGE ID : " + montageId);
+        return new ApiResponse<>(HttpStatus.OK.value(), "파일 삭제를 성공적으로 수행했습니다.", montageFileService.deleteFile(montageId));
+    }
+    @GetMapping("/my-montage")
+    public ApiResponse<List<MontageDto.Montages>> getMyMontage(){
+        Long memberId = 1L;
+        return new ApiResponse<>(HttpStatus.OK.value(), "성공적으로 반환했습니다", montageFileService.getMyMontage(memberId));
+    }
     @GetMapping("/{montageId}/comment")
     public ApiResponse<List<MontageCommentDto.Response>> getAllComments(@PathVariable("montageId") Long montageId){
         //return null;

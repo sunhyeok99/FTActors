@@ -36,6 +36,26 @@ public class MontageRepositoryImpl implements MontageRepository {
     }
 
     @Override
+    public List<Montage> getMyMontages(Long memberId) {
+        QMontage montage = QMontage.montage;
+
+        return queryFactory
+                .selectFrom(montage)
+                .where(montage.member.id.eq(memberId))
+                .fetch();
+    }
+
+    @Override
+    public Montage getMontage(Long montageId) {
+        QMontage montage = QMontage.montage;
+
+        return queryFactory
+                .selectFrom(montage)
+                .where(montage.id.eq(montageId))
+                .fetchOne();
+    }
+
+    @Override
     @Transactional
     public void saveMontage(String title, String url){
         Integer memberId = 1; // 추후 JWT 완성되면 고치겠습니다.
@@ -49,6 +69,17 @@ public class MontageRepositoryImpl implements MontageRepository {
                 .build();
 
         entityManager.persist(montage);
+    }
+
+    @Override
+    @Transactional
+    public void deleteMontage(Long montageId) {
+        QMontage montage = QMontage.montage;
+
+        queryFactory
+                .delete(montage)
+                .where(montage.id.eq(montageId))
+                .execute();
     }
 
     public List<Comment> findCommentAndReplies(Long montageId){

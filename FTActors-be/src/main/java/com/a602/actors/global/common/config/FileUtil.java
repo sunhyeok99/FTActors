@@ -2,6 +2,7 @@ package com.a602.actors.global.common.config;
 
 import com.a602.actors.domain.montage.entity.Montage;
 import com.a602.actors.global.common.enums.FolderType;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -41,6 +42,20 @@ public class FileUtil {
         String url = amazonS3.getUrl(bucket, folderType.getPath() + originalFilename).toString();
 
         return url;
+    }
+
+    public static String deleteFile(String fileName, FolderType folderType) throws IOException{
+
+        try{
+            // 삭제할 게 없으면 에러가 안 뜨네?
+            amazonS3.deleteObject(bucket, folderType.getPath() + fileName);
+        }
+        catch (SdkClientException e){
+            log.info("ERROR -- path : {} , message : {}", folderType.getPath() + fileName, e.getMessage());
+            throw new IOException("ERROR deleting file from S3", e);
+        }
+
+        return "";
     }
 
 }

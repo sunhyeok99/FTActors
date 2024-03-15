@@ -29,10 +29,9 @@ public class MontageFileService {
         return montageRepository.getAllMontages().stream().map(MontageDto.Montages::toDto).toList();
     }
 
-//    public List<MontageDto.MontageInfo> getMyMontage(Integer memberId){
-//        //return montageRepository.findByMemberId(memberId).stream().map(MontageDto.MontageInfo::toDto).toList();
-//        return null;
-//    }
+    public List<MontageDto.Montages> getMyMontage(Long memberId){
+        return montageRepository.getMyMontages(memberId).stream().map(MontageDto.Montages::toDto).toList();
+    }
 
 
     public String uploadFile(MultipartFile multipartFile) throws IOException {
@@ -45,4 +44,13 @@ public class MontageFileService {
         return "";
     }
 
+    public String deleteFile(Long montageId) throws IOException {
+
+        Montage montage = montageRepository.getMontage(montageId);
+        FileUtil.deleteFile(montage.getTitle(), FolderType.MONTAGE_PATH);
+
+        montageRepository.deleteMontage(montageId);
+
+        return "";
+    }
 }
