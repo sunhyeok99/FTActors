@@ -33,7 +33,7 @@ public class ChatController {
 		return new ApiResponse<>(HttpStatus.OK.value(), "모든 채팅방 리스트 조회 성공", chatService.findAllChatRooms());
 	}
 
-	@GetMapping("/room/my")
+	@GetMapping("/room/myliist")
 	public ApiResponse<List<ChatRoomDto.Response>> getMyChatRoomList(@RequestParam Long memberId){
 		// Todo : 사용자의 id는 security 만들어지면 SecurityContextHolder에서 가져오는 것으로 변경
 		return new ApiResponse<>(HttpStatus.OK.value(), "현재 참여중인 채팅방 리스트", chatService.getMyChatRoomList(memberId));
