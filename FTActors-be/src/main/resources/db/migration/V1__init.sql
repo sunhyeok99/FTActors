@@ -160,7 +160,7 @@ CREATE TABLE `comment` (
 CREATE TABLE `chat_room` (
                              `id` bigint NOT NULL AUTO_INCREMENT,
                              `title` varchar(100) NOT NULL,
-                             `created` timestamp NOT NULL DEFAULT current_timestamp,
+                             `created_at` timestamp NOT NULL DEFAULT current_timestamp,
                              `updated_at` timestamp NOT NULL DEFAULT current_timestamp,
                              PRIMARY KEY (`id`)
 );
@@ -237,7 +237,7 @@ CREATE TABLE `participants` (
                                 `id` bigint NOT NULL AUTO_INCREMENT,
                                 `chat_room_id` bigint NOT NULL,
                                 `member_id` bigint NOT NULL,
-                                `cre ted_at` timestamp NOT NULL DEFAULT current_timestamp,
+                                `created_at` timestamp NOT NULL DEFAULT current_timestamp,
                                 `updated_at` timestamp NOT NULL DEFAULT current_timestamp,
                                 PRIMARY KEY (`id`),
                                 CONSTRAINT `FK_chat_room_TO_participants_1` FOREIGN KEY (`chat_room_id`) REFERENCES `chat_room` (`id`),

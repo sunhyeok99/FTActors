@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class Participants extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "chat_room_id")
+	@JoinColumn(referencedColumnName = "id", name = "chat_room_id")
 	private ChatRoom chatRoom;
 
 	@Column(nullable = false)
