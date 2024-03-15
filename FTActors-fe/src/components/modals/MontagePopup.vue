@@ -1,23 +1,4 @@
 <template>
-  <!-- <div class="modal fade" id="montagePopup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen">
-      <div class="modal-content">
-        <div class="modal-body">
-          <div class="montagethumbnail">
-            <img src="@/assets/WhiteNext.png" alt="" id="previous" @click="goToPreviousMontage">
-            <iframe width="1120" height="530" src="https://www.youtube.com/embed/lJXaNYTVjrQ?si=jZHMoe0Tu1yo4tPb"
-              title="YouTube video player" frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen></iframe>
-            <img src="@/assets/WhiteNext.png" alt=""id="next" @click="goToNextMontage">
-          </div>
-            <button type="button" class="btn" id="whitebtn" data-bs-dismiss="modal">CLOSE</button>
-        </div>
-
-      </div>
-    </div>
-  </div> -->
-
   <div class="modal fade" id="montagePopup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">

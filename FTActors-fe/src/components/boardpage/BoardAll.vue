@@ -1,10 +1,12 @@
 <template>
-  <!-- <h3><b>진행중인 공고</b></h3> -->
   <div class="row row-cols-1 row-cols-md-4 g-4">
-    <div class="col" v-for="(board, index) in boards" :key="index" @click="goToBoardDetail(board.id)">
-      <div class="card" id="board">
-        <img src="@/assets/board/공고1.jpg" class="card-img-top" alt="사진 업로드 실패">
-        <!-- <img :src="board.image" class="card-img-top" alt="사진 업로드 실패"> -->
+    <div class="col" v-for="(board, index) in boards" :key="index">
+      <div class="card" id="board" @click="goToBoardDetail(board.id)">
+        <img src="@/assets/board/b3.jpg" alt="">
+        <button class="like-btn" :class="{ liked: board.isLiked }" @click.stop="toggleLike(index)">
+          <img v-if="board.isLiked" src="@/assets/icons/like-filled.png" alt="Liked">
+          <img v-else src="@/assets/icons/like-outline.png" alt="Like">
+        </button>
         <div class="card-body">
           <h5 class="card-title"><b>{{ board.title }}</b></h5>
           <p class="card-text">{{ board.deadline }}</p>
@@ -15,25 +17,60 @@
 </template>
 
 <script setup>
+import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router'
+
 const router = useRouter();
-const boards = [
-  { id: 1, title: "웹드라마 '씨타입' 채널에서 배우님을 모십니다", image: "../assets/board/공고1.jpg", deadline: "D-9 / 2024-03-15 마감" },
-  { id: 2, title: "배우님을 모십니다", image: "../assets/board/공고2.jpg", deadline: "D-6 / 2024-03-12 마감" },
-  { id: 3, title: "웹드라마 '씨타입' 채널에서 배우님을 모십니다", image: "../assets/board/공고1.jpg", deadline: "D-9 / 2024-03-15 마감" },
-  { id: 4, title: "배우님을 모십니다", image: "../assets/board/공고2.jpg", deadline: "D-6 / 2024-03-12 마감" },
-  { id: 5, title: "웹드라마 '씨타입' 채널에서 배우님을 모십니다", image: "../assets/board/공고1.jpg", deadline: "D-9 / 2024-03-15 마감" },
-  { id: 6, title: "배우님을 모십니다", image: "../assets/board/공고2.jpg", deadline: "D-6 / 2024-03-12 마감" },
-  { id: 7, title: "웹드라마 '씨타입' 채널에서 배우님을 모십니다", image: "../assets/board/공고1.jpg", deadline: "D-9 / 2024-03-15 마감" },
-  { id: 8, title: "배우님을 모십니다", image: "../assets/board/공고2.jpg", deadline: "D-6 / 2024-03-12 마감" },
-];
+const boards = reactive([
+  { id: 1, title: "웹드라마 '씨타입' 채널에서 배우님을 모십니다", image: "@/assets/board/b1.jpg", deadline: "D-9 / 2024-03-15 마감", isLiked: false },
+  { id: 2, title: "웹드라마 '씨타입' 채널에서 배우님을 모십니다", image: "@/assets/board/b1.jpg", deadline: "D-9 / 2024-03-15 마감", isLiked: false },
+  { id: 3, title: "웹드라마 '씨타입' 채널에서 배우님을 모십니다", image: "@/assets/board/b1.jpg", deadline: "D-9 / 2024-03-15 마감", isLiked: false },
+  { id: 4, title: "웹드라마 '씨타입' 채널에서 배우님을 모십니다", image: "@/assets/board/b1.jpg", deadline: "D-9 / 2024-03-15 마감", isLiked: false },
+
+  // 이하 생략
+]);
 
 const goToBoardDetail = (boardId) => {
   router.push({ name: 'boardDetail', params: { id: boardId } });
 };
+
+// `toggleLike` 함수 수정: 특정 인덱스의 좋아요 상태를 토글
+const toggleLike = (index) => {
+  boards[index].isLiked = !boards[index].isLiked;
+};
 </script>
-<style>
+
+<style scoped>
 #board {
   border: none;
+}
+
+.image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.card-img-top {
+  width: 100%;
+  /* Adjust the size as needed */
+  display: block;
+}
+
+.like-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.liked img {
+  filter: invert(36%) sepia(94%) saturate(3013%) hue-rotate(346deg) brightness(100%) contrast(97%);
+}
+
+.like-btn img {
+  width: 20px;
+  height: 20px;
 }
 </style>

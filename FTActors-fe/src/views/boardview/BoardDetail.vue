@@ -3,7 +3,7 @@
     <h1> <b>BOARD</b></h1>
   </div>
   <div class="boardpage">
-    <img src="@/assets/board/공고1.jpg" alt="">
+    <img src="@/assets/board/b1.jpg" alt="">
     <div class="boardlist">
       <ul class="list-group list-group-flush">
         <li class="list-group-item"><label><b>작품분류</b></label>연극</li>
@@ -15,15 +15,8 @@
         <li class="list-group-item"><label><b>공연장소</b></label>부산광역시</li>
         <li class="list-group-item"><label><b>페이</b></label>협의가능</li>
         <li class="list-group-item"><label><b>지원마감일자</b></label>2024-03-17</li>
-        <li class="list-group-item"><label><b>작품분류</b></label>연극</li>
-        <li class="list-group-item"><label><b>작품명</b></label>연극<달동네>
-        </li>
-        <li class="list-group-item"><label><b>기획사/극단</b></label>극단바라</li>
-        <li class="list-group-item"><label><b>담당자</b></label>극단바라</li>
-        <li class="list-group-item"><label><b>담당자연락처</b></label>1600-1716</li>
-        <li class="list-group-item"><label><b>공연장소</b></label>부산광역시</li>
-        <li class="list-group-item"><label><b>페이</b></label>협의가능</li>
-        <li class="list-group-item"><label><b>지원마감일자</b></label>2024-03-17</li>
+ 
+
       </ul>
     </div>
 
