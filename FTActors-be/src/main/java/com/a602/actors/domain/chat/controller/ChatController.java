@@ -29,13 +29,13 @@ public class ChatController {
 	}
 
 	@GetMapping("/all")
-	public ApiResponse<List<ChatRoomDto>> findAllChatRooms(){
+	public ApiResponse<List<ChatRoomDto>> getAllChatRooms(){
 		return new ApiResponse<>(HttpStatus.OK.value(), "모든 채팅방 리스트 조회 성공", chatService.findAllChatRooms());
 	}
 
 	@GetMapping("/id")
-	public ApiResponse<ChatRoomDto> findRoomById(@RequestParam Long roomId){
-		return new ApiResponse<>(HttpStatus.OK.value(), "id에 해당하는 채팅방 조회 성공", chatService.findRoomById(roomId));
+	public ApiResponse<ChatRoomDto> getRoomByRoomId(@RequestParam Long roomId){
+		return new ApiResponse<>(HttpStatus.OK.value(), "id에 해당하는 채팅방 조회 성공", chatService.findRoomByRoomId(roomId));
 	}
 
 	@PostMapping("/room/in")
@@ -50,6 +50,13 @@ public class ChatController {
 		// Todo : 사용자의 id는 security 만들어지면 SecurityContextHolder에서 가져오는 것으로 변경
 		chatService.quitChat(roomId, memberId);
 		return new ApiResponse<>(HttpStatus.OK.value(), "채팅방 퇴장 성공", "");
+	}
+
+	@GetMapping("/room/my")
+	public ApiResponse<String> getMyRoom(@RequestParam Long memberId){
+		// Todo : 사용자의 id는 security 만들어지면 SecurityContextHolder에서 가져오는 것으로 변경
+		// chatService.quitChat(memberId);
+		// return new ApiResponse<>(HttpStatus.OK.value(), "채팅방 퇴장 성공", "");
 	}
 
 	// Todo : 채팅 메시지 암호화 및 메시지큐 활용한 저장

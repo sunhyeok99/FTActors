@@ -37,8 +37,8 @@ public class ChatService {
 		return chatMapper.ChatRoomListToChatRoomDtoList(chatRoomRepository.findAll());
 	}
 
-	public ChatRoomDto findRoomById(Long id) {
-		ChatRoom chatRoom = chatRoomRepository.findById(id)
+	public ChatRoomDto findRoomByRoomId(Long roomId) {
+		ChatRoom chatRoom = chatRoomRepository.findById(roomId)
 			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 채팅방입니다."));
 		return chatMapper.ChatRoomToChatRoomDto(chatRoom);
 	}
