@@ -1,6 +1,5 @@
 package com.a602.actors.global.common.dto;
 
-import org.springframework.http.HttpStatus;
 import lombok.Getter;
 
 @Getter
@@ -15,7 +14,7 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
-    private ApiResponse(Integer status, String message) {
+    public ApiResponse(Integer status, String message) {
         this.status = status;
         this.message = message;
     }
