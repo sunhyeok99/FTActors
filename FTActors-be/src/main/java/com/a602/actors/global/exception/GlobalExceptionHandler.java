@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     private ResponseEntity<ErrorResponse> makeResponseFormat(ExceptionCodeSet exceptionCode) {
         return ResponseEntity.status(exceptionCode.getHttpStatus())
                 .body(ErrorResponse.builder()
-                        .code(exceptionCode.getCode())
+                        .status(exceptionCode.getStatus())
                         .message(exceptionCode.getMessage())
                         .build()
                 );

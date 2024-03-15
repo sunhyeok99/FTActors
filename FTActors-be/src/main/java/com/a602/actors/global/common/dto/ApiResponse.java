@@ -19,14 +19,6 @@ public class ApiResponse<T> {
         this.message = message;
     }
 
-//    public static <T> ApiResponse<T> success(SuccessCode code, T data) {
-//        return new ApiResponse<>(code.getStatus().value(), code.getMessage(), data);
-//    }
-//
-//    public static <T> ApiResponse<T> error(ErrorCode code) {
-//        return new ApiResponse<>(code.getStatus().value(), code.getMessage());
-//    }
-
     public static ApiResponse<String> error(Integer status, String message) {
         return new ApiResponse<>(status, message, "");
     }

@@ -6,5 +6,5 @@ public interface BaseException {
     ExceptionCodeSet getExceptionCode();
     HttpStatus getHttpStatus();
     String getMessage();
-    String getCode();
+    Integer status();
 }

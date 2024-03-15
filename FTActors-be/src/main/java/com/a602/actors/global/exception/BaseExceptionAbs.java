@@ -24,7 +24,7 @@ public abstract class BaseExceptionAbs extends RuntimeException implements BaseE
     }
 
     @Override
-    public String getCode() {
-        return this.exceptionCode.getCode();
+    public Integer status() {
+        return this.exceptionCode.getStatus();
     }
 }
