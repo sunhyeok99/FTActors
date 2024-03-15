@@ -15,10 +15,6 @@
           <li class="list-group-item"><label><b>닉네임</b></label>춤추는 산양 </li>
           <li class="list-group-item"><label><b>이메일</b></label> bausa@gmail.com </li>
           <li class="list-group-item"><label><b>전화번호</b></label> 010-5454-5454 </li>
-          <li class="list-group-item"><label><b>이름</b></label> 배사람 </li>
-          <li class="list-group-item"><label><b>닉네임</b></label>춤추는 산양 </li>
-          <li class="list-group-item"><label><b>이메일</b></label> bausa@gmail.com </li>
-          <li class="list-group-item"><label><b>전화번호</b></label> 010-5454-5454 </li>
       </ul>
     </div>
   </div>
@@ -51,13 +47,13 @@
         tabindex="0">
         <ProfileTab />
       </div>
-      <div class="tab-pane fade" id="nav-board" role="tabpanel" aria-labelledby="nav-board-tab" tabindex="0">
+      <div class="tab-pane fade" id="nav-board" role="tabpanel" aria-labelledby="nav-board-tab" tabindex="1">
         <BoardTab />
       </div>
-      <div class="tab-pane fade" id="nav-montage" role="tabpanel" aria-labelledby="nav-montage-tab" tabindex="0">
+      <div class="tab-pane fade" id="nav-montage" role="tabpanel" aria-labelledby="nav-montage-tab" tabindex="2">
         <MontageTab />
       </div>
-      <div class="tab-pane fade" id="nav-companion" role="tabpanel" aria-labelledby="nav-companion-tab" tabindex="0">
+      <div class="tab-pane fade" id="nav-companion" role="tabpanel" aria-labelledby="nav-companion-tab" tabindex="3">
         <CompanionTab />
       </div>
     </div>

@@ -27,4 +27,3 @@ import Montage from '../components/homepage/Montage.vue';
 </script>
 
 <style></style>
-../components/homepage/ProfileList.vue../components/homepage/Board.vue../components/homepage/Montage.vue../components/homepage/Notification.vue../components/montagepage/BigMontage.vue

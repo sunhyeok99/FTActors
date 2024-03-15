@@ -17,10 +17,11 @@
         <li class="list-group-item"><label><b>이름</b></label> 
           <div class="profiletab">
           <button type="button" class="btn btn-dark" id="updatebtn" @click="goToProfileUpdate">수정하기</button>
+          <!-- 신고 버튼 -->
           <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#reportModal">
             <img src="@/assets/icons/Siren.png" alt="">
-            <ReportModal />
           </button>
+          <ReportModal />
         </div>
         배사람 </li>
         <li class="list-group-item"><label><b>닉네임</b></label>춤추는 산양 </li>

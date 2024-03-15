@@ -109,6 +109,7 @@
                 </div>
                 <div class="col-10 mb-1 small">잘 부탁드립니다.</div>
               </a>
+
             </div>
           </div>
         </div>

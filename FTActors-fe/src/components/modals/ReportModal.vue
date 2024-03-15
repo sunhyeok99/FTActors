@@ -23,6 +23,10 @@
                 <textarea class="form-control" placeholder="신고 내용" id="floatingTextarea2" style="height: 100px"></textarea>
                 <label for="floatingTextarea2">세부 내용</label>
               </div>
+              <div class="input-group">
+                <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">업로드</button>
+              </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary">신고 보내기</button>
