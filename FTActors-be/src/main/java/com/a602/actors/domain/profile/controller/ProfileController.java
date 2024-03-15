@@ -79,13 +79,16 @@ public class ProfileController {
                                               @RequestBody ProfileRequest profileRequest)
     {
         log.info("프로필 수정하기~! ");
-
-//        int result = profileService.updateProfile(profileId, profileRequest, session);
-//
-//        if (result == 200) return new ResponseEntity<>("프로필 수정 성공", HttpStatus.OK);
-//        else return new ResponseEntity<>("프로필 수정 실패!", HttpStatus.INTERNAL_SERVER_ERROR);
-
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 수정했습니다.", profileService.updateProfile(profileId, profileRequest, session));
     }
+
+    //검색하는 메서드 예시...
+//    @GetMapping("/search")
+//    public ResponseEntity searchPost(
+//            @RequestParam(value = "keyword") String keyword) {
+//        List<PostDocument> posts = postService.searchPost(keyword);
+//
+//        return new ResponseEntity(posts, HttpStatus.OK);
+//    }
 
 }
