@@ -6,38 +6,26 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class RecruitmentResponseDto {
+public class RecruitmentListResponseDto {
     private Long id;
     private String title;
-    private String content;
-    private Long postMemberId;
-    private String category;
     private String image;
-    private String startDate;
     private String endDate;
-    private int wishlist;
+    private int wishList;
 
     @Builder
-    public RecruitmentResponseDto(
+    public RecruitmentListResponseDto(
             Long id,
             String title,
-            String content,
-            Long postMemberId,
-            String category,
             String image,
-            String startDate,
             String endDate,
             int wishlist
     ) {
         this.id = id;
         this.title = title;
-        this.content = content;
-        this.postMemberId = postMemberId;
-        this.category = category;
         this.image = image;
-        this.startDate = startDate;
         this.endDate = endDate;
-        this.wishlist = wishlist;
+        this.wishList = wishlist;
     }
 
 }
