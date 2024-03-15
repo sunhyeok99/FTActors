@@ -1,4 +1,9 @@
 # 개발용
+elasticsearch:
+    host: ${ELASTICSEARCH_HOST}
+    username: ${ELASTICSEARCH_USERNAME}
+    password: ${ELASTICSEARCH_PASSWORD}
+
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
