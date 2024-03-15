@@ -2,6 +2,7 @@ package com.a602.actors.domain.profile.controller;
 
 import com.a602.actors.domain.profile.dto.ProfileDto;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
+import com.a602.actors.domain.profile.entity.ProfileDocument;
 import com.a602.actors.domain.profile.service.ProfileService;
 import com.a602.actors.global.common.dto.ApiResponse;
 import jakarta.servlet.http.HttpSession;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -82,13 +84,17 @@ public class ProfileController {
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 수정했습니다.", profileService.updateProfile(profileId, profileRequest, session));
     }
 
-    //검색하는 메서드 예시...
-//    @GetMapping("/search")
-//    public ResponseEntity searchPost(
-//            @RequestParam(value = "keyword") String keyword) {
-//        List<PostDocument> posts = postService.searchPost(keyword);
-//
-//        return new ResponseEntity(posts, HttpStatus.OK);
-//    }
+    //검색하는 메서드 예시... list를 그대로 써도..?
+    @GetMapping("/search")
+    public ApiResponse<?> searchPost(
+            @RequestParam(value = "keywords") String keywords) {
+        String[] keywordArr = keywords.split(" "); //공백 기준으로 키워드 여러 개 인식
+
+        // 배열이 아닌 리스트로 검색어를 보내는 이유
+        // 가변 인수 처리의 편의성 때문
+        List<ProfileDocument> profileDocuments = profileService.searchProfileDocuments(Arrays.asList(keywordArr));
+
+        return new ApiResponse<>(HttpStatus.OK.value(), "프로필 검색 결과입니다.", profileDocuments);
+    }
 
 }
