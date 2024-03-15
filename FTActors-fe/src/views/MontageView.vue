@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SearchBar />
+    <MontageSearchBar />
   </div>
     <div>
       <MontageAll/>
@@ -13,7 +13,7 @@
   <script setup>
   import MontageAll from '@/components/MontageAll.vue';
   import Pagenation from '../components/Pagenation.vue';
-  import SearchBar from '../components/SearchBar.vue';
+  import MontageSearchBar from '../components/MontageSearchBar.vue';
   </script>
   <style>
   </style>

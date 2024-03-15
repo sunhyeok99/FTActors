@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SearchBar />
+    <ProfileSearchBar />
   </div>
   <div>
     <ProfileListAll />
@@ -13,9 +13,9 @@
 <script setup>
 import ProfileListAll from '@/components/ProfileListAll.vue';
 import Pagenation from '../components/Pagenation.vue';
-import SearchBar from '../components/SearchBar.vue';
+import ProfileSearchBar from '../components/ProfileSearchBar.vue';
 </script>
 
 <style>
 
-</style>
+</style>../components/BoardSearchBar.vue

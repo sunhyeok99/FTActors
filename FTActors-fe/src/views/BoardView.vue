@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SearchBar />
+    <BoardSearchBar />
   </div>
   <div>
     <BoardAll />
@@ -12,10 +12,10 @@
   <script setup>
 import BoardAll from '@/components/BoardAll.vue';
 import Pagenation from '../components/Pagenation.vue';
-import SearchBar from '../components/SearchBar.vue';
+import BoardSearchBar from '../components/BoardSearchBar.vue';
 </script>
 
   <style>
 
   </style>
-  
+  ../components/BoardSearchBar.vue

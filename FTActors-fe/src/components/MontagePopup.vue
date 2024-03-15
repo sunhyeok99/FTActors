@@ -69,7 +69,11 @@
             </div>
 
           </div>
-          <button type="button" class="btn" id="whitebtn" data-bs-dismiss="modal">닫기</button>
+     
+          <div data-bs-theme="dark">
+            <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal" id="whitebtn" ></button>
+
+          </div>
         </div>
 
       </div>

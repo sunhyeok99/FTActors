@@ -165,6 +165,7 @@ nav a:first-of-type {
   border-radius: 50%;
   transform: translateX(-50%);
   color: black;
+  border: black solid 2px;
   gap: 20px;
   cursor: pointer;
   z-index: 10;
