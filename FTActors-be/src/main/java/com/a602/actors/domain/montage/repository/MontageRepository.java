@@ -11,6 +11,7 @@ public interface MontageRepository {
 
     List<Montage> getAllMontages();
     void saveMontage(String title, String url);
+    boolean addLike(Long montageId, Long memberId);
     List<Comment> findCommentAndReplies(Long montageId);
     void saveComment(MontageCommentDto.CreateRequest req);
     void updateComment(MontageCommentDto.UpdateRequest req);

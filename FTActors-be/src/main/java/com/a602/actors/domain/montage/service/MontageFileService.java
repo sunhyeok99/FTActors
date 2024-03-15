@@ -45,4 +45,10 @@ public class MontageFileService {
         return "";
     }
 
+    public boolean pushLike(Long montageId){
+        Long memberId = 1L;
+        return montageRepository.addLike(montageId, memberId);
+    }
+
+
 }
