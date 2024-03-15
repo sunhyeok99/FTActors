@@ -20,11 +20,11 @@
 </template>
 
 <script setup>
-import BigMontage from '../components/BigMontage.vue';
-import Notification from '../components/Notification.vue';
-import ProfileList from '../components/ProfileList.vue';
-import Board from '../components/Board.vue';
-import Montage from '../components/Montage.vue';
+import Notification from '../components/homepage/Notification.vue';
+import ProfileList from '../components/homepage/ProfileList.vue';
+import Board from '../components/homepage/Board.vue';
+import Montage from '../components/homepage/Montage.vue';
 </script>
 
 <style></style>
+../components/homepage/ProfileList.vue../components/homepage/Board.vue../components/homepage/Montage.vue../components/homepage/Notification.vue../components/montagepage/BigMontage.vue

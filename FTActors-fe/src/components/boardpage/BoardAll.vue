@@ -3,7 +3,7 @@
   <div class="row row-cols-1 row-cols-md-4 g-4">
     <div class="col" v-for="(board, index) in boards" :key="index" @click="goToBoardDetail(board.id)">
       <div class="card" id="board">
-        <img src="../assets/board/공고1.jpg" class="card-img-top" alt="사진 업로드 실패">
+        <img src="@/assets/board/공고1.jpg" class="card-img-top" alt="사진 업로드 실패">
         <!-- <img :src="board.image" class="card-img-top" alt="사진 업로드 실패"> -->
         <div class="card-body">
           <h5 class="card-title"><b>{{ board.title }}</b></h5>

@@ -15,7 +15,7 @@
           <div class="pageright">
             <!-- 알람 -->
             <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              <img src="@/assets/Alarm.png" alt="">
+              <img src="@/assets/icons/Alarm.png" alt="">
             </button>
             <AlarmModal />
             <!-- 로그인 -->
@@ -31,7 +31,7 @@
     <RouterView />
     <!-- 메시지 버튼 -->
     <button class="btn btn-primary" id="floating-map-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
-    aria-controls="offcanvasWithBothOptions"> <img width="40" src="@/assets/Message.png" alt="message icon"></button>
+    aria-controls="offcanvasWithBothOptions"> <img width="40" src="@/assets/icons/Message.png" alt="message icon"></button>
     <SideBars />
   </div>
   <!-- 푸터 -->
@@ -43,13 +43,11 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { RouterLink, RouterView, useRouter } from 'vue-router'
-import MypageDropdown from './components/MypageDropdown.vue';
-import FooterBox from './components/FooterBox.vue';
-import MontagePopup from './components/MontagePopup.vue';
-import AlarmModal from './components/AlarmModal.vue';
-import BVSideView from './components/BVSideView.vue';
-import BVPagenation from './components/BVPagenation.vue';
-import SideBars from './components/SideBars.vue';
+import MypageDropdown from './components/common/MypageDropdown.vue';
+import FooterBox from './components/common/FooterBox.vue';
+import MontagePopup from './components/modals/MontagePopup.vue';
+import AlarmModal from './components/modals/AlarmModal.vue';
+import SideBars from './components/common/SideBars.vue';
 
 const router = useRouter();
 const goToLogin = () => {
@@ -172,3 +170,4 @@ nav a:first-of-type {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 </style>
+./components/modals/MontagePopup.vue./components/modals/AlarmModal.vue./components/common/FooterBox.vue./components/common/SideBars.vue

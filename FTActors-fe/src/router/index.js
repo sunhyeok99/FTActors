@@ -1,25 +1,24 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import ProfileView from "../views/ProfileView.vue";
-import BoardView from "../views/BoardView.vue";
-import MontageListView from "../views/MontageView.vue";
-import MontageMainView from "../views/MontageMain.vue";
-import AboutView from "../views/AboutView.vue";
-import LoginView from "../views/LoginView.vue";
-import LogoutView from "../views/LogoutView.vue";
-import JoinView from "../views/JoinView.vue";
-import MypageView from "@/views/MypageView.vue";
-import BoardDetail from "@/views/BoardDetail.vue";
-import MontageDetail from "@/views/MontageDetail.vue";
-import ProfileDetail from "@/views/ProfileDetail.vue";
-import BoardCreate from "@/views/BoardCreate.vue";
-import BoardUpdate from "@/views/BoardUpdate.vue";
-import MontageCreate from "@/views/MontageCreate.vue";
-import MontageUpdate from "@/views/MontageUpdate.vue";
-import ProfileCreate from "@/views/ProfileCreate.vue";
-import ProfileUpdate from "@/views/ProfileUpdate.vue";
-import BlacklistView from "@/views/BlacklistView.vue";
-import ReportView from "@/views/ReportView.vue";
+import ProfileView from "../views/profileview/ProfileView.vue";
+import BoardView from "../views/boardview/BoardView.vue";
+import MontageListView from "../views/montageview/MontageView.vue";
+import MontageMainView from "../views/montageview/MontageMain.vue";
+import LoginView from "../views/memberview/LoginView.vue";
+import LogoutView from "../views/memberview/LogoutView.vue";
+import JoinView from "../views/memberview/JoinView.vue";
+import MypageView from "@/views/memberview/MypageView.vue";
+import BoardDetail from "@/views/boardview/BoardDetail.vue";
+import BoardCreate from "@/views/boardview/BoardCreate.vue";
+import BoardUpdate from "@/views/boardview/BoardUpdate.vue";
+import MontageDetail from "@/views/montageview/MontageDetail.vue";
+import MontageCreate from "@/views/montageview/MontageCreate.vue";
+import MontageUpdate from "@/views/montageview/MontageUpdate.vue";
+import ProfileDetail from "@/views/profileview/ProfileDetail.vue";
+import ProfileCreate from "@/views/profileview/ProfileCreate.vue";
+import ProfileUpdate from "@/views/profileview/ProfileUpdate.vue";
+import BlacklistView from "@/views/adminview/BlacklistView.vue";
+import ReportView from "@/views/adminview/ReportView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,11 +47,6 @@ const router = createRouter({
       path: "/montagemain",
       name: "montagemain",
       component: MontageMainView,
-    },
-    {
-      path: "/about",
-      name: "about",
-      component: AboutView,
     },
     {
       path: "/login",

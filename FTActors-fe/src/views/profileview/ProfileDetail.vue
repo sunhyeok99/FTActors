@@ -18,7 +18,7 @@
           <div class="profiletab">
           <button type="button" class="btn btn-dark" id="updatebtn" @click="goToProfileUpdate">수정하기</button>
           <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#reportModal">
-            <img src="@/assets/Siren.png" alt="">
+            <img src="@/assets/icons/Siren.png" alt="">
             <ReportModal />
           </button>
         </div>
@@ -67,7 +67,7 @@
 </template>
 <script setup>
 import { useRouter } from 'vue-router'
-import ReportModal from '@/components/ReportModal.vue';
+import ReportModal from '@/components/modals/ReportModal.vue';
 const router = useRouter();
 const goToProfileUpdate = () => {
   router.push({ name: 'profileUpdate' });

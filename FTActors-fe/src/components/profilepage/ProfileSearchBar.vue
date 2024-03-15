@@ -2,12 +2,12 @@
     <div class="column search-bar">
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              몽타쥬 배열
+              프로필 배열
             </button>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="#">기간순</a></li>
               <li><a class="dropdown-item" href="#">최신순</a></li>
-              <li><a class="dropdown-item" href="#">추천순</a></li>
+              <li><a class="dropdown-item" href="#">좋아요순</a></li>
             </ul>
           </div>
         
@@ -24,6 +24,7 @@
 <style>
 .search-bar{
     display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 #search{

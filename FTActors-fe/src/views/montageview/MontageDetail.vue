@@ -1,12 +1,12 @@
 <template>
   <div class="montagepage">
     <div class="montagethumbnail">
-      <img src="@/assets/Next.png" alt="" id="previous" @click="goToPreviousMontage">
+      <img src="@/assets/icons/Next.png" alt="" id="previous" @click="goToPreviousMontage">
       <iframe width="1120" height="530" src="https://www.youtube.com/embed/lJXaNYTVjrQ?si=jZHMoe0Tu1yo4tPb"
         title="YouTube video player" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowfullscreen></iframe>
-      <img src="@/assets/Next.png" alt=""id="next" @click="goToNextMontage">
+      <img src="@/assets/icons/Next.png" alt=""id="next" @click="goToNextMontage">
     </div>
     <div class="montagedetail">
       <ul class="list-group list-group-flush">

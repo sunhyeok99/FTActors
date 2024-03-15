@@ -4,7 +4,7 @@
     <h1><b>마이페이지</b></h1>
   </div>
   <div class="profile">
-    <div class="profilephoto"> <img src="@/assets/DefaultProfile.png" alt=""></div>
+    <div class="profilephoto"> <img src="@/assets/icons/DefaultProfile.png" alt=""></div>
     <div class="profilelist">
       <ul class="list-group list-group-flush">
         <li class="list-group-item"><label><b>이름</b></label> 배사람 </li>
