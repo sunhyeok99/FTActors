@@ -9,13 +9,13 @@ public class ApiResponse<T> {
     private final String message;
     private T data;
 
-    public ApiResponse(int status, String message, T data) {
+    public ApiResponse(Integer status, String message, T data) {
         this.status = status;
         this.message = message;
         this.data = data;
     }
 
-    private ApiResponse(int status, String message) {
+    private ApiResponse(Integer status, String message) {
         this.status = status;
         this.message = message;
     }
@@ -28,7 +28,7 @@ public class ApiResponse<T> {
 //        return new ApiResponse<>(code.getStatus().value(), code.getMessage());
 //    }
 
-    public static ApiResponse<String> error(HttpStatus status, String message) {
-        return new ApiResponse<>(status.value(), message, "");
+    public static ApiResponse<String> error(Integer status, String message) {
+        return new ApiResponse<>(status, message, "");
     }
 }
