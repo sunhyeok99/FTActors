@@ -34,9 +34,9 @@ spring:
             max-file-size: 50MB
             max-request-size: 50MB
 
-    flyway:
-        enabled: true
-        baseline-on-migrate: true
+#    flyway: #필요할 때마다 주석 처리했다가 풀었다가 하셈
+#        enabled: true
+#        baseline-on-migrate: true
 
 cloud:
     aws:
