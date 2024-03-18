@@ -7,32 +7,23 @@
     <Board />
   </div>
   <hr>
-  <div>
-    <Montage />
-  </div>
+    <div>
+      <Montage />
+    </div>
   <hr>
   <div>
     <ProfileList />
   </div>
-  <div>
-    <Pagenation />
-  </div>
+
+
+
 </template>
 
 <script setup>
-import Notification from '../components/Notification.vue';
-import ProfileList from '../components/ProfileList.vue';
-import Board from '../components/Board.vue';
-import Montage from '../components/Montage.vue';
-import Pagenation from '../components/Pagenation.vue';
+import Notification from '../components/homepage/Notification.vue';
+import ProfileList from '../components/homepage/ProfileList.vue';
+import Board from '../components/homepage/Board.vue';
+import Montage from '../components/homepage/Montage.vue';
 </script>
 
-<style>
-@media (min-width: 1024px) {
-  .profile {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
+<style></style>

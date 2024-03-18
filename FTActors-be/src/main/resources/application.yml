@@ -2,34 +2,47 @@
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-
         url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
         username: ${DB_USERNAME}
         password: ${DB_PASSWORD}
+
+    jpa:
+        hibernate:
+            ddl-auto: create
+        properties:
+            hibernate:
+                format_sql: true
+                jdbc:
+                    time_zone:Asia/Seoul
+        show-sql: true
 
     hikari:
         maximum-pool-size:180
         minimum-idle:10
 
+    servlet:
+        multipart:
+            max-file-size: 50MB
+            max-request-size: 50MB
+
+    flyway:
+        enabled: true
+        baseline-on-migrate: true
+
+cloud:
+    aws:
+        s3:
+            bucket: ${S3_BUCKET_NAME}
+        credentials:
+            access-key: ${S3_ACCESS_KEY}
+            secret-key: ${S3_SECRET_KEY}
+        region:
+            static: ap-northeast-2
+            auto: false
+        stack:
+            auto: false
+
+
 server:
     servlet:
         context-path: /api
-
-#    hikari:
-#        maximum-pool-size:180
-#        minimum-idle:10
-
-#    jpa:
-#        hibernate:
-#            ddl-auto:create
-#        properties:
-#            hibernate:
-#                format_sql:true
-#                jdbc:
-#                    time_zone:Asia/Seoul
-#        show-sql:true
-#
-#    servlet:
-#        multipart:
-#            max-file-size:10MB
-#            max-request-size:10MB
