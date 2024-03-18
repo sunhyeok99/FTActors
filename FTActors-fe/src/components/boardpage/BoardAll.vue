@@ -6,6 +6,9 @@
         <button class="like-btn" :class="{ liked: board.isLiked }" @click.stop="toggleLike(index)">
           <img v-if="board.isLiked" src="@/assets/icons/like-filled.png" alt="Liked">
           <img v-else src="@/assets/icons/like-outline.png" alt="Like">
+          <!-- <div v-if="board.isLiked"><i class="bi bi-star-fill"></i></div>
+          <div v-else><i class="bi bi-star"></i></div> -->
+         
         </button>
         <div class="card-body">
           <h5 class="card-title"><b>{{ board.title }}</b></h5>
