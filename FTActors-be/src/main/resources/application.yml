@@ -33,6 +33,12 @@ spring:
         enabled: true
         baseline-on-migrate: true
 
+    rabbitmq:
+        username: guest     # default ID
+        password: guest     # default PW
+        host: localhost     # default host
+        port: 5672          # default port
+
 cloud:
     aws:
         s3:
