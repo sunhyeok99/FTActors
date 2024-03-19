@@ -8,7 +8,7 @@ spring:
 
     jpa:
         hibernate:
-            ddl-auto: create
+            ddl-auto: none
         properties:
             hibernate:
                 format_sql: true
@@ -19,6 +19,10 @@ spring:
     hikari:
         maximum-pool-size:180
         minimum-idle:10
+    devtools:
+        livereload:
+            enabled: true
+
 
     servlet:
         multipart:
@@ -45,6 +49,7 @@ cloud:
             auto: false
         stack:
             auto: false
+
 
 
 server:

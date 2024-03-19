@@ -1,11 +1,19 @@
 package com.a602.actors.domain.profile.service;
 
-import com.a602.actors.domain.profile.dto.Profile;
+import com.a602.actors.domain.profile.dto.ProfileDto;
+import com.a602.actors.domain.profile.dto.ProfileRequest;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 
 public interface ProfileService {
-    List<Profile> getProfileList();
+    List<ProfileDto> getProfileList(int sorting, Character condition, HttpSession session);
 
-    Profile getProfile(Long memberId);
+    ProfileDto getProfile(Long profileId, HttpSession session);
+
+    String canRemoveProfile(Long profileId, HttpSession session);
+
+    String createProfile(ProfileRequest profileRequest, HttpSession session);
+
+    String updateProfile(Long profileId, ProfileRequest profileRequest, HttpSession session);
 }

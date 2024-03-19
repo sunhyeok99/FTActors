@@ -1,4 +1,4 @@
-package com.a602.actors.config;
+package com.a602.actors.global.common.config;
 
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
