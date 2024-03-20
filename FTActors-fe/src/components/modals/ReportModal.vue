@@ -17,7 +17,7 @@
                   <option value="2">감독의 권한을 남용함</option>
                   <option value="3">사용 목적에 맞지 않는 사용자</option>
                 </select>
-                <label for="floatingSelect">Works with selects</label>
+                <label for="floatingSelect">선택</label>
               </div>
               <div class="form-floating">
                 <textarea class="form-control" placeholder="신고 내용" id="floatingTextarea2" style="height: 100px"></textarea>

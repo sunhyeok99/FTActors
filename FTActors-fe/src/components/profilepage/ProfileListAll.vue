@@ -68,7 +68,6 @@ const goToProfileDetail = (profileId) => {
   router.push({ name: 'profileDetail', params: { id: profileId } });
 };
 
-// `toggleLike` 함수 수정: 특정 인덱스의 좋아요 상태를 토글
 const toggleLike = (index) => {
   profiles[index].isLiked = !profiles[index].isLiked;
 };

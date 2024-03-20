@@ -107,7 +107,6 @@ const router = createRouter({
       component: ProfileDetail,
       props: true,
     },
-
     {
       path: "/profilecreate",
       name: "profileCreate",
