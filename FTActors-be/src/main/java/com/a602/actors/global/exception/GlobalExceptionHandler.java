@@ -16,10 +16,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleRecruitmentException(RecruitmentException e) {
         return makeResponseFormat(e.getExceptionCode());
     }
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ErrorResponse> handleException(Exception e) {
-//        return makeResponseFormat(ExceptionCodeSet.INTERNAL_SERVER_ERROR);
-//    }
+
 
     private ResponseEntity<ErrorResponse> makeResponseFormat(ExceptionCodeSet exceptionCode) {
         return ResponseEntity.status(exceptionCode.getHttpStatus())

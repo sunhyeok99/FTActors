@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RecruitmentRespository extends JpaRepository<Recruitment, Long> {
+public interface RecruitmentRepository extends JpaRepository<Recruitment, Long> {
 
     @Query("SELECT r FROM Recruitment r "+
             " WHERE r.member.id = :memberId")
