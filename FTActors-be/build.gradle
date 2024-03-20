@@ -83,6 +83,9 @@ dependencies {
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
+	// 엘라스틱 서치
+	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+
 }
 
 // QueryDsl 빌드 옵션 (선택)
