@@ -29,8 +29,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	//Json
+	implementation 'org.json:json:20210307'
+	//레디스
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	// Oauth2
-	implementation 'org.springframework.security:spring-security-oauth2-jose'
+	// implementation 'org.springframework.security:spring-security-oauth2-jose'
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 

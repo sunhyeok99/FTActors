@@ -34,17 +34,18 @@ drop table IF EXISTS member;
 -- Member 테이블 생성
 CREATE TABLE `member` (
                           `id` bigint NOT NULL AUTO_INCREMENT,
-                          `login_id` varchar(100) NOT NULL,
-                          `password` varchar(100) NOT NULL,
+                          `login_id` varchar(100) NULL,
                           `email` varchar(100) NULL,
                           `phone` varchar(100) NULL,
-                          `birth` varchar(100) NOT NULL,
-                          `gender` char(1) NOT NULL,
+                          `birth` varchar(100) NULL,
+                          `gender` char(1) NULL,
                           `profile_image` varchar(100) NULL,
                           `stage_name` varchar(100) NULL,
                           `created_at` timestamp NOT NULL DEFAULT current_timestamp,
-                          `updated_at` timestamp NOT NULL DEFAULT current_timestamp,
-                          `kakao_refresh_token` varchar(100) NULL,
+                          `updated_at` timestamp NULL DEFAULT current_timestamp,
+                          `kakao_id` varchar(250) NULL,
+                          `name` varchar(100) NULL,
+                          `oauth_type` varchar(100) NULL,
                           PRIMARY KEY (`id`)
 );
 
