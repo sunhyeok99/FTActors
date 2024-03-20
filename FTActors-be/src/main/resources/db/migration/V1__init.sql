@@ -1,7 +1,7 @@
 
 drop table IF EXISTS alarm;
 
-drop table IF EXISTS application;
+drop table IF EXISTS apply;
 
 drop table IF EXISTS blacklist;
 
@@ -57,8 +57,8 @@ CREATE TABLE `recruitment` (
                                `member_id` bigint NOT NULL,
                                `category` varchar(10) NOT NULL,
                                `image` varchar(100) NULL,
-                               `start_date` varchar(10) NOT NULL,
-                               `end_date` varchar(10) NOT NULL,
+                               `start_date` varchar(20) NOT NULL,
+                               `end_date` varchar(20) NOT NULL,
                                `created_at` timestamp NULL DEFAULT current_timestamp,
                                `updated_at` timestamp NULL DEFAULT current_timestamp,
                                `private_recruitment` varchar(1) NULL DEFAULT 'F',
@@ -104,7 +104,7 @@ CREATE TABLE `follow` (
 );
 
 -- Application 테이블 생성
-CREATE TABLE `application` (
+CREATE TABLE `apply` (
                                `id` bigint NOT NULL AUTO_INCREMENT,
                                `recruitment_id` bigint NOT NULL,
                                `member_id` bigint NOT NULL,
@@ -113,8 +113,8 @@ CREATE TABLE `application` (
                                `created_at` timestamp NOT NULL DEFAULT current_timestamp,
                                `updated_at` timestamp NOT NULL DEFAULT current_timestamp,
                                PRIMARY KEY (`id`),
-                               CONSTRAINT `FK_Recruitment_TO_Application_1` FOREIGN KEY (`recruitment_id`) REFERENCES `recruitment` (`id`),
-                               CONSTRAINT `FK_Member_TO_Application_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
+                               CONSTRAINT `FK_Recruitment_TO_Apply_1` FOREIGN KEY (`recruitment_id`) REFERENCES `recruitment` (`id`),
+                               CONSTRAINT `FK_Member_TO_Apply_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
 );
 
 

@@ -1,13 +1,17 @@
 package com.a602.actors.domain.recruitment.service;
 
+import com.a602.actors.domain.apply.entity.Apply;
 import com.a602.actors.domain.apply.repository.ApplyRepository;
+import com.a602.actors.domain.apply.service.ApplyService;
 import com.a602.actors.domain.member.repository.MemberRepository;
 import com.a602.actors.domain.recruitment.dto.RecruitmentListResponseDto;
 import com.a602.actors.domain.recruitment.dto.RecruitmentRequestDto;
 import com.a602.actors.domain.recruitment.dto.RecruitmentResponseDto;
 import com.a602.actors.domain.recruitment.entity.Recruitment;
-import com.a602.actors.domain.recruitment.repository.RecruitmentRespository;
+import com.a602.actors.domain.recruitment.repository.RecruitmentRepository;
 import com.a602.actors.domain.recruitment.repository.WishlistRepository;
+import com.a602.actors.global.common.config.FileUtil;
+import com.a602.actors.global.common.enums.FolderType;
 import com.a602.actors.global.exception.ExceptionCodeSet;
 import com.a602.actors.global.exception.MemberException;
 import com.a602.actors.global.exception.RecruitmentException;
@@ -15,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,33 +28,39 @@ import java.util.stream.Collectors;
 @Service
 public class RecruitmentServiceImpl implements RecruitmentService {
 
-    private final RecruitmentRespository recruitmentRespository;
+    private final RecruitmentRepository recruitmentRepository;
     private final ApplyRepository applyRepository;
+    private final ApplyService applyService;
     private final MemberRepository memberRepository;
     private final WishlistRepository wishlistRepository;
     private final WishlistService wishlistService;
 
     @Override
     @Transactional
-    public void register(RecruitmentRequestDto recruitmentRequestDto) {
+    public void register(RecruitmentRequestDto recruitmentRequestDto) throws IOException {
+        String imageUrl = FileUtil.uploadFile(recruitmentRequestDto.getImage(), FolderType.RECRUIT_PATH);
+
         Recruitment recruitment = Recruitment.builder()
                 .title(recruitmentRequestDto.getTitle())
                 .content(recruitmentRequestDto.getContent())
                 .member(memberRepository.findById(recruitmentRequestDto.getPostMemberId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)))
                 .category(recruitmentRequestDto.getCategory())
-                .image(recruitmentRequestDto.getImage())
+                .image(imageUrl)
                 .startDate(recruitmentRequestDto.getStartDate())
                 .endDate(recruitmentRequestDto.getEndDate())
                 .build();
-        recruitmentRespository.save(recruitment);
+            recruitmentRepository.save(recruitment);
     }
 
     @Override
     @Transactional
-    public void update(RecruitmentRequestDto recruitmentRequestDto) {
-        Recruitment recruitment = recruitmentRespository.findById(recruitmentRequestDto.getId()).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND));
+    public void update(RecruitmentRequestDto recruitmentRequestDto) throws IOException {
+        Recruitment recruitment = recruitmentRepository.findById(recruitmentRequestDto.getId()).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND));
+       // S3에서 이미지 먼저 삭제 후 다시 들어온 이미지로 교체
+        FileUtil.deleteFile(recruitment.getImage() , FolderType.RECRUIT_PATH);
+       String imageurl = FileUtil.uploadFile(recruitmentRequestDto.getImage() , FolderType.RECRUIT_PATH);
         recruitment.updateRecruitment(recruitmentRequestDto.getTitle(), recruitmentRequestDto.getContent(),
-                recruitmentRequestDto.getCategory(), recruitmentRequestDto.getImage(),
+                recruitmentRequestDto.getCategory(), imageurl,
                 recruitmentRequestDto.getStartDate(), recruitmentRequestDto.getEndDate());
         // 업데이트 완료
     }
@@ -57,7 +68,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     @Override
     @Transactional
     public void updateDate(Long recruitmentId, String endDate) {
-        Recruitment recruitment = recruitmentRespository.findById(recruitmentId).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND));
+        Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND));
         recruitment.updateEndDate(endDate);
         // 종료날자 업데이트 완료
     }
@@ -65,16 +76,27 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     @Override
     @Transactional
     // 중간테이블 먼저 삭제 후 삭제
-    public void remove(Long recruitmentId) {
-//        applyRepository.deleteAllByRecruitmentId(recruitmentId);
+    public void remove(Long recruitmentId) throws IOException {
+
+        List<Apply> applyList = applyRepository.findByRecruitmentId(recruitmentId)
+                .stream()
+                .toList();
+        // 지원 내역 + 지원 영상 S3 삭제
+        for (int i = 0; i < applyList.size(); i++) {
+            applyService.applyCancel(applyList.get(i).getRecruitment().getId(), applyList.get(i).getMember().getId());
+        }
+        // 위시리스트 삭제
         wishlistRepository.deleteByRecruitmentId(recruitmentId);
-        recruitmentRespository.deleteById(recruitmentId);
+        // 공고 삭제
+        String imageUrl = recruitmentRepository.findById(recruitmentId).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND)).getImage();
+        FileUtil.deleteFile(imageUrl , FolderType.RECRUIT_PATH);
+        recruitmentRepository.deleteById(recruitmentId);
     }
 
     @Override
     @Transactional
     public List<RecruitmentListResponseDto> getList(Long memberId) {
-        List<Recruitment> recruitments = recruitmentRespository.findAll();
+        List<Recruitment> recruitments = recruitmentRepository.findAll();
         List<RecruitmentListResponseDto> recruitmentListResponseDtos = recruitments.stream()
                 .map(recruitment -> RecruitmentListResponseDto.builder()
                         .id(recruitment.getId())
@@ -90,17 +112,18 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     @Override
     @Transactional
     public RecruitmentResponseDto getDetail(Long recruitmentId, Long memberId) {
-        Recruitment recruitment = recruitmentRespository.findById(recruitmentId).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND));
+        Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND));
         RecruitmentResponseDto recruitmentResponseDto = RecruitmentResponseDto.builder()
                 .id(recruitment.getId())
                 .title(recruitment.getTitle())
                 .content(recruitment.getContent())
-                .postMemberId(recruitment.getMember().getId())
+                .postMemberName(recruitment.getMember().getMemberId())
                 .category(recruitment.getCategory())
                 .image(recruitment.getImage())
                 .startDate(recruitment.getStartDate())
                 .endDate(recruitment.getEndDate())
-                .wishlist(wishlistService.detail(recruitment.getId(), memberId))
+                .wishlist(wishlistService.detail(recruitmentId, memberId))
+                .apply(applyService.existApply(recruitmentId , memberId))
                 .build();
         return recruitmentResponseDto;
     }
@@ -108,7 +131,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     @Override
     @Transactional
     public List<RecruitmentListResponseDto> registerList(Long memberId) {
-        List<Recruitment> recruitments = recruitmentRespository.findByMemberId(memberId);
+        List<Recruitment> recruitments = recruitmentRepository.findByMemberId(memberId);
         List<RecruitmentListResponseDto> recruitmentListResponseDtos = recruitments.stream()
                 .map(recruitment -> RecruitmentListResponseDto.builder()
                         .id(recruitment.getId())

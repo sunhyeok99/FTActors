@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor
 @Getter
@@ -14,7 +15,7 @@ public class RecruitmentRequestDto {
     private String content;
     private Long postMemberId;
     private String category;
-    private String image;
+    private MultipartFile image;
     private String startDate;
     private String endDate;
     private Long memberId;
@@ -26,7 +27,7 @@ public class RecruitmentRequestDto {
             String content,
             Long postMemberId,
             String category,
-            String image,
+            MultipartFile image,
             String startDate,
             String endDate,
             Long memberId
@@ -47,7 +48,7 @@ public class RecruitmentRequestDto {
             String content,
             Long postMemberId,
             String category,
-            String image,
+            MultipartFile image,
             String startDate,
             String endDate,
             Long memberId
