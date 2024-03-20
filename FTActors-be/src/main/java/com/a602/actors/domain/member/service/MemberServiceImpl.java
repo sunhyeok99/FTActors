@@ -11,18 +11,18 @@ import org.springframework.stereotype.Service;
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberPlusRepository;
 
-    public void register(MemberPlusDTO memberDTO){
-        Member newMember = Member.builder()
-                .memberId(memberDTO.getMemberId())
-                .password(memberDTO.getPassword())
-                .email(memberDTO.getEmail())
-                .phone(memberDTO.getPhone())
-                .build();
-        memberPlusRepository.save(newMember);
-    }
+//    public void register(MemberPlusDTO memberDTO){
+//        Member newMember = Member.builder()
+//                .memberId(memberDTO.getMemberId())
+//                .password(memberDTO.getPassword())
+//                .email(memberDTO.getEmail())
+//                .phone(memberDTO.getPhone())
+//                .build();
+//        memberPlusRepository.save(newMember);
+//    }
 
-    public boolean login(MemberPlusDTO memberPlusDto){
-        Member member = memberPlusRepository.findByMemberId(memberPlusDto.getMemberId());
-        return member != null && member.getPassword().equals(memberPlusDto.getPassword());
-    }
+//    public boolean login(MemberPlusDTO memberPlusDto){
+//        Member member = memberPlusRepository.findByMemberId(memberPlusDto.getMemberId());
+//        return member != null && member.getPassword().equals(memberPlusDto.getPassword());
+//    }
 }

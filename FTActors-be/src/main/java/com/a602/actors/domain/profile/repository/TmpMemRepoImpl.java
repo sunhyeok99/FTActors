@@ -14,12 +14,12 @@ public class TmpMemRepoImpl {
     private final JPAQueryFactory jpaQueryFactory;
 
 
-    public Member findByLoginId(String nowLoginId) {
+    public Member findByLoginId(Long nowLoginId) {
         QMember member = QMember.member;
 
         return jpaQueryFactory
                 .selectFrom(member)
-                .where(member.memberId.eq(nowLoginId))
+                .where(member.id.eq(nowLoginId))
                 .fetchOne();
     }
 }

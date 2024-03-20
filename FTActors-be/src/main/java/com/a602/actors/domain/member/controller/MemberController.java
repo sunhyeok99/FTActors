@@ -15,29 +15,29 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
     private final MemberService memberService;
 
-    @PostMapping("/register")
-    public String registerMember(@RequestBody MemberPlusDTO memberDTO){
-        memberService.register(memberDTO);
-        return "User registered successfully";
-    }
-
-    @PostMapping("/login")
-    public String loginMember(@RequestBody MemberPlusDTO memberDTO, HttpSession session){
-        if(memberService.login(memberDTO)){
-            session.setAttribute("memberName", memberDTO.getMemberId());
-            return "Login Success";
-        }
-        else{
-            return "Login Failed";
-        }
-    }
-
-    @PostMapping("logout")
-    public String logoutMember(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-        return "Logout successful";
-    }
+//    @PostMapping("/register")
+//    public String registerMember(@RequestBody MemberPlusDTO memberDTO){
+//        memberService.register(memberDTO);
+//        return "User registered successfully";
+//    }
+//
+//    @PostMapping("/login")
+//    public String loginMember(@RequestBody MemberPlusDTO memberDTO, HttpSession session){
+//        if(memberService.login(memberDTO)){
+//            session.setAttribute("memberName", memberDTO.getMemberId());
+//            return "Login Success";
+//        }
+//        else{
+//            return "Login Failed";
+//        }
+//    }
+//
+//    @PostMapping("logout")
+//    public String logoutMember(HttpServletRequest request, HttpServletResponse response) {
+//        HttpSession session = request.getSession(false);
+//        if (session != null) {
+//            session.invalidate();
+//        }
+//        return "Logout successful";
+//    }
 }

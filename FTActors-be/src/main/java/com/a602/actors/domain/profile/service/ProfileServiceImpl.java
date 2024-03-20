@@ -28,7 +28,7 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     public List<ProfileDto> getProfileList(int sorting, Character condition, HttpSession session) {
-        String nowLoginId = (String) session.getAttribute("memberName");
+        Long nowLoginId = (Long) session.getAttribute("memberName");
         List<Profile> profiles = null;
         Long loginnedId = (long) -1;
 
@@ -46,7 +46,7 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     public ProfileDto getProfile(Long profileId, HttpSession session) {
-        String nowLoginId = (String) session.getAttribute("memberName");
+        Long nowLoginId = (Long) session.getAttribute("memberName");
         Long loginnedId = (long) -1;
 
         //로그인 여부 확인 후, 로그인이 되어 있으면
@@ -63,7 +63,7 @@ public class ProfileServiceImpl implements ProfileService{
     }
     @Override
     public String createProfile(ProfileRequest profileRequest, HttpSession session) {
-        String nowLoginId = (String) session.getAttribute("memberName");
+        Long nowLoginId = (Long) session.getAttribute("memberName");
 
 //        //로그인이 안 되어 있으면x
 //        if(nowLoginId == null) {
@@ -110,7 +110,7 @@ public class ProfileServiceImpl implements ProfileService{
 //            return 403;
 //        }
         //로그인 멤버와 지금 멤버가 다르면x (추후 구현)
-        if( !profile.getMember().getMemberId().equals(nowLoginId) ) {
+        if( !profile.getMember().getId().equals(nowLoginId) ) {
             log.info("삭제불가 - 다른 사람이다!!");
 //            return "";
         }
@@ -121,7 +121,7 @@ public class ProfileServiceImpl implements ProfileService{
     }
     @Override
     public String updateProfile(Long profileId, ProfileRequest profileRequest, HttpSession session) {
-        String nowLoginId = (String) session.getAttribute("memberName");
+        Long nowLoginId = (Long) session.getAttribute("memberName");
         Profile profile = profileCustomRepository.findProfileById(profileId);
         Member loginMember = tmpMemRepo.findByLoginId(nowLoginId); //멤버 쪽에서...
 
@@ -137,7 +137,7 @@ public class ProfileServiceImpl implements ProfileService{
 //            return 404;
         }
         //본인 게 아니면x
-        if(!profile.getMember().getMemberId().equals(nowLoginId)) {
+        if(!profile.getMember().getId().equals(nowLoginId)) {
             log.info("수정불가 - 너 거 아니잖아!");
 //            return 403;
         }

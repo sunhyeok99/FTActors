@@ -5,16 +5,20 @@ import lombok.Data;
 
 @Data
 public class MemberPlusDTO {
-    private String memberId;
-    private String password;
     private String email;
     private String phone;
+    private String birth;
+    private String gender;
+    private String profileImage;
+    private String stageName;
 
     @Builder
-    public MemberPlusDTO(String memberId, String password, String email, String phone){
-        this.memberId = memberId;
-        this.password = password;
+    public MemberPlusDTO(String email, String phone, String birth, String gender, String profileImage, String stageName){
         this.email = email;
         this.phone = phone;
+        this.birth = birth;
+        this.gender = gender;
+        this.profileImage = profileImage;
+        this.stageName = stageName;
     }
 }
