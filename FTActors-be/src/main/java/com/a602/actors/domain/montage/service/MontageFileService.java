@@ -26,7 +26,7 @@ public class MontageFileService {
         this.montageRepository = montageRepository;
     }
     public List<MontageDto.Montages> getAllMontageList(){
-        return montageRepository.getAllMontages().stream().map(MontageDto.Montages::toDto).toList();
+        return montageRepository.getAllMontages();
     }
 
 //    public List<MontageDto.MontageInfo> getMyMontage(Integer memberId){

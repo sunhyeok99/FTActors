@@ -2,7 +2,11 @@ package com.a602.actors.domain.montage.repository;
 
 import com.a602.actors.domain.member.Member;
 import com.a602.actors.domain.montage.dto.MontageCommentDto;
+import com.a602.actors.domain.montage.dto.MontageDto;
+import com.a602.actors.domain.montage.dto.QMontageDto_Montages;
 import com.a602.actors.domain.montage.entity.*;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -25,12 +29,24 @@ public class MontageRepositoryImpl implements MontageRepository {
 
     // 몽타주 개발
     @Override
-    public List<Montage> getAllMontages() {
+    public List<MontageDto.Montages> getAllMontages() {
         QMontage montage = QMontage.montage;
+        QLikeCount likeCount = QLikeCount.likeCount;
+        
+        // montage에 따라 likeCount 생성
 
         return queryFactory
-                .selectFrom(montage)
-                .fetch();
+                        .select(new QMontageDto_Montages(
+                                montage.title,
+                                montage.link,
+                                Expressions.as(
+                                    JPAExpressions.
+                                            select(likeCount.count())
+                                            .from(likeCount)
+                                            .where(likeCount.montage.id.eq(montage.id)), "likeCount")
+                                ))
+                        .from(montage)
+                    .fetch();
     }
 
     @Override

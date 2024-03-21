@@ -1,6 +1,7 @@
 package com.a602.actors.domain.montage.dto;
 
 import com.a602.actors.domain.montage.entity.Montage;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +12,17 @@ public class MontageDto {
     @Builder
     @Getter
     @Setter
-    @RequiredArgsConstructor
     public static class Montages{
         private final String title;
         private final String link;
-        private final Integer likeCount;
+        private final Long likeCount;
+
+        @QueryProjection
+        public Montages(String title, String link, Long likeCount){
+            this.title = title;
+            this.link = link;
+            this.likeCount = likeCount;
+        }
 
         public static MontageDto.Montages toDto(Montage montage){
             return Montages.builder()
