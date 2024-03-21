@@ -56,7 +56,7 @@ public class RecruitmentController {
     @GetMapping("detail")
     public ApiResponse<RecruitmentResponseDto> getDetail(@RequestParam Long recruitmentId, @RequestParam Long memberId) {
         return new ApiResponse<>(HttpStatus.OK.value(), "공고 내용을 불러왔습니다.", recruitmentService.getDetail(recruitmentId, memberId));
-    }
+    }   
 
     @GetMapping("postList")
     public ApiResponse<List<RecruitmentListResponseDto>> getPostList(@RequestParam Long postMemberId) {
