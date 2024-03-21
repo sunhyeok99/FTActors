@@ -32,13 +32,15 @@ public class ApplyServiceImpl implements ApplyService {
     @Override
     @Transactional
     public void apply(ApplyDto applyDto) throws IOException {
-        String url = FileUtil.uploadFile(applyDto.getVideoFile(), FolderType.APPLY_Path);
+        String savedName = FileUtil.makeFileName(applyDto.getVideoFile().getOriginalFilename());
+        String url = FileUtil.uploadFile(applyDto.getVideoFile(), savedName, FolderType.APPLY_Path);
 
         Apply apply = Apply.builder()
                 .recruitment(recruitmentRepository.findById(applyDto.getRecruitmentId()).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND)))
                 .member(memberRepository.findById(applyDto.getMemberId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)))
                 .content(applyDto.getContent())
                 .videoLink(url)
+                .savedName(savedName)
                 .build();
         applyRepository.save(apply);
     }

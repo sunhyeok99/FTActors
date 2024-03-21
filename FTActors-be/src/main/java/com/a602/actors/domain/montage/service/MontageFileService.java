@@ -37,10 +37,12 @@ public class MontageFileService {
     public String uploadFile(MultipartFile multipartFile) throws IOException {
         String originalFilename = multipartFile.getOriginalFilename();
 
-        String url = FileUtil.uploadFile(multipartFile, FolderType.MONTAGE_PATH);
+        String savedName = FileUtil.makeFileName(originalFilename);
+
+        String url = FileUtil.uploadFile(multipartFile, savedName, FolderType.MONTAGE_PATH);
         System.out.println("URL : " + url);
 
-        montageRepository.saveMontage(originalFilename, url);
+        montageRepository.saveMontage(originalFilename, savedName, url);
         return "";
     }
 
