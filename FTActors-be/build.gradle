@@ -31,11 +31,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	//Json
 	implementation 'org.json:json:20210307'
-	//레디스
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	// Oauth2
-	// implementation 'org.springframework.security:spring-security-oauth2-jose'
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -68,11 +63,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
 
-	// aws
-	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.638'
-	implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 
 	// queryDSL
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
@@ -83,8 +74,6 @@ dependencies {
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-	// 엘라스틱 서치
-	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 
 }
 
