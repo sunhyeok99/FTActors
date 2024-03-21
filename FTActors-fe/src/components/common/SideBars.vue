@@ -18,6 +18,8 @@
             </div>
             <div class="col-10 mb-1 small">{{ chat.message }}</div>
           </a>
+
+          
         </div>
       </div>
       <!-- 선택된 채팅 표시 -->
