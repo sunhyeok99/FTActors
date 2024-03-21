@@ -9,7 +9,7 @@
           <rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
         </svg>
 
-        <h2>배우 소희</h2>
+        <h2>배우 배사람</h2>
         <p> 보기</p>
         <p><a class="btn btn-secondary" href="#" @click="goToActorProfile">보기</a></p>
       </div>
@@ -21,7 +21,7 @@
           <rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
         </svg>
 
-        <h2>감독 소희</h2>
+        <h2>감독 배사람</h2>
         <p>
           보기
         </p>
@@ -35,7 +35,7 @@
           <rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
         </svg>
 
-        <h2>감독 소희</h2>
+        <h2>감독 배사람</h2>
         <p>
           프로필이 존재하지 않습니다
         </p>
@@ -50,7 +50,7 @@
           <rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
         </svg>
 
-        <h2>배우 소희</h2>
+        <h2>배우 배사람</h2>
         <p>
           프로필이 존재하지 않습니다 </p>
 
