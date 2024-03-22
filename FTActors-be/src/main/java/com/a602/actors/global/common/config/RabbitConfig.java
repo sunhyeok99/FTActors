@@ -12,9 +12,11 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @EnableRabbit
+@Slf4j
 public class RabbitConfig {
 	private static final String CHAT_QUEUE_NAME = "chat.queue";
 	private static final String CHAT_EXCHANGE_NAME = "chat.exchange";
@@ -23,21 +25,26 @@ public class RabbitConfig {
 	// Queue 등록
 	@Bean
 	public Queue queue(){
-		return new Queue(CHAT_QUEUE_NAME, true);
+		log.info("queue 등록 !!");
+		// return new Queue(CHAT_QUEUE_NAME, true);
+		return new Queue(CHAT_QUEUE_NAME);
 	}
 
 	// Exchange 등록
 	@Bean
 	public TopicExchange exchange(){
+		log.info("exchange 등록 !!");
 		return new TopicExchange(CHAT_EXCHANGE_NAME);
 	}
 
 	// Exchange와 Queue 바인딩
 	@Bean
-	public Binding binding(Queue queue, TopicExchange exchange){
+	// public Binding binding(Queue queue, TopicExchange exchange){
+	public Binding binding(){
+		log.info("binding 등록 !!");
 		return BindingBuilder
-			.bind(queue)
-			.to(exchange)
+			.bind(queue())
+			.to(exchange())
 			.with(ROUTING_KEY);
 	}
 
@@ -46,19 +53,26 @@ public class RabbitConfig {
 	public RabbitTemplate rabbitTemplate(){
 		RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
 		rabbitTemplate.setMessageConverter(jsonMessageConverter());
-
+		log.info("rabbitTemplate 등록 !!");
 		return rabbitTemplate;
 	}
 
 	// RabbitMQ와의 연결을 관리하는 클래스
 	@Bean
 	public ConnectionFactory connectionFactory(){
+		log.info("connectionFactory 등록 !!");
 		CachingConnectionFactory factory = new CachingConnectionFactory();
-		factory.setUsername("guest");
-		factory.setPassword("guest");
 		factory.setHost("localhost");
 		factory.setPort(5672);
+		// factory.setPort(58153);
 		factory.setVirtualHost("/");	// ?? 이게 뭘까
+		factory.setUsername("guest");
+		factory.setPassword("guest");
+
+		log.info("host : {}", factory.getHost());
+		log.info("port : {}", factory.getPort());
+		log.info("virtual host : {}", factory.getVirtualHost());
+		log.info("username : {}", factory.getUsername());
 
 		return factory;
 	}

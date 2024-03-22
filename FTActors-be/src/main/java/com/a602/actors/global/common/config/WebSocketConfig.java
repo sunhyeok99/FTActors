@@ -19,6 +19,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		registry.enableStompBrokerRelay("/queue", "/topic", "/exchange", "/amq/queue");
 	}
 
+	// 웹소켓 핸드셰이크 커넥션을 생성할 경로
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry){
 		registry.addEndpoint("/ws-stomp").setAllowedOrigins("*");

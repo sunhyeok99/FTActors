@@ -5,14 +5,14 @@ import lombok.Data;
 
 @Data
 public class MemberDTO {
-    private String memberId;
+    private String loginId;
     private String password;
     private String email;
     private String phone;
 
     @Builder
-    public MemberDTO(String memberId, String password, String email, String phone){
-        this.memberId = memberId;
+    public MemberDTO(String loginId, String password, String email, String phone){
+        this.loginId = loginId;
         this.password = password;
         this.email = email;
         this.phone = phone;

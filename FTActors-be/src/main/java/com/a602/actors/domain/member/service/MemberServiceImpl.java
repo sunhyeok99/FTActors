@@ -1,11 +1,12 @@
 package com.a602.actors.domain.member.service;
 
+import org.springframework.stereotype.Service;
+
 import com.a602.actors.domain.member.Member;
 import com.a602.actors.domain.member.dto.MemberDTO;
 import com.a602.actors.domain.member.repository.MemberRepository;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -14,7 +15,7 @@ public class MemberServiceImpl implements MemberService{
 
     public void register(MemberDTO memberDTO){
         Member newMember = Member.builder()
-                .memberId(memberDTO.getMemberId())
+                .memberId(memberDTO.getLoginId())
                 .password(memberDTO.getPassword())
                 .email(memberDTO.getEmail())
                 .phone(memberDTO.getPhone())
@@ -23,7 +24,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     public boolean login(MemberDTO memberDto){
-        Member member = memberRepository.findByMemberId(memberDto.getMemberId());
+        Member member = memberRepository.findByMemberId(memberDto.getLoginId());
         return member != null && member.getPassword().equals(memberDto.getPassword());
     }
 }

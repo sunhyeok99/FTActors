@@ -1,14 +1,16 @@
 package com.a602.actors.domain.member.controller;
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.a602.actors.domain.member.dto.MemberDTO;
 import com.a602.actors.domain.member.service.MemberService;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +26,7 @@ public class MemberController {
     @PostMapping("/login")
     public String loginMember(@RequestBody MemberDTO memberDTO, HttpSession session){
         if(memberService.login(memberDTO)){
-            session.setAttribute("memberName", memberDTO.getMemberId());
+            session.setAttribute("memberName", memberDTO.getLoginId());
             return "Login Success";
         }
         else{
