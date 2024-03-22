@@ -1,18 +1,16 @@
 <template>
   <div class="row row-cols-1 row-cols-md-4 g-4">
-    <div class="col" v-for="(board, index) in boards" :key="index">
+    <div class="col" v-for="board in boards" :key="board.id">
       <div class="card" id="board" @click="goToBoardDetail(board.id)">
-        <img src="@/assets/board/b3.jpg" alt="">
+        <img :src= "board.image" alt="">
         <button class="like-btn" :class="{ liked: board.isLiked }" @click.stop="toggleLike(index)">
-          <img v-if="board.isLiked" src="@/assets/icons/like-filled.png" alt="Liked">
-          <img v-else src="@/assets/icons/like-outline.png" alt="Like">
-          <!-- <div v-if="board.isLiked"><i class="bi bi-star-fill"></i></div>
-          <div v-else><i class="bi bi-star"></i></div> -->
-         
+          <img v-if="board.wishList" src="@/assets/icons/like-filled.png" alt="Liked">
+          <img v-else src="@/assets/icons/like-outline.png" alt="Like">         
         </button>
         <div class="card-body">
           <h5 class="card-title"><b>{{ board.title }}</b></h5>
-          <p class="card-text">{{ board.deadline }}</p>
+          <p class="card-text">{{ board.content }}</p>
+          <p class="card-text">종료일자: {{ board.endDate }}</p>
         </div>
       </div>
     </div>
@@ -20,18 +18,31 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
-import { useRouter } from 'vue-router'
+import { ref, reactive, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+import { recruitmentApi } from '@/util/axios';
 
 const router = useRouter();
-const boards = reactive([
-  { id: 1, title: "웹드라마 '씨타입' 채널에서 배우님을 모십니다", image: "@/assets/board/b1.jpg", deadline: "D-9 / 2024-03-15 마감", isLiked: false },
-  { id: 2, title: "웹드라마 '씨타입' 채널에서 배우님을 모십니다", image: "@/assets/board/b1.jpg", deadline: "D-9 / 2024-03-15 마감", isLiked: false },
-  { id: 3, title: "웹드라마 '씨타입' 채널에서 배우님을 모십니다", image: "@/assets/board/b1.jpg", deadline: "D-9 / 2024-03-15 마감", isLiked: false },
-  { id: 4, title: "웹드라마 '씨타입' 채널에서 배우님을 모십니다", image: "@/assets/board/b1.jpg", deadline: "D-9 / 2024-03-15 마감", isLiked: false },
+const boards = ref([]);
 
-  // 이하 생략
-]);
+// getList 함수 정의: 백엔드로부터 공고 리스트를 받아오는 함수
+const getList = async (memberId) => {
+  try {
+    await recruitmentApi.getList(1).then((res) => {
+      boards.value = res.data.data;
+    })   
+  } catch (error) {
+    console.error('Error fetching recruitment list:', error);
+  }
+};
+
+// 페이지가 로드될 때 getList 함수 호출
+onMounted(() => {
+  getList(1); // memberId는 적절한 값으로 대체되어야 합니다.
+});
+
+
 
 const goToBoardDetail = (boardId) => {
   router.push({ name: 'boardDetail', params: { id: boardId } });
