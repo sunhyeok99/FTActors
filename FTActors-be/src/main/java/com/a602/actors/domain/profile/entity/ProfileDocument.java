@@ -40,7 +40,7 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     public static ProfileDocument from (Profile profile) {
         return ProfileDocument.builder()
                 .id(profile.getId())
-                .stageName(profile.getMember().getMemberId()) //나중에 stage_name으로 바꾸기
+                .stageName(profile.getMember().getName()) //나중에 stage_name으로 바꾸기
                 .content(profile.getContent())
                 .privatePost(profile.getPrivatePost())
                 .createdTime(profile.getCreatedAt())

@@ -56,7 +56,7 @@ public class RecruitmentDocument { //엘라스틱 서치 디비 내부에 저장
                 .id(recruitment.getId())
                 .title(recruitment.getTitle())
                 .content(recruitment.getContent())
-                .memberId(recruitment.getMember().getMemberId()) //아이디? 예명??
+                .memberId(recruitment.getMember().getName()) //아이디? 예명??
                 .category(recruitment.getCategory())
                 .createdTime(recruitment.getCreatedAt())
                 .updatedTime(recruitment.getUpdatedAt())

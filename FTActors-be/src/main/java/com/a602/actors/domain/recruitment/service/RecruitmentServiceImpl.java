@@ -117,7 +117,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
                 .id(recruitment.getId())
                 .title(recruitment.getTitle())
                 .content(recruitment.getContent())
-                .postMemberName(recruitment.getMember().getMemberId())
+                .postMemberName(recruitment.getMember().getName())
                 .category(recruitment.getCategory())
                 .image(recruitment.getImage())
                 .startDate(recruitment.getStartDate())
