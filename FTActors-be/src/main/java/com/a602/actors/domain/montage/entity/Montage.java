@@ -22,15 +22,19 @@ public class Montage extends BaseEntity {
     private String title;
     private String link;
 
+    @Column(name="saved_name")
+    private String savedName;
+
     public Montage() {
 
     }
 
 
-    public Montage(Member member, String title, String link){
+    public Montage(Member member, String title, String link, String savedName){
         this.member = member;
         this.title = title;
         this.link = link;
+        this.savedName = savedName;
     }
 
 //    public Montage toEntity(MontageDto.Montages montage){

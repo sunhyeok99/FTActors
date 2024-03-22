@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Component
 @Slf4j
@@ -31,15 +32,20 @@ public class FileUtil {
     }
 
     // S3 링크 반환
-    public static String uploadFile(MultipartFile multipartFile, FolderType folderType) throws IOException {
-        String originalFilename = multipartFile.getOriginalFilename();
+
+    public static String makeFileName(String fileName){
+
+        UUID uuid = UUID.randomUUID();
+        return uuid.toString() + "_" + fileName;
+    }
+    public static String uploadFile(MultipartFile multipartFile, String savedName, FolderType folderType) throws IOException {
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(multipartFile.getSize());
         metadata.setContentType(multipartFile.getContentType());
 
-        amazonS3.putObject(bucket, folderType.getPath() + originalFilename, multipartFile.getInputStream(), metadata);
-        String url = amazonS3.getUrl(bucket, folderType.getPath() + originalFilename).toString();
+        amazonS3.putObject(bucket, folderType.getPath() + savedName, multipartFile.getInputStream(), metadata);
+        String url = amazonS3.getUrl(bucket, folderType.getPath() + savedName).toString();
 
         return url;
     }

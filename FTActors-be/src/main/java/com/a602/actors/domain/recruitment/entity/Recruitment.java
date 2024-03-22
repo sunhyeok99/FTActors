@@ -29,9 +29,13 @@ public class Recruitment extends BaseEntity {
 
     private String image;
 
+    @Column(name="saved_name")
+    private String savedName;
+
     private String startDate;
 
     private String endDate;
+
 
     @Builder
     public Recruitment(
@@ -41,23 +45,26 @@ public class Recruitment extends BaseEntity {
             String category,
             String image,
             String startDate,
-            String endDate
+            String endDate,
+            String savedName
     ) {
         this.title = title;
         this.content = content;
         this.member = member;
         this.category = category;
         this.image = image;
+        this.savedName = savedName;
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
     // 변경할 인자는제목과 내용 변경 가능하게
-    public void updateRecruitment(String title, String content, String category, String image, String startDate, String endDate ) {
+    public void updateRecruitment(String title, String content, String category, String image, String savedName, String startDate, String endDate) {
         this.title = title;
         this.content = content;
         this.category = category;
         this.image = image;
+        this.savedName = savedName;
         this.startDate = startDate;
         this.endDate = endDate;
     }
