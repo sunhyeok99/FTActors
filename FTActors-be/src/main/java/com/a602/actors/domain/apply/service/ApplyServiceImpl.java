@@ -33,7 +33,7 @@ public class ApplyServiceImpl implements ApplyService {
     @Transactional
     public void apply(ApplyDto applyDto) throws IOException {
         String savedName = FileUtil.makeFileName(applyDto.getVideoFile().getOriginalFilename());
-        String url = FileUtil.uploadFile(applyDto.getVideoFile(), savedName, FolderType.APPLY_Path);
+        String url = FileUtil.uploadFile(applyDto.getVideoFile(), savedName, FolderType.APPLY_PATH);
 
         Apply apply = Apply.builder()
                 .recruitment(recruitmentRepository.findById(applyDto.getRecruitmentId()).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND)))
@@ -53,7 +53,7 @@ public class ApplyServiceImpl implements ApplyService {
         // 지원을 취소하기 전에 S3에서 파일을 삭제합니다.
         String videoLink = apply.getVideoLink();
         if (videoLink != null) {
-            FileUtil.deleteFile(videoLink, FolderType.APPLY_Path);
+            FileUtil.deleteFile(videoLink, FolderType.APPLY_PATH);
         }
 
         // 지원 취소를 처리합니다.
