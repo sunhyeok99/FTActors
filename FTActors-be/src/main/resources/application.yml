@@ -57,3 +57,10 @@ cloud:
 server:
     servlet:
         context-path: /api
+
+rabbit:
+    queue-name: ${QUEUE_NAME}
+    exchange-name: ${EXCHAGE_NAME}
+    routing-key: ${ROUTING_KEY}
+    user_name: ${MQ_USER_NAME}
+    password: ${MQ_PASSWORD}
