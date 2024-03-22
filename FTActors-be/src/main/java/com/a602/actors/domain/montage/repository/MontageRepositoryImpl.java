@@ -50,15 +50,36 @@ public class MontageRepositoryImpl implements MontageRepository {
     }
 
     @Override
+    public List<Montage> getMyMontages(Long memberId) {
+        QMontage montage = QMontage.montage;
+
+        return queryFactory
+                .selectFrom(montage)
+                .where(montage.member.id.eq(memberId))
+                .fetch();
+    }
+
+    @Override
+    public Montage getMontage(Long montageId) {
+        QMontage montage = QMontage.montage;
+
+        return queryFactory
+                .selectFrom(montage)
+                .where(montage.id.eq(montageId))
+                .fetchOne();
+    }
+
+    @Override
     @Transactional
-    public void saveMontage(String title, String url){
+    public void saveMontage(String originalName, String savedName, String url){
         Integer memberId = 1; // 추후 JWT 완성되면 고치겠습니다.
 
         Member member = entityManager.getReference(Member.class, memberId);
         Montage montage =
                 Montage.builder()
                 .member(member)
-                .title(title)
+                .title(originalName)
+                        .savedName(savedName)
                 .link(url)
                 .build();
 
@@ -103,12 +124,21 @@ public class MontageRepositoryImpl implements MontageRepository {
 
             entityManager.persist(newLikeCount);
         }
-
         return true;
     }
 
-
     // Comment 개발
+
+    @Override
+    @Transactional
+    public void deleteMontage(Long montageId) {
+        QMontage montage = QMontage.montage;
+
+        queryFactory
+                .delete(montage)
+                .where(montage.id.eq(montageId))
+                .execute();
+    }
 
     public List<Comment> findCommentAndReplies(Long montageId){
         // 별칭을 따로 줘야한다~
@@ -126,6 +156,7 @@ public class MontageRepositoryImpl implements MontageRepository {
 
     @Override
     @Transactional
+
     public void saveComment(MontageCommentDto.CreateRequest req) {
         // FIX : memberId의 경우 토큰 개발 후 코드에서 가져오는 것으로 로직 변경 수행
         Member member = entityManager.getReference(Member.class, 1);
@@ -175,8 +206,5 @@ public class MontageRepositoryImpl implements MontageRepository {
                     .where(comment.id.eq(commentId).and(comment.montage.id.eq(montageId)))
                     .execute();
         }
-
     }
-
-
 }

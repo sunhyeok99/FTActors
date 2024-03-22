@@ -29,19 +29,21 @@ public class MontageFileService {
         return montageRepository.getAllMontages();
     }
 
-//    public List<MontageDto.MontageInfo> getMyMontage(Integer memberId){
-//        //return montageRepository.findByMemberId(memberId).stream().map(MontageDto.MontageInfo::toDto).toList();
-//        return null;
-//    }
+    public List<MontageDto.Montages> getMyMontage(Long memberId){
+        return montageRepository.getMyMontages(memberId).stream().map(MontageDto.Montages::toDto).toList();
+    }
 
 
     public String uploadFile(MultipartFile multipartFile) throws IOException {
         String originalFilename = multipartFile.getOriginalFilename();
 
-        String url = FileUtil.uploadFile(multipartFile, FolderType.MONTAGE_PATH);
+        String savedName = FileUtil.makeFileName(originalFilename);
+
+        String url = FileUtil.uploadFile(multipartFile, savedName, FolderType.MONTAGE_PATH);
         System.out.println("URL : " + url);
 
-        montageRepository.saveMontage(originalFilename, url);
+        montageRepository.saveMontage(originalFilename, savedName, url);
+
         return "";
     }
 
@@ -50,5 +52,13 @@ public class MontageFileService {
         return montageRepository.addLike(montageId, memberId);
     }
 
+    public String deleteFile(Long montageId) throws IOException {
 
+        Montage montage = montageRepository.getMontage(montageId);
+        FileUtil.deleteFile(montage.getTitle(), FolderType.MONTAGE_PATH);
+
+        montageRepository.deleteMontage(montageId);
+
+        return "";
+    }
 }

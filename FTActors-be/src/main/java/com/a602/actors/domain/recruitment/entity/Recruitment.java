@@ -16,32 +16,26 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "recruitment")
 public class Recruitment extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "recruitment_id")
-    private Long id;
 
-    @Column(name = "recruitment_title")
     private String title;
 
-    @Column(name = "recruitment_content")
     private String content;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "member_id")
-//    private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "id", name = "member_id")
+    private Member member;
 
-    @Column(name = "recruitment_category")
     private String category;
 
-    @Column(name = "recruitment_image")
     private String image;
 
-    @Column(name = "recruitment_start_date")
+    @Column(name="saved_name")
+    private String savedName;
+
     private String startDate;
 
-    @Column(name = "recruitment_end_date")
     private String endDate;
+
 
     @Builder
     public Recruitment(
@@ -51,22 +45,28 @@ public class Recruitment extends BaseEntity {
             String category,
             String image,
             String startDate,
-            String endDate
+            String endDate,
+            String savedName
     ) {
         this.title = title;
         this.content = content;
-        //this.member = member;
+        this.member = member;
         this.category = category;
         this.image = image;
+        this.savedName = savedName;
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
     // 변경할 인자는제목과 내용 변경 가능하게
-    public void updateRecruitment(String title, String content, String image) {
+    public void updateRecruitment(String title, String content, String category, String image, String savedName, String startDate, String endDate) {
         this.title = title;
         this.content = content;
+        this.category = category;
         this.image = image;
+        this.savedName = savedName;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
     // 마감일자 변경
     public void updateEndDate(String endDate){

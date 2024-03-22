@@ -11,9 +11,11 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "chat_room")
 public class ChatRoom extends BaseEntity {
@@ -25,5 +27,9 @@ public class ChatRoom extends BaseEntity {
 
 	public ChatRoom(String title){
 		this.title = title;
+	}
+
+	public ChatRoom(Long id) {
+		this.setId(id);
 	}
 }

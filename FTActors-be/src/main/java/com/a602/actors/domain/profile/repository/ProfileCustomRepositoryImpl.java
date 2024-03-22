@@ -9,6 +9,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
+@Transactional
 @Slf4j
 public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;

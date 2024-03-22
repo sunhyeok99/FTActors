@@ -2,6 +2,7 @@ package com.a602.actors.global.common.config;
 
 import com.a602.actors.domain.montage.entity.Montage;
 import com.a602.actors.global.common.enums.FolderType;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Component
 @Slf4j
@@ -30,17 +32,36 @@ public class FileUtil {
     }
 
     // S3 링크 반환
-    public static String uploadFile(MultipartFile multipartFile, FolderType folderType) throws IOException {
-        String originalFilename = multipartFile.getOriginalFilename();
+
+    public static String makeFileName(String fileName){
+
+        UUID uuid = UUID.randomUUID();
+        return uuid.toString() + "_" + fileName;
+    }
+    public static String uploadFile(MultipartFile multipartFile, String savedName, FolderType folderType) throws IOException {
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(multipartFile.getSize());
         metadata.setContentType(multipartFile.getContentType());
 
-        amazonS3.putObject(bucket, folderType.getPath() + originalFilename, multipartFile.getInputStream(), metadata);
-        String url = amazonS3.getUrl(bucket, folderType.getPath() + originalFilename).toString();
+        amazonS3.putObject(bucket, folderType.getPath() + savedName, multipartFile.getInputStream(), metadata);
+        String url = amazonS3.getUrl(bucket, folderType.getPath() + savedName).toString();
 
         return url;
+    }
+
+    public static String deleteFile(String fileName, FolderType folderType) throws IOException{
+
+        try{
+            // 삭제할 게 없으면 에러가 안 뜨네?
+            amazonS3.deleteObject(bucket, folderType.getPath() + fileName);
+        }
+        catch (SdkClientException e){
+            log.info("ERROR -- path : {} , message : {}", folderType.getPath() + fileName, e.getMessage());
+            throw new IOException("ERROR deleting file from S3", e);
+        }
+
+        return "";
     }
 
 }
