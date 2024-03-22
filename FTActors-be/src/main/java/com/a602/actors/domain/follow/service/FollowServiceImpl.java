@@ -51,7 +51,7 @@ public class FollowServiceImpl implements FollowService{
                 .map(follow -> FollowDto.builder()
                         .followingId(followingId)
                         .followerId(follow.getFollowId().getFollowerId())
-                        .memberName(memberRepository.findById(follow.getFollowId().getFollowerId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)).getMemberId())
+                        .memberName(memberRepository.findById(follow.getFollowId().getFollowerId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)).getName())
                         .follow(1)
                         .build())
                 .collect(Collectors.toList());
@@ -68,7 +68,7 @@ public class FollowServiceImpl implements FollowService{
                 .map(follow -> FollowDto.builder()
                         .followingId(follow.getFollowId().getFollowingId())
                         .followerId(followerId)
-                        .memberName(memberRepository.findById(follow.getFollowId().getFollowingId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)).getMemberId())
+                        .memberName(memberRepository.findById(follow.getFollowId().getFollowingId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)).getName())
                         .follow(followDetail(followerId,follow.getFollowId().getFollowingId()))
                         .build())
                 .collect(Collectors.toList());
