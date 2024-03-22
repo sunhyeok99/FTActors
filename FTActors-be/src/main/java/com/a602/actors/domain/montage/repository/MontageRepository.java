@@ -12,7 +12,7 @@ public interface MontageRepository {
     List<Montage> getAllMontages();
     List<Montage> getMyMontages(Long memberId);
     Montage getMontage(Long montageId);
-    void saveMontage(String title, String url);
+    void saveMontage(String originalName, String saveName, String url);
     void deleteMontage(Long montageId);
 
 

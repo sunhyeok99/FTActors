@@ -58,12 +58,14 @@ public class MontageController {
     @GetMapping("/{montageId}/comment")
     public ApiResponse<List<MontageCommentDto.Response>> getAllComments(@PathVariable("montageId") Long montageId){
         //return null;
+        log.info("GET COMMENT LIST ENTER");
         return new ApiResponse<>(HttpStatus.OK.value(), "모든 댓글을 불러왔습니다.", montageCommentService.getAllComments(montageId));
     }
 
     @PostMapping("/{montageId}/comment")
     public ApiResponse<String> writeComment(@RequestBody MontageCommentDto.CreateRequest req){
         //return null;
+        log.info("ENTER");
         return new ApiResponse<>(HttpStatus.CREATED.value(), "댓글을 작성했습니다.", montageCommentService.writeComment(req));
     }
 

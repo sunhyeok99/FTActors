@@ -30,7 +30,7 @@ public class ProfileMapper {
         ProfileDto.ProfileDtoBuilder profileDto = ProfileDto.builder();
 
         profileDto.id( profile.getId() );
-        profileDto.memberId( profile.getMember().getMemberId() );
+        profileDto.memberId( profile.getMember().getId());
         profileDto.content( profile.getContent() );
         profileDto.type( profile.getType() );
         profileDto.portfolio( profile.getPortfolio() );
