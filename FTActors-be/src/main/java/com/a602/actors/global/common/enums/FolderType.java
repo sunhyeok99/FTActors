@@ -5,7 +5,10 @@ public enum FolderType{
     MONTAGE_PATH("montages/"),
     PORTFOLIO_PATH("portfolios/"),
     PROFILE_PATH("profiles/"),
-    REPORT_PATH("reports/");
+    REPORT_PATH("reports/"),
+    RECRUIT_PATH("recruits/"),
+
+    APPLY_Path("applies/");
     private final String folderPath;
 
     FolderType(String folderPath){
@@ -15,5 +18,6 @@ public enum FolderType{
     public String getPath(){
         return folderPath;
     }
+
 
 }

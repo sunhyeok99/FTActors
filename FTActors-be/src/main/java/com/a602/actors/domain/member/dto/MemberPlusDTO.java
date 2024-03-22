@@ -2,6 +2,7 @@ package com.a602.actors.domain.member.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class MemberPlusDTO {

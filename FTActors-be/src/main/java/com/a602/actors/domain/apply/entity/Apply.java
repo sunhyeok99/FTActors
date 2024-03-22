@@ -40,5 +40,4 @@ public class Apply extends BaseEntity {
     this.videoLink = videoLink;
     this.content = content;
     }
-
 }

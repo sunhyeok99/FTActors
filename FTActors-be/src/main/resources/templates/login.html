@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .btn {
+            width: 150px;
+            height: 50px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .btn-google {
+            background-color: gray;
+            color: white;
+        }
+        .btn-naver {
+            background-color: green;
+            color: white;
+        }
+        .btn-kakao {
+            background-color: yellow;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<div class="center">
+    <a class="btn btn-kakao" th:href="@{/oauth2/authorization/kakao}">Kakao Login</a>
+</div>
+</body>
+</html>

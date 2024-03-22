@@ -10,34 +10,37 @@ public class RecruitmentResponseDto {
     private Long id;
     private String title;
     private String content;
-    private Long postMemberId;
+    private String postMemberName;
     private String category;
     private String image;
     private String startDate;
     private String endDate;
     private int wishlist;
+    private int apply;
 
     @Builder
     public RecruitmentResponseDto(
             Long id,
             String title,
             String content,
-            Long postMemberId,
+            String postMemberName,
             String category,
             String image,
             String startDate,
             String endDate,
-            int wishlist
+            int wishlist,
+            int apply
     ) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.postMemberId = postMemberId;
+        this.postMemberName = postMemberName;
         this.category = category;
         this.image = image;
         this.startDate = startDate;
         this.endDate = endDate;
         this.wishlist = wishlist;
+        this.apply = apply;
     }
 
 }
