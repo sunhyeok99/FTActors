@@ -33,6 +33,8 @@ public class Recruitment extends BaseEntity {
 
     private String endDate;
 
+    private String privateRecruitment;
+
     @Builder
     public Recruitment(
             String title,
@@ -64,5 +66,10 @@ public class Recruitment extends BaseEntity {
     // 마감일자 변경
     public void updateEndDate(String endDate){
         this.endDate = endDate;
+    }
+
+    // 마감된 공고 처리
+    public void updatePrivate(){
+        this.privateRecruitment = "T";
     }
 }

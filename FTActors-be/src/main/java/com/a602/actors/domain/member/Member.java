@@ -15,16 +15,16 @@ public class Member extends BaseEntity {
     @Column(name = "login_id")
     private String memberId;
 
-    private String password;
+//    private String password;
 
     private String email;
 
     private String phone;
 
     @Builder
-    public Member(String memberId, String password, String email, String phone){
+    public Member(String memberId, String email, String phone){
         this.memberId = memberId;
-        this.password = password;
+//        this.password = password;
         this.email = email;
         this.phone = phone;
 

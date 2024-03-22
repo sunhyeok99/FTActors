@@ -44,9 +44,3 @@ cloud:
             auto: false
         stack:
             auto: false
-
-
-
-server:
-    servlet:
-#        context-path: /api

@@ -4,6 +4,7 @@ import com.a602.actors.domain.apply.entity.Apply;
 import com.a602.actors.domain.apply.repository.ApplyRepository;
 import com.a602.actors.domain.apply.service.ApplyService;
 import com.a602.actors.domain.member.repository.MemberRepository;
+import com.a602.actors.domain.recruitment.crawling.Crawling;
 import com.a602.actors.domain.recruitment.dto.RecruitmentListResponseDto;
 import com.a602.actors.domain.recruitment.dto.RecruitmentRequestDto;
 import com.a602.actors.domain.recruitment.dto.RecruitmentResponseDto;
@@ -16,10 +17,12 @@ import com.a602.actors.global.exception.ExceptionCodeSet;
 import com.a602.actors.global.exception.MemberException;
 import com.a602.actors.global.exception.RecruitmentException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,8 +60,11 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     public void update(RecruitmentRequestDto recruitmentRequestDto) throws IOException {
         Recruitment recruitment = recruitmentRepository.findById(recruitmentRequestDto.getId()).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND));
        // S3에서 이미지 먼저 삭제 후 다시 들어온 이미지로 교체
+        String imageurl = recruitment.getImage();
+        if(recruitmentRequestDto.getImage() != null){
         FileUtil.deleteFile(recruitment.getImage() , FolderType.RECRUIT_PATH);
-       String imageurl = FileUtil.uploadFile(recruitmentRequestDto.getImage() , FolderType.RECRUIT_PATH);
+        imageurl = FileUtil.uploadFile(recruitmentRequestDto.getImage() , FolderType.RECRUIT_PATH);
+        }
         recruitment.updateRecruitment(recruitmentRequestDto.getTitle(), recruitmentRequestDto.getContent(),
                 recruitmentRequestDto.getCategory(), imageurl,
                 recruitmentRequestDto.getStartDate(), recruitmentRequestDto.getEndDate());
@@ -72,6 +78,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         recruitment.updateEndDate(endDate);
         // 종료날자 업데이트 완료
     }
+
 
     @Override
     @Transactional
@@ -96,7 +103,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     @Override
     @Transactional
     public List<RecruitmentListResponseDto> getList(Long memberId) {
-        List<Recruitment> recruitments = recruitmentRepository.findAll();
+        List<Recruitment> recruitments = recruitmentRepository.findAllRecruitment();
         List<RecruitmentListResponseDto> recruitmentListResponseDtos = recruitments.stream()
                 .map(recruitment -> RecruitmentListResponseDto.builder()
                         .id(recruitment.getId())
@@ -104,6 +111,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
                         .image(recruitment.getImage())
                         .endDate(recruitment.getEndDate())
                         .wishlist(wishlistService.detail(recruitment.getId(), memberId))
+                        .privateRecruitment(recruitment.getPrivateRecruitment())
                         .build())
                 .collect(Collectors.toList());
         return recruitmentListResponseDtos;
@@ -118,12 +126,14 @@ public class RecruitmentServiceImpl implements RecruitmentService {
                 .title(recruitment.getTitle())
                 .content(recruitment.getContent())
                 .postMemberName(recruitment.getMember().getMemberId())
+                .postMemberId(recruitment.getMember().getId())
                 .category(recruitment.getCategory())
                 .image(recruitment.getImage())
                 .startDate(recruitment.getStartDate())
                 .endDate(recruitment.getEndDate())
                 .wishlist(wishlistService.detail(recruitmentId, memberId))
                 .apply(applyService.existApply(recruitmentId , memberId))
+                .privateRecruitment(recruitment.getPrivateRecruitment())
                 .build();
         return recruitmentResponseDto;
     }
@@ -131,6 +141,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     @Override
     @Transactional
     public List<RecruitmentListResponseDto> registerList(Long memberId) {
+        // 여기서는 마감된 공고도 같이 긁어옴
         List<Recruitment> recruitments = recruitmentRepository.findByMemberId(memberId);
         List<RecruitmentListResponseDto> recruitmentListResponseDtos = recruitments.stream()
                 .map(recruitment -> RecruitmentListResponseDto.builder()
@@ -139,9 +150,25 @@ public class RecruitmentServiceImpl implements RecruitmentService {
                         .image(recruitment.getImage())
                         .endDate(recruitment.getEndDate())
                         .wishlist(wishlistService.detail(recruitment.getId(), memberId))
+                        .privateRecruitment(recruitment.getPrivateRecruitment())
                         .build())
                 .collect(Collectors.toList());
         return recruitmentListResponseDtos;
+    }
+    // 마감일자 지난 리스트 불러 다 T로 바꿈
+    @Override
+    @Scheduled(cron = "0 0 0 * * *") // 초 분 시 일 월 요일
+    @Transactional
+    public void scheduleExpiredRecruitment() {
+        LocalDate currentTime = LocalDate.now();
+        String currentDate = currentTime.toString();
+        List<Recruitment> list = recruitmentRepository.findByActivatedRecruitment(currentDate);
+        for (Recruitment recruitment : list) {
+            System.out.println(recruitment.getTitle());
+            recruitment.updatePrivate();
+        }
+        Crawling crawling = new Crawling();
+        List<Recruitment> recruitmentList = crawling.getRecruitmentDatas();
     }
 
 }

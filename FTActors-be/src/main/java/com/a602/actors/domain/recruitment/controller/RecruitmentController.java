@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RequestMapping("/recruitment")
+@RequestMapping("/api/recruitment")
 @RestController
 public class RecruitmentController {
 
@@ -56,7 +56,7 @@ public class RecruitmentController {
     @GetMapping("detail")
     public ApiResponse<RecruitmentResponseDto> getDetail(@RequestParam Long recruitmentId, @RequestParam Long memberId) {
         return new ApiResponse<>(HttpStatus.OK.value(), "공고 내용을 불러왔습니다.", recruitmentService.getDetail(recruitmentId, memberId));
-    }   
+    }
 
     @GetMapping("postList")
     public ApiResponse<List<RecruitmentListResponseDto>> getPostList(@RequestParam Long postMemberId) {
@@ -103,5 +103,13 @@ public class RecruitmentController {
     @GetMapping("applyList")
     public ApiResponse<List<ApplyDto>> applyList(@RequestParam Long recruitmentId){
         return new ApiResponse<>(HttpStatus.OK.value(), "해당 공고 지원 리스트를 불러왔습니다", applyService.applyList(recruitmentId));
+    }
+
+
+    // 임시
+    @GetMapping("tmp")
+    public ApiResponse<String> tmp(){
+        recruitmentService.scheduleExpiredRecruitment();
+        return new ApiResponse<>(HttpStatus.OK.value(), "불러왔습니다", "");
     }
 }
