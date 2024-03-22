@@ -65,7 +65,7 @@ const toggleLike = () => {
 const selectedComment = ref(null);
 const comments = ref([
   {
-    memberId: 1,
+    memberId: "catisaw99",
     commentId: 1,
     content: '잘 부탁드립니다.',
     isDeleted: false,
@@ -90,7 +90,7 @@ const comments = ref([
     ]
   },
   {
-    memberId: 1,
+    memberId: "catisaw99",
     commentId: 4,
     content: '감사합니다.',
     isDeleted: false,

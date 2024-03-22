@@ -7,7 +7,6 @@
       <div class="profilelist">
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><label><b>이름</b></label>배사람 </li>
-            
           <div class="accordion" id="accordionPanelsStayOpenExample">
             <div class="accordion-item">
               <h2 class="accordion-header">
@@ -18,8 +17,8 @@
               <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
                 <div class="accordion-body">
                   <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
-                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+                    <input type="text" class="form-control" placeholder="전화번호 수정" aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">수정</button>
                   </div>
                 </div>
               </div>
@@ -40,34 +39,36 @@
     </div>
     <div class="detailprofilepage">
       <h4><b>자기소개</b></h4>
-      <p>안녕하세요 배우 안기영입니다 :)
-        항상 맡은 바 책임을 다하는 배우가 되겠습니다.
-  
-        이름 : 안기영
-        나이 : 27세 (1996.12.08)
-        신장 : 180cm / 65kg
-        학력 : 서울예대 연기전공 졸업
-        특기 : 액션, 춤, 악기연주(기타/플룻), 노래
-        연락처 : 01076777064 / gi0miso@naver.com /
-        https://www.instagram.com/hug.0a/
-  
-        연기영상 : https://youtu.be/R0tEXCYsBt4
-        https://youtu.be/R0tEXCYsBt4</p>
-  
-      <h4><b>학력</b></h4>
-      <p>서울예술대학교 연기전공</p>
+      <div class="form-floating">
+        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" v-model="introduction"></textarea>
+        <label for="floatingTextarea2">Comments</label>
+      </div>
+     
+
       <h4><b>경력</b></h4>
-      <p></p>
+      <div class="form-floating">
+        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+        <label for="floatingTextarea">Comments</label>
+      </div>
       <h4><b>추가 이미지</b></h4>
-      <p></p>
+      <div class="input-group">
+        <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+        <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">업로드</button>
+      </div>
       <h4><b>연기영상</b></h4>
-      <p></p>
+      <div class="input-group">
+        <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+        <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">업로드</button>
+      </div>
     </div>
   
   
   </template>
   <script setup>
+    import { ref } from 'vue'
   import { useRouter } from 'vue-router'
+  const introduction = ref('안녕하세요 배우 안기영입니다 :) 항상 맡은 바 책임을 다하는 배우가 되겠습니다.')
+  const school = ref('한예종')
   
   </script>
   <style scoped>

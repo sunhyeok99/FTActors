@@ -18,4 +18,3 @@ import MontageSearchBar from '@/components/montagepage/MontageSearchBar.vue';
   </script>
   <style>
   </style>
-  ../components/searchbars/MontageSearchBar.vue../components/montagepage/MontageSearchBar.vue../components/common/Pagenation.vue
