@@ -58,10 +58,11 @@ const goToNextMontage = () => {
   width: 100%; /* 비디오 너비를 캐러셀 항목의 너비에 맞춤 */
   height: 100%; /* 비디오 높이를 캐러셀 항목의 높이에 맞춤 */
   object-fit: cover; /* 비디오가 콘테이너를 꽉 채우도록 조정 */
+  object-position: center; /* 비디오의 중심을 캐러셀의 중심에 맞춤 */
 }
 
 .carousel-inner {
   width: 100%; /* 캐러셀 내부의 너비를 지정 */
-  height: 530px; /* 캐러셀의 높이를 지정, 필요에 따라 조정 */
+  height: 100%; /* 캐러셀의 높이를 지정, 필요에 따라 조정 */
 }
 </style>

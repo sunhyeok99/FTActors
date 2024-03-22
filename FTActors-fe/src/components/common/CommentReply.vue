@@ -145,7 +145,7 @@ function selectComment(comment) {
 }
 
 .accordion-button {
-  margin: 1rem;
+  width: 25%;
 }
 
 .like-btn {
@@ -164,8 +164,4 @@ function selectComment(comment) {
   width: 100%;
 }
 
-
-.accordion-button {
-  justify-content: right;
-}
 </style>
