@@ -1,6 +1,7 @@
 package com.a602.actors.domain.montage.repository;
 
 import com.a602.actors.domain.member.Member;
+import com.a602.actors.domain.member.QMember;
 import com.a602.actors.domain.montage.dto.MontageCommentDto;
 import com.a602.actors.domain.montage.dto.MontageDto;
 import com.a602.actors.domain.montage.dto.QMontageDto_Montages;
@@ -34,7 +35,7 @@ public class MontageRepositoryImpl implements MontageRepository {
         QLikeCount likeCount = QLikeCount.likeCount;
         
         // montage에 따라 likeCount 생성
-
+        
         return queryFactory
                         .select(new QMontageDto_Montages(
                                 montage.title,
@@ -44,8 +45,10 @@ public class MontageRepositoryImpl implements MontageRepository {
                                             select(likeCount.count())
                                             .from(likeCount)
                                             .where(likeCount.montage.id.eq(montage.id)), "likeCount")
-                                ))
+                                , montage.createdAt, montage.updatedAt)
+                                )
                         .from(montage)
+                    // 설정된 데이터를 가지고 JPQL 생성 및 실행하는 메소드
                     .fetch();
     }
 
@@ -207,4 +210,24 @@ public class MontageRepositoryImpl implements MontageRepository {
                     .execute();
         }
     }
+
+    @Override
+    public void addReport(Long reporterId, Long reporteeId, String reason, String link) {
+
+        QMember member = QMember.member;
+
+        Member reporter = entityManager.getReference(Member.class, reporterId);
+        Member reportee = entityManager.getReference(Member.class, reporteeId);
+
+        Report report =
+                Report.builder()
+                        .reporter(reporter)
+                        .reportee(reportee)
+                        .reason(reason)
+                        .link(link)
+                        .build();
+
+        entityManager.persist(report);
+    }
+
 }

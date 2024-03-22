@@ -30,7 +30,6 @@ public class FileUtil {
     public FileUtil(AmazonS3 amazonS3){
         FileUtil.amazonS3 = amazonS3;
     }
-
     // S3 링크 반환
 
     public static String makeFileName(String fileName){
@@ -38,8 +37,9 @@ public class FileUtil {
         UUID uuid = UUID.randomUUID();
         return uuid.toString() + "_" + fileName;
     }
-    public static String uploadFile(MultipartFile multipartFile, String savedName, FolderType folderType) throws IOException {
 
+    // S3 링크 반환
+    public static String uploadFile(MultipartFile multipartFile, String savedName, FolderType folderType) throws IOException {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(multipartFile.getSize());
         metadata.setContentType(multipartFile.getContentType());

@@ -1,8 +1,11 @@
 package com.a602.actors.domain.montage.service;
 
 
+import com.a602.actors.domain.member.repository.MemberRepository;
 import com.a602.actors.domain.montage.dto.MontageDto;
+import com.a602.actors.domain.montage.dto.MontageReportDto;
 import com.a602.actors.domain.montage.entity.Montage;
+import com.a602.actors.domain.montage.entity.Report;
 import com.a602.actors.domain.montage.repository.MontageRepository;
 
 import com.a602.actors.global.common.config.FileUtil;
@@ -11,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,12 +56,26 @@ public class MontageFileService {
         return montageRepository.addLike(montageId, memberId);
     }
 
-    public String deleteFile(Long montageId) throws IOException {
+    public String report(MontageReportDto.CreateRequest req,
+                         MultipartFile file,
+                         Long montageId) throws IOException {
+        //
+        //if(file.isEmpty()) throw new ReportException();
+        Long reporterId = 1L;
+        //MemberRepository.findByNickname();
+        String savedName = FileUtil.makeFileName(file.getOriginalFilename());
+        String url = FileUtil.uploadFile(req.getReportImage(), savedName, FolderType.REPORT_PATH);
 
-        Montage montage = montageRepository.getMontage(montageId);
-        FileUtil.deleteFile(montage.getTitle(), FolderType.MONTAGE_PATH);
+        montageRepository.addReport(req.getReporteeId(), 1L, req.getReason(), url);
 
-        montageRepository.deleteMontage(montageId);
+        return "";
+    }
+
+        public String deleteFile(Long montageId) throws IOException {
+            Montage montage = montageRepository.getMontage(montageId);
+            FileUtil.deleteFile(montage.getTitle(), FolderType.MONTAGE_PATH);
+
+            montageRepository.deleteMontage(montageId);
 
         return "";
     }

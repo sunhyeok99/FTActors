@@ -2,6 +2,7 @@ package com.a602.actors.domain.montage.controller;
 
 import com.a602.actors.domain.montage.dto.MontageCommentDto;
 import com.a602.actors.domain.montage.dto.MontageDto;
+import com.a602.actors.domain.montage.dto.MontageReportDto;
 import com.a602.actors.domain.montage.service.MontageCommentService;
 import com.a602.actors.domain.montage.service.MontageFileService;
 import com.a602.actors.global.common.dto.ApiResponse;
@@ -89,4 +90,13 @@ public class MontageController {
         else
             return new ApiResponse<>(HttpStatus.OK.value(), "좋아요를 해제했습니다.", "");
     }
+
+    @PostMapping("/{montageId}/report")
+    public ApiResponse<String> reportMontage(@RequestPart MontageReportDto.CreateRequest req,
+                                             @RequestPart(name="file") MultipartFile file,
+                                             @PathVariable("montageId") Long montageId){
+
+        return new ApiResponse<>(HttpStatus.OK.value(), "신고를 눌렀습니다.", "");
+    }
+
 }
