@@ -1,4 +1,17 @@
 # 개발용
+
+elasticsearch:
+    host: ${ELASTICSEARCH_HOST}
+    port: ${ELASTICSEARCH_PORT}
+    username: ${ELASTICSEARCH_USERNAME}
+    password: ${ELASTICSEARCH_PASSWORD}
+
+#logging:
+#    file:
+#        name: ./logs/customer-service.log
+#logstash:
+#    host: localhost
+
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
@@ -23,7 +36,6 @@ spring:
         livereload:
             enabled: true
 
-
     servlet:
         multipart:
             max-file-size: 50MB
@@ -32,6 +44,12 @@ spring:
     flyway:
         enabled: true
         baseline-on-migrate: true
+
+    rabbitmq:
+        username: ${RABBITMQ_USERNAME}     # default ID
+        password: ${RABBITMQ_PASSWORD}     # default PW
+        host: ${RABBITMQ_HOST}     # default host
+        port: ${RABBITMQ_PORT}          # default port
 
 cloud:
     aws:
@@ -48,6 +66,6 @@ cloud:
 
 
 
-server:
-    servlet:
-        context-path: /api
+#server:
+#    servlet:
+#        context-path: /api

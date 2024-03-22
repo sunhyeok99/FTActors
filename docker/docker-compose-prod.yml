@@ -30,6 +30,15 @@ services:
     expose:
       - "3306"
 
+#  mongo:
+#    container_name: mongo
+#    hostname: mongo
+#    image: mongo
+#    networks:
+#      - backend
+#    volumes:
+#      - /home/ubuntu/volume/mongo:/data/db
+
   flask:
     container_name: flask
     hostname: flask
