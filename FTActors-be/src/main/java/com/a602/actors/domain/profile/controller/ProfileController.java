@@ -2,6 +2,7 @@ package com.a602.actors.domain.profile.controller;
 
 import com.a602.actors.domain.profile.dto.ProfileDto;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
+import com.a602.actors.domain.profile.dto.ProfileSearchResponse;
 import com.a602.actors.domain.profile.entity.ProfileDocument;
 import com.a602.actors.domain.profile.service.ProfileService;
 import com.a602.actors.global.common.dto.ApiResponse;
@@ -16,29 +17,21 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/profile")
+@RequestMapping("/api/profile")
 @Slf4j
 public class ProfileController {
     private final ProfileService profileService;
 
-    @GetMapping("/list")
-    public ApiResponse<List<ProfileDto>> getAllProfileList(@RequestParam(name = "sort") int sorting,
-                                                           @RequestParam(name = "condition") Character condition,
-                                                           HttpSession session)
+    @GetMapping("/list") //1.완성 //To do: 멤버 받아서 본인 확인 후, 비공개여부 T인 것도 리스트에 같이 받아오기
+    public ApiResponse<List<ProfileSearchResponse>> getAllProfileList(@RequestParam(name = "sort") int sorting)
     {
         log.info("배우,감독 프로필 전체 목록 - 컨트롤러");
 
-//        List<Profile> profiles = profileService.getProfileList(sorting, condition); //null 가능
-
-//        return new ResponseEntity<>(profiles, HttpStatus.OK);
-
-        //To do: 비공개여부 True인 사람은 리스트에 나오면 안 됨 => 완료
-        //To do: 로그인 한 상태라면: 공개여부가 true라도, 내 꺼는 보이게 해야 함... => 완료
-
-        return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", profileService.getProfileList(sorting, condition, session));
+        List<ProfileSearchResponse> results = profileService.searchAllProfile(sorting);
+        return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", results);
     }
 
-    @GetMapping("/detail")
+    @GetMapping("/detail") //얜 뭔데 그냥 db에서 뽑아왔지??
     public ApiResponse<ProfileDto> getDetailProfile(@RequestParam(name = "profile_id") Long profileId,
                                                         HttpSession session)
     {
@@ -48,40 +41,6 @@ public class ProfileController {
         //To do: 로그인 한 상태라면: 비공개여부가 true라도, 내 꺼는 보이게 해야 함...
 
         return new ApiResponse<>(HttpStatus.OK.value(), "해당 프로필을 불러왔습니다.", profileService.getProfile(profileId, session));
-    }
-
-    //프로필 생성
-    @PostMapping("/myprofile") //뭐져 왜 F 자동으로 안 들어가져
-    public ApiResponse<String> createProfile(@RequestBody ProfileRequest profileRequest, HttpSession session) { //파라미터 추후에 변경
-        log.info("프로필 만들기~! ");
-
-//        int result = profileService.createProfile(profileRequest, session);
-
-//        if (result == 200) return new ResponseEntity<>("프로필 생성 성공", HttpStatus.OK);
-//        else return new ResponseEntity<>("프로필 생성 실패!", HttpStatus.INTERNAL_SERVER_ERROR);
-
-        return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 생성했습니다.", profileService.createProfile(profileRequest, session));
-    }
-
-    //프로필 삭제
-    @DeleteMapping("/myprofile")
-    public ApiResponse<String> removeProfile(@RequestParam(name = "profile_id") Long profileId, HttpSession session) {
-        log.info("프로필 삭제하기!");
-
-//        int canRemove = profileService.canRemoveProfile(profileId, session);
-//        if( canRemove == 200 ) return new ResponseEntity<>("프로필 삭제 성공 "+profileId, HttpStatus.OK);
-//        else return new ResponseEntity<>("프로필 삭제 실패 "+profileId, HttpStatus.INTERNAL_SERVER_ERROR);
-
-        return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 삭제했습니다.", profileService.canRemoveProfile(profileId, session));
-    }
-
-    //프로필 수정
-    @PutMapping("/myprofile")
-    public ApiResponse<String> modifyProfile(@RequestParam(name = "profile_id") Long profileId, HttpSession session,
-                                              @RequestBody ProfileRequest profileRequest)
-    {
-        log.info("프로필 수정하기~! ");
-        return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 수정했습니다.", profileService.updateProfile(profileId, profileRequest, session));
     }
 
     //검색하는 메서드 예시... list를 그대로 써도..?
@@ -94,7 +53,55 @@ public class ProfileController {
         // 가변 인수 처리의 편의성 때문
         List<ProfileDocument> profileDocuments = profileService.searchProfileDocuments(Arrays.asList(keywordArr));
 
+        // To do: 키워드 다중 검색
+        // To do: 형태소 분석... (다 나눠서 찾기 > 가중치 > 오타 잡기 > 자동완성)
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필 검색 결과입니다.", profileDocuments);
     }
+
+//    @GetMapping("/search")
+//    public ApiResponse<List<ProfileSearchResponse>> search(@Validated @ModelAttribute ProfileSearchRequest profileSearchRequest)
+//    {
+//        log.info("도현이의 코드를 따서 만든 키워드 검색 - 엘라스틱서치");
+//        List<ProfileSearchResponse> results = profileService.search(profileSearchRequest);
+//        System.out.println(results);
+//        return new ApiResponse<>(HttpStatus.OK.value(), "프로필 키워드 검색 결과입니다.", results);
+//    }
+
+
+    /////////////////////-----------------------위에는 read, 아래는 cud
+
+    //프로필 생성
+    @PostMapping("/myprofile") //개어려워
+    public ApiResponse<String> createProfile(@RequestBody ProfileRequest profileRequest, HttpSession session) { //파라미터 추후에 변경
+        log.info("프로필 만들기~! ");
+
+        String result = profileService.createProfile(profileRequest, session);
+//        Profile newProfile = new Profile();
+//        elasticsearchOperations.save(ProfileDocument.from(newProfile));
+
+        return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 생성했습니다.", profileService.createProfile(profileRequest, session));
+    }
+
+    //프로필 삭제
+    @DeleteMapping("/myprofile")
+    public ApiResponse<String> removeProfile(@RequestParam(name = "profile_id") Long profileId) {
+        log.info("프로필 삭제하기!");
+
+        String result = "";
+//        profileService222.deleteProfile(profileId);
+        profileService.deleteProfile(profileId);
+
+        return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 삭제했습니다.", result);
+    }
+
+    //프로필 수정
+    @PutMapping("/myprofile") //개어려워
+    public ApiResponse<String> modifyProfile(@RequestParam(name = "profile_id") Long profileId, HttpSession session,
+                                              @RequestBody ProfileRequest profileRequest)
+    {
+        log.info("프로필 수정하기~! ");
+        return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 수정했습니다.", profileService.updateProfile(profileId, profileRequest, session));
+    }
+
 
 }

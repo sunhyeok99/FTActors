@@ -3,6 +3,11 @@ elasticsearch:
     host: ${ELASTICSEARCH_HOST}
     username: ${ELASTICSEARCH_USERNAME}
     password: ${ELASTICSEARCH_PASSWORD}
+logging:
+    file:
+        name: ./logs/customer-service.log
+logstash:
+    host: localhost
 
 spring:
     datasource:
@@ -34,9 +39,9 @@ spring:
             max-file-size: 50MB
             max-request-size: 50MB
 
-#    flyway: #필요할 때마다 주석 처리했다가 풀었다가 하셈
-#        enabled: true
-#        baseline-on-migrate: true
+    flyway: #필요할 때마다 주석 처리했다가 풀었다가 하셈
+        enabled: true
+        baseline-on-migrate: true
 
 cloud:
     aws:
@@ -53,6 +58,6 @@ cloud:
 
 
 
-server:
-    servlet:
-        context-path: /api
+#server:
+#    servlet:
+#        context-path: /api

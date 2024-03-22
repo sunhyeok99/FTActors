@@ -73,4 +73,6 @@ public class Profile extends BaseEntity {
 //        this.additionalImages = additionalImages;
         this.privatePost = privatePost;
     }
+
+
 }

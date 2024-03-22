@@ -8,5 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ProfileDocumentRepository extends ElasticsearchRepository<ProfileDocument, Long> {
+    List<ProfileDocument> findAll();
+
     List<ProfileDocument> findByContent(String content);
 }
