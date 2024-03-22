@@ -78,4 +78,15 @@ public class MontageController {
     public ApiResponse<String> deleteComment(@PathVariable("montageId") Long montageId, @PathVariable("commentId") Long commentId){
         return new ApiResponse<>(HttpStatus.OK.value(), "댓글을 삭제했습니다.", montageCommentService.deleteComment(montageId, commentId));
     }
+
+    @PostMapping("/{montageId}/like")
+    public ApiResponse<String> likeMontage(@PathVariable("montageId") Long montageId){
+
+        boolean result = montageFileService.pushLike(montageId);
+
+        if(result)
+            return new ApiResponse<>(HttpStatus.OK.value(), "좋아요를 눌렀습니다.", "");
+        else
+            return new ApiResponse<>(HttpStatus.OK.value(), "좋아요를 해제했습니다.", "");
+    }
 }

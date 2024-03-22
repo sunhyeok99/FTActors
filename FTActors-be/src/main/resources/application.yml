@@ -36,6 +36,7 @@ spring:
     flyway:
         enabled: true
         baseline-on-migrate: true
+
     data:
         redis:
             host: ${HOST} # Redis 서버 호스트 주소
@@ -68,7 +69,6 @@ spring:
                         user-name-attribute: id
 auth-redirect-url: ${AUTH_REDIRECT_URL}
 
-
 cloud:
     aws:
         s3:
@@ -84,6 +84,6 @@ cloud:
 
 
 
-server:
-    servlet:
+#server:
+#    servlet:
 #        context-path: /api
