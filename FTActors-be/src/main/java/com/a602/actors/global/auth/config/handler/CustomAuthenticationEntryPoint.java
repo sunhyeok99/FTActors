@@ -20,7 +20,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
-        System.out.println("엔트리ㅗㅍ인트");
         // 여기에 인증 실패 시 실행할 로직을 작성
         // 예: response.sendRedirect("/login"); 또는 에러 메시지 전송
 //        log.error("error ----- {}",authException.getMessage());

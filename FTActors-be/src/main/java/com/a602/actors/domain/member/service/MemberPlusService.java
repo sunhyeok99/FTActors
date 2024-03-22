@@ -7,6 +7,5 @@ import java.io.IOException;
 
 public interface MemberPlusService {
     void register(MemberPlusDTO memberPlusDTO, MultipartFile profileImage, String kakaoId) throws IOException;
-//    boolean login(MemberPlusDTO memberPlusDTO, );
 
 }

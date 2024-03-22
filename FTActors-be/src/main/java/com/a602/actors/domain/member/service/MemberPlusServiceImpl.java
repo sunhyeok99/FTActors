@@ -4,20 +4,16 @@ import com.a602.actors.domain.member.Member;
 import com.a602.actors.domain.member.dto.MemberPlusDTO;
 import com.a602.actors.domain.member.repository.MemberRepository;
 import com.a602.actors.global.auth.repository.KakaoMemberRepository;
-import com.a602.actors.global.auth.service.member.MemberService;
 import com.a602.actors.global.auth.service.redis.RedisService;
 import com.a602.actors.global.common.config.FileUtil;
 import com.a602.actors.global.common.enums.FolderType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -52,7 +48,6 @@ public class MemberPlusServiceImpl implements MemberPlusService {
                 existingMember.setGender(memberPlusDTO.getGender());
                 existingMember.setProfileImage(profileImageUrl);
                 existingMember.setStageName(memberPlusDTO.getStageName());
-                log.info("돼냐? 이자식아?");
                 memberPlusRepository.save(existingMember);
             } catch (IOException e) {
                 // 프로필 이미지 업로드 실패 시 예외 처리
