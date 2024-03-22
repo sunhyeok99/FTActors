@@ -39,15 +39,13 @@ public class FileUtil {
         return uuid.toString() + "_" + fileName;
     }
     public static String uploadFile(MultipartFile multipartFile, String savedName, FolderType folderType) throws IOException {
-        // 실제 이름
-        String originalFilename = multipartFile.getOriginalFilename();
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(multipartFile.getSize());
         metadata.setContentType(multipartFile.getContentType());
 
         amazonS3.putObject(bucket, folderType.getPath() + savedName, multipartFile.getInputStream(), metadata);
-        String url = amazonS3.getUrl(bucket, folderType.getPath() + originalFilename).toString();
+        String url = amazonS3.getUrl(bucket, folderType.getPath() + savedName).toString();
 
         return url;
     }

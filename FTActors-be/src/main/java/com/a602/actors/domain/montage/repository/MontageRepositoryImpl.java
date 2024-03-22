@@ -57,7 +57,7 @@ public class MontageRepositoryImpl implements MontageRepository {
 
     @Override
     @Transactional
-    public void saveMontage(String originalName, String saveName, String url){
+    public void saveMontage(String originalName, String savedName, String url){
         Integer memberId = 1; // 추후 JWT 완성되면 고치겠습니다.
 
         Member member = entityManager.getReference(Member.class, memberId);
@@ -65,7 +65,7 @@ public class MontageRepositoryImpl implements MontageRepository {
                 Montage.builder()
                 .member(member)
                 .title(originalName)
-                        .saveName(saveName)
+                        .savedName(savedName)
                 .link(url)
                 .build();
 
