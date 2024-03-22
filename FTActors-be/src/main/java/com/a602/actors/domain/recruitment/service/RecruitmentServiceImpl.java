@@ -168,7 +168,8 @@ public class RecruitmentServiceImpl implements RecruitmentService {
             recruitment.updatePrivate();
         }
         Crawling crawling = new Crawling();
-        List<Recruitment> recruitmentList = crawling.getRecruitmentDatas();
+        List<Recruitment> recruitmentList = crawling.getRecruitmentDatas(currentTime.minusDays(1));
+        recruitmentRepository.saveAll(recruitmentList);
     }
 
 }
