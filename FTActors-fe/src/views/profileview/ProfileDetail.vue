@@ -1,14 +1,6 @@
 <template>
 <div class="profileheader">
   <h1> <b>PROFILE</b></h1>
-  <!-- <div class="profiletab">
-    <p>내 프로필</p>
-    <button type="button" class="btn btn-dark" id="updatebtn" @click="goToProfileUpdate">수정하기</button>
-    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#reportModal">
-      <img src="@/assets/Siren.png" alt="">
-      <ReportModal />
-    </button>
-  </div> -->
   </div>
   <div class="profilepage">
     <img src="@/assets/actors/소희.jpg" alt="">

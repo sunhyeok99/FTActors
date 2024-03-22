@@ -14,15 +14,15 @@
             <label>비밀번호</label>
             <input type="password" class="form-control" />
           </div>
-          <div class="my-3">
+          <div class="my-3 logins">
             <button type="submit" class="btn btn-primary">로그인</button>
+            <img class="kakaologin" src="@/assets/icons/KakaoLogin.png" alt="">
+           
           </div>
         </form>
       </div>
 
       <button type="button" class="btn" @click="goToJoin">아직 회원이 아니라면?</button>
-
-
 
     </div>
   </div>
@@ -38,5 +38,12 @@ const goToJoin = () => {
 
 </script>
 <style>
+.logins{
+  display: flex;
+  justify-content: space-between;
+}
+.kakaologin{
+  cursor: pointer;
+}
 
 </style>

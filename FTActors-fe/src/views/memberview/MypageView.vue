@@ -1,13 +1,20 @@
 <template>
   <div class="mypage">
-  <div>
+  <div class="mypage-header">
     <h1><b>마이페이지</b></h1>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked @click="isChecked">
+      <label v-if= isPrivate class="form-check-label" for="flexSwitchCheckChecked">비공개 계정</label>
+      <label v-else class="form-check-label" for="flexSwitchCheckChecked">공개 계정</label>
+    </div>
   </div>
   <div class="profile">
     <div class="profilephoto"> <img src="@/assets/icons/DefaultProfile.png" alt=""></div>
     <div class="profilelist">
       <ul class="list-group list-group-flush">
-        <li class="list-group-item"><label><b>이름</b></label> 배사람 </li>
+        <li class="list-group-item"><label><b>이름</b></label> 배사람 
+          
+      </li>
         <li class="list-group-item"><label><b>닉네임</b></label>춤추는 산양 </li>
         <li class="list-group-item"><label><b>이메일</b></label> bausa@gmail.com </li>
         <li class="list-group-item"><label><b>전화번호</b></label> 010-5454-5454 </li>
@@ -67,13 +74,22 @@ import BoardTab from '@/components/tabs/BoardTab.vue';
 import MontageTab from '@/components/tabs/MontageTab.vue';
 import CompanionTab from '@/components/tabs/CompanionTab.vue';
 
+import {ref} from 'vue';
+const isPrivate = ref(false)
 
-
+const isChecked = () =>{
+  isPrivate.value = !isPrivate.value
+}
 </script>
 
 <style>
 .mypage {
   padding: 2rem;
+}
+.mypage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .profile {
   display: flex;

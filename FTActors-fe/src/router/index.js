@@ -19,6 +19,8 @@ import ProfileCreate from "@/views/profileview/ProfileCreate.vue";
 import ProfileUpdate from "@/views/profileview/ProfileUpdate.vue";
 import BlacklistView from "@/views/adminview/BlacklistView.vue";
 import ReportView from "@/views/adminview/ReportView.vue";
+import ChatDetail from "@/components/chatpage/chatdetail.vue";
+import ChatList from "@/components/chatpage/chatlist.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -108,7 +110,6 @@ const router = createRouter({
       component: ProfileDetail,
       props: true,
     },
-
     {
       path: "/profilecreate",
       name: "profileCreate",
@@ -128,6 +129,17 @@ const router = createRouter({
       path: "/report",
       name: "report",
       component: ReportView,
+    },
+    {
+      path: '/chat',
+      name: 'chatlist',
+      component: ChatList,
+    },
+    {
+      path: '/chat/:id',
+      name: 'chatdetail',
+      component: ChatDetail,
+      props: true,
     },
   ],
 });
