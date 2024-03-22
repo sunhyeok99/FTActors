@@ -39,19 +39,17 @@ const getList = async (memberId) => {
 
 // 페이지가 로드될 때 getList 함수 호출
 onMounted(() => {
-  getList(1); // memberId는 적절한 값으로 대체되어야 합니다.
+  getList(1); 
 });
-
-
 
 const goToBoardDetail = (boardId) => {
   router.push({ name: 'boardDetail', params: { id: boardId } });
 };
 
-// `toggleLike` 함수 수정: 특정 인덱스의 좋아요 상태를 토글
 const toggleLike = (index) => {
   boards[index].isLiked = !boards[index].isLiked;
 };
+
 </script>
 
 <style scoped>

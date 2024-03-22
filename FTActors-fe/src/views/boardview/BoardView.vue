@@ -5,8 +5,6 @@
   <div>
     <BoardAll />
   </div>
-  <button @click="boardCreate" class="btn-create">공고 작성</button>
-
   <div>
     <BoardCreateBar />
   </div>

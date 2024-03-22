@@ -1,4 +1,5 @@
 <template>
+
   <div class="row">
     <div class="col-md-3">
       <div>
@@ -16,8 +17,9 @@
           </div>
           <div class="my-3 logins">
             <button type="submit" class="btn btn-primary">로그인</button>
-            <img class="kakaologin" src="@/assets/icons/KakaoLogin.png" alt="">
-           
+            <div id="app" class="center">
+              <a class="btn btn-kakao" href="http://localhost:8080/oauth2/authorization/kakao">Kakao Login</a>
+          </div>
           </div>
         </form>
       </div>
@@ -34,6 +36,9 @@ import { useRouter } from 'vue-router'
 const router = useRouter();
 const goToJoin = () => {
   router.push({ name: 'join' });
+};
+const goToKakaoLogin = () => {
+  router.push({ name: 'kakaoLogin' });
 };
 
 </script>
