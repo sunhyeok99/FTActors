@@ -20,6 +20,6 @@ public interface MontageRepository {
     void updateComment(MontageCommentDto.UpdateRequest req);
     void deleteComment(Long montageId, Long commentId);
 
-    void addReport(Long reporterId, Long reporteeId, String reason, String link);
+    void addReport(Long reporteeId, Long montageId, String reason, String link);
 
 }

@@ -5,10 +5,7 @@ import com.a602.actors.domain.member.Member;
 import com.a602.actors.domain.montage.dto.MontageReportDto;
 import com.a602.actors.global.common.entity.BaseEntity;
 import com.querydsl.core.annotations.QueryProjection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +24,7 @@ public class Report extends BaseEntity {
     private final Member reportee;
 
     private final String reason;
+    @Column(name="image_link")
     private final String link;
 
 

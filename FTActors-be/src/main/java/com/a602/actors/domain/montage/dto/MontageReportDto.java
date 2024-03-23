@@ -12,12 +12,15 @@ public class MontageReportDto {
 
     @Getter
     @Setter
-    @RequiredArgsConstructor
-    public static class CreateRequest{
+    public static class CreateReport{
         // 신고당한 사람 정보
-        private final Long reporteeId;
         private final String reason;
         private final MultipartFile reportImage;
+
+        public CreateReport(String reason, MultipartFile reportImage) {
+            this.reason = reason;
+            this.reportImage = reportImage;
+        }
     }
 
     public static class ReportList{

@@ -6,6 +6,8 @@ import com.a602.actors.domain.montage.dto.MontageCommentDto;
 import com.a602.actors.domain.montage.dto.MontageDto;
 import com.a602.actors.domain.montage.dto.QMontageDto_Montages;
 import com.a602.actors.domain.montage.entity.*;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -212,12 +214,24 @@ public class MontageRepositoryImpl implements MontageRepository {
     }
 
     @Override
-    public void addReport(Long reporterId, Long reporteeId, String reason, String link) {
+    @Transactional
+    public void addReport(Long reporterId, Long montageId, String reason, String link) {
 
         QMember member = QMember.member;
+        QMontage montage = QMontage.montage;
+
+        // 신고당한 사람 아이디를 얻음
+        Member reportee = queryFactory
+                .select(member)
+                .from(montage)
+                .innerJoin(montage.member, member)
+                .where(montage.id.eq(montageId))
+                .fetchOne();
 
         Member reporter = entityManager.getReference(Member.class, reporterId);
-        Member reportee = entityManager.getReference(Member.class, reporteeId);
+
+        log.info("신고당한 사람의 정보 : " + reportee);
+        log.info("신고한 사람의 정보 : " + reporter);
 
         Report report =
                 Report.builder()

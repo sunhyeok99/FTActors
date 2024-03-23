@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@RequestMapping("/montage")
+@RequestMapping("/api/montage")
 public class MontageController {
 
     private final MontageFileService montageFileService;
@@ -91,12 +91,20 @@ public class MontageController {
             return new ApiResponse<>(HttpStatus.OK.value(), "좋아요를 해제했습니다.", "");
     }
 
+    // 몽타주 아이디를 보내는데 굳이 reportee 아이디를 보낼 필요가 없다.
     @PostMapping("/{montageId}/report")
-    public ApiResponse<String> reportMontage(@RequestPart MontageReportDto.CreateRequest req,
+    public ApiResponse<String> reportMontage(@RequestPart(name="req") MontageReportDto.CreateReport req,
                                              @RequestPart(name="file") MultipartFile file,
                                              @PathVariable("montageId") Long montageId){
 
-        return new ApiResponse<>(HttpStatus.OK.value(), "신고를 눌렀습니다.", "");
+        try {
+            System.out.println("HELLO");
+            return new ApiResponse<>(HttpStatus.OK.value(), "신고를 눌렀습니다.", montageFileService.report(req, file, montageId));
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), e.getMessage(), "");
+        }
     }
 
 }

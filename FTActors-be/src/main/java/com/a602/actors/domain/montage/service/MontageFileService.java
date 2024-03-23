@@ -51,32 +51,39 @@ public class MontageFileService {
         return "";
     }
 
+    public String deleteFile(Long montageId) throws IOException {
+        Montage montage = montageRepository.getMontage(montageId);
+        FileUtil.deleteFile(montage.getTitle(), FolderType.MONTAGE_PATH);
+
+        montageRepository.deleteMontage(montageId);
+
+        return "";
+    }
+
     public boolean pushLike(Long montageId){
         Long memberId = 1L;
         return montageRepository.addLike(montageId, memberId);
     }
 
-    public String report(MontageReportDto.CreateRequest req,
+    // FIX : file null exception 처리
+    public String report(MontageReportDto.CreateReport req,
                          MultipartFile file,
                          Long montageId) throws IOException {
-        //
-        //if(file.isEmpty()) throw new ReportException();
+
         Long reporterId = 1L;
+        // FIX : 자기 자신은 신고 못하는 에러 처리
+
         //MemberRepository.findByNickname();
+        System.out.println("HELLO");
         String savedName = FileUtil.makeFileName(file.getOriginalFilename());
-        String url = FileUtil.uploadFile(req.getReportImage(), savedName, FolderType.REPORT_PATH);
 
-        montageRepository.addReport(req.getReporteeId(), 1L, req.getReason(), url);
-
-        return "";
-    }
-
-        public String deleteFile(Long montageId) throws IOException {
-            Montage montage = montageRepository.getMontage(montageId);
-            FileUtil.deleteFile(montage.getTitle(), FolderType.MONTAGE_PATH);
-
-            montageRepository.deleteMontage(montageId);
+        // FIX : 파일 이름이 길 경우
+        //if(savedName.length() >= 255) throw 파일 이름이 너무 깁니다. -> 아니면 프론트가 처리하도록 하자
+        String url = FileUtil.uploadFile(file, savedName, FolderType.REPORT_PATH);
+        montageRepository.addReport(1L, montageId, req.getReason(), url);
 
         return "";
     }
+
+
 }
