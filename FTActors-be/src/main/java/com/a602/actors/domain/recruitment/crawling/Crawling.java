@@ -35,19 +35,31 @@ public class Crawling {
                     document = Jsoup.connect(url).get();
                     String title = document.select("th[colspan=2] h2").text();
                     String content = document.select(".xe_content p").text();
-                    String director = document.select("table.ui.unstackable tbody tr:nth-of-type(3) td:nth-of-type(2)").text();
+                    String director = "미공개";
+                    for (int type = 2; type <= 3; type++) {
+                        if (document.select("table.ui.unstackable tbody tr:nth-of-type(3) td:nth-of-type(1)").text().equals("감독")) {
+                            director = document.select("table.ui.unstackable tbody tr:nth-of-type(3) td:nth-of-type(2)").text();
+                            break;
+                        }
+                    }
                     String category = getCategory(urlCode[index]);
                     String startDate = date;
-                    String endDate = document.select("table.ui.unstackable tbody tr:nth-of-type(12) td:nth-of-type(2)").text();
-                    System.out.println(endDate);
+                    String endDate = "상시 모집";
+                    for (int type = 10; type <= 13; type++) {
+                        if (document.select("table.ui.unstackable tbody tr:nth-of-type(" + type + ") td:nth-of-type(1)").text().equals("모집 마감일")) {
+                            endDate = document.select("table.ui.unstackable tbody tr:nth-of-type(" + type + ") td:nth-of-type(2)").text();
+                            break;
+                        }
+                    }
+                    System.out.println(director + " " + endDate);
                     Recruitment recruitment = Recruitment.builder()
-                            .title(title);
-                        .content(content);
-                        .postMember(director);
-                         .category(category);
-                        .startDate(startDate);
-                         .endDate(endDate);
-                           .build();
+                            .title(title)
+                            .content(content)
+//                        .member(director)
+                            .category(category)
+                            .startDate(startDate)
+                            .endDate(endDate)
+                            .build();
                     recruitmentList.add(recruitment);
                 }
             }
