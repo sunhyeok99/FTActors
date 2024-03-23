@@ -32,10 +32,10 @@ public class RecruitmentDocument { //엘라스틱 서치 디비 내부에 저장
     private String content; //내용 (노리를 활용한 형태소 분석도 함 -> 변경예정)
 
     @Field(type = FieldType.Keyword) //일반 텍스트 (형태소 분석 적용x, 검색 시 활용x)
-    private String memberId; //예명? 아이디? 둘 중 뭐로 하지
+    private String name; //실명
 
-    @Field(type = FieldType.Keyword)
-    private String category;
+//    @Field(type = FieldType.Keyword) //일반 텍스트 (형태소 분석 적용x, 검색 시 활용x)
+//    private String stageName; //예명? 아이디? 둘 중 뭐로 하지
 
     @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second)
     private LocalDateTime createdTime; // 게시물 생성 일시
@@ -51,17 +51,21 @@ public class RecruitmentDocument { //엘라스틱 서치 디비 내부에 저장
     @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second)
     private String endDate; // 공고 끝나는 일시
 
+    @Field(type = FieldType.Keyword)
+    private String privateRecruitment; //비공개 여부
+
     public static RecruitmentDocument from (Recruitment recruitment) {
         return RecruitmentDocument.builder()
                 .id(recruitment.getId())
                 .title(recruitment.getTitle())
                 .content(recruitment.getContent())
-                .memberId(recruitment.getMember().getName()) //아이디? 예명??
-                .category(recruitment.getCategory())
+                .name(recruitment.getMember().getName()) //아이디? 예명??
+//                .stageName(recruitment.getMember().getStageName())
                 .createdTime(recruitment.getCreatedAt())
                 .updatedTime(recruitment.getUpdatedAt())
                 .startDate(recruitment.getStartDate())
                 .endDate(recruitment.getEndDate())
+                .privateRecruitment(recruitment.getPrivateRecruitment())
                 .build();
     }
 

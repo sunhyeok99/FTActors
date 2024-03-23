@@ -16,10 +16,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @ToString
 @EntityListeners(AuditingEntityListener.class) //시간 찍기
 public class Profile extends BaseEntity {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-
     @ManyToOne
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member; //회원 번호 (member테이블에서 가져옴)
@@ -35,22 +31,6 @@ public class Profile extends BaseEntity {
 
     @Column(name = "private_post")
     private Character privatePost; //'T', 'F' (기본으로 F 설정)
-
-//    @CreatedDate
-//    @Column(name = "created_at")
-//    private Date createdAt;
-//
-//    @CreatedDate
-//    @Column(name = "updated_at")
-//    private Date updatedAt;
-//
-//    @PrePersist //createdAt은 처음 값에서 변하지 않게 하기 (-> 테스트 해보기!)
-//    protected void onCreat() {
-//        if(this.createdAt == null) {
-//            this.createdAt = new Date();
-//        }
-//        this.updatedAt = this.createdAt;
-//    }
 
     @Builder
     public Profile (Member member, String content,

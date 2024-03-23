@@ -49,8 +49,8 @@ dependencies {
 	// 낮은 버전의 브라우저에서도 WebSocket 사용할 수 있게 해줌
 	implementation 'org.webjars:sockjs-client:1.1.2'
 
-//	implementation 'org.flywaydb:flyway-core'
-//	implementation 'org.flywaydb:flyway-mysql'
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-mysql'
 
 	compileOnly 'org.projectlombok:lombok'
 

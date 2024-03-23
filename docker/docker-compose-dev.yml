@@ -1,18 +1,16 @@
-
-
 services:
   # 서비스 이름
-  spring:
-    container_name: spring
-    hostname: spring
-    # 실행되는 컨텍스트 및 도커파일 지정
-    build:
-      context: ../
-      dockerfile: "./docker/dockerfile/spring.dockerfile"
-    env_file: ".env"
-    restart: "always"
-    networks:
-      - backend
+#  spring:
+#    container_name: spring
+#    hostname: spring
+#    # 실행되는 컨텍스트 및 도커파일 지정
+#    build:
+#      context: ../
+#      dockerfile: "./docker/dockerfile/spring.dockerfile"
+#    env_file: ".env"
+#    restart: "always"
+#    networks:
+#      - backend
 
   mysql:
     container_name: mysql
@@ -23,8 +21,8 @@ services:
     networks:
       - backend
     env_file: ".env"
-    expose:
-      - "3306"
+    ports:
+      - "3306:3306"
     restart: "always"
 
 #  elastic:
@@ -33,12 +31,14 @@ services:
 #      dockerfile: "./docker/dockerfile/elastic-search.dockerfile"
 #    networks:
 #      - backend
-#
+
   redis:
     image: redis
     networks:
       - backend
-#
+    ports:
+      - "6379:6379"
+
 #  rabbitMQ:
 #    image: rabbitmq
 #    networks:
