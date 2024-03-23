@@ -184,10 +184,8 @@ public class ProfileServiceImpl implements ProfileService{
 //        if(!barter.getImages().get(0).getImgCode().equals("icon.PNG"))
 //            deleteS3(barter.getImages());
 
-        //엘라스틱 서치 삭제하기 - 로그스태시
-//        profileDocumentRepository.deleteById(profileId); //엘라스틱에서 먼저 없애고 dks/ 안 되면 써야지....
         profileRepository.deleteById(profileId); //DB에서 삭제
-//        logstashService.sendDeleteRequest(profileId); //logstash에 없앨 거 생겼단다~! 알리기 (여기서 알리면 엘라스틱서치에 영향 줌)
+        profileDocumentRepository.deleteById(profileId); //elasticsearch에서 삭제
         return "";
     }
 

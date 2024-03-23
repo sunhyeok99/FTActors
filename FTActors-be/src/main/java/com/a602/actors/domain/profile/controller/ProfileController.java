@@ -71,7 +71,7 @@ public class ProfileController {
     /////////////////////-----------------------위에는 read, 아래는 cud
 
     //프로필 생성
-    @PostMapping("/myprofile") //개어려워 -> 추후에 stageName대신 jwt
+    @PostMapping("/myprofile") // -> 추후에 stageName대신 jwt
     public ApiResponse<String> createProfile(@RequestBody ProfileRequest profileRequest) { //파라미터 추후에 변경
         log.info("프로필 만들기~! ");
 
