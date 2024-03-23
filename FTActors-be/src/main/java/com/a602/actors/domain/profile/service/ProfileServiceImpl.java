@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.*;
 import org.springframework.stereotype.Service;
@@ -76,10 +77,10 @@ public class ProfileServiceImpl implements ProfileService{
         //Reop가서 List<도큐먼트>로 뽑아오고
         List<ProfileDocument> list = null;
         if(sorting == 1) { //최신 순
-            list = profileDocumentRepository.findAllByOrderByUpdatedTimeDesc();
+            list = profileDocumentRepository.findAllByOrderByUpdatedTimeDesc(Sort.by(Sort.Direction.DESC, "updatedTime"));
         }
         else { //오래된 순
-            list = profileDocumentRepository.findAllByOrderByUpdatedTimeAsc();
+            list = profileDocumentRepository.findAllByOrderByUpdatedTimeAsc(Sort.by(Sort.Direction.ASC, "updatedTime"));
         }
 
         //리턴에서 mapper사용해서 변환 후 돌려주기
