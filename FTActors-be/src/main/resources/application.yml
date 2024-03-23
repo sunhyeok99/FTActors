@@ -59,8 +59,8 @@ server:
         context-path: /api
 
 rabbit:
-    queue-name: ${QUEUE_NAME}
-    exchange-name: ${EXCHAGE_NAME}
-    routing-key: ${ROUTING_KEY}
+    queue-name: ${MQ_QUEUE_NAME}
+    exchange-name: ${MQ_EXCHANGE_NAME}
+    routing-key: ${MQ_ROUTING_KEY}
     user_name: ${MQ_USER_NAME}
     password: ${MQ_PASSWORD}
