@@ -1,5 +1,6 @@
 package com.a602.actors.domain.profile.repository;
 
+import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.entity.ProfileDocument;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.annotations.Query;
@@ -16,4 +17,5 @@ public interface ProfileDocumentRepository extends ElasticsearchRepository<Profi
     List<ProfileDocument> findAllByOrderByUpdatedTimeAsc(Sort sort);
 
     List<ProfileDocument> findByContent(String content);
+
 }

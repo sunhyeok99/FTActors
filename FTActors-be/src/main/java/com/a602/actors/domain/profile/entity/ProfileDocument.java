@@ -1,6 +1,7 @@
 package com.a602.actors.domain.profile.entity;
 
 import com.a602.actors.domain.profile.dto.ProfileRequest;
+import com.a602.actors.global.elasticsearch.TimeChanger;
 import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.data.elasticsearch.annotations.*;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Document(indexName = "profile_elasticsearch") //해당 클래스의 인스턴스가 저장될 인덱스의 이름을 지정합니다. 이름 없으면 db 만듦
 //@Setting(settingPath = "es-config/es-analyzer.json")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -25,7 +27,7 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
 
 //    @Field(type = FieldType.Text, analyzer = "korean_analyzer", searchAnalyzer = "korean_analyzer")
     @Field(type = FieldType.Text) // 노리 적용 예정 -> 초성 검색 허용, 오타 허용
-    private String stageName; //제목, 예명
+    private String stageName; //제목, 예명 TO do: Member에서 수정이 일어나면, profile에서도 똑같이 수정이 일어나야 한다. elasticsearch를 쓰게 되면서 문제가 생겼따
 
 //    @Field(type = FieldType.Text) // 노리 적용 예정 -> 초성 검색 허용, 오타 허용
 //    private String name; //실명
@@ -60,20 +62,15 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
                 .content(profile.getContent())
                 .type(profile.getType())
                 .privatePost(profile.getPrivatePost())
-                .createdTime(profile.getCreatedAt())
-                .updatedTime(profile.getCreatedAt())
+                .createdTime(TimeChanger.convertUtcToKoreaTime())
+                .updatedTime(TimeChanger.convertUtcToKoreaTime())
                 .build();
     }
-
-//    public static ProfileDocument from2 (ProfileRequest profileRequest) {
-//        return ProfileDocument.builder()
-//
-//    }
 
     // 수정된 내용을 반영하여 객체를 업데이트하는 메서드
     public void updateContent(String newContent, Character newPrivatePost) {
         this.content = newContent;
         this.privatePost = newPrivatePost;
-        this.updatedTime = LocalDateTime.now(); // 수정 시간을 현재 시간으로 갱신
+        this.updatedTime = TimeChanger.convertUtcToKoreaTime(); // 수정 시간을 현재 시간으로 갱신
     }
 }

@@ -22,7 +22,7 @@ public interface ProfileService {
 
     String createProfile(ProfileRequest profileRequest);
 
-    String updateProfile(Long profileId, ProfileRequest profileRequest, HttpSession session);
+    String updateProfile(Long profileId, ProfileRequest profileRequest);
 
     List<ProfileDocument> searchProfileDocuments(List<String> keywordArr);
 

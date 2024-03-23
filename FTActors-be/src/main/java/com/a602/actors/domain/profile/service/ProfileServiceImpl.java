@@ -10,10 +10,8 @@ import com.a602.actors.domain.profile.dto.ProfileSearchResponse;
 import com.a602.actors.domain.profile.entity.Profile;
 import com.a602.actors.domain.profile.entity.ProfileDocument;
 import com.a602.actors.domain.profile.mapper.ProfileMapper;
-import com.a602.actors.domain.profile.repository.ProfileCustomRepository;
-import com.a602.actors.domain.profile.repository.ProfileDocumentRepository;
-import com.a602.actors.domain.profile.repository.ProfileRepository;
-import com.a602.actors.domain.profile.repository.TmpMemRepoImpl;
+import com.a602.actors.domain.profile.repository.*;
+import com.a602.actors.global.elasticsearch.TimeChanger;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +34,7 @@ public class ProfileServiceImpl implements ProfileService{
     private final TmpMemRepoImpl tmpMemRepo;
     private final ProfileMapper profileMapper;
     private final ProfileDocumentRepository profileDocumentRepository; //was 엘라스틱 용
+    private final ProfileDocumentCustomRepository profileDocumentCustomRepository; //was 엘라스틱 용
     private final ElasticsearchOperations elasticsearchOperations;
 //    private final LogstashService logstashService; //로그스태시 호출 전용
 
@@ -62,17 +61,7 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override //검색 목록 (엘라스틱만 , db사용x)
     public List<ProfileSearchResponse> searchAllProfile(int sorting) {
-//        Sort sort = Sort.by(Sort.Direction.DESC, "updatedTime"); //1이면 최신순
-//        if (sorting == 2) sort = Sort.by(Sort.Direction.ASC, "updatedTime"); //2이면 오래된 순
-//
-//        Iterable<ProfileDocument> iterable = profileDocumentRepository.findAll(sort);
-//        for (ProfileDocument document : iterable) {
-//            System.out.println(document);
-//        }
-//
-//        return StreamSupport.stream(iterable.spliterator(), false)
-//                .map(this::convertToSearchResponse) //변환하는 중간 연산 (Document엔터티 -> 응답 dto)
-//                .collect(Collectors.toList()); //스트림을 리스트로 돌림
+        //To do: 1. 지금은 비공개여부=T면 다 안 뽑음. jwt들어오면, 로그인 유저의 경우 T라도 같이 뽑아오게 바꾸기
 
         //Reop가서 List<도큐먼트>로 뽑아오고
         List<ProfileDocument> list = null;
@@ -84,6 +73,7 @@ public class ProfileServiceImpl implements ProfileService{
         }
 
         //리턴에서 mapper사용해서 변환 후 돌려주기
+        if (list == null) return null; //To do: exception 처리 "조건에 해당하는 프로필이 없습니다"
         return profileMapper.ProfileDocumentListToProfileSearchResponseList(list);
     }
 
@@ -98,14 +88,14 @@ public class ProfileServiceImpl implements ProfileService{
             loginnedId = loginMember.getId();
         }
 
+        //있는 프로필이라도 비공개여부=T이면 null 반환, 본인 거면 상관 없음
         Profile profile = profileCustomRepository.findProfileByIdAndCondition(profileId, loginnedId);
-
-        //To do: 엔터티 -> Dto 돌릴 때, member객체에서 member id만 뽑아오는 거 구현체!!!!
+        if(profile == null) return null; //To do: exception 바꾸기(실제 없거나, 비공개여부=T) "해당 프로필을 볼 수 없습니다"
 
         return profileMapper.ProfileToProfileDto(profile);
     }
 
-    @Override //개어려어 -> searchAllProfile에 통합하기 (엘라스틱만 , db사용x)
+    @Override //개어려어 -> searchAllProfile에 통합하기 (엘라스틱만 , db사용x) //xxx
     public List<ProfileSearchResponse> search(ProfileSearchRequest profileSearchRequest) {
         //1. SearchCountMessage로 검색어의 검색 횟수 저장 -> 횟수 높을 수록 우선순위로 보여주기 (x)
         //2. 교환? 그냥 포카교환이라서 쓰인 거인듯 (x)
@@ -134,6 +124,11 @@ public class ProfileServiceImpl implements ProfileService{
     //-------------
     @Override //프로필 만들기 / 개얼여 (엘라스틱, db 둘 다 사용)
     public String createProfile(ProfileRequest profileRequest) {
+        //To do: 1 jwt에서 로그인한 loginedMember 정보 뽑기
+        //To do: 2 loginedMember에서 id(고유 번호) 뽑기
+        //To do: 3 loginedMember의 id + profileRequest.getType() 기반으로 이미 있는 프로필인지 확인
+        //To do: 3-1 아직 없으면 생성 가능
+        //To do: 3-2 이미 있으면 생성 불가능 -> exception 발생!!(따로 만들어 놓기) "이미 존재하는 프로필이어서, 더 만들 수 없습니다."
 
         //이미 프로필이 생성되어 있으면x
         if( profileCustomRepository.existProfile(profileRequest.getType(), profileRequest.getMemberId()) ) {
@@ -166,15 +161,27 @@ public class ProfileServiceImpl implements ProfileService{
                 .privatePost('F') //처음 생성할 땐 무조건 공개
                 .build();
 
-        profileRepository.save(creatingProfile); //왜 두 개씩 만들어지니? -> 엘라스틱서치 repo에서 db도 만든다;;; 왕...
-        profileDocumentRepository.save(ProfileDocument.from(creatingProfile)); //안 되면 써야지....
+        profileRepository.save(creatingProfile);
+        //시간 바꾸기
+        ProfileDocument creatingProfileDocument = ProfileDocument.from(creatingProfile);
+//        creatingProfileDocument.setCreatedTime(TimeChanger.convertUtcToKoreaTime());
+//        creatingProfileDocument.setUpdatedTime(TimeChanger.convertUtcToKoreaTime());
+        profileDocumentRepository.save(creatingProfileDocument);
         return "";
     }
 
     @Override // (엘라스틱, db 둘 다 사용)
     public String deleteProfile(Long profileId) {
+        //To do: 1 jwt에서 로그인한 loginedMember 정보 뽑기
+        //To do: 2 loginedMember에서 id(고유 번호) 뽑기
+        //To do: 3 파라미터로 들어온 profileId로 updatingProfile 정보 뽑기
+        //To do: 4 updatingProfile의 member.id 뽑기
+        //To do: 5 2의 결과값과 4의 결과값이 같은지 확인해서 true라면 정보 삭제
+        //To do: 5-1 false라면 로그인불일치 exception
+        // ===> 프론트에서 처리할 듯(버튼 생성 유무)
+
         Profile profile = profileRepository.findById(profileId)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(IllegalArgumentException::new); //To do: "삭제 불가 - 없는 프로필입니다."
 
         //로그인 멤버와 지금 멤버가 다르면x 
 //        if( !profile.getMember().getMemberId().equals(nowLoginId) ) {
@@ -189,48 +196,22 @@ public class ProfileServiceImpl implements ProfileService{
         return "";
     }
 
-//    private void publishDeleteEvent(Profile profile, int type) {
-//        ApplicationEventPublisher publisher = ApplicationEventPublisherHolder.getPublisher();
-//
-//        if (publisher != null) {
-//            LocalDateTime localDateTime = profile.getCreatedAt(); //혹은 updatedAt일 수도
-//            Instant instant = localDateTime.toInstant(); //LocalDateTime 객체를 Instant 객체로 변환, Instant 객체가 현재 시간을 나타내는 것이 됨
-//            ProfileDeleteEvent event = new ProfileDeleteEvent(new ProfileMessage(
-//                    profile.getId(),
-//                    profile.getType(),
-//                    type,
-//                    instant
-//            ));
-//
-//        }
-//    }
-
     @Override // (엘라스틱, db 둘 다 사용)
-    public String updateProfile(Long profileId, ProfileRequest profileRequest, HttpSession session) {
-        Long nowLoginId = (Long) session.getAttribute("memberName");
-        Profile profile = profileCustomRepository.findProfileById(profileId);
-        Member loginMember = tmpMemRepo.findByLoginId(nowLoginId); //멤버 쪽에서...
-
-        //로그인이 안 되어 있으면x
-        if(nowLoginId == null) {
-            log.info("수정불가 - 로그인이 안 되었다!");
-//            return 403;
-        }
-
-        //프로필이 존재하지 않으면 x
-        if(profile == null) {
-            log.info("수정불가 - 존재하지 않는 프로필!");
-//            return 404;
-        }
-        //본인 게 아니면x
-        if(!profile.getMember().getId().equals(nowLoginId)) {
-            log.info("수정불가 - 너 거 아니잖아!");
-//            return 403;
-        }
+    public String updateProfile(Long profileId, ProfileRequest profileRequest) {
+        //To do: 1 jwt에서 로그인한 loginedMember 정보 뽑기
+        //To do: 2 loginedMember에서 id(고유 번호) 뽑기
+        //To do: 3 파라미터로 들어온 profileId로 updatingProfile 정보 뽑기
+        //To do: 4 updatingProfile의 member.id 뽑기      /////못 찾으면 to do: exception "수정 불가 - 없는 프로필입니다."
+        //To do: 5 2의 결과값과 4의 결과값이 같은지 확인해서 true라면 정보 수정 -.프론트 처리
+        //To do: 5-1 false라면 로그인불일치 exception
+        // ===> 프론트에서 처리할 듯(버튼 생성 유무)
 
         //수정 성공
         profileCustomRepository.updateProfile(profileId, profileRequest);
-        //엘라스틱 서치 업데이트 - 로그스태시
+        //엘라스틱 서치 업데이트
+        //profileRequest를 기반으로 profile 만들기
+        //만들어진 profile을 덮어쓰기
+        profileDocumentCustomRepository.updateProfileByProfileId(profileId, profileRequest);
         return "";
     }
 

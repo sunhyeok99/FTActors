@@ -22,7 +22,7 @@ import java.util.List;
 public class ProfileController {
     private final ProfileService profileService;
 
-    @GetMapping("/list") //1.완성 //To do: 멤버 받아서 본인 확인 후, 비공개여부 T인 것도 리스트에 같이 받아오기
+    @GetMapping("/list") //1.완성 //To do: 멤버 받아서 본인 확인 후, 비공개여부 T인 것도 리스트에 같이 받아오기, 시큐리티 영향x 처리 필요
     public ApiResponse<List<ProfileSearchResponse>> getAllProfileList(@RequestParam(name = "sort") int sorting)
     {
         log.info("배우,감독 프로필 전체 목록 - 컨트롤러");
@@ -33,7 +33,7 @@ public class ProfileController {
     
     //성별 기준 검색은 그냥 db쓰는 게 나은데, 거기에 다른 검색어가 포함되면 es를 쓰는 게 맞고... 복잡하군
 
-    @GetMapping("/detail") //db만 사용 -> jwt에서 멤버 가져오는 걸로 바꾸기
+    @GetMapping("/detail") //db만 사용 -> jwt에서 멤버 가져오는 걸로 바꾸기, 시큐리티 영향x 처리 필요
     public ApiResponse<ProfileDto> getDetailProfile(@RequestParam(name = "profile_id") Long profileId,
                                                         HttpSession session)
     {
@@ -44,7 +44,7 @@ public class ProfileController {
         return new ApiResponse<>(HttpStatus.OK.value(), "해당 프로필을 불러왔습니다.", profileService.getProfile(profileId, session));
     }
 
-    @GetMapping("/search") //->삭제까지 구현하고 다시
+    @GetMapping("/search") //->삭제까지 구현하고 다시, 시큐리티 영향x 처리 필요
     public ApiResponse<?> searchPost(
             @RequestParam(value = "keywords") String keywords) {
         String[] keywordArr = keywords.split(" "); //공백 기준으로 키워드 여러 개 인식
@@ -76,14 +76,12 @@ public class ProfileController {
         log.info("프로필 만들기~! ");
 
         String result = profileService.createProfile(profileRequest);
-//        Profile newProfile = new Profile();
-//        elasticsearchOperations.save(ProfileDocument.from(newProfile));
 
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 생성했습니다.", result);
     }
 
     //프로필 삭제
-    @DeleteMapping("/myprofile")
+    @DeleteMapping("/myprofile") // -> jwt에서 로그인 정보 뽑아오기
     public ApiResponse<String> removeProfile(@RequestParam(name = "profile_id") Long profileId) {
         log.info("프로필 삭제하기!");
 
@@ -95,12 +93,14 @@ public class ProfileController {
     }
 
     //프로필 수정
-    @PutMapping("/myprofile") //개어려워
-    public ApiResponse<String> modifyProfile(@RequestParam(name = "profile_id") Long profileId, HttpSession session,
+    @PutMapping("/myprofile") //개어려워 -> jwt에서 로그인 정보 뽑아오기
+    public ApiResponse<String> modifyProfile(@RequestParam(name = "profile_id") Long profileId,
                                               @RequestBody ProfileRequest profileRequest)
     {
         log.info("프로필 수정하기~! ");
-        return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 수정했습니다.", profileService.updateProfile(profileId, profileRequest, session));
+        
+        //updatedTime이 왜 안 바뀌지
+        return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 수정했습니다.", profileService.updateProfile(profileId, profileRequest));
     }
 
 
