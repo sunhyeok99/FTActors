@@ -24,7 +24,7 @@ public class ProfileDocumentCustomRepositoryImpl implements ProfileDocumentCusto
             // 새로운 내용으로 기존 문서를 업데이트합니다.
             existingDocument.setContent(profileRequest.getContent());
             existingDocument.setPrivatePost(profileRequest.getPrivateProfile());
-//            existingDocument.setUpdatedTime(TimeChanger.convertUtcToKoreaTime());
+            existingDocument.setUpdatedTime(TimeChanger.convertUtcToKoreaTime());
 
             // Elasticsearch에 새로운 내용으로 문서를 업데이트합니다.
             elasticsearchOperations.save(existingDocument);

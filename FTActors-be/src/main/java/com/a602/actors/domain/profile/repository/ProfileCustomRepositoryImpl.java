@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -84,6 +85,8 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
         if(profileRequest.getPrivateProfile() != null) {
             updateClause.set(profile.privatePost, profileRequest.getPrivateProfile());
         }
+
+        updateClause.set(profile.updatedAt, LocalDateTime.now());
 
         updateClause.where(profile.id.eq(profileId)).execute();
     }
