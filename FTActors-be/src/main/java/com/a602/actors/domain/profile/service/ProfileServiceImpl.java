@@ -12,6 +12,8 @@ import com.a602.actors.domain.profile.entity.ProfileDocument;
 import com.a602.actors.domain.profile.mapper.ProfileMapper;
 import com.a602.actors.domain.profile.repository.*;
 import com.a602.actors.global.elasticsearch.TimeChanger;
+import com.a602.actors.global.exception.ExceptionCodeSet;
+import com.a602.actors.global.exception.ProfileException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -73,7 +75,7 @@ public class ProfileServiceImpl implements ProfileService{
         }
 
         //리턴에서 mapper사용해서 변환 후 돌려주기
-        if (list == null) return null; //To do: exception 처리 "조건에 해당하는 프로필이 없습니다"
+        if (list == null) return null; // -> 프론트에서 null이면 "조건에 맞는 프로필이 없습니다" 반환
         return profileMapper.ProfileDocumentListToProfileSearchResponseList(list);
     }
 
@@ -90,7 +92,7 @@ public class ProfileServiceImpl implements ProfileService{
 
         //있는 프로필이라도 비공개여부=T이면 null 반환, 본인 거면 상관 없음
         Profile profile = profileCustomRepository.findProfileByIdAndCondition(profileId, loginnedId);
-        if(profile == null) return null; //To do: exception 바꾸기(실제 없거나, 비공개여부=T) "해당 프로필을 볼 수 없습니다"
+        if(profile == null) return null; // -> (실제 없거나, 비공개여부=T) 프론트에서 "해당 프로필을 볼 수 없습니다"
 
         return profileMapper.ProfileToProfileDto(profile);
     }
@@ -127,13 +129,11 @@ public class ProfileServiceImpl implements ProfileService{
         //To do: 1 jwt에서 로그인한 loginedMember 정보 뽑기
         //To do: 2 loginedMember에서 id(고유 번호) 뽑기
         //To do: 3 loginedMember의 id + profileRequest.getType() 기반으로 이미 있는 프로필인지 확인
-        //To do: 3-1 아직 없으면 생성 가능
-        //To do: 3-2 이미 있으면 생성 불가능 -> exception 발생!!(따로 만들어 놓기) "이미 존재하는 프로필이어서, 더 만들 수 없습니다."
 
         //이미 프로필이 생성되어 있으면x
         if( profileCustomRepository.existProfile(profileRequest.getType(), profileRequest.getMemberId()) ) {
             log.info("생성불가 - 이미 있는 거면 불가!");
-//            return "";
+            throw new ProfileException(ExceptionCodeSet.PROFILE_ALREADY_EXIST);
         }
 
         //jwt 구현 후 삭제
@@ -177,11 +177,10 @@ public class ProfileServiceImpl implements ProfileService{
         //To do: 3 파라미터로 들어온 profileId로 updatingProfile 정보 뽑기
         //To do: 4 updatingProfile의 member.id 뽑기
         //To do: 5 2의 결과값과 4의 결과값이 같은지 확인해서 true라면 정보 삭제
-        //To do: 5-1 false라면 로그인불일치 exception
-        // ===> 프론트에서 처리할 듯(버튼 생성 유무)
+        //To do: 5-1 false라면 로그인불일치 ===> 프론트에서 처리할 듯(버튼 생성 유무)
 
         Profile profile = profileRepository.findById(profileId)
-                .orElseThrow(IllegalArgumentException::new); //To do: "삭제 불가 - 없는 프로필입니다."
+                .orElseThrow(() -> new ProfileException(ExceptionCodeSet.PROFILE_NOT_FOUND)); // "삭제 불가 - 없는 프로필입니다."
 
         //로그인 멤버와 지금 멤버가 다르면x 
 //        if( !profile.getMember().getMemberId().equals(nowLoginId) ) {
@@ -201,16 +200,17 @@ public class ProfileServiceImpl implements ProfileService{
         //To do: 1 jwt에서 로그인한 loginedMember 정보 뽑기
         //To do: 2 loginedMember에서 id(고유 번호) 뽑기
         //To do: 3 파라미터로 들어온 profileId로 updatingProfile 정보 뽑기
-        //To do: 4 updatingProfile의 member.id 뽑기      /////못 찾으면 to do: exception "수정 불가 - 없는 프로필입니다."
+        //To do: 4 updatingProfile의 member.id 뽑기
         //To do: 5 2의 결과값과 4의 결과값이 같은지 확인해서 true라면 정보 수정 -.프론트 처리
-        //To do: 5-1 false라면 로그인불일치 exception
-        // ===> 프론트에서 처리할 듯(버튼 생성 유무)
+        //To do: 5-1 false라면 로그인불일치 ===> 프론트에서 처리할 듯(버튼 생성 유무)
+
+        //profile찾기
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new ProfileException(ExceptionCodeSet.PROFILE_NOT_FOUND)); // "수정 불가 - 없는 프로필입니다."
 
         //수정 성공
         profileCustomRepository.updateProfile(profileId, profileRequest);
         //엘라스틱 서치 업데이트
-        //profileRequest를 기반으로 profile 만들기
-        //만들어진 profile을 덮어쓰기
         profileDocumentCustomRepository.updateProfileByProfileId(profileId, profileRequest);
         return "";
     }
