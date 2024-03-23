@@ -40,7 +40,7 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
         return result;
     }
 
-    @Override
+    @Override // 생성 - 이미 있는 프로필인지 확인
     public boolean existProfile(Character condition, Long loginMemberId) {
         QProfile profile = QProfile.profile;
 
@@ -69,12 +69,12 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
 
         JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, profile); //업데이트?
 
-        if (profileRequest.getSelfIntroduction() != null) {
-            updateClause.set(profile.content, profileRequest.getSelfIntroduction());
+        if (profileRequest.getContent() != null) {
+            updateClause.set(profile.content, profileRequest.getContent());
         }
 
-        if (profileRequest.getCondition() != null) {
-            updateClause.set(profile.type, profileRequest.getCondition());
+        if (profileRequest.getType() != null) {
+            updateClause.set(profile.type, profileRequest.getType());
         }
 
         if (profileRequest.getPortfolioLink() != null) {

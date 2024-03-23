@@ -30,8 +30,10 @@ public class ProfileController {
         List<ProfileSearchResponse> results = profileService.searchAllProfile(sorting);
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", results);
     }
+    
+    //성별 기준 검색은 그냥 db쓰는 게 나은데, 거기에 다른 검색어가 포함되면 es를 쓰는 게 맞고... 복잡하군
 
-    @GetMapping("/detail") //그냥 db에서 가져와야 하는 게 맞음 -> jwt에서 멤버 가져오는 걸로 바꾸기
+    @GetMapping("/detail") //db만 사용 -> jwt에서 멤버 가져오는 걸로 바꾸기
     public ApiResponse<ProfileDto> getDetailProfile(@RequestParam(name = "profile_id") Long profileId,
                                                         HttpSession session)
     {
@@ -42,8 +44,7 @@ public class ProfileController {
         return new ApiResponse<>(HttpStatus.OK.value(), "해당 프로필을 불러왔습니다.", profileService.getProfile(profileId, session));
     }
 
-    //검색하는 메서드 예시... list를 그대로 써도..?
-    @GetMapping("/search")
+    @GetMapping("/search") //->삭제까지 구현하고 다시
     public ApiResponse<?> searchPost(
             @RequestParam(value = "keywords") String keywords) {
         String[] keywordArr = keywords.split(" "); //공백 기준으로 키워드 여러 개 인식
@@ -70,15 +71,15 @@ public class ProfileController {
     /////////////////////-----------------------위에는 read, 아래는 cud
 
     //프로필 생성
-    @PostMapping("/myprofile") //개어려워
-    public ApiResponse<String> createProfile(@RequestBody ProfileRequest profileRequest, HttpSession session) { //파라미터 추후에 변경
+    @PostMapping("/myprofile") //개어려워 -> 추후에 stageName대신 jwt
+    public ApiResponse<String> createProfile(@RequestBody ProfileRequest profileRequest) { //파라미터 추후에 변경
         log.info("프로필 만들기~! ");
 
-        String result = profileService.createProfile(profileRequest, session);
+        String result = profileService.createProfile(profileRequest);
 //        Profile newProfile = new Profile();
 //        elasticsearchOperations.save(ProfileDocument.from(newProfile));
 
-        return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 생성했습니다.", profileService.createProfile(profileRequest, session));
+        return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 생성했습니다.", result);
     }
 
     //프로필 삭제

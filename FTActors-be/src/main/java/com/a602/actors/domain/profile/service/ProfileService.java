@@ -20,7 +20,7 @@ public interface ProfileService {
 
     String deleteProfile(Long profileId);
 
-    String createProfile(ProfileRequest profileRequest, HttpSession session);
+    String createProfile(ProfileRequest profileRequest);
 
     String updateProfile(Long profileId, ProfileRequest profileRequest, HttpSession session);
 

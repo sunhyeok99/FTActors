@@ -20,6 +20,9 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     @Field(type = FieldType.Keyword)
     private Long id; //게시글 번호
 
+    @Field(type = FieldType.Keyword)
+    private Long memberId;
+
 //    @Field(type = FieldType.Text, analyzer = "korean_analyzer", searchAnalyzer = "korean_analyzer")
     @Field(type = FieldType.Text) // 노리 적용 예정 -> 초성 검색 허용, 오타 허용
     private String stageName; //제목, 예명
@@ -31,7 +34,8 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     @Field(type = FieldType.Text) // 노리 적용 예정 -> 오타 허용, 검색어 우선순위 적용
     private String content; //내용(자기소개)
 
-//    email, phone, birth, gender, profileImage
+//    email, phone, profileImage
+    //birth, gender -> 얘네는 추가할 수도
 
     @Field(type = FieldType.Keyword) //일반 텍스트 (형태소 분석 적용x)
     private Character type; //배우 프로필? 관계자 프로필?
@@ -51,8 +55,10 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     public static ProfileDocument from (Profile profile) {
         return ProfileDocument.builder()
                 .id(profile.getId())
+                .memberId(profile.getMember().getId())
                 .stageName(profile.getMember().getStageName())
                 .content(profile.getContent())
+                .type(profile.getType())
                 .privatePost(profile.getPrivatePost())
                 .createdTime(profile.getCreatedAt())
                 .updatedTime(profile.getCreatedAt())

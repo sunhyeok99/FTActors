@@ -130,32 +130,42 @@ public class ProfileServiceImpl implements ProfileService{
         return null;
     }
 
-    @Override //개얼여 (엘라스틱, db 둘 다 사용)
-    public String createProfile(ProfileRequest profileRequest, HttpSession session) {
-        Long nowLoginId = (Long) session.getAttribute("memberName");
-
-        //타입(condition)과 member_id(멤버 고유번호)로 확인
-        Character condition = profileRequest.getCondition();
-        Member loginMember = tmpMemRepo.findByLoginId(nowLoginId); //멤버 쪽에서...
-        Long loginMemberId = loginMember.getId();
+    //-------------
+    @Override //프로필 만들기 / 개얼여 (엘라스틱, db 둘 다 사용)
+    public String createProfile(ProfileRequest profileRequest) {
 
         //이미 프로필이 생성되어 있으면x
-        if( profileCustomRepository.existProfile(condition, loginMemberId) ) {
+        if( profileCustomRepository.existProfile(profileRequest.getType(), profileRequest.getMemberId()) ) {
             log.info("생성불가 - 이미 있는 거면 불가!");
 //            return "";
         }
 
+        //jwt 구현 후 삭제
+//        Member loginMember = new Member(
+//                "daniel",
+//                "다니엘",
+//                "daniel@naver.com",
+//                null,
+//                null,
+//                "010-8888-8888",
+//                "951111",
+//                "F",
+//                null,
+//                profileRequest.getStageName()
+//        );
+        Member loginMember = tmpMemRepo.findByLoginId(7L);
+        //-------jwt 구현 후 삭제
+
         //저장하기
         Profile creatingProfile = Profile.builder()
                 .member(loginMember)
-                .content(profileRequest.getSelfIntroduction())
-                .type(profileRequest.getCondition())
+                .content(profileRequest.getContent())
+                .type(profileRequest.getType())
                 .portfolio(profileRequest.getPortfolioLink())
-                .privatePost('F')
+                .privatePost('F') //처음 생성할 땐 무조건 공개
                 .build();
 
-        profileRepository.save(creatingProfile); //왜 두 개씩 만들어지니?
-        //엘라스틱 서치 생성하기 - 로그스태시
+        profileRepository.save(creatingProfile); //왜 두 개씩 만들어지니? -> 엘라스틱서치 repo에서 db도 만든다;;; 왕...
         profileDocumentRepository.save(ProfileDocument.from(creatingProfile)); //안 되면 써야지....
         return "";
     }

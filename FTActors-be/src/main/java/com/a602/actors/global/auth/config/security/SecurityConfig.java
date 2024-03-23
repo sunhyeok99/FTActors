@@ -95,7 +95,7 @@ public class SecurityConfig {
                                 "/firebase/**", "/css/**","/js/**", "/firebase-messaging-sw.js",
                                 "/barter/**", "/post/**", "/register", "/api"
                         ).permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 // oauth2.0 로그인 설정
                 .oauth2Login(oAuth -> oAuth
