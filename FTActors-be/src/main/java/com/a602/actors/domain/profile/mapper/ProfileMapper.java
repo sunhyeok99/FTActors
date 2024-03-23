@@ -48,7 +48,7 @@ public class ProfileMapper {
 
         List<ProfileSearchResponse> list = new ArrayList<ProfileSearchResponse>( profileDocuments.size() );
         for ( ProfileDocument profileDocument : profileDocuments ) {
-            list.add( ProfileDocumentListToProfileSearchResponseList( profileDocument ) );
+            list.add( ProfileDocumentToProfileSearchResponse( profileDocument ) );
         }
 
         return list;
