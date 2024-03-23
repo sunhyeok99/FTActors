@@ -1,7 +1,9 @@
 package com.a602.actors.domain.profile.mapper;
 
 import com.a602.actors.domain.profile.dto.ProfileDto;
+import com.a602.actors.domain.profile.dto.ProfileSearchResponse;
 import com.a602.actors.domain.profile.entity.Profile;
+import com.a602.actors.domain.profile.entity.ProfileDocument;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -39,4 +41,33 @@ public class ProfileMapper {
         return profileDto.build();
     }
 
+    public List<ProfileSearchResponse> ProfileDocumentListToProfileSearchResponseList(List<ProfileDocument> profileDocuments) {
+        if ( profileDocuments == null ) {
+            return null;
+        }
+
+        List<ProfileSearchResponse> list = new ArrayList<ProfileSearchResponse>( profileDocuments.size() );
+        for ( ProfileDocument profileDocument : profileDocuments ) {
+            list.add( ProfileDocumentListToProfileSearchResponseList( profileDocument ) );
+        }
+
+        return list;
+    }
+
+    public ProfileSearchResponse ProfileDocumentToProfileSearchResponse(ProfileDocument profileDocument) {
+        if ( profileDocument == null ) {
+            return null;
+        }
+
+        return ProfileSearchResponse.builder()
+                .id(profileDocument.getId())
+                .stageName(profileDocument.getStageName())
+                .content(profileDocument.getContent())
+                .type(profileDocument.getType())
+//                .portfolio()
+                .privatePost(profileDocument.getPrivatePost())
+                .createdTime(profileDocument.getCreatedTime())
+                .updatedTime(profileDocument.getUpdatedTime())
+                .build();
+    }
 }

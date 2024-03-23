@@ -18,17 +18,12 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.*;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -39,15 +34,15 @@ public class ProfileServiceImpl implements ProfileService{
     private final ProfileCustomRepository profileCustomRepository;
     private final TmpMemRepoImpl tmpMemRepo;
     private final ProfileMapper profileMapper;
-    private final ProfileDocumentRepository profileDocumentRepository; //엘라스틱 용
+    private final ProfileDocumentRepository profileDocumentRepository; //was 엘라스틱 용
     private final ElasticsearchOperations elasticsearchOperations;
 //    private final LogstashService logstashService; //로그스태시 호출 전용
 
-    @Override //여기서는 로그인 정보 뽑아오는 것만 공부하고 지우기
+    @Override //삭제할 메서드 (이거 기반으로 searchAllProfile 구현 마무리하고 삭제)
     public List<ProfileDocument> getProfileList(int sorting, Character condition, HttpSession session) {
         log.info("실환가요 - 엘라스틱 서치- 목록 다 뽑기");
         
-        return profileDocumentRepository.findAll();
+        return null;
 //        String nowLoginId = (String) session.getAttribute("memberName");
 //        List<Profile> profiles = null;
 //        Long loginnedId = (long) -1;
@@ -64,22 +59,34 @@ public class ProfileServiceImpl implements ProfileService{
 //        return profileCustomRepository.findAllLatest(sorting, condition);
     }
 
-    @Override
+    @Override //검색 목록 (엘라스틱만 , db사용x)
     public List<ProfileSearchResponse> searchAllProfile(int sorting) {
-        Sort sort = Sort.by(Sort.Direction.DESC, "updatedTime"); //1이면 최신순
-        if (sorting == 2) sort = Sort.by(Sort.Direction.ASC, "updatedTime"); //2이면 오래된 순
+//        Sort sort = Sort.by(Sort.Direction.DESC, "updatedTime"); //1이면 최신순
+//        if (sorting == 2) sort = Sort.by(Sort.Direction.ASC, "updatedTime"); //2이면 오래된 순
+//
+//        Iterable<ProfileDocument> iterable = profileDocumentRepository.findAll(sort);
+//        for (ProfileDocument document : iterable) {
+//            System.out.println(document);
+//        }
+//
+//        return StreamSupport.stream(iterable.spliterator(), false)
+//                .map(this::convertToSearchResponse) //변환하는 중간 연산 (Document엔터티 -> 응답 dto)
+//                .collect(Collectors.toList()); //스트림을 리스트로 돌림
 
-        Iterable<ProfileDocument> iterable = profileDocumentRepository.findAll(sort);
-        for (ProfileDocument document : iterable) {
-            System.out.println(document);
+        //Reop가서 List<도큐먼트>로 뽑아오고
+        List<ProfileDocument> list = null;
+        if(sorting == 1) { //최신 순
+            list = profileDocumentRepository.findAllByOrderByUpdatedTimeDesc();
         }
-        
-        return StreamSupport.stream(iterable.spliterator(), false)
-                .map(this::convertToSearchResponse) //변환하는 중간 연산 (Document엔터티 -> 응답 dto)
-                .collect(Collectors.toList()); //스트림을 리스트로 돌림
+        else { //오래된 순
+            list = profileDocumentRepository.findAllByOrderByUpdatedTimeAsc();
+        }
+
+        //리턴에서 mapper사용해서 변환 후 돌려주기
+        return profileMapper.ProfileDocumentListToProfileSearchResponseList(list);
     }
 
-    @Override
+    @Override //To do: session만 jwt로 바꾸기 (db만, 엘라스틱x)
     public ProfileDto getProfile(Long profileId, HttpSession session) {
         Long nowLoginId = (Long) session.getAttribute("memberName");
         Long loginnedId = (long) -1;
@@ -97,7 +104,7 @@ public class ProfileServiceImpl implements ProfileService{
         return profileMapper.ProfileToProfileDto(profile);
     }
 
-    @Override //처 돌았음.... 개어려어
+    @Override //개어려어 -> searchAllProfile에 통합하기 (엘라스틱만 , db사용x)
     public List<ProfileSearchResponse> search(ProfileSearchRequest profileSearchRequest) {
         //1. SearchCountMessage로 검색어의 검색 횟수 저장 -> 횟수 높을 수록 우선순위로 보여주기 (x)
         //2. 교환? 그냥 포카교환이라서 쓰인 거인듯 (x)
@@ -123,7 +130,7 @@ public class ProfileServiceImpl implements ProfileService{
         return null;
     }
 
-    @Override //개얼여
+    @Override //개얼여 (엘라스틱, db 둘 다 사용)
     public String createProfile(ProfileRequest profileRequest, HttpSession session) {
         Long nowLoginId = (Long) session.getAttribute("memberName");
 
@@ -153,7 +160,7 @@ public class ProfileServiceImpl implements ProfileService{
         return "";
     }
 
-    @Override
+    @Override // (엘라스틱, db 둘 다 사용)
     public String deleteProfile(Long profileId) {
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(IllegalArgumentException::new);
@@ -189,7 +196,7 @@ public class ProfileServiceImpl implements ProfileService{
 //        }
 //    }
 
-    @Override //ㄱ어려여
+    @Override // (엘라스틱, db 둘 다 사용)
     public String updateProfile(Long profileId, ProfileRequest profileRequest, HttpSession session) {
         Long nowLoginId = (Long) session.getAttribute("memberName");
         Profile profile = profileCustomRepository.findProfileById(profileId);
@@ -218,7 +225,7 @@ public class ProfileServiceImpl implements ProfileService{
         return "";
     }
 
-    @Override
+    @Override // 다중 검색 용으로 만든 거 같은데 더 연구해야 할 듯 (엘라스틱만)
     public List<ProfileDocument> searchProfileDocuments(List<String> keywordArr) { //다중 검색?? 어케 하니
         String keyword = keywordArr.get(0);
         Query query = QueryBuilders.match(queryBuilder -> queryBuilder.field("content").query(keyword));
@@ -229,22 +236,6 @@ public class ProfileServiceImpl implements ProfileService{
                 .stream()
                 .map(SearchHit::getContent)
                 .collect(Collectors.toList());
-    }
-
-    //검색 결과 response
-    private ProfileSearchResponse convertToSearchResponse(ProfileDocument document) {
-        // ProfileDocument를 SearchResponse 객체로 변환하는 로직
-        // 필요한 필드를 매핑하여 새로운 SearchResponse 객체 생성
-        return new ProfileSearchResponse(
-                document.getId(),
-                document.getStageName(),
-                document.getContent(),
-                document.getType(), // 이 필드는 BarterDocument에 적절히 정의되어 있어야 함
-                document.getPortfolio(), // 마찬가지로 BarterDocument에 정의되어 있어야 함
-                document.getPrivatePost(),
-                document.getUpdatedTime(),
-                null
-        );
     }
 
 }

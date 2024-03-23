@@ -31,14 +31,13 @@ public class ProfileController {
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", results);
     }
 
-    @GetMapping("/detail") //얜 뭔데 그냥 db에서 뽑아왔지??
+    @GetMapping("/detail") //그냥 db에서 가져와야 하는 게 맞음 -> jwt에서 멤버 가져오는 걸로 바꾸기
     public ApiResponse<ProfileDto> getDetailProfile(@RequestParam(name = "profile_id") Long profileId,
                                                         HttpSession session)
     {
         log.info("프로필 상세 페이지");
 
-        //To do: 비공개여부 True인 사람은 볼 수 없어야 함
-        //To do: 로그인 한 상태라면: 비공개여부가 true라도, 내 꺼는 보이게 해야 함...
+        //To do: session에서 유저 아이디 뽑아오는 거 -> jwt로 바꾸기
 
         return new ApiResponse<>(HttpStatus.OK.value(), "해당 프로필을 불러왔습니다.", profileService.getProfile(profileId, session));
     }

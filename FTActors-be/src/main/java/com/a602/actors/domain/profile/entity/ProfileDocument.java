@@ -21,22 +21,25 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     private Long id; //게시글 번호
 
 //    @Field(type = FieldType.Text, analyzer = "korean_analyzer", searchAnalyzer = "korean_analyzer")
-    @Field(type = FieldType.Text) // 형태소 분석할 텍스트 (검색에 활용)
-    private String stageName; //제목 (노리를 활용한 형태소 분석도 함 -> 변경예정)
+    @Field(type = FieldType.Text) // 노리 적용 예정 -> 초성 검색 허용, 오타 허용
+    private String stageName; //제목, 예명
+
+//    @Field(type = FieldType.Text) // 노리 적용 예정 -> 초성 검색 허용, 오타 허용
+//    private String name; //실명
 
 //    @Field(type = FieldType.Text, analyzer = "korean_analyzer", searchAnalyzer = "korean_analyzer")
-    @Field(type = FieldType.Text) // 형태소 분석할 텍스트 (검색에 활용)
-    private String content; //내용 (노리를 활용한 형태소 분석도 함 -> 변경예정)
+    @Field(type = FieldType.Text) // 노리 적용 예정 -> 오타 허용, 검색어 우선순위 적용
+    private String content; //내용(자기소개)
 
 //    email, phone, birth, gender, profileImage
 
-    @Field(type = FieldType.Keyword) //일반 텍스트 (형태소 분석 적용x, 검색 시 활용x)
+    @Field(type = FieldType.Keyword) //일반 텍스트 (형태소 분석 적용x)
     private Character type; //배우 프로필? 관계자 프로필?
 
-    @Field(type = FieldType.Keyword)
-    private String portfolio;
+//    @Field(type = FieldType.Keyword)
+//    private String portfolio;
 
-    @Field(type = FieldType.Keyword) //일반 텍스트 (형태소 분석 적용x, 검색 시 활용x)
+    @Field(type = FieldType.Keyword) //일반 텍스트 (형태소 분석 적용x)
     private Character privatePost;
 
     @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second)
@@ -48,7 +51,7 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     public static ProfileDocument from (Profile profile) {
         return ProfileDocument.builder()
                 .id(profile.getId())
-                .stageName(profile.getMember().getName()) //나중에 stage_name으로 바꾸기
+                .stageName(profile.getMember().getStageName())
                 .content(profile.getContent())
                 .privatePost(profile.getPrivatePost())
                 .createdTime(profile.getCreatedAt())
