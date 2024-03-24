@@ -41,6 +41,7 @@ public class NotificationService {
 		return sseEmitter;
 	}
 
+	// 알림이 필요한 곳에서 이 함수를 호출하면 됩니다.
 	public void send(Member sender, Member receiver, Note.NotificationType notificationType, String content){
 		Note notification = noteRepository.save(createNote(sender, receiver, notificationType, content));
 		// receiver = 현재 로그인 한 유저 = 알림 받을 사람
