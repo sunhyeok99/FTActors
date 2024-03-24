@@ -11,6 +11,7 @@ public interface AdminRepository {
 
     List<Report> getReportList();
     List<BlackListDto.BlackListSet> getBlackList();
-    void acceptReport();
-    void rejectReport();
+
+    void acceptReport(Long reportId) throws IllegalArgumentException;
+    void rejectReport(Long reportId) throws IllegalArgumentException;
 }

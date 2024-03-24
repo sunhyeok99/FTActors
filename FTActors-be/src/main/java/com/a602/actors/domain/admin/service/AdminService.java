@@ -4,7 +4,6 @@ package com.a602.actors.domain.admin.service;
 import com.a602.actors.domain.admin.dto.BlackListDto;
 import com.a602.actors.domain.admin.repository.AdminRepository;
 import com.a602.actors.domain.montage.dto.MontageReportDto;
-import com.a602.actors.domain.montage.entity.BlackList;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +22,16 @@ public class AdminService {
 
     public List<BlackListDto.BlackListSet> getBlackList(){
         return adminRepository.getBlackList();
+    }
+
+    public String acceptReport(Long reportId){
+        adminRepository.acceptReport(reportId);
+        return "";
+    }
+
+    public String rejectReport(Long reportId){
+        adminRepository.rejectReport(reportId);
+        return "";
     }
 
 }

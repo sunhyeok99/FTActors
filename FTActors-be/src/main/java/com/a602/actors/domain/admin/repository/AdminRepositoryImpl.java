@@ -2,16 +2,22 @@ package com.a602.actors.domain.admin.repository;
 
 import com.a602.actors.domain.admin.dto.BlackListDto;
 import com.a602.actors.domain.admin.dto.QBlackListDto_BlackListSet;
+import com.a602.actors.domain.member.Member;
+import com.a602.actors.domain.member.QMember;
+import com.a602.actors.domain.montage.entity.BlackList;
 import com.a602.actors.domain.montage.entity.QBlackList;
 import com.a602.actors.domain.montage.entity.QReport;
 import com.a602.actors.domain.montage.entity.Report;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
+@Slf4j
 class AdminRepositoryImpl implements AdminRepository {
 
     private final JPAQueryFactory queryFactory;
@@ -38,29 +44,111 @@ class AdminRepositoryImpl implements AdminRepository {
 
         return queryFactory.select(
                     new QBlackListDto_BlackListSet(
-                            blackList.member.name,
-                            blackList.member.email)
+                            blackList.member.email,
+                            blackList.member.name)
                     )
                 .from(blackList)
+                //.where(blackList.warning.eq('T'))
                 .fetch();
 
     }
 
     @Override
-    public void acceptReport() {
-        // 테이블에서 해당 내역 지우고
+    @Transactional
+    public void acceptReport(Long reportId) throws IllegalArgumentException{
 
 
-        // reporter 블랙리스트 테이블에 추가
-        // 만일 존재하면 warning True로 변경
+        QReport report = QReport.report;
+        QBlackList blackList = QBlackList.blackList;
+
+        QMember member = QMember.member;
+        // 블랙리스트에 있다면?
+
+        Long reporteeId = queryFactory.select(member.id)
+                .from(report)
+                .join(report.reportee, member)
+                .where(report.id.eq(reportId))
+                .fetchOne();
+
+        log.info("REPORTEE ID : {}", reporteeId);
+        log.info("REPORTEE ID : {}", reportId);
+
+        BlackList black = queryFactory
+                .selectFrom(blackList)
+                .where(blackList.member.id.eq(reporteeId))
+                .fetchOne();
+
+
+        // 이번이 첫 신고
+        if (black == null) {
+            log.info("첫 신고입니다.");
+
+            Member reportee = entityManager.getReference(Member.class, reporteeId);
+            BlackList newBlackList =
+                    BlackList.builder()
+                            .member(reportee)
+                            .warning('F')
+                            .build();
+
+            entityManager.persist(newBlackList);
+        } else {
+            black.setWarning('T');
+        }
+
+        // 신고 삭제
+        queryFactory
+                .delete(report)
+                .where(report.id.eq(reportId))
+                .execute();
 
     }
 
     @Override
-    public void rejectReport() {
-        // 테이블에서 해당 내역 지우고
+    @Transactional
+    public void rejectReport(Long reportId) {
+        QReport report = QReport.report;
 
-        // reportee 블랙리스트 테이블에 추가
-        // 만일 존재하면 warning True로 변경
+        QBlackList blackList = QBlackList.blackList;
+
+        QMember member = QMember.member;
+        // 블랙리스트에 있다면?
+
+        Long reporterId = queryFactory.select(member.id)
+                .from(report)
+                .join(report.reporter, member)
+                .where(report.id.eq(reportId))
+                .fetchOne();
+
+        log.info("REPORTEE ID : {}", reporterId);
+        log.info("REPORTEE ID : {}", reportId);
+
+        BlackList black = queryFactory
+                .selectFrom(blackList)
+                .where(blackList.member.id.eq(reporterId))
+                .fetchOne();
+
+
+        // 이번이 첫 신고
+        if (black == null) {
+            log.info("첫 신고입니다.");
+
+            Member reportee = entityManager.getReference(Member.class, reporterId);
+            BlackList newBlackList =
+                    BlackList.builder()
+                            .member(reportee)
+                            .warning('F')
+                            .build();
+
+            entityManager.persist(newBlackList);
+        } else {
+            black.setWarning('T');
+        }
+
+        // 신고 삭제
+        queryFactory
+                .delete(report)
+                .where(report.id.eq(reportId))
+                .execute();
     }
+
 }

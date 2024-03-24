@@ -1,11 +1,16 @@
 package com.a602.actors.domain.admin.dto;
 
-import co.elastic.clients.elasticsearch.security.AuthenticateResponse;
 import com.a602.actors.domain.montage.entity.BlackList;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
 
 public class BlackListDto {
+
+    @Getter
+    @Setter
     public static class BlackListSet{
         private final String email;
         private final String name;
