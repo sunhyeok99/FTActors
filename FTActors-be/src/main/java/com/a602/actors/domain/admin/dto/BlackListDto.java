@@ -1,6 +1,8 @@
 package com.a602.actors.domain.admin.dto;
 
+import co.elastic.clients.elasticsearch.security.AuthenticateResponse;
 import com.a602.actors.domain.montage.entity.BlackList;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 
 public class BlackListDto {
@@ -8,6 +10,7 @@ public class BlackListDto {
         private final String email;
         private final String name;
 
+        @QueryProjection
         @Builder
         public BlackListSet(String email, String name){
             this.email = email;

@@ -8,24 +8,26 @@ import com.querydsl.core.annotations.QueryProjection;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name="report")
 @Getter
+@NoArgsConstructor
 public class Report extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name="reporter_id")
-    private final Member reporter;
+    private Member reporter;
 
     @ManyToOne
     @JoinColumn(name="reportee_id")
-    private final Member reportee;
+    private Member reportee;
 
-    private final String reason;
+    private String reason;
     @Column(name="image_link")
-    private final String link;
+    private String link;
 
 
     @Builder

@@ -22,7 +22,7 @@ public class AdminService {
     }
 
     public List<BlackListDto.BlackListSet> getBlackList(){
-        return adminRepository.getBlackList().stream().map(BlackListDto.BlackListSet::toDto).toList();
+        return adminRepository.getBlackList();
     }
 
 }

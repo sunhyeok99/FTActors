@@ -1,6 +1,7 @@
 package com.a602.actors.domain.admin.repository;
 
-import com.a602.actors.domain.montage.entity.BlackList;
+import com.a602.actors.domain.admin.dto.BlackListDto;
+import com.a602.actors.domain.admin.dto.QBlackListDto_BlackListSet;
 import com.a602.actors.domain.montage.entity.QBlackList;
 import com.a602.actors.domain.montage.entity.QReport;
 import com.a602.actors.domain.montage.entity.Report;
@@ -8,7 +9,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -33,10 +33,17 @@ class AdminRepositoryImpl implements AdminRepository {
     }
 
     @Override
-    public List<BlackList> getBlackList() {
+    public List<BlackListDto.BlackListSet> getBlackList() {
         QBlackList blackList = QBlackList.blackList;
 
-        return new ArrayList<>();
+        return queryFactory.select(
+                    new QBlackListDto_BlackListSet(
+                            blackList.member.name,
+                            blackList.member.email)
+                    )
+                .from(blackList)
+                .fetch();
+
     }
 
     @Override

@@ -23,6 +23,8 @@ public class MontageReportDto {
         }
     }
 
+    @Getter
+    @Setter
     public static class ReportList{
         private final Long reporterId;
         private final Long reporteeId;
