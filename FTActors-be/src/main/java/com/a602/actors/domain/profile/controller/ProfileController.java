@@ -31,8 +31,6 @@ public class ProfileController {
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", results);
     }
     
-    //성별 기준 검색은 그냥 db쓰는 게 나은데, 거기에 다른 검색어가 포함되면 es를 쓰는 게 맞고... 복잡하군
-
     @GetMapping("/detail") //db만 사용 -> jwt에서 멤버 가져오는 걸로 바꾸기, 시큐리티 영향x 처리 필요
     public ApiResponse<ProfileDto> getDetailProfile(@RequestParam(name = "profile_id") Long profileId,
                                                         HttpSession session)
@@ -93,15 +91,13 @@ public class ProfileController {
     }
 
     //프로필 수정
-    @PutMapping("/myprofile") //개어려워 -> jwt에서 로그인 정보 뽑아오기
+    @PutMapping("/myprofile") // -> jwt에서 로그인 정보 뽑아오기
     public ApiResponse<String> modifyProfile(@RequestParam(name = "profile_id") Long profileId,
                                               @RequestBody ProfileRequest profileRequest)
     {
         log.info("프로필 수정하기~! ");
         
-        //updatedTime이 왜 안 바뀌지
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 수정했습니다.", profileService.updateProfile(profileId, profileRequest));
     }
-
 
 }

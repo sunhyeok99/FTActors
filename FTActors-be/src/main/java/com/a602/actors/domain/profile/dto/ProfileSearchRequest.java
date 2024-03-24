@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProfileSearchRequest { //스테이지 네임 검색 or 내용 검색
+public class ProfileSearchRequest { //이름 검색, 예명 검색, 생년월일 검색, 성별 검색, 내용(자기소개) 검색
 //    private Integer page = 1;
 //    private Integer size = 10;
 

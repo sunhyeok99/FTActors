@@ -29,8 +29,8 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     @Field(type = FieldType.Text) // 노리 적용 예정 -> 초성 검색 허용, 오타 허용
     private String stageName; //제목, 예명 TO do: Member에서 수정이 일어나면, profile에서도 똑같이 수정이 일어나야 한다. elasticsearch를 쓰게 되면서 문제가 생겼따
 
-//    @Field(type = FieldType.Text) // 노리 적용 예정 -> 초성 검색 허용, 오타 허용
-//    private String name; //실명
+    @Field(type = FieldType.Text) // 노리 적용 예정 -> 초성 검색 허용, 오타 허용
+    private String name; //실명 add
 
 //    @Field(type = FieldType.Text, analyzer = "korean_analyzer", searchAnalyzer = "korean_analyzer")
     @Field(type = FieldType.Text) // 노리 적용 예정 -> 오타 허용, 검색어 우선순위 적용
@@ -38,12 +38,14 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
 
 //    email, phone, profileImage
     //birth, gender -> 얘네는 추가할 수도
+    @Field(type = FieldType.Keyword)
+    private String birth; //생년월일 add (생년만 잘라서 저장)
+
+    @Field(type = FieldType.Keyword)
+    private String gender; //성별 add
 
     @Field(type = FieldType.Keyword) //일반 텍스트 (형태소 분석 적용x)
     private Character type; //배우 프로필? 관계자 프로필?
-
-//    @Field(type = FieldType.Keyword)
-//    private String portfolio;
 
     @Field(type = FieldType.Keyword) //일반 텍스트 (형태소 분석 적용x)
     private Character privatePost;
@@ -64,6 +66,9 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
                 .privatePost(profile.getPrivatePost())
                 .createdTime(TimeChanger.convertUtcToKoreaTime())
                 .updatedTime(TimeChanger.convertUtcToKoreaTime())
+                .gender(profile.getMember().getGender())
+                .birth(extractBirthYear(profile.getMember().getBirth())) //생년만 저장
+                .name(profile.getMember().getName())
                 .build();
     }
 
@@ -72,5 +77,16 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
         this.content = newContent;
         this.privatePost = newPrivatePost;
         this.updatedTime = TimeChanger.convertUtcToKoreaTime(); // 수정 시간을 현재 시간으로 갱신
+    }
+
+    // 생년 정보를 추출하는 메서드
+    private static String extractBirthYear(String fullBirth) {
+        // "-"를 기준으로 문자열을 분리하여 생년 정보를 추출
+        String[] parts = fullBirth.split("-");
+        if (parts.length > 0) {
+            return parts[0]; // 첫 번째 요소가 생년 정보
+        } else {
+            return null; // 유효한 생년 정보가 없는 경우
+        }
     }
 }

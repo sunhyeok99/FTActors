@@ -69,6 +69,9 @@ public class ProfileMapper {
                 .privatePost(profileDocument.getPrivatePost())
                 .createdTime(profileDocument.getCreatedTime())
                 .updatedTime(profileDocument.getUpdatedTime())
+                .name(profileDocument.getName())
+                .gender(profileDocument.getGender())
+                .birth(profileDocument.getBirth())
                 .build();
     }
 }
