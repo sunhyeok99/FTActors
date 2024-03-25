@@ -19,6 +19,7 @@ public class RecruitmentResponseDto {
     private int wishlist;
     private int apply;
     private String privateRecruitment;
+    private String file;
 
     @Builder
     public RecruitmentResponseDto(
@@ -33,7 +34,8 @@ public class RecruitmentResponseDto {
             String endDate,
             int wishlist,
             int apply,
-            String privateRecruitment
+            String privateRecruitment,
+            String file
     ) {
         this.id = id;
         this.title = title;
@@ -47,6 +49,7 @@ public class RecruitmentResponseDto {
         this.wishlist = wishlist;
         this.apply = apply;
         this.privateRecruitment = privateRecruitment;
+        this.file = file;
     }
 
 }

@@ -35,6 +35,8 @@ public class Recruitment extends BaseEntity {
 
     private String privateRecruitment;
 
+    private String file;
+
     @Builder
     public Recruitment(
             String title,
@@ -43,7 +45,8 @@ public class Recruitment extends BaseEntity {
             String category,
             String image,
             String startDate,
-            String endDate
+            String endDate,
+            String file
     ) {
         this.title = title;
         this.content = content;
@@ -52,6 +55,7 @@ public class Recruitment extends BaseEntity {
         this.image = image;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.file = file;
     }
 
     // 변경할 인자는제목과 내용 변경 가능하게

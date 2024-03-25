@@ -1,9 +1,11 @@
 package com.a602.actors.domain.recruitment.crawling;
 
+import com.a602.actors.domain.member.repository.MemberRepository;
 import com.a602.actors.domain.recruitment.entity.Recruitment;
+import com.a602.actors.global.exception.ExceptionCodeSet;
+import com.a602.actors.global.exception.MemberException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Crawling {
-
+    private MemberRepository memberRepository;
     public List<Recruitment> getRecruitmentDatas(LocalDate time) {
         final String RECRUITMENT_URL = "https://www.filmmakers.co.kr/filmmakersWanted/category/";
         String yesterday = time.toString();
@@ -35,13 +37,13 @@ public class Crawling {
                     document = Jsoup.connect(url).get();
                     String title = document.select("th[colspan=2] h2").text();
                     String content = document.select(".xe_content p").text();
-                    String director = "미공개";
-                    for (int type = 2; type <= 3; type++) {
-                        if (document.select("table.ui.unstackable tbody tr:nth-of-type(3) td:nth-of-type(1)").text().equals("감독")) {
-                            director = document.select("table.ui.unstackable tbody tr:nth-of-type(3) td:nth-of-type(2)").text();
-                            break;
-                        }
-                    }
+//                    String director = "미공개";
+//                    for (int type = 2; type <= 3; type++) {
+//                        if (document.select("table.ui.unstackable tbody tr:nth-of-type(3) td:nth-of-type(1)").text().equals("감독")) {
+//                            director = document.select("table.ui.unstackable tbody tr:nth-of-type(3) td:nth-of-type(2)").text();
+//                            break;
+//                        }
+//                    }
                     String category = getCategory(urlCode[index]);
                     String startDate = date;
                     String endDate = "상시 모집";
@@ -51,11 +53,14 @@ public class Crawling {
                             break;
                         }
                     }
-                    System.out.println(director + " " + endDate);
+                    // endDate가 상시모집일 경우 start도 상시모집으로
+                    if(endDate.equals("상시 모집")){
+                        startDate = "상시 모집";
+                    }
                     Recruitment recruitment = Recruitment.builder()
                             .title(title)
                             .content(content)
-//                        .member(director)
+                            .member(memberRepository.findById((1L)).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)))
                             .category(category)
                             .startDate(startDate)
                             .endDate(endDate)
@@ -65,7 +70,7 @@ public class Crawling {
             }
         } catch (IOException e) {
             // 크롤링 중에 예외가 발생할 경우
-            e.printStackTrace(); // 예외를 출력하거나 로깅하도록 수정해도 좋습니다.
+            e.printStackTrace();
         }
         return recruitmentList;
     }
