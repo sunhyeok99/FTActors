@@ -1,25 +1,29 @@
 package com.a602.actors.domain.montage.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
 
 import com.a602.actors.domain.montage.dto.MontageCommentDto;
 import com.a602.actors.domain.montage.entity.Comment;
 import com.a602.actors.domain.montage.repository.MontageRepository;
-import com.a602.actors.domain.montage.repository.MontageRepositoryImpl;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import com.a602.actors.domain.notification.document.Notify;
+import com.a602.actors.domain.notification.service.NotificationService;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
 public class MontageCommentService {
 
     private final MontageRepository montageRepository;
+    private final NotificationService notificationService;
 
-    public MontageCommentService(MontageRepository montageRepository){
+    public MontageCommentService(MontageRepository montageRepository, NotificationService notificationService){
         //this.MontageCommentRepositoryImpl = MontageCommentRepositoryImpl;
         this.montageRepository = montageRepository;
+        this.notificationService = notificationService;
     }
 
     public List<MontageCommentDto.Response> getAllComments(Long montageId){
@@ -49,6 +53,12 @@ public class MontageCommentService {
     public String writeComment(MontageCommentDto.CreateRequest req){
         log.info("WRITE COMMENT ");
         montageRepository.saveComment(req);
+
+        // Todo : security 완성 후 변경
+        Long receiverId = 1L;
+        String title = montageRepository.getMontage(req.getMontageId()).getTitle();
+
+        notificationService.send(receiverId, Notify.NotificationType.COMMENT, title + "에 새로운 댓글이 달렸습니다.");
 
         return "";
     }
