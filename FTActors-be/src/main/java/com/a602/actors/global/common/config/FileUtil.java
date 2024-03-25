@@ -2,6 +2,8 @@ package com.a602.actors.global.common.config;
 
 import com.a602.actors.domain.montage.entity.Montage;
 import com.a602.actors.global.common.enums.FolderType;
+import com.a602.actors.global.exception.ExceptionCodeSet;
+import com.a602.actors.global.exception.FileException;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -32,14 +34,22 @@ public class FileUtil {
     }
     // S3 링크 반환
 
-    public static String makeFileName(String fileName){
+    public static String makeFileName(String fileName) throws FileException{
 
         UUID uuid = UUID.randomUUID();
-        return uuid.toString() + "_" + fileName;
+
+        String savedName = uuid.toString() + "_" + fileName;
+        if(savedName.length() >= 50)
+            throw new FileException(ExceptionCodeSet.FILE_NAME_TOO_LONG);
+        return savedName;
     }
 
     // S3 링크 반환
-    public static String uploadFile(MultipartFile multipartFile, String savedName, FolderType folderType) throws IOException {
+    public static String uploadFile(MultipartFile multipartFile, String savedName, FolderType folderType) throws IOException, FileException {
+
+        if(multipartFile == null || multipartFile.isEmpty())
+            throw new FileException(ExceptionCodeSet.FILE_NOT_EXISTS);
+
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(multipartFile.getSize());
         metadata.setContentType(multipartFile.getContentType());

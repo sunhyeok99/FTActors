@@ -6,8 +6,6 @@ import com.a602.actors.domain.montage.dto.MontageCommentDto;
 import com.a602.actors.domain.montage.dto.MontageDto;
 import com.a602.actors.domain.montage.dto.QMontageDto_Montages;
 import com.a602.actors.domain.montage.entity.*;
-import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Slf4j
@@ -65,13 +64,13 @@ public class MontageRepositoryImpl implements MontageRepository {
     }
 
     @Override
-    public Montage getMontage(Long montageId) {
+    public Optional<Montage> getMontage(Long montageId) {
         QMontage montage = QMontage.montage;
 
-        return queryFactory
+        return Optional.ofNullable(queryFactory
                 .selectFrom(montage)
                 .where(montage.id.eq(montageId))
-                .fetchOne();
+                .fetchOne());
     }
 
     @Override

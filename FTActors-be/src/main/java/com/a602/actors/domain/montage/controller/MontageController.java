@@ -6,6 +6,8 @@ import com.a602.actors.domain.montage.dto.MontageReportDto;
 import com.a602.actors.domain.montage.service.MontageCommentService;
 import com.a602.actors.domain.montage.service.MontageFileService;
 import com.a602.actors.global.common.dto.ApiResponse;
+import com.a602.actors.global.exception.FileException;
+import com.a602.actors.global.exception.MontageException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -41,8 +43,10 @@ public class MontageController {
     }
 
     @PostMapping("/upload")
-    public ApiResponse<String> uploadMontageList(@RequestParam(value = "file") MultipartFile file) throws GeneralSecurityException, IOException {
+    public ApiResponse<String> uploadMontage(@RequestPart(value = "file", required = true) MultipartFile file)
+            throws GeneralSecurityException, IOException, MontageException, FileException {
         log.info(file.getOriginalFilename());
+        log.info("INFO : {}", file.isEmpty());
         return new ApiResponse<>(HttpStatus.OK.value(), "성공적으로 업로드되었습니다.", montageFileService.uploadFile(file));
     }
 
@@ -95,16 +99,11 @@ public class MontageController {
     @PostMapping("/{montageId}/report")
     public ApiResponse<String> reportMontage(@RequestPart(name="req") MontageReportDto.CreateReport req,
                                              @RequestPart(name="file") MultipartFile file,
-                                             @PathVariable("montageId") Long montageId){
+                                             @PathVariable("montageId") Long montageId) throws IOException {
 
-        try {
-            System.out.println("HELLO");
-            return new ApiResponse<>(HttpStatus.OK.value(), "신고를 눌렀습니다.", montageFileService.report(req, file, montageId));
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-            return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), e.getMessage(), "");
-        }
+        System.out.println("HELLO");
+        return new ApiResponse<>(HttpStatus.OK.value(), "신고를 눌렀습니다.", montageFileService.report(req, file, montageId));
+
     }
 
 }
