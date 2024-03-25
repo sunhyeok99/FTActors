@@ -21,6 +21,7 @@ import BlacklistView from "@/views/adminview/BlacklistView.vue";
 import ReportView from "@/views/adminview/ReportView.vue";
 import ChatDetail from "@/components/chatpage/chatdetail.vue";
 import ChatList from "@/components/chatpage/chatlist.vue";
+import Editor from "@/components/videoEditor/Editor.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -140,6 +141,12 @@ const router = createRouter({
       path: '/chat/:id',
       name: 'chatdetail',
       component: ChatDetail,
+      props: true,
+    },
+    {
+      path: '/edit',
+      name: 'edit',
+      component: Editor,
       props: true,
     },
   ],
