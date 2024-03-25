@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import com.a602.actors.domain.member.Member;
-import com.a602.actors.domain.notification.entity.Note;
+import com.a602.actors.domain.notification.document.Notify;
 import com.a602.actors.domain.notification.service.NotificationService;
 
 import lombok.RequiredArgsConstructor;
@@ -46,10 +45,10 @@ public class NotificationController {
 		// Member sender = Member.builder()
 		// 	.memberId(String.valueOf(senderId))
 		// 	.build();
-		Member receiver = Member.builder()
-			.memberId(String.valueOf(receiverId))
-			.build();
+		// Member receiver = Member.builder()
+		// 	.memberId(String.valueOf(receiverId))
+		// 	.build();
 
-		notificationService.send(receiver, Note.NotificationType.CHAT, "test content");
+		notificationService.send(receiverId, Notify.NotificationType.CHAT, "test content");
 	}
 }

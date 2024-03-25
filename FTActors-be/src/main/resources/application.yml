@@ -6,6 +6,11 @@ spring:
         username: ${DB_USERNAME}
         password: ${DB_PASSWORD}
 
+    data:
+        mongodb:
+            uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/?retryWrites=true&w=majority&appName=${MONGO_APPNAME}
+            database: ${MONGO_DBNAME}
+
     jpa:
         hibernate:
             ddl-auto: none

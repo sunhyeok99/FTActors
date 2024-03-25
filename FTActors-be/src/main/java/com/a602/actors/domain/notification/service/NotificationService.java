@@ -6,11 +6,10 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import com.a602.actors.domain.member.Member;
-import com.a602.actors.domain.notification.dto.NoteDto;
-import com.a602.actors.domain.notification.entity.Note;
+import com.a602.actors.domain.notification.document.Notify;
+import com.a602.actors.domain.notification.dto.NotifyDto;
 import com.a602.actors.domain.notification.repository.EmitterRepositoryImpl;
-import com.a602.actors.domain.notification.repository.NoteRepository;
+import com.a602.actors.domain.notification.repository.NotifyRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 public class NotificationService {
 	private static final Long DEFAULT_TIMEOUT = 60L * 60 * 1000;
 	private final EmitterRepositoryImpl emitterRepository;
-	private final NoteRepository noteRepository;
+	// private final NoteRepository noteRepository;
+	private final NotifyRepository notifyRepository;
 
 	public SseEmitter subscribe(Long memberId, String lastEventId){
 		log.info("NotificationService ============ start subscribe..");
@@ -48,27 +48,28 @@ public class NotificationService {
 	}
 
 	// 알림이 필요한 곳에서 이 함수를 호출하면 됩니다.
-	public void send(Member receiver, Note.NotificationType notificationType, String content){
+	public void send(Long receiverId, Notify.NotificationType notificationType, String content){
 		// Todo : Column 명 통일하고 아래 주석 해제
-		// Note notification = noteRepository.save(createNote(sender, receiver, notificationType, content));
-		Note notification = createNote(receiver, notificationType, content);
-		// receiver = 현재 로그인 한 유저 = 알림 받을 사람
-		String receiverId = receiver.getMemberId();
+		Notify notification = notifyRepository.save(createNote(receiverId, notificationType, content));
+		// Notify notification = createNote(receiverId, notificationType, content);
 
-		Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterByIdStartWith(receiverId);
+		// receiver = 현재 로그인 한 유저 = 알림 받을 사람
+		// String receiverId = receiver.getMemberId();
+
+		Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterByIdStartWith(String.valueOf(receiverId));
 		sseEmitters.forEach(
 			(key, sseEmitter) -> {
 				emitterRepository.saveEventCache(key, notification);
-				sendToClient(sseEmitter, key, NoteDto.Response.from(notification));
+				sendToClient(sseEmitter, key, NotifyDto.Response.from(notification));
 			}
 		);
 	}
 
-	private Note createNote(Member receiver, Note.NotificationType notificationType, String content) {
+	private Notify createNote(Long receiverId, Notify.NotificationType notificationType, String content) {
 		// Todo : sender 있는 경우, 없는 경우 나누기
-		return Note.builder()
+		return Notify.builder()
 			// .sender(sender)
-			.receiver(receiver)
+			.receiverId(receiverId)
 			.notificationType(notificationType)
 			.content(content)
 			.isRead('F')
