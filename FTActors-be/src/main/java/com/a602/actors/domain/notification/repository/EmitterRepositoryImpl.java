@@ -7,7 +7,10 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Repository
+@Slf4j
 public class EmitterRepositoryImpl implements EmitterRepository {
 	private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
 	public final Map<String, Object> eventCache = new ConcurrentHashMap<>();
@@ -15,6 +18,7 @@ public class EmitterRepositoryImpl implements EmitterRepository {
 	@Override
 	public SseEmitter save(String emitterId, SseEmitter sseEmitter) {
 		emitters.put(emitterId, sseEmitter);
+		log.info("NotificationService ============ save emitter completed, sseEmitter : {}", emitters.get(emitterId));
 		return sseEmitter;
 	}
 

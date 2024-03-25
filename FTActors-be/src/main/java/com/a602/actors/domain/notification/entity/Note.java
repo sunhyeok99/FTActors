@@ -19,9 +19,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Note extends BaseEntity {
 
-	@ManyToOne
-	@JoinColumn(referencedColumnName = "id", name = "sender_id")
-	private Member sender;
+	// @ManyToOne
+	// @JoinColumn(referencedColumnName = "id", name = "sender_id")
+	// private Member sender;
 
 	@ManyToOne
 	@JoinColumn(referencedColumnName = "id", name = "receiver_id")
