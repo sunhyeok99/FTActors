@@ -5,12 +5,7 @@ import com.a602.actors.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.util.Assert;
-
-import java.util.ArrayList;
-import java.util.Date;
 
 @Entity(name = "profile")
 @Getter
@@ -26,7 +21,7 @@ public class Profile extends BaseEntity {
 //    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member; //회원 번호 (member테이블에서 가져옴)
 
     private String content; //자기소개
