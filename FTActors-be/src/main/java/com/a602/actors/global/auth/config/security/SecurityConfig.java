@@ -93,7 +93,7 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
                         .requestMatchers("/auth/**", "/main", "/error", "/static/**",
                                 "/firebase/**", "/css/**","/js/**", "/firebase-messaging-sw.js",
-                                "/barter/**", "/post/**", "/register", "/api"
+                                "/barter/**", "/post/**", "/register", "/api/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
