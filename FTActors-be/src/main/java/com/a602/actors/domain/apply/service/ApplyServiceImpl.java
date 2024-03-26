@@ -32,9 +32,10 @@ public class ApplyServiceImpl implements ApplyService {
     @Override
     @Transactional
     public void apply(ApplyDto applyDto) throws IOException {
+        String savedName ="";
         String url = "";
         if (applyDto.getVideoFile() != null) {
-            String savedName = FileUtil.makeFileName(applyDto.getVideoFile().getOriginalFilename());
+            savedName = FileUtil.makeFileName(applyDto.getVideoFile().getOriginalFilename());
             url = FileUtil.uploadFile(applyDto.getVideoFile(), savedName, FolderType.APPLY_PATH);
         }
 
@@ -43,6 +44,7 @@ public class ApplyServiceImpl implements ApplyService {
                 .member(memberRepository.findById(applyDto.getMemberId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)))
                 .content(applyDto.getContent())
                 .videoLink(url)
+                .savedName(savedName)
                 .build();
         applyRepository.save(apply);
     }
@@ -53,7 +55,7 @@ public class ApplyServiceImpl implements ApplyService {
         Apply apply = applyRepository.findByRecruitmentIdAndMemberId(recruitmentId, memberId);
 
         // 지원을 취소하기 전에 S3에서 파일을 삭제합니다.
-        String videoLink = apply.getVideoLink();
+        String videoLink = apply.getSavedName();
         if (videoLink != null) {
             FileUtil.deleteFile(videoLink, FolderType.APPLY_PATH);
         }

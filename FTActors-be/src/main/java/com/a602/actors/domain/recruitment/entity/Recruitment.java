@@ -28,7 +28,7 @@ public class Recruitment extends BaseEntity {
     private String category;
 
     private String image;
-
+    private String imageName;
     private String startDate;
 
     private String endDate;
@@ -36,6 +36,7 @@ public class Recruitment extends BaseEntity {
     private String privateRecruitment;
 
     private String file;
+    private String fileName;
 
     @Builder
     public Recruitment(
@@ -44,29 +45,35 @@ public class Recruitment extends BaseEntity {
             Member member,
             String category,
             String image,
+            String imageName,
             String startDate,
             String endDate,
-            String file
+            String file,
+            String fileName
     ) {
         this.title = title;
         this.content = content;
         this.member = member;
         this.category = category;
         this.image = image;
+        this.imageName = imageName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.file = file;
+        this.fileName = fileName;
     }
 
     // 변경할 인자는제목과 내용 변경 가능하게
-    public void updateRecruitment(String title, String content, String category, String image, String startDate, String endDate, String file ) {
+    public void updateRecruitment(String title, String content, String category, String image, String imageName, String startDate, String endDate, String file, String fileName) {
         this.title = title;
         this.content = content;
         this.category = category;
         this.image = image;
+        this.imageName = imageName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.file = file;
+        this.fileName = fileName;
     }
     // 마감일자 변경
     public void updateEndDate(String endDate){

@@ -41,17 +41,17 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     @Override
     @Transactional
     public void register(RecruitmentRequestDto recruitmentRequestDto) throws IOException {
-        String imageUrl ="";
-        String fileUrl ="";
+        String imageName = "";
+        String imageUrl = "";
+        String fileName ="";
+        String fileUrl = "";
         if (recruitmentRequestDto.getImage() != null) {
-            String originalName = recruitmentRequestDto.getImage().getOriginalFilename();
-            String fileName = FileUtil.makeFileName(originalName);
-             imageUrl = FileUtil.uploadFile(recruitmentRequestDto.getImage(), fileName, FolderType.RECRUIT_PATH);
+            imageName = FileUtil.makeFileName(recruitmentRequestDto.getImage().getOriginalFilename());
+            imageUrl = FileUtil.uploadFile(recruitmentRequestDto.getImage(), imageName, FolderType.RECRUIT_PATH);
         }
         if (recruitmentRequestDto.getFile() != null) {
-            String originalName = recruitmentRequestDto.getFile().getOriginalFilename();
-            String fileName = FileUtil.makeFileName(originalName);
-             fileUrl = FileUtil.uploadFile(recruitmentRequestDto.getFile(), fileName, FolderType.RECRUIT_PATH);
+            fileName = FileUtil.makeFileName(recruitmentRequestDto.getFile().getOriginalFilename());
+            fileUrl = FileUtil.uploadFile(recruitmentRequestDto.getFile(), fileName, FolderType.RECRUIT_PATH);
         }
         Recruitment recruitment = Recruitment.builder()
                 .title(recruitmentRequestDto.getTitle())
@@ -59,9 +59,11 @@ public class RecruitmentServiceImpl implements RecruitmentService {
                 .member(memberRepository.findById(recruitmentRequestDto.getPostMemberId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)))
                 .category(recruitmentRequestDto.getCategory())
                 .image(imageUrl)
+                .imageName(imageName)
                 .startDate(recruitmentRequestDto.getStartDate())
                 .endDate(recruitmentRequestDto.getEndDate())
                 .file(fileUrl)
+                .fileName(fileName)
                 .build();
         recruitmentRepository.save(recruitment);
     }
@@ -72,22 +74,22 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         Recruitment recruitment = recruitmentRepository.findById(recruitmentRequestDto.getId()).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND));
         // S3에서 이미지 먼저 삭제 후 다시 들어온 이미지로 교체
         String imageurl = recruitment.getImage();
+        String imageName = recruitment.getImageName();
         String fileUrl = recruitment.getFile();
+        String fileName = recruitment.getFileName();
         if (recruitmentRequestDto.getImage() != null) {
-            FileUtil.deleteFile(recruitment.getImage(), FolderType.RECRUIT_PATH);
-            String originalName = recruitmentRequestDto.getImage().getOriginalFilename();
-            String fileName = FileUtil.makeFileName(originalName);
-            imageurl = FileUtil.uploadFile(recruitmentRequestDto.getImage(), fileName, FolderType.RECRUIT_PATH);
+            FileUtil.deleteFile(recruitment.getImageName(), FolderType.RECRUIT_PATH);
+            imageName = FileUtil.makeFileName(recruitmentRequestDto.getImage().getOriginalFilename());
+            imageurl = FileUtil.uploadFile(recruitmentRequestDto.getImage(), imageName, FolderType.RECRUIT_PATH);
         }
         if (recruitmentRequestDto.getFile() != null) {
             FileUtil.deleteFile(recruitment.getFile(), FolderType.RECRUIT_PATH);
-            String originalName = recruitmentRequestDto.getFile().getOriginalFilename();
-            String fileName = FileUtil.makeFileName(originalName);
+            fileName = FileUtil.makeFileName(recruitmentRequestDto.getFile().getOriginalFilename());
             fileUrl = FileUtil.uploadFile(recruitmentRequestDto.getFile(), fileName, FolderType.RECRUIT_PATH);
         }
         recruitment.updateRecruitment(recruitmentRequestDto.getTitle(), recruitmentRequestDto.getContent(),
-                recruitmentRequestDto.getCategory(), imageurl,
-                recruitmentRequestDto.getStartDate(), recruitmentRequestDto.getEndDate(), fileUrl);
+                recruitmentRequestDto.getCategory(), imageurl, imageName,
+                recruitmentRequestDto.getStartDate(), recruitmentRequestDto.getEndDate(), fileUrl, fileName);
         // 업데이트 완료
     }
 
@@ -116,10 +118,10 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         wishlistRepository.deleteByRecruitmentId(recruitmentId);
         // 공고 삭제
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND));
-        String imageUrl = recruitment.getImage();
-        String fileUrl = recruitment.getFile();
-        if(imageUrl != null) FileUtil.deleteFile(imageUrl, FolderType.RECRUIT_PATH);
-        if(fileUrl != null) FileUtil.deleteFile(fileUrl, FolderType.RECRUIT_PATH);
+        String imageName = recruitment.getImageName();
+        String fileName = recruitment.getFileName();
+        if (imageName != null) FileUtil.deleteFile(imageName, FolderType.RECRUIT_PATH);
+        if (fileName != null) FileUtil.deleteFile(fileName, FolderType.RECRUIT_PATH);
         recruitmentRepository.deleteById(recruitmentId);
     }
 
