@@ -32,15 +32,17 @@ public class ApplyServiceImpl implements ApplyService {
     @Override
     @Transactional
     public void apply(ApplyDto applyDto) throws IOException {
-        String savedName = FileUtil.makeFileName(applyDto.getVideoFile().getOriginalFilename());
-        String url = FileUtil.uploadFile(applyDto.getVideoFile(), savedName, FolderType.APPLY_PATH);
+        String url = "";
+        if (applyDto.getVideoFile() != null) {
+            String savedName = FileUtil.makeFileName(applyDto.getVideoFile().getOriginalFilename());
+            url = FileUtil.uploadFile(applyDto.getVideoFile(), savedName, FolderType.APPLY_PATH);
+        }
 
         Apply apply = Apply.builder()
                 .recruitment(recruitmentRepository.findById(applyDto.getRecruitmentId()).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND)))
                 .member(memberRepository.findById(applyDto.getMemberId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)))
                 .content(applyDto.getContent())
                 .videoLink(url)
-                .savedName(savedName)
                 .build();
         applyRepository.save(apply);
     }
@@ -68,7 +70,7 @@ public class ApplyServiceImpl implements ApplyService {
                 .map(apply -> ApplyDto.builder()
                         .id(apply.getId())
                         .recruitmentId(apply.getRecruitment().getId())
-                        .memberId(apply.getMember().getId())
+                        .memberName(apply.getMember().getName())
                         .content(apply.getContent())
                         .videoLink(apply.getVideoLink())
                         .build())
@@ -82,7 +84,7 @@ public class ApplyServiceImpl implements ApplyService {
         ApplyDto applyDto = ApplyDto.builder()
                 .id(apply.getId())
                 .recruitmentId(apply.getRecruitment().getId())
-                .memberId(apply.getMember().getId())
+                .memberName(apply.getMember().getName())
                 .content(apply.getContent())
                 .videoLink(apply.getVideoLink())
                 .build();
@@ -96,14 +98,14 @@ public class ApplyServiceImpl implements ApplyService {
                 .map(apply -> ApplyDto.builder()
                         .id(apply.getId())
                         .recruitmentId(apply.getRecruitment().getId())
-                        .memberId(apply.getMember().getId())
+                        .memberName(apply.getMember().getName())
                         .content(apply.getContent())
                         .videoLink(apply.getVideoLink())
                         .build())
                 .collect(Collectors.toList());
         return applyDtoList;
     }
-    
+
     // 해당 공고에 유저가 지원했는지 확인
     @Override
     public int existApply(Long recruitmentId, Long memberId) {

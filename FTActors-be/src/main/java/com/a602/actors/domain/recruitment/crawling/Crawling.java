@@ -27,7 +27,7 @@ public class Crawling {
                 Elements content2 = document.select("table.ui.table a.block"); // 주소 불러옴
 
                 for (int i = 0; i < content1.size(); i++) {
-                    String date = content1.get(i).text(); // 제목은 text만 추출
+                    String date = content1.get(i).text(); // 날짜는 text만 추출
                     String url = content2.get(i).absUrl("href"); // url은 a태그 추출
                     // 날짜비교해서 전날에 올라온 공고만 크롤링
                     if (!date.substring(0, 10).equals(yesterday)) {

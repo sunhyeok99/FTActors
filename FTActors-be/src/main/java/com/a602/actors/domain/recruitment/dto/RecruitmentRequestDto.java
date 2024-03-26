@@ -66,3 +66,4 @@ public class RecruitmentRequestDto {
         this.memberId = memberId;
     }
 }
+

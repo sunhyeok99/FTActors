@@ -1,8 +1,8 @@
 # 개발용
-#elasticsearch:
-#    host: ${ELASTICSEARCH_HOST}
-#    username: ${ELASTICSEARCH_USERNAME}
-#    password: ${ELASTICSEARCH_PASSWORD}
+elasticsearch:
+    host: ${ELASTICSEARCH_HOST}
+    username: ${ELASTICSEARCH_USERNAME}
+    password: ${ELASTICSEARCH_PASSWORD}
 
 spring:
     datasource:

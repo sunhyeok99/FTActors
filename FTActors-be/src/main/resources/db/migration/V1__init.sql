@@ -56,12 +56,13 @@ CREATE TABLE `recruitment` (
                                `content` text NOT NULL,
                                `member_id` bigint NOT NULL,
                                `category` varchar(10) NOT NULL,
-                               `image` varchar(255) NULL,
+                               `image` varchar(255),
                                `start_date` varchar(20) NOT NULL,
                                `end_date` varchar(20) NOT NULL,
                                `created_at` timestamp NULL DEFAULT current_timestamp,
                                `updated_at` timestamp NULL DEFAULT current_timestamp,
-                               `private_recruitment` varchar(1) NULL DEFAULT 'F',
+                               `private_recruitment` varchar(1) DEFAULT 'F',
+                               `file` varchar(255),
                                PRIMARY KEY (`id`),
                                CONSTRAINT `FK_Member_TO_Recruitment_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
 );
