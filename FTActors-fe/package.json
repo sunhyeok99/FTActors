@@ -9,14 +9,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.11.5",
+    "@ffmpeg/util": "^0.12.1",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "bootstrap-vue": "^2.23.1",
     "pinia": "^2.1.7",
     "vue": "^3.4.15",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vue3-dropzone": "^2.2.1"
   },
   "devDependencies": {
+    "@ffmpeg/core": "^0.11.0",
     "@vitejs/plugin-vue": "^5.0.3",
     "sass": "^1.71.1",
     "vite": "^5.0.11"
