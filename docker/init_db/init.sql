@@ -1,1 +1,3 @@
 CREATE DATABASE IF NOT EXISTS actors;
+
+GRANT ALL PRIVILEGES ON actors.* TO user@'%';

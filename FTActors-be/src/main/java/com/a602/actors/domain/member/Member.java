@@ -50,6 +50,9 @@ public class Member extends BaseEntity implements Serializable {
     @Column(name="stage_name")
     private String stageName;
 
+    @Column(name="saved_name")
+    private String savedName;
+
     @Builder
     public Member(String email, String phone, String birth, String gender, String profileImage, String stageName){
         this.email = email;

@@ -36,6 +36,8 @@ spring:
     flyway:
         enabled: true
         baseline-on-migrate: true
+        baseline-version: 0
+
     data:
         redis:
             host: ${REDIS_HOST} # Redis 서버 호스트 주소
@@ -65,7 +67,6 @@ spring:
                         user-info-uri: https://kapi.kakao.com/v2/user/me
                         user-name-attribute: id
 auth-redirect-url: ${AUTH_REDIRECT_URL}
-
 
 cloud:
     aws:

@@ -38,7 +38,8 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     @Override
     @Transactional
     public void register(RecruitmentRequestDto recruitmentRequestDto) throws IOException {
-        String imageUrl = FileUtil.uploadFile(recruitmentRequestDto.getImage(), FolderType.RECRUIT_PATH);
+        String savedName = FileUtil.makeFileName(recruitmentRequestDto.getImage().getOriginalFilename());
+        String imageUrl = FileUtil.uploadFile(recruitmentRequestDto.getImage(), savedName, FolderType.RECRUIT_PATH);
 
         Recruitment recruitment = Recruitment.builder()
                 .title(recruitmentRequestDto.getTitle())
@@ -46,6 +47,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
                 .member(memberRepository.findById(recruitmentRequestDto.getPostMemberId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)))
                 .category(recruitmentRequestDto.getCategory())
                 .image(imageUrl)
+                .savedName(savedName)
                 .startDate(recruitmentRequestDto.getStartDate())
                 .endDate(recruitmentRequestDto.getEndDate())
                 .build();
@@ -57,10 +59,13 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     public void update(RecruitmentRequestDto recruitmentRequestDto) throws IOException {
         Recruitment recruitment = recruitmentRepository.findById(recruitmentRequestDto.getId()).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND));
        // S3에서 이미지 먼저 삭제 후 다시 들어온 이미지로 교체
-        FileUtil.deleteFile(recruitment.getImage() , FolderType.RECRUIT_PATH);
-       String imageurl = FileUtil.uploadFile(recruitmentRequestDto.getImage() , FolderType.RECRUIT_PATH);
+        FileUtil.deleteFile(recruitment.getSavedName() , FolderType.RECRUIT_PATH);
+
+        String savedName = FileUtil.makeFileName(recruitmentRequestDto.getTitle());
+
+        String imageurl = FileUtil.uploadFile(recruitmentRequestDto.getImage(), savedName, FolderType.RECRUIT_PATH);
         recruitment.updateRecruitment(recruitmentRequestDto.getTitle(), recruitmentRequestDto.getContent(),
-                recruitmentRequestDto.getCategory(), imageurl,
+                recruitmentRequestDto.getCategory(), imageurl, savedName,
                 recruitmentRequestDto.getStartDate(), recruitmentRequestDto.getEndDate());
         // 업데이트 완료
     }
