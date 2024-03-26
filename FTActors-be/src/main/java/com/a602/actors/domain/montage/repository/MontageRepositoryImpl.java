@@ -1,6 +1,7 @@
 package com.a602.actors.domain.montage.repository;
 
 import com.a602.actors.domain.member.Member;
+import com.a602.actors.domain.member.QMember;
 import com.a602.actors.domain.montage.dto.MontageCommentDto;
 import com.a602.actors.domain.montage.dto.MontageDto;
 import com.a602.actors.domain.montage.dto.QMontageDto_Montages;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Slf4j
@@ -34,7 +36,7 @@ public class MontageRepositoryImpl implements MontageRepository {
         QLikeCount likeCount = QLikeCount.likeCount;
         
         // montage에 따라 likeCount 생성
-
+        
         return queryFactory
                         .select(new QMontageDto_Montages(
                                 montage.title,
@@ -44,8 +46,10 @@ public class MontageRepositoryImpl implements MontageRepository {
                                             select(likeCount.count())
                                             .from(likeCount)
                                             .where(likeCount.montage.id.eq(montage.id)), "likeCount")
-                                ))
+                                , montage.createdAt, montage.updatedAt)
+                                )
                         .from(montage)
+                    // 설정된 데이터를 가지고 JPQL 생성 및 실행하는 메소드
                     .fetch();
     }
 
@@ -60,13 +64,13 @@ public class MontageRepositoryImpl implements MontageRepository {
     }
 
     @Override
-    public Montage getMontage(Long montageId) {
+    public Optional<Montage> getMontage(Long montageId) {
         QMontage montage = QMontage.montage;
 
-        return queryFactory
+        return Optional.ofNullable(queryFactory
                 .selectFrom(montage)
                 .where(montage.id.eq(montageId))
-                .fetchOne();
+                .fetchOne());
     }
 
     @Override
@@ -207,4 +211,36 @@ public class MontageRepositoryImpl implements MontageRepository {
                     .execute();
         }
     }
+
+    @Override
+    @Transactional
+    public void addReport(Long reporterId, Long montageId, String reason, String link) {
+
+        QMember member = QMember.member;
+        QMontage montage = QMontage.montage;
+
+        // 신고당한 사람 아이디를 얻음
+        Member reportee = queryFactory
+                .select(member)
+                .from(montage)
+                .innerJoin(montage.member, member)
+                .where(montage.id.eq(montageId))
+                .fetchOne();
+
+        Member reporter = entityManager.getReference(Member.class, reporterId);
+
+        log.info("신고당한 사람의 정보 : " + reportee);
+        log.info("신고한 사람의 정보 : " + reporter);
+
+        Report report =
+                Report.builder()
+                        .reporter(reporter)
+                        .reportee(reportee)
+                        .reason(reason)
+                        .link(link)
+                        .build();
+
+        entityManager.persist(report);
+    }
+
 }

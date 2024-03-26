@@ -10,6 +10,7 @@ import com.a602.actors.domain.notification.document.Notify;
 import com.a602.actors.domain.notification.dto.NotifyDto;
 import com.a602.actors.domain.notification.repository.EmitterRepositoryImpl;
 import com.a602.actors.domain.notification.repository.NotifyRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ public class NotificationService {
 	private final EmitterRepositoryImpl emitterRepository;
 	// private final NoteRepository noteRepository;
 	private final NotifyRepository notifyRepository;
+	private final ObjectMapper objectMapper;
 
 	public SseEmitter subscribe(Long memberId, String lastEventId){
 		log.info("NotificationService ============ start subscribe..");
@@ -49,9 +51,9 @@ public class NotificationService {
 
 	// 알림이 필요한 곳에서 이 함수를 호출하면 됩니다.
 	public void send(Long receiverId, Notify.NotificationType notificationType, String content){
-		// Todo : Column 명 통일하고 아래 주석 해제
-		Notify notification = notifyRepository.save(createNote(receiverId, notificationType, content));
-		// Notify notification = createNote(receiverId, notificationType, content);
+		log.info("NotificationService ============= send() 시작");
+
+		Notify notification = notifyRepository.save(createNotify(receiverId, notificationType, content));
 
 		// receiver = 현재 로그인 한 유저 = 알림 받을 사람
 		// String receiverId = receiver.getMemberId();
@@ -63,9 +65,11 @@ public class NotificationService {
 				sendToClient(sseEmitter, key, NotifyDto.Response.from(notification));
 			}
 		);
+
+		log.info("NotificationService ============= send() 끝");
 	}
 
-	private Notify createNote(Long receiverId, Notify.NotificationType notificationType, String content) {
+	private Notify createNotify(Long receiverId, Notify.NotificationType notificationType, String content) {
 		// Todo : sender 있는 경우, 없는 경우 나누기
 		return Notify.builder()
 			// .sender(sender)
@@ -76,12 +80,13 @@ public class NotificationService {
 			.build();
 	}
 
-	private void sendToClient(SseEmitter sseEmitter, String id, Object data){
+	private <T> void sendToClient(SseEmitter sseEmitter, String id, T data){
 		try{
+			log.info("sendToClient ============ sendToClient start");
 			sseEmitter.send(SseEmitter.event()
 				.id(id)
 				.name("sse")
-				.data(data));
+				.data(objectMapper.writeValueAsString(data)));
 			log.info("sendToClient ============ sendToClient completed");
 		} catch (IOException e){
 			log.info("sendToClient ============ sendToClient failed");

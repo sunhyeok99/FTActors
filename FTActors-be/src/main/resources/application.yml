@@ -1,8 +1,13 @@
 # 개발용
-elasticsearch:
-    host: ${ELASTICSEARCH_HOST}
-    username: ${ELASTICSEARCH_USERNAME}
-    password: ${ELASTICSEARCH_PASSWORD}
+#elasticsearch:
+#    host: ${ELASTICSEARCH_HOST}
+#    username: ${ELASTICSEARCH_USERNAME}
+#    password: ${ELASTICSEARCH_PASSWORD}
+server:
+  servlet:
+    encoding:
+        charset: UTF-8
+        enabled: true
 
 spring:
     datasource:
@@ -36,6 +41,7 @@ spring:
     flyway:
         enabled: true
         baseline-on-migrate: true
+        baseline-version: 0
 
     rabbitmq:
         host: ${MQ_HOST}
@@ -45,15 +51,17 @@ spring:
 
     data:
         redis:
-            host: ${HOST} # Redis 서버 호스트 주소
+            host: ${REDIS_HOST} # Redis 서버 호스트 주소
             port: 6379      # Redis 서버 포트
             database: 0
+
         mongodb:
             uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/?retryWrites=true&w=majority&appName=${MONGO_APPNAME}
             database: ${MONGO_DBNAME}
-    config:
-        activate:
-            on-profile: oauth
+#    config:
+#        activate:
+#            on-profile: oauth
+
         # 스프링 시큐리티
     security:
         # oauth2 사용
@@ -101,3 +109,5 @@ rabbit:
     routing-key: ${MQ_ROUTING_KEY}
     user_name: ${MQ_USER_NAME}
     password: ${MQ_PASSWORD}
+
+jwtKey: ${KEY}

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.a602.actors.domain.montage.dto.MontageCommentDto;
 import com.a602.actors.domain.montage.entity.Comment;
+import com.a602.actors.domain.montage.entity.Montage;
 import com.a602.actors.domain.montage.repository.MontageRepository;
 import com.a602.actors.domain.notification.document.Notify;
 import com.a602.actors.domain.notification.service.NotificationService;
@@ -54,11 +55,9 @@ public class MontageCommentService {
         log.info("WRITE COMMENT ");
         montageRepository.saveComment(req);
 
-        // Todo : security 완성 후 변경
-        Long receiverId = 1L;
-        String title = montageRepository.getMontage(req.getMontageId()).getTitle();
-
-        notificationService.send(receiverId, Notify.NotificationType.COMMENT, title + "에 새로운 댓글이 달렸습니다.");
+        Montage montage = montageRepository.getMontage(req.getMontageId()).get();
+        // 몽타쥬 올린 사람한테 댓글 알림 전송
+        notificationService.send(montage.getMember().getId(), Notify.NotificationType.COMMENT, montage.getTitle() + "에 새로운 댓글이 달렸습니다.");
 
         return "";
     }

@@ -20,7 +20,7 @@ public class NoteDto {
 		// Todo : member의 unique 값을 뭐로 저장하냐에 따라서 id 타입 바꾸기
 		// 지금은 String login_id를 참조
 
-		String sender_id;
+		// String sender_id;
 		String receiver_id;
 		String content;
 		String type;
@@ -30,7 +30,7 @@ public class NoteDto {
 		public static Response from(Note note){
 			return Response.builder()
 				// .sender_id(note.getSender().getMemberId())
-				.receiver_id(note.getReceiver().getMemberId())
+				.receiver_id(note.getReceiver().getUserId())
 				.content(note.getContent())
 				.type(note.getNotificationType().name())
 				.isRead(note.getIsRead())

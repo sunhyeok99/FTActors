@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/notify")
+@RequestMapping("/api/notify")
 public class NotificationController {
 	private final NotificationService notificationService;
 
