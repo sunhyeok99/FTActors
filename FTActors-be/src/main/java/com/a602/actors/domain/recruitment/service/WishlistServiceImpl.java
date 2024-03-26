@@ -4,7 +4,7 @@ import com.a602.actors.domain.member.repository.MemberRepository;
 import com.a602.actors.domain.recruitment.dto.RecruitmentListResponseDto;
 import com.a602.actors.domain.recruitment.entity.Recruitment;
 import com.a602.actors.domain.recruitment.entity.Wishlist;
-import com.a602.actors.domain.recruitment.repository.RecruitmentRespository;
+import com.a602.actors.domain.recruitment.repository.RecruitmentRepository;
 import com.a602.actors.domain.recruitment.repository.WishlistRepository;
 import com.a602.actors.global.exception.ExceptionCodeSet;
 import com.a602.actors.global.exception.MemberException;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class WishlistServiceImpl implements WishlistService {
 
     private final WishlistRepository wishlistRepository;
-    private final RecruitmentRespository recruitmentRespository;
+    private final RecruitmentRepository recruitmentRepository;
     private final MemberRepository memberRepository;
 
     @Override
@@ -31,7 +31,7 @@ public class WishlistServiceImpl implements WishlistService {
         Wishlist wishlist = wishlistRepository.findByRecruitmentIdAndMemberId(recruitmentId, memberId);
         if (wishlist == null) {
             wishlist = Wishlist.builder()
-                    .recruitment(recruitmentRespository.findById(recruitmentId).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND)))
+                    .recruitment(recruitmentRepository.findById(recruitmentId).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND)))
                     .member(memberRepository.findById(memberId).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)))
                     .build();
             wishlistRepository.save(wishlist);
@@ -42,6 +42,7 @@ public class WishlistServiceImpl implements WishlistService {
     }
 
     @Override
+    @Transactional
     public int detail(long recruitmentId, long memberId) {
         Wishlist wishlist = wishlistRepository.findByRecruitmentIdAndMemberId(recruitmentId, memberId);
         if (wishlist == null) {
@@ -52,6 +53,7 @@ public class WishlistServiceImpl implements WishlistService {
 
     // 멤버 아이디로 먼저 위시리스트 필터링 -> 위시리스트의 공고 id를 이용해서 RecruitmentList~ 생성
     @Override
+    @Transactional
     public List<RecruitmentListResponseDto> list(long memberId) {
         List<Wishlist> wishlists = wishlistRepository.findByMemberId(memberId);
         // 위시리스트의 공고 id를 이용해서 RecruitmentListDto 생성

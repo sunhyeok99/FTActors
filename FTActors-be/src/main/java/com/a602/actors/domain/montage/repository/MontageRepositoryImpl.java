@@ -2,10 +2,11 @@ package com.a602.actors.domain.montage.repository;
 
 import com.a602.actors.domain.member.Member;
 import com.a602.actors.domain.montage.dto.MontageCommentDto;
-import com.a602.actors.domain.montage.entity.Comment;
-import com.a602.actors.domain.montage.entity.Montage;
-import com.a602.actors.domain.montage.entity.QComment;
-import com.a602.actors.domain.montage.entity.QMontage;
+import com.a602.actors.domain.montage.dto.MontageDto;
+import com.a602.actors.domain.montage.dto.QMontageDto_Montages;
+import com.a602.actors.domain.montage.entity.*;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -26,13 +27,26 @@ public class MontageRepositoryImpl implements MontageRepository {
         this.entityManager = entityManager;
     }
 
+    // 몽타주 개발
     @Override
-    public List<Montage> getAllMontages() {
+    public List<MontageDto.Montages> getAllMontages() {
         QMontage montage = QMontage.montage;
+        QLikeCount likeCount = QLikeCount.likeCount;
+        
+        // montage에 따라 likeCount 생성
 
         return queryFactory
-                .selectFrom(montage)
-                .fetch();
+                        .select(new QMontageDto_Montages(
+                                montage.title,
+                                montage.link,
+                                Expressions.as(
+                                    JPAExpressions.
+                                            select(likeCount.count())
+                                            .from(likeCount)
+                                            .where(likeCount.montage.id.eq(montage.id)), "likeCount")
+                                ))
+                        .from(montage)
+                    .fetch();
     }
 
     @Override
@@ -57,19 +71,63 @@ public class MontageRepositoryImpl implements MontageRepository {
 
     @Override
     @Transactional
-    public void saveMontage(String title, String url){
+    public void saveMontage(String originalName, String savedName, String url){
         Integer memberId = 1; // 추후 JWT 완성되면 고치겠습니다.
 
         Member member = entityManager.getReference(Member.class, memberId);
         Montage montage =
                 Montage.builder()
                 .member(member)
-                .title(title)
+                .title(originalName)
+                        .savedName(savedName)
                 .link(url)
                 .build();
 
         entityManager.persist(montage);
     }
+
+    // 좋아요 개발
+    @Override
+    @Transactional
+    public boolean addLike(Long montageId, Long memberId) {
+        QLikeCount likeCount = QLikeCount.likeCount;
+
+        LikeCount likeTrace = queryFactory
+                .selectFrom(likeCount)
+                        .where(likeCount.member.id.eq(memberId)
+                                .and(likeCount.montage.id.eq(montageId)))
+                .fetchOne();
+        
+        // 좋아요를 누른 흔적이 있을 때
+        if(likeTrace != null){
+
+            Long affectedRow =
+                    queryFactory
+                    .delete(likeCount)
+                    .where(likeCount.member.id.eq(memberId)
+                            .and(likeCount.montage.id.eq(montageId)))
+                    .execute();
+
+            log.info("LIKE DELETE - affected ROW : {} ", affectedRow);
+            return false;
+        }
+        else{
+            // 좋아요를 누른 흔적이 없을 때
+            Member member = entityManager.getReference(Member.class, memberId);
+            Montage montage = entityManager.getReference(Montage.class, montageId);
+
+            LikeCount newLikeCount =
+                    LikeCount.builder()
+                            .member(member)
+                            .montage(montage)
+                            .build();
+
+            entityManager.persist(newLikeCount);
+        }
+        return true;
+    }
+
+    // Comment 개발
 
     @Override
     @Transactional
@@ -98,6 +156,7 @@ public class MontageRepositoryImpl implements MontageRepository {
 
     @Override
     @Transactional
+
     public void saveComment(MontageCommentDto.CreateRequest req) {
         // FIX : memberId의 경우 토큰 개발 후 코드에서 가져오는 것으로 로직 변경 수행
         Member member = entityManager.getReference(Member.class, 1);
@@ -147,8 +206,5 @@ public class MontageRepositoryImpl implements MontageRepository {
                     .where(comment.id.eq(commentId).and(comment.montage.id.eq(montageId)))
                     .execute();
         }
-
     }
-
-
 }

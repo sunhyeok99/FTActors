@@ -26,6 +26,9 @@ public class Apply extends BaseEntity {
 
     private String videoLink;
 
+    @Column(name="saved_name")
+    private String savedName;
+
     private String content;
 
     @Builder
@@ -33,12 +36,13 @@ public class Apply extends BaseEntity {
             Recruitment recruitment,
             Member member,
             String videoLink,
-            String content
+            String content,
+            String savedName
     ) {
     this.recruitment = recruitment;
     this.member = member;
     this.videoLink = videoLink;
     this.content = content;
+    this.savedName = savedName;
     }
-
 }

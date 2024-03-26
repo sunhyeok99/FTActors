@@ -15,7 +15,7 @@ public class MemberServiceImpl implements MemberService{
 
     public void register(MemberDTO memberDTO){
         Member newMember = Member.builder()
-                .memberId(memberDTO.getLoginId())
+                .userId(memberDTO.getLoginId())
                 .password(memberDTO.getPassword())
                 .email(memberDTO.getEmail())
                 .phone(memberDTO.getPhone())
@@ -24,7 +24,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     public boolean login(MemberDTO memberDto){
-        Member member = memberRepository.findByMemberId(memberDto.getLoginId());
+        Member member = memberRepository.findByuserId(memberDto.getLoginId());
         return member != null && member.getPassword().equals(memberDto.getPassword());
     }
 }

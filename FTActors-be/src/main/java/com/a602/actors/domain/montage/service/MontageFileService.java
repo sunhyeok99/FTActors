@@ -26,7 +26,7 @@ public class MontageFileService {
         this.montageRepository = montageRepository;
     }
     public List<MontageDto.Montages> getAllMontageList(){
-        return montageRepository.getAllMontages().stream().map(MontageDto.Montages::toDto).toList();
+        return montageRepository.getAllMontages();
     }
 
     public List<MontageDto.Montages> getMyMontage(Long memberId){
@@ -37,11 +37,19 @@ public class MontageFileService {
     public String uploadFile(MultipartFile multipartFile) throws IOException {
         String originalFilename = multipartFile.getOriginalFilename();
 
-        String url = FileUtil.uploadFile(multipartFile, FolderType.MONTAGE_PATH);
+        String savedName = FileUtil.makeFileName(originalFilename);
+
+        String url = FileUtil.uploadFile(multipartFile, savedName, FolderType.MONTAGE_PATH);
         System.out.println("URL : " + url);
 
-        montageRepository.saveMontage(originalFilename, url);
+        montageRepository.saveMontage(originalFilename, savedName, url);
+
         return "";
+    }
+
+    public boolean pushLike(Long montageId){
+        Long memberId = 1L;
+        return montageRepository.addLike(montageId, memberId);
     }
 
     public String deleteFile(Long montageId) throws IOException {

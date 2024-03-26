@@ -1,4 +1,9 @@
 # 개발용
+elasticsearch:
+    host: ${ELASTICSEARCH_HOST}
+    username: ${ELASTICSEARCH_USERNAME}
+    password: ${ELASTICSEARCH_PASSWORD}
+
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
@@ -6,19 +11,13 @@ spring:
         username: ${DB_USERNAME}
         password: ${DB_PASSWORD}
 
-    data:
-        mongodb:
-            uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/?retryWrites=true&w=majority&appName=${MONGO_APPNAME}
-            database: ${MONGO_DBNAME}
-
     jpa:
         hibernate:
             ddl-auto: none
         properties:
             hibernate:
                 format_sql: true
-                jdbc:
-                    time_zone:Asia/Seoul
+                jdbc: time_zone:Asia/Seoul
         show-sql: true
 
     hikari:
@@ -39,10 +38,45 @@ spring:
         baseline-on-migrate: true
 
     rabbitmq:
-        host: localhost     # default host
-        port: 5672          # default port
-        username: guest     # default ID
-        password: guest     # default PW
+        host: ${MQ_HOST}
+        port: ${MQ_PORT}
+        username: ${MQ_USER_NAME}
+        password: ${MQ_PASSWORD}
+
+    data:
+        redis:
+            host: ${HOST} # Redis 서버 호스트 주소
+            port: 6379      # Redis 서버 포트
+            database: 0
+        mongodb:
+            uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/?retryWrites=true&w=majority&appName=${MONGO_APPNAME}
+            database: ${MONGO_DBNAME}
+    config:
+        activate:
+            on-profile: oauth
+        # 스프링 시큐리티
+    security:
+        # oauth2 사용
+        oauth2:
+            # client
+            client:
+                # 등록 부분 설정
+                registration:
+                    kakao:
+                        client-id: ${CLIENT_ID}
+                        client-secret: ${CLIENT_SECRET}
+                        client-name: Kakao
+                        authorization-grant-type: authorization_code
+                        redirect-uri: ${REDIRECT_URI}
+                        client-authentication-method: client_secret_post
+                        scope: profile_nickname
+                provider:
+                    kakao:
+                        authorization-uri: https://kauth.kakao.com/oauth/authorize
+                        token-uri: https://kauth.kakao.com/oauth/token
+                        user-info-uri: https://kapi.kakao.com/v2/user/me
+                        user-name-attribute: id
+auth-redirect-url: ${AUTH_REDIRECT_URL}
 
 cloud:
     aws:
@@ -57,11 +91,9 @@ cloud:
         stack:
             auto: false
 
-
-
-server:
-    servlet:
-        context-path: /api
+#server:
+#    servlet:
+#        context-path: /api
 
 rabbit:
     queue-name: ${MQ_QUEUE_NAME}
