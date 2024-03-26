@@ -19,6 +19,9 @@ import java.io.Serializable;
 public class Member extends BaseEntity implements Serializable {
     @Column(name = "login_id")
     private String userId;
+//
+//    @Column(name = "password")
+//    private String password;
 
     @Column(name = "name")
     private String name;
