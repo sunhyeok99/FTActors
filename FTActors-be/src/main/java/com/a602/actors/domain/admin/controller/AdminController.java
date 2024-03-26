@@ -34,7 +34,7 @@ public class AdminController {
         return new ApiResponse<>(200, "신고 접수를 허용합니다.", adminService.acceptReport(resultDto.getReportId()));
     }
 
-    @PostMapping("/report/rejectance")
+    @PostMapping("/report/rejection")
     public ApiResponse<String> rejectReport(@RequestBody ReportResultDto resultDto){
         return new ApiResponse<>(200, "신고 접수를 불허합니다.", adminService.rejectReport(resultDto.getReportId()));
     }

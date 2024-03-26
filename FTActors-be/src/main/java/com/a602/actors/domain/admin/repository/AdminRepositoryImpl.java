@@ -132,10 +132,10 @@ class AdminRepositoryImpl implements AdminRepository {
         if (black == null) {
             log.info("첫 신고입니다.");
 
-            Member reportee = entityManager.getReference(Member.class, reporterId);
+            Member reporter = entityManager.getReference(Member.class, reporterId);
             BlackList newBlackList =
                     BlackList.builder()
-                            .member(reportee)
+                            .member(reporter)
                             .warning('F')
                             .build();
 
