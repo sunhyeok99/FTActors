@@ -1,8 +1,8 @@
 # 개발용
-elasticsearch:
-    host: ${ELASTICSEARCH_HOST}
-    username: ${ELASTICSEARCH_USERNAME}
-    password: ${ELASTICSEARCH_PASSWORD}
+#elasticsearch:
+#    host: ${ELASTICSEARCH_HOST}
+#    username: ${ELASTICSEARCH_USERNAME}
+#    password: ${ELASTICSEARCH_PASSWORD}
 
 spring:
     datasource:
@@ -40,12 +40,10 @@ spring:
 
     data:
         redis:
-            host: ${HOST} # Redis 서버 호스트 주소
+            host: ${REDIS_HOST} # Redis 서버 호스트 주소
             port: 6379      # Redis 서버 포트
             database: 0
-#    config:
-#        activate:
-#            on-profile: oauth
+
         # 스프링 시큐리티
     security:
         # oauth2 사용
@@ -83,8 +81,4 @@ cloud:
         stack:
             auto: false
 
-
-
-#server:
-#    servlet:
-#        context-path: /api
+jwtKey: ${KEY}

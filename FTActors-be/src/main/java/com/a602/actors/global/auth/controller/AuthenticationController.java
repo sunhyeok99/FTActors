@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.io.IOException;
 import java.util.Map;
 
 @Controller
@@ -36,7 +37,6 @@ public class AuthenticationController {
     public String login() {
         return "login";
     }
-
     /**
      * 로그인 상태 유지 14일
      * @param request
