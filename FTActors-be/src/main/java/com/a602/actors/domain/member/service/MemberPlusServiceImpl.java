@@ -28,7 +28,7 @@ public class MemberPlusServiceImpl implements MemberPlusService {
     @Value("${S3_BUCKET_NAME}")
     private String bucketName;
 
-    public void register(MemberPlusDTO memberPlusDTO, MultipartFile profileImage, String kakaoId ) throws IOException {
+    public void update(MemberPlusDTO memberPlusDTO, MultipartFile profileImage, String kakaoId ) throws IOException {
         log.info("kakao_id : {}", kakaoId);
         Optional<Member> existingMemberOptional = kakaoMemberRepository.findByKakaoId(kakaoId);
 //        Optional<Member> existingMemberOptional2 = kakaoMemberRepository.findById("6");
