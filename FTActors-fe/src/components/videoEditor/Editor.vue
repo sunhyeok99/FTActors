@@ -3,21 +3,18 @@
 Vue.js 컴포넌트의 JavaScript 로직을 작성하는 데 사용됩니다. 
 이 요소 안에는 해당 컴포넌트의 데이터, 메서드, 계산된 속성 등이 정의됩니다.
 */
-
+import { FFmpeg }  from '@ffmpeg/ffmpeg'
 import { ref, reactive } from 'vue';
-import { createFFmpeg } from "@ffmpeg/ffmpeg";
-
-import { FFmpeg } from '@ffmpeg/ffmpeg'
 import { toBlobURL, fetchFile } from '@ffmpeg/util'
 
-const ffmpeg = new FFmpeg()
+const ffmpeg = new FFmpeg({log : true})
 const message = ref('Click Start to Transcode')
 const video = ref('')
-const baseURL = 'https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm'
+const baseURL = 'https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/umd'
 const url = ref('')
 
-async function handleFileChange(event) {
-  const file = event.target.files[0] 
+async function handleFileChange() {
+  const file = document.getElementById("file"); 
   // input 태그로 동영상 받아온다.
   if (!file) return
 
@@ -37,7 +34,7 @@ async function handleFileChange(event) {
   // write가 잘 됐는지 확인 (readFile) 
   
   video.value = URL.createObjectURL(new Blob([data.buffer], { type: file.type }))
-  // video에 URL값 저장하여 video태그 src에 값 저장하여 동영상 확인 
+  // video에 URL값 저장하여 video태그 src에 값 저장하여 동 영상 확인 
 }
 
 // 인코딩 실행 버튼 클릭시 실행하는 transcode 함수
@@ -109,7 +106,8 @@ async function transcode() {
         <p>개발자 도구를 열어 로그를 확인하세요 (Ctrl+Shift+I)</p>
       </template>
       <template v-else>
-        <button @click="load">ffmpeg-core (~31 MB) 로드하기</button>
+        <input type="file" id="file"/>
+        <button @click="handleFileChange">클릭</button>
       </template>
     </div>
   </template>
