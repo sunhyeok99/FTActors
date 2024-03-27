@@ -18,8 +18,8 @@ public enum ExceptionCodeSet {
     APPLY_NOT_FOUND(HttpStatus.BAD_REQUEST, 3000, "존재하지 않는 지원내역입니다."),
 
     //프로필
-    PROFILE_NOT_FOUND(HttpStatus.BAD_REQUEST, 4000, "존재하지 않는 프로필입니다."),
-    PROFILE_ALREADY_EXIST(HttpStatus.BAD_REQUEST, 4001, "이미 생성된 프로필입니다. 기존 프로필을 수정해주세요");
+    PROFILE_NOT_FOUND(HttpStatus.BAD_REQUEST, 28000, "존재하지 않는 프로필입니다."),
+    PROFILE_ALREADY_EXIST(HttpStatus.BAD_REQUEST, 28001, "이미 생성된 프로필입니다. 기존 프로필을 수정해주세요");
 
     private final HttpStatus httpStatus;
     private final Integer status;

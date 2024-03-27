@@ -19,7 +19,7 @@ public class ProfileSearchResponse implements Serializable {
     private String stageName;
     private String content;
     private Character type;
-//    private String portfolio;
+    private String portfolio;
     private String gender; //성별 추가 (불변)
     private String birth; //생년월일 추가 (불변, 나이 기반 검색)
     private Character privatePost;

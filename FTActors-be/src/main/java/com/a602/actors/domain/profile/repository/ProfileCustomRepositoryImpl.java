@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -26,19 +27,20 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
     private final EntityManager entityManager;
 
     @Override
-    public Profile findProfileByIdAndCondition(Long profileId, Long loginnedId) {
+//    public Profile findProfileByIdAndCondition(Long profileId, Long loginnedId) {
+    public Optional<Profile> findProfileByIdAndCondition(Long profileId, Long loginnedId) {
         QProfile profile = QProfile.profile;
 
         // profileId와 일치하는 Profile을 조회하고,
         // 그 중 privatePost가 'F'이거나 memberId가 loginnedId와 일치하는 경우에만 반환
-        Profile result = jpaQueryFactory
+        return Optional.ofNullable(jpaQueryFactory
                 .selectFrom(profile)
                 .where(profile.id.eq(profileId)
                         .and(profile.privatePost.eq('F')
                                 .or(profile.member.id.eq(loginnedId))))
-                .fetchOne();
+                .fetchOne());
 
-        return result;
+//        return result;
     }
 
     @Override // 생성 - 이미 있는 프로필인지 확인

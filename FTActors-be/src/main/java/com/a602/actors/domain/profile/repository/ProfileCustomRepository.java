@@ -4,9 +4,11 @@ import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.entity.Profile;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProfileCustomRepository {
-    Profile findProfileByIdAndCondition(Long profileId, Long loginnedId);
+//    Profile findProfileByIdAndCondition(Long profileId, Long loginnedId);
+    Optional<Profile> findProfileByIdAndCondition(Long profileId, Long loginnedId);
 
     boolean existProfile(Character condition, Long loginMemberId);
 

@@ -1,6 +1,5 @@
 package com.a602.actors.domain.profile.entity;
 
-import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.global.elasticsearch.TimeChanger;
 import jakarta.persistence.Id;
 import lombok.*;
@@ -10,7 +9,7 @@ import java.time.LocalDateTime;
 
 @EqualsAndHashCode(of = "id") // equals() 및 hashCode() 메서드를 생성할 때 고려해야 할 필드를 지정
 @Document(indexName = "profile_elasticsearch") //해당 클래스의 인스턴스가 저장될 인덱스의 이름을 지정합니다. 이름 없으면 db 만듦
-//@Setting(settingPath = "es-config/es-analyzer.json")
+@Setting(settingPath = "es-config/nori_redvelvet.json")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,21 +22,20 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     private Long id; //게시글 번호
 
     @Field(type = FieldType.Keyword)
-    private Long memberId;
+    private Long memberId; //멤버 고유 번호
 
-//    @Field(type = FieldType.Text, analyzer = "korean_analyzer", searchAnalyzer = "korean_analyzer")
-    @Field(type = FieldType.Text) // 노리 적용 예정 -> 초성 검색 허용, 오타 허용
-    private String stageName; //제목, 예명 TO do: Member에서 수정이 일어나면, profile에서도 똑같이 수정이 일어나야 한다. elasticsearch를 쓰게 되면서 문제가 생겼따
+    //제목, 예명 TO do: Member에서 수정이 일어나면, profile에서도 똑같이 수정이 일어나야 한다. elasticsearch를 쓰게 되면서 문제가 생겼따
+    @Field(type = FieldType.Text, analyzer = "name_analyzer") // -> (초성 검색 허용), 오타 허용
+    private String stageName;
 
-    @Field(type = FieldType.Text) // 노리 적용 예정 -> 초성 검색 허용, 오타 허용
+    @Field(type = FieldType.Text, analyzer = "name_analyzer") // -> (초성 검색 허용), 오타 허용
     private String name; //실명 add
 
 //    @Field(type = FieldType.Text, analyzer = "korean_analyzer", searchAnalyzer = "korean_analyzer")
-    @Field(type = FieldType.Text) // 노리 적용 예정 -> 오타 허용, 검색어 우선순위 적용
+    @Field(type = FieldType.Text, analyzer = "content_and_title_analyzer") // -> 오타 허용, 자동 완성 (검색어 우선순위 적용)
     private String content; //내용(자기소개)
 
 //    email, phone, profileImage
-    //birth, gender -> 얘네는 추가할 수도
     @Field(type = FieldType.Keyword)
     private String birth; //생년월일 add (생년만 잘라서 저장)
 

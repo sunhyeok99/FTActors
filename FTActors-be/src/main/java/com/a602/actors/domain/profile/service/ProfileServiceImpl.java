@@ -36,9 +36,8 @@ public class ProfileServiceImpl implements ProfileService{
     private final TmpMemRepoImpl tmpMemRepo;
     private final ProfileMapper profileMapper;
     private final ProfileDocumentRepository profileDocumentRepository; //was 엘라스틱 용
-    private final ProfileDocumentCustomRepository profileDocumentCustomRepository; //was 엘라스틱 용
+//    private final ProfileDocumentCustomRepository profileDocumentCustomRepository; //was 엘라스틱 용
     private final ElasticsearchOperations elasticsearchOperations;
-//    private final LogstashService logstashService; //로그스태시 호출 전용
 
     @Override //삭제할 메서드 (이거 기반으로 searchAllProfile 구현 마무리하고 삭제)
     public List<ProfileDocument> getProfileList(int sorting, Character condition, HttpSession session) {
@@ -81,19 +80,22 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override //To do: session만 jwt로 바꾸기 (db만, 엘라스틱x)
     public ProfileDto getProfile(Long profileId, HttpSession session) {
-        Long nowLoginId = (Long) session.getAttribute("memberName");
-        Long loginnedId = (long) -1;
+//        Long nowLoginId = (Long) session.getAttribute("memberName");
+        Long loginnedId = (long) 10;
 
         //로그인 여부 확인 후, 로그인이 되어 있으면
-        if(nowLoginId != null) {
-            Member loginMember = tmpMemRepo.findByLoginId(nowLoginId);
-            loginnedId = loginMember.getId();
-        }
+//        if(nowLoginId != null) {
+//            Member loginMember = tmpMemRepo.findByLoginId(nowLoginId);
+//            loginnedId = loginMember.getId();
+//        }
 
         //있는 프로필이라도 비공개여부=T이면 null 반환, 본인 거면 상관 없음
-        Profile profile = profileCustomRepository.findProfileByIdAndCondition(profileId, loginnedId);
-        if(profile == null) return null; // -> (실제 없거나, 비공개여부=T) 프론트에서 "해당 프로필을 볼 수 없습니다"
+//        Profile profile = profileCustomRepository.findProfileByIdAndCondition(profileId, loginnedId);
+//        if(profile == null) new ProfileException(ExceptionCodeSet.PROFILE_NOT_FOUND); // -> (실제 없거나, 비공개여부=T) 프론트에서 "해당 프로필을 볼 수 없습니다"
 
+        //
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new ProfileException(ExceptionCodeSet.PROFILE_NOT_FOUND));
         return profileMapper.ProfileToProfileDto(profile);
     }
 
@@ -149,7 +151,7 @@ public class ProfileServiceImpl implements ProfileService{
 //                null,
 //                profileRequest.getStageName()
 //        );
-        Member loginMember = tmpMemRepo.findByLoginId(7L);
+        Member loginMember = tmpMemRepo.findByLoginId(10L);
         //-------jwt 구현 후 삭제
 
         //저장하기
@@ -161,16 +163,17 @@ public class ProfileServiceImpl implements ProfileService{
                 .privatePost('F') //처음 생성할 땐 무조건 공개
                 .build();
 
-        profileRepository.save(creatingProfile);
-        //시간 바꾸기
-        ProfileDocument creatingProfileDocument = ProfileDocument.from(creatingProfile);
+        profileRepository.save(creatingProfile); // To do: createTime과 updateTime이 이상하게 들어감. db 저장부터 TimeChanger 써야 함
+
+//        아래는 WAS 기반 엘라스틱 서치 -> db에는 저장이 실패했는데, 엘라스틱서치에는 저장이 되는 말도 안 되는 경우가 생길 수 있어 좋지 않다.
+//        ProfileDocument creatingProfileDocument = ProfileDocument.from(creatingProfile);
 //        creatingProfileDocument.setCreatedTime(TimeChanger.convertUtcToKoreaTime());
 //        creatingProfileDocument.setUpdatedTime(TimeChanger.convertUtcToKoreaTime());
-        profileDocumentRepository.save(creatingProfileDocument);
+//        profileDocumentRepository.save(creatingProfileDocument);
         return "";
     }
 
-    @Override // (엘라스틱, db 둘 다 사용)
+    @Override // (엘라스틱, db 둘 다 사용) //esOperation으로 was로 만듦..
     public String deleteProfile(Long profileId) {
         //To do: 1 jwt에서 로그인한 loginedMember 정보 뽑기
         //To do: 2 loginedMember에서 id(고유 번호) 뽑기
@@ -195,7 +198,7 @@ public class ProfileServiceImpl implements ProfileService{
         return "";
     }
 
-    @Override // (엘라스틱, db 둘 다 사용)
+    @Override // (엘라스틱, db 둘 다 사용) //To do: 어떠한 설정을 이유로, logstash는 현재 자기가 보고 있는 pk값보다 작은 애는 안 본다. 고로 update가 일어나도 어차피 자기가 보고 있는 애보다 작을 것이기 때문에, 이것을 해결해줘야 한다.
     public String updateProfile(Long profileId, ProfileRequest profileRequest) {
         //To do: 1 jwt에서 로그인한 loginedMember 정보 뽑기
         //To do: 2 loginedMember에서 id(고유 번호) 뽑기
@@ -208,10 +211,10 @@ public class ProfileServiceImpl implements ProfileService{
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(() -> new ProfileException(ExceptionCodeSet.PROFILE_NOT_FOUND)); // "수정 불가 - 없는 프로필입니다."
 
-        //수정 성공
+        // db 수정 성공
         profileCustomRepository.updateProfile(profileId, profileRequest);
-        //엘라스틱 서치 업데이트
-        profileDocumentCustomRepository.updateProfileByProfileId(profileId, profileRequest);
+        //엘라스틱 서치 업데이트 -> WAS 기반이기 때문에 쓰지 말자. logstash를 어떻게 할지 찾자
+//        profileDocumentCustomRepository.updateProfileByProfileId(profileId, profileRequest);
         return "";
     }
 
