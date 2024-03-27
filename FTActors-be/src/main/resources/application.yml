@@ -3,6 +3,11 @@ elasticsearch:
     host: ${ELASTICSEARCH_HOST}
     username: ${ELASTICSEARCH_USERNAME}
     password: ${ELASTICSEARCH_PASSWORD}
+logging:
+    file:
+        name: ./logs/customer-service.log
+logstash:
+    host: localhost
 
 spring:
     datasource:
