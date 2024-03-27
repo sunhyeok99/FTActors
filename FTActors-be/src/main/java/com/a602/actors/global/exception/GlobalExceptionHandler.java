@@ -17,8 +17,23 @@ public class GlobalExceptionHandler {
         return makeResponseFormat(e.getExceptionCode());
     }
 
+    @ExceptionHandler(ApplyException.class)
+    public ResponseEntity<ErrorResponse> handleRecruitmentException(ApplyException e) {
+        return makeResponseFormat(e.getExceptionCode());
+    }
+
+    @ExceptionHandler(MontageException.class)
+    public ResponseEntity<ErrorResponse> handleMontageException(MontageException e) {
+        return makeResponseFormat(e.getExceptionCode());
+    }
+    @ExceptionHandler(FileException.class)
+    public ResponseEntity<ErrorResponse> handleFileException(FileException e) {
+        return makeResponseFormat(e.getExceptionCode());
+    }
+
 
     private ResponseEntity<ErrorResponse> makeResponseFormat(ExceptionCodeSet exceptionCode) {
+        System.out.println("msg : " + exceptionCode.getMessage());
         return ResponseEntity.status(exceptionCode.getHttpStatus())
                 .body(ErrorResponse.builder()
                         .status(exceptionCode.getStatus())

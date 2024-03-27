@@ -1,4 +1,3 @@
-
 drop table IF EXISTS alarm;
 
 drop table IF EXISTS apply;
@@ -152,7 +151,7 @@ CREATE TABLE `comment` (
                            `updated_at` timestamp NULL DEFAULT current_timestamp,
                            `created_at` timestamp NOT NULL DEFAULT current_timestamp,
                            `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
-                            PRIMARY KEY (`id`),
+                           PRIMARY KEY (`id`),
                            CONSTRAINT `FK_Member_TO_Comment_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`),
                            CONSTRAINT `FK_montage_TO_Comment_1` FOREIGN KEY (`montage_id`) REFERENCES `montage` (`id`)
 );
@@ -244,3 +243,4 @@ CREATE TABLE `participants` (
                                 CONSTRAINT `FK_chat_room_TO_participants_1` FOREIGN KEY (`chat_room_id`) REFERENCES `chat_room` (`id`),
                                 CONSTRAINT `FK_Member_TO_participants_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
 );
+
