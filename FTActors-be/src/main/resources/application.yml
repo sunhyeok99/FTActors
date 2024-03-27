@@ -1,8 +1,13 @@
 # 개발용
-#elasticsearch:
-#    host: ${ELASTICSEARCH_HOST}
-#    username: ${ELASTICSEARCH_USERNAME}
-#    password: ${ELASTICSEARCH_PASSWORD}
+elasticsearch:
+    host: ${ELASTICSEARCH_HOST}
+    username: ${ELASTICSEARCH_USERNAME}
+    password: ${ELASTICSEARCH_PASSWORD}
+logging:
+    file:
+        name: ./logs/customer-service.log
+logstash:
+    host: localhost
 
 spring:
     datasource:
@@ -43,6 +48,9 @@ spring:
             host: ${REDIS_HOST} # Redis 서버 호스트 주소
             port: 6379      # Redis 서버 포트
             database: 0
+        mongodb:
+            uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/?retryWrites=true&w=majority&appName=${MONGO_APPNAME}
+            database: ${MONGO_DBNAME}
 
         # 스프링 시큐리티
     security:
@@ -81,4 +89,7 @@ cloud:
         stack:
             auto: false
 
-jwtKey: ${KEY}
+
+#server:
+#    servlet:
+#        context-path: /api

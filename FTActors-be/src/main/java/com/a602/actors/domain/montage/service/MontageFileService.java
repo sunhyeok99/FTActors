@@ -61,7 +61,7 @@ public class MontageFileService {
         Montage montage = montageRepository.getMontage(montageId)
                 .orElseThrow(() -> new MontageException(ExceptionCodeSet.ENTITY_NOT_EXISTS));
 
-        FileUtil.deleteFile(montage.getTitle(), FolderType.MONTAGE_PATH);
+        FileUtil.deleteFile(montage.getSavedName(), FolderType.MONTAGE_PATH);
 
         montageRepository.deleteMontage(montageId);
 
