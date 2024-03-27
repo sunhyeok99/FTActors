@@ -106,11 +106,11 @@ public class RecruitmentController {
     }
 
 
-    // 임시
-    @GetMapping("tmp")
-    public ApiResponse<String> tmp(){
-        recruitmentService.scheduleExpiredRecruitment();
-        return new ApiResponse<>(HttpStatus.OK.value(), "불러왔습니다", "");
-    }
+//    // 임시
+//    @GetMapping("tmp")
+//    public ApiResponse<String> tmp(){
+//        recruitmentService.scheduleExpiredRecruitment();
+//        return new ApiResponse<>(HttpStatus.OK.value(), "불러왔습니다", "");
+//    }
 }
 
