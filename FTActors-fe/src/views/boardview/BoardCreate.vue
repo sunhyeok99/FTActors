@@ -50,6 +50,8 @@
         공고 등록
       </button>
     </fieldset>
+
+
   </div>
 </template>
 
@@ -58,7 +60,6 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { recruitmentApi } from "../../util/axios.js";
 const router = useRouter();
-
 const title = ref("");
 const content = ref("");
 const postMemberId = ref("");
@@ -121,6 +122,7 @@ formData.append("memberId", postMemberId.value);
       min-height: 100vh;
       display: flex;
       align-items: center;
+      flex-direction: column;
     }
   }
   </style>

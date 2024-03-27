@@ -18,7 +18,7 @@
           <div class="my-3 logins">
             <button type="submit" class="btn btn-primary">로그인</button>
             <div id="app" class="center">
-              <a class="btn btn-kakao" href="http://localhost:8080/oauth2/authorization/kakao">Kakao Login</a>
+              <a class="btn btn-kakao" href="http://localhost:8080/oauth2/authorization/kakao"><img src="@\assets\icons\KakaoLogin.png" alt=""></a>
           </div>
           </div>
         </form>
