@@ -1,3 +1,4 @@
+
 # 개발용
 elasticsearch:
     host: ${ELASTICSEARCH_HOST}
@@ -89,6 +90,8 @@ cloud:
         stack:
             auto: false
 
+
+jwtKey: ${KEY}
 
 #server:
 #    servlet:
