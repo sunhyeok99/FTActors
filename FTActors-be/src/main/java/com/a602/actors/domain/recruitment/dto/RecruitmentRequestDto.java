@@ -54,7 +54,8 @@ public class RecruitmentRequestDto {
             MultipartFile image,
             String startDate,
             String endDate,
-            Long memberId
+            Long memberId,
+            MultipartFile file
     ) {
         this.title = title;
         this.content = content;
@@ -64,6 +65,7 @@ public class RecruitmentRequestDto {
         this.startDate = startDate;
         this.endDate = endDate;
         this.memberId = memberId;
+        this.file = file;
     }
 }
 
