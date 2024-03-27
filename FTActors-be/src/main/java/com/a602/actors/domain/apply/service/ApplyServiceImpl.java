@@ -53,7 +53,9 @@ public class ApplyServiceImpl implements ApplyService {
     @Transactional
     public void applyCancel(Long recruitmentId, Long memberId) throws IOException {
         Apply apply = applyRepository.findByRecruitmentIdAndMemberId(recruitmentId, memberId);
-
+        if(apply ==null){
+            throw new ApplyException(ExceptionCodeSet.APPLY_NOT_FOUND);
+        }
         // 지원을 취소하기 전에 S3에서 파일을 삭제합니다.
         String videoLink = apply.getSavedName();
         if (videoLink != null) {
