@@ -1,4 +1,3 @@
-
 drop table IF EXISTS alarm;
 
 drop table IF EXISTS apply;
@@ -39,7 +38,7 @@ CREATE TABLE `member` (
                           `phone` varchar(100) NULL,
                           `birth` varchar(100) NULL,
                           `gender` char(1) NULL,
-                          `profile_image` varchar(255) NULL,
+                          `profile_image` varchar(100) NULL,
                           `stage_name` varchar(100) NULL,
                           `created_at` timestamp NOT NULL DEFAULT current_timestamp,
                           `updated_at` timestamp NULL DEFAULT current_timestamp,
@@ -56,13 +55,12 @@ CREATE TABLE `recruitment` (
                                `content` text NOT NULL,
                                `member_id` bigint NOT NULL,
                                `category` varchar(10) NOT NULL,
-                               `image` varchar(255),
+                               `image` varchar(100) NULL,
                                `start_date` varchar(20) NOT NULL,
                                `end_date` varchar(20) NOT NULL,
                                `created_at` timestamp NULL DEFAULT current_timestamp,
                                `updated_at` timestamp NULL DEFAULT current_timestamp,
-                               `private_recruitment` varchar(1) DEFAULT 'F',
-                               `file` varchar(255),
+                               `private_recruitment` varchar(1) NULL DEFAULT 'F',
                                PRIMARY KEY (`id`),
                                CONSTRAINT `FK_Member_TO_Recruitment_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
 );
@@ -109,7 +107,7 @@ CREATE TABLE `apply` (
                                `id` bigint NOT NULL AUTO_INCREMENT,
                                `recruitment_id` bigint NOT NULL,
                                `member_id` bigint NOT NULL,
-                               `video_link` varchar(255) NOT NULL,
+                               `video_link` varchar(100) NOT NULL,
                                `content` varchar(200) NULL,
                                `created_at` timestamp NOT NULL DEFAULT current_timestamp,
                                `updated_at` timestamp NOT NULL DEFAULT current_timestamp,
@@ -190,7 +188,7 @@ CREATE TABLE `profile` (
                            `type` char(1) NOT NULL DEFAULT 'A',
                            `created_at` timestamp NULL DEFAULT current_timestamp,
                            `updated_at` timestamp NULL DEFAULT current_timestamp,
-                           `portfolio` varchar(255) NULL DEFAULT '',
+                           `portfolio` varchar(100) NULL DEFAULT '',
                            `private_post` varchar(1) NOT NULL DEFAULT 'F',
                            PRIMARY KEY (`id`),
                            CONSTRAINT `FK_Member_TO_profile_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
@@ -202,7 +200,7 @@ CREATE TABLE `report` (
                           `reason` varchar(255) NULL,
                           `reporter_id` bigint NOT NULL,
                           `reportee_id` bigint NOT NULL,
-                          `image_link` varchar(255) NULL,
+                          `image_link` varchar(100) NULL,
                           PRIMARY KEY (`id`),
                           CONSTRAINT `FK_Member_TO_report_1` FOREIGN KEY (`reporter_id`) REFERENCES `member` (`id`),
                           CONSTRAINT `FK_Member_TO_report_2` FOREIGN KEY (`reportee_id`) REFERENCES `member` (`id`)
@@ -245,3 +243,4 @@ CREATE TABLE `participants` (
                                 CONSTRAINT `FK_chat_room_TO_participants_1` FOREIGN KEY (`chat_room_id`) REFERENCES `chat_room` (`id`),
                                 CONSTRAINT `FK_Member_TO_participants_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
 );
+
