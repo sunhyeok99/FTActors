@@ -10,8 +10,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">제목</label>
-                        <input type="email" class="form-control" id="exampleFormControlInput1"
+                        <label for="exampleFormControlInput1" class="form-label"  id="title" >제목</label>
+                        <input type="email" class="form-control" id="exampleFormControlInput1" v-model="title"
                             placeholder="ex) [배우모집] 고등학생 역할 30세 이하 남배우 구합니다">
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                 <div class="modal-body">
                     <div class="form-floating">
                         <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                            style="height: 100px"></textarea>
+                            style="height: 100px" v-model="content"></textarea>
                         <label for="floatingTextarea2">공고 내용을 입력해주세요 ex)촬영 위치: 부산, 인원 : 00명</label>
                     </div>
                 </div>
@@ -57,19 +57,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-floating">
-                        <div class="input-group mb-3">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Separated link</a></li>
-                            </ul>
-                            <input type="text" class="form-control" aria-label="Text input with dropdown button">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label"  id="title" >카테고리 입력</label>
+                            <input type="email" class="form-control" id="exampleFormControlInput1" v-model="title"
+                                placeholder="ex) 연극, 웹드라마, 방송...">
                         </div>
                     </div>
                 </div>
@@ -93,7 +84,8 @@
                     <div class="form-floating">
                         <div class="input-group">
                             <input type="file" class="form-control" id="inputGroupFile04"
-                                aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                                aria-describedby="inputGroupFileAddon04" aria-label="Upload" @change="onFileChange">
+                                <img :src="selectedImage">
                             <button class="btn btn-outline-secondary" type="button"
                                 id="inputGroupFileAddon04">업로드</button>
                         </div>
@@ -130,14 +122,13 @@
 
 
     <!-- 토글 버튼 -->
-    <button class="btn btn-primary" data-bs-target="#directorModalToggle" data-bs-toggle="modal">공고 작성</button>
+    <button class="btn btn-primary" data-bs-target="#directorModalToggle" data-bs-toggle="modal" @click="register">공고 작성</button>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { recruitmentApi } from "../../util/axios.js";
-import BoardCreateModal from "@/components/modals/BoardCreateModal.vue";
 const router = useRouter();
 
 const title = ref("");
