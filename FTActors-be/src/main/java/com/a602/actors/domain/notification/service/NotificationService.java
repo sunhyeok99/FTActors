@@ -10,7 +10,6 @@ import com.a602.actors.domain.notification.document.Notify;
 import com.a602.actors.domain.notification.dto.NotifyDto;
 import com.a602.actors.domain.notification.repository.EmitterRepositoryImpl;
 import com.a602.actors.domain.notification.repository.NotifyRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,20 +22,23 @@ public class NotificationService {
 	private final EmitterRepositoryImpl emitterRepository;
 	// private final NoteRepository noteRepository;
 	private final NotifyRepository notifyRepository;
-	private final ObjectMapper objectMapper;
+	// private final ObjectMapper objectMapper;
 
 	public SseEmitter subscribe(Long memberId, String lastEventId){
 		log.info("NotificationService ============ start subscribe..");
 		String id = memberId + "_" + System.currentTimeMillis();
 		log.info("NotificationService ============ id : {}, lastEventId: {}", id, lastEventId);
 		SseEmitter sseEmitter = emitterRepository.save(id, new SseEmitter(DEFAULT_TIMEOUT));
+		// SseEmitter sseEmitter = new SseEmitter(DEFAULT_TIMEOUT);
+
 		log.info("NotificationService ============ save emitter completed");
 
 		sseEmitter.onCompletion(() -> emitterRepository.deleteById(id));
 		sseEmitter.onTimeout(() -> emitterRepository.deleteById(id));
 		// sseEmitter.onError();
 
-		sendToClient(sseEmitter, id, "EventStream Created. memberId = {" + memberId + "}");
+		// sendToClient(sseEmitter, id, "EventStream Created. memberId = {" + memberId + "}");
+		sendToClient(sseEmitter, id, "젭라 살려줏메");
 		log.info("NotificationService ============ sendToClient completed");
 
 		if(!lastEventId.isEmpty()){
@@ -80,13 +82,13 @@ public class NotificationService {
 			.build();
 	}
 
-	private <T> void sendToClient(SseEmitter sseEmitter, String id, T data){
+	private void sendToClient(SseEmitter sseEmitter, String id, Object data){
 		try{
 			log.info("sendToClient ============ sendToClient start");
 			sseEmitter.send(SseEmitter.event()
 				.id(id)
 				.name("sse")
-				.data(objectMapper.writeValueAsString(data)));
+				.data(data));
 			log.info("sendToClient ============ sendToClient completed");
 		} catch (IOException e){
 			log.info("sendToClient ============ sendToClient failed");
