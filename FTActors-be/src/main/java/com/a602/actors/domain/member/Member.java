@@ -51,6 +51,9 @@ public class Member extends BaseEntity implements Serializable {
     @Column(name="stage_name")
     private String stageName;
 
+    @Column(name="saved_name")
+    private String savedName;
+
 //    @Builder
 //    public Member(String userId, String password, String email){
 //        this.userId = userId;
@@ -67,4 +70,5 @@ public class Member extends BaseEntity implements Serializable {
 //        this.profileImage = profileImage;
 //        this.stageName = stageName;
 //    }
+
 }

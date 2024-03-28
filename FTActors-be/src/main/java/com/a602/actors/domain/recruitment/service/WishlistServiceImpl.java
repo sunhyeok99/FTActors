@@ -66,7 +66,7 @@ public class WishlistServiceImpl implements WishlistService {
                             .image(recruitment.getImage())
                             .endDate(recruitment.getEndDate())
                             .wishlist(1)
-                            // 이하 필요한 다른 recruitment 속성들을 추가해주세요
+                            .privateRecruitment(recruitment.getPrivateRecruitment())
                             .build();
                 })
                 .collect(Collectors.toList());

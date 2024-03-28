@@ -84,6 +84,8 @@ dependencies {
 	// java.lang.NoClassDefFoundError:javax/persistence/Entity 에러 방지
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+	// JSoup
+	implementation 'org.jsoup:jsoup:1.15.3'
 
 	// 엘라스틱 서치
 //	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'

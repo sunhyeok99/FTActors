@@ -38,7 +38,9 @@ public class MemberPlusServiceImpl implements MemberPlusService {
             Member existingMember = existingMemberOptional.get();
             // S3에 프로필 이미지 업로드 및 URL 가져오기
             try {
-                String profileImageUrl = FileUtil.uploadFile(profileImage, FolderType.PROFILE_PATH);
+                // 이걸 저장해주세요
+                String savedName = FileUtil.makeFileName(profileImage.getOriginalFilename());
+                String profileImageUrl = FileUtil.uploadFile(profileImage, savedName, FolderType.PROFILE_PATH);
                 System.out.println("URL : " + profileImageUrl);
                 System.out.println("URL LENGTH: " + profileImageUrl.length());
 
@@ -48,6 +50,7 @@ public class MemberPlusServiceImpl implements MemberPlusService {
                 existingMember.setGender(memberPlusDTO.getGender());
                 existingMember.setProfileImage(profileImageUrl);
                 existingMember.setStageName(memberPlusDTO.getStageName());
+                existingMember.setSavedName(savedName);
                 memberPlusRepository.save(existingMember);
             } catch (IOException e) {
                 // 프로필 이미지 업로드 실패 시 예외 처리
