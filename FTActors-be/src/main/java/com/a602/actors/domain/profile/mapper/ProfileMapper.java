@@ -61,15 +61,13 @@ public class ProfileMapper {
 
         return ProfileSearchResponse.builder()
                 .id(profileDocument.getId())
-//                .memberId(profileDocument.getMemberId())
                 .stageName(profileDocument.getStageName())
                 .content(profileDocument.getContent())
                 .type(profileDocument.getType())
-//                .portfolio()
+//                .portfolio(profileDocument.ge)
                 .privatePost(profileDocument.getPrivatePost())
                 .createdTime(profileDocument.getCreatedTime())
                 .updatedTime(profileDocument.getUpdatedTime())
-//                .name(profileDocument.getName())
                 .gender(profileDocument.getGender())
                 .birth(profileDocument.getBirth())
                 .build();

@@ -23,6 +23,7 @@ import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,11 +66,19 @@ public class ProfileServiceImpl implements ProfileService{
         //To do: 1. 지금은 비공개여부=T면 다 안 뽑음. jwt들어오면, 로그인 유저의 경우 T라도 같이 뽑아오게 바꾸기
 
         //Reop가서 List<도큐먼트>로 뽑아오고
-        List<ProfileDocument> list = null;
-        if(sorting == 1) { //최신 순
-            list = profileDocumentCustomRepository.findAllByOrderByUpdatedTimeDesc(Sort.by(Sort.Direction.DESC, "updatedTime"));
-//            list = profileDocumentRepository.findAllByOrderByUpdatedTimeDesc(Sort.by(Sort.Direction.DESC, "updatedTime"));
+        List<ProfileDocument> list = new ArrayList<>();
+        Iterable<ProfileDocument> iterable = profileDocumentRepository.findAll();
+        if (iterable != null) {
+            iterable.forEach(list::add);
+        } else {
+            // iterable이 null인 경우에 대한 처리를 여기에 추가합니다.
+            // 예를 들어, 로그를 출력하거나 다른 적절한 동작을 수행할 수 있습니다.
+            System.out.println("Iterable is null!");
         }
+//        if(sorting == 1) { //최신 순
+//            list = profileDocumentCustomRepository.findAllByOrderByUpdatedTimeDesc(Sort.by(Sort.Direction.DESC, "updatedTime"));
+////            list = profileDocumentRepository.findAllByOrderByUpdatedTimeDesc(Sort.by(Sort.Direction.DESC, "updatedTime"));
+//        }
 //        else { //오래된 순
 //            list = profileDocumentRepository.findAllByOrderByUpdatedTimeAsc(Sort.by(Sort.Direction.ASC, "updatedTime"));
 //        }
@@ -162,6 +171,7 @@ public class ProfileServiceImpl implements ProfileService{
                 .type(profileRequest.getType())
                 .portfolio(profileRequest.getPortfolioLink())
                 .privatePost('F') //처음 생성할 땐 무조건 공개
+
                 .build();
 
         profileRepository.save(creatingProfile);

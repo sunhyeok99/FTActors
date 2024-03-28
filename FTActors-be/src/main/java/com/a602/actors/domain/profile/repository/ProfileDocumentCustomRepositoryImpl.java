@@ -35,7 +35,9 @@ public class ProfileDocumentCustomRepositoryImpl implements ProfileDocumentCusto
         NativeQuery nativeQuery = queryBuilder.withQuery(q -> q
                 .term(termQueryBuilder.build()))
                 .build();
-//        System.out.println(nativeQuery);
+        System.out.println(nativeQuery);
+
+
         SearchHits<ProfileDocument> searchHits = elasticsearchOperations.search(nativeQuery, ProfileDocument.class);
         System.out.println(searchHits.getTotalHits());
         List<ProfileDocument> profileDocuments = new ArrayList<>();

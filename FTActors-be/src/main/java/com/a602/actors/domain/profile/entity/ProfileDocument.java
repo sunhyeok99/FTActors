@@ -21,21 +21,14 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     @Field(type = FieldType.Keyword)
     private Long id; //게시글 번호
 
-//    @Field(type = FieldType.Keyword)
-//    private Long memberId; //멤버 고유 번호
-
     //제목, 예명 TO do: Member에서 수정이 일어나면, profile에서도 똑같이 수정이 일어나야 한다. elasticsearch를 쓰게 되면서 문제가 생겼따
-    @Field(type = FieldType.Text, analyzer = "name_analyzer") // -> (초성 검색 허용), 오타 허용
+    @Field(name = "stage_name", type = FieldType.Text, analyzer = "name_analyzer") // -> (초성 검색 허용), 오타 허용
     private String stageName;
-
-//    @Field(type = FieldType.Text, analyzer = "name_analyzer") // -> (초성 검색 허용), 오타 허용
-//    private String name; //실명 add
 
 //    @Field(type = FieldType.Text, analyzer = "korean_analyzer", searchAnalyzer = "korean_analyzer")
     @Field(type = FieldType.Text, analyzer = "content_and_title_analyzer") // -> 오타 허용, 자동 완성 (검색어 우선순위 적용)
     private String content; //내용(자기소개)
 
-//    email, phone, profileImage
     @Field(type = FieldType.Keyword)
     private String birth; //생년월일 add (생년만 잘라서 저장)
 
@@ -45,28 +38,26 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     @Field(type = FieldType.Keyword) //일반 텍스트 (형태소 분석 적용x)
     private Character type; //배우 프로필? 관계자 프로필?
 
-    @Field(type = FieldType.Keyword) //일반 텍스트 (형태소 분석 적용x)
+    @Field(name = "private_post", type = FieldType.Keyword) //일반 텍스트 (형태소 분석 적용x)
     private Character privatePost;
 
-    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second)
+    @Field(name = "created_at", type = FieldType.Keyword, format = DateFormat.date_hour_minute_second)
     private LocalDateTime createdTime; //생성 일시
 
-    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second)
+    @Field(name = "updated_at", type = FieldType.Keyword, format = DateFormat.date_hour_minute_second)
     private LocalDateTime updatedTime; //마지막 업데이트 일시
 
     public static ProfileDocument from (Profile profile) {
         return ProfileDocument.builder()
                 .id(profile.getId())
-//                .memberId(profile.getMember().getId())
                 .stageName(profile.getMember().getStageName())
                 .content(profile.getContent())
                 .type(profile.getType())
                 .privatePost(profile.getPrivatePost())
-                .createdTime(TimeChanger.convertUtcToKoreaTime())
-                .updatedTime(TimeChanger.convertUtcToKoreaTime())
+                .createdTime(profile.getCreatedAt())
+                .updatedTime(profile.getUpdatedAt())
                 .gender(profile.getMember().getGender())
                 .birth(extractBirthYear(profile.getMember().getBirth())) //생년만 저장
-//                .name(profile.getMember().getName())
                 .build();
     }
 
@@ -74,7 +65,7 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     public void updateContent(String newContent, Character newPrivatePost) {
         this.content = newContent;
         this.privatePost = newPrivatePost;
-        this.updatedTime = TimeChanger.convertUtcToKoreaTime(); // 수정 시간을 현재 시간으로 갱신
+        this.updatedTime = LocalDateTime.now(); // 수정 시간을 현재 시간으로 갱신
     }
 
     // 생년 정보를 추출하는 메서드
