@@ -14,25 +14,29 @@ public class ProfileRequest {
 
     private Character type; // A 또는 P
     private String content; // 자기소개
-//    private String portfolioLink; //목록에서 받을 사안이 아님
+    private String portfolioLink;
     private Character privateProfile; // T 또는 F
 
     @Builder
     public ProfileRequest(Character type,
-                          String content)
+                          String content,
+                          String portfolioLink)
 
     { //생성할 때
         this.type = type;
         this.content = content;
+        this.portfolioLink = portfolioLink;
         this.privateProfile = 'F';
     }
 
     @Builder
     public ProfileRequest(String content,
-                          Character privateProfile)
+                          Character privateProfile,
+                          String portfolioLink)
     { //수정할 때
 //        this.type = type; 생각해보니 A, P는 못 바꾸는 게 맞다, 필요하면 새로 만드는 게 맞을 거 같다
         this.content = content;
         this.privateProfile = privateProfile;
+        this.portfolioLink = portfolioLink;
     }
 }

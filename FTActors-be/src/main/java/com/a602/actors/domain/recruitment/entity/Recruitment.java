@@ -33,16 +33,10 @@ public class Recruitment extends BaseEntity {
 
     private String endDate;
 
-<<<<<<< HEAD
-    @Column(name = "private_recruitment")
-    private String privateRecruitment; //추가 (비공개여부) - sy
-
-=======
     private String privateRecruitment;
 
     private String file;
     private String fileName;
->>>>>>> a7e288c319f7400295bc05ac63f94c919f529845
 
     @Builder
     public Recruitment(
@@ -54,13 +48,8 @@ public class Recruitment extends BaseEntity {
             String imageName,
             String startDate,
             String endDate,
-<<<<<<< HEAD
-            String savedName,
-            String privateRecruitment
-=======
             String file,
             String fileName
->>>>>>> a7e288c319f7400295bc05ac63f94c919f529845
     ) {
         this.title = title;
         this.content = content;
@@ -70,12 +59,8 @@ public class Recruitment extends BaseEntity {
         this.imageName = imageName;
         this.startDate = startDate;
         this.endDate = endDate;
-<<<<<<< HEAD
-        this.privateRecruitment = privateRecruitment;
-=======
         this.file = file;
         this.fileName = fileName;
->>>>>>> a7e288c319f7400295bc05ac63f94c919f529845
     }
 
     // 변경할 인자는제목과 내용 변경 가능하게

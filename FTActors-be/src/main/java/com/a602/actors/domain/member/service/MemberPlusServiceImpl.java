@@ -38,13 +38,9 @@ public class MemberPlusServiceImpl implements MemberPlusService {
             Member existingMember = existingMemberOptional.get();
             // S3에 프로필 이미지 업로드 및 URL 가져오기
             try {
-<<<<<<< HEAD
-                String profileImageUrl = FileUtil.uploadFile(profileImage, "프로필.jpg", FolderType.PROFILE_PATH);
-=======
                 // 이걸 저장해주세요
                 String savedName = FileUtil.makeFileName(profileImage.getOriginalFilename());
                 String profileImageUrl = FileUtil.uploadFile(profileImage, savedName, FolderType.PROFILE_PATH);
->>>>>>> a7e288c319f7400295bc05ac63f94c919f529845
                 System.out.println("URL : " + profileImageUrl);
                 System.out.println("URL LENGTH: " + profileImageUrl.length());
 

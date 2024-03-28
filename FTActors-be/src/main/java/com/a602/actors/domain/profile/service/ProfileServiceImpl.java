@@ -160,10 +160,11 @@ public class ProfileServiceImpl implements ProfileService{
                 .member(loginMember)
                 .content(profileRequest.getContent())
                 .type(profileRequest.getType())
+                .portfolio(profileRequest.getPortfolioLink())
                 .privatePost('F') //처음 생성할 땐 무조건 공개
                 .build();
 
-        profileRepository.save(creatingProfile); // To do: createTime과 updateTime이 이상하게 들어감. db 저장부터 TimeChanger 써야 함
+        profileRepository.save(creatingProfile);
 
 //        아래는 WAS 기반 엘라스틱 서치 -> db에는 저장이 실패했는데, 엘라스틱서치에는 저장이 되는 말도 안 되는 경우가 생길 수 있어 좋지 않다.
 //        ProfileDocument creatingProfileDocument = ProfileDocument.from(creatingProfile);

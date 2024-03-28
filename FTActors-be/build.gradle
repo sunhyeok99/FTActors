@@ -88,7 +88,7 @@ dependencies {
 	implementation 'org.jsoup:jsoup:1.15.3'
 
 	// 엘라스틱 서치
-//	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 
 }
 
