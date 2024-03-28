@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RabbitConfig {
 	// private static final String CHAT_QUEUE_NAME = "chat.queue";
 	// private static final String CHAT_EXCHANGE_NAME = "chat.exchange";
-	private static final String ROUTING_KEY = "*.room.*";
+	private static final String ROUTING_KEY = "*.room.0";
 
 	// @Value("${rabbit.queue-name}")
 	// private static String CHAT_QUEUE_NAME;

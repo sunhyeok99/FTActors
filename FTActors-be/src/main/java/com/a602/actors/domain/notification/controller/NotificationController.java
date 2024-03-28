@@ -24,14 +24,6 @@ public class NotificationController {
 
 	// Todo : member 완성 후 로그인한 유저의 id값 가져오기 (uri까지 수정 필요)
 	// id : member의 PK 값
-	// @GetMapping(value = "/subscribe/{id}", produces = "text/event-stream")
-	// public ApiResponse<SseEmitter> subscribe(@PathVariable Long id, @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId){
-	// 	log.info("subscribe !!! id : {}, Last-Event-ID : {}", id, lastEventId);
-	// 	SseEmitter sseEmitter = notificationService.subscribe(id, lastEventId);
-	// 	return new ApiResponse<>(HttpStatus.OK.value(), "SSE 연결 성공", sseEmitter);
-	// }
-
-	// @GetMapping(value = "/subscribe/{id}", produces = "text/event-stream")
 	@GetMapping(value = "/subscribe/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public SseEmitter subscribe(@PathVariable Long id, @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId){
 		log.info("subscribe !!! id : {}, Last-Event-ID : {}", id, lastEventId);
@@ -40,6 +32,11 @@ public class NotificationController {
 		log.info("NotificationController ============ subscribe completed, sseEmitter : {}", sseEmitter);
 		return sseEmitter;
 	}
+
+	// @PostMapping("/read")
+	// public ApiResponse<String> markAsRead(){
+	//
+	// }
 
 	// 디버깅 용 메서드
 	@PostMapping("/sendtest/{senderId}/{receiverId}")
