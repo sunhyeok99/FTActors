@@ -25,7 +25,7 @@ services:
       - backend
     volumes:
       - /home/ubuntu/volume/mysql:/var/lib/mysql
-    env_file: ".env"
+    env_file: "docker.env"
     expose:
       - "3306"
 
@@ -39,6 +39,7 @@ services:
       - backend
     volumes:
       - /home/ubuntu/volume/flask:/usr/local/app/
+    env_file: "docker.env"
     expose:
       - "5000"
 
@@ -48,6 +49,7 @@ services:
       dockerfile: "./docker/dockerfile/elastic-search.dockerfile"
     networks:
       - backend
+    env_file: "docker.env"
     expose:
       - "9200"
 
@@ -55,6 +57,7 @@ services:
     image: redis
     networks:
       - backend
+    env_file: "docker.env"
     expose:
       - "6379"
 #
@@ -64,6 +67,7 @@ services:
       - backend
     volumes:
       - /home/ubuntu/volume/mq:/var/lib/rabbitmq
+    env_file: "docker.env"
     expose:
       - "5672"
 
@@ -73,7 +77,7 @@ services:
       - backend
     volumes:
       - /home/ubuntu/volume/data:/data
-    env_file: ".env"
+    env_file: "docker.env"
     expose:
       - "27017"
 
