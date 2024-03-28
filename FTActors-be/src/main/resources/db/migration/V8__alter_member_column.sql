@@ -1,0 +1,1 @@
+ALTER TABLE member ADD COLUMN password VARCHAR(100) null;

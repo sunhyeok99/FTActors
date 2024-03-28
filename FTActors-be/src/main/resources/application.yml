@@ -90,3 +90,7 @@ cloud:
       auto: false
 
 jwtKey: ${KEY}
+
+admin:
+    username: ${ADMIN_USER_NAME}
+    password: ${ADMIN_PASSWORD}
