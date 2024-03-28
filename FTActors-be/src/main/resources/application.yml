@@ -4,6 +4,8 @@ elasticsearch:
     username: ${ELASTICSEARCH_USERNAME}
     password: ${ELASTICSEARCH_PASSWORD}
 logging:
+    level:
+        org.springframework.data.elasticsearch.client.WIRE: DEBUG
     file:
         name: ./logs/customer-service.log
 logstash:

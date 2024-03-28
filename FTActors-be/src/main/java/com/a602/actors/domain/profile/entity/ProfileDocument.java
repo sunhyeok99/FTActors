@@ -21,15 +21,15 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     @Field(type = FieldType.Keyword)
     private Long id; //게시글 번호
 
-    @Field(type = FieldType.Keyword)
-    private Long memberId; //멤버 고유 번호
+//    @Field(type = FieldType.Keyword)
+//    private Long memberId; //멤버 고유 번호
 
     //제목, 예명 TO do: Member에서 수정이 일어나면, profile에서도 똑같이 수정이 일어나야 한다. elasticsearch를 쓰게 되면서 문제가 생겼따
     @Field(type = FieldType.Text, analyzer = "name_analyzer") // -> (초성 검색 허용), 오타 허용
     private String stageName;
 
-    @Field(type = FieldType.Text, analyzer = "name_analyzer") // -> (초성 검색 허용), 오타 허용
-    private String name; //실명 add
+//    @Field(type = FieldType.Text, analyzer = "name_analyzer") // -> (초성 검색 허용), 오타 허용
+//    private String name; //실명 add
 
 //    @Field(type = FieldType.Text, analyzer = "korean_analyzer", searchAnalyzer = "korean_analyzer")
     @Field(type = FieldType.Text, analyzer = "content_and_title_analyzer") // -> 오타 허용, 자동 완성 (검색어 우선순위 적용)
@@ -57,7 +57,7 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     public static ProfileDocument from (Profile profile) {
         return ProfileDocument.builder()
                 .id(profile.getId())
-                .memberId(profile.getMember().getId())
+//                .memberId(profile.getMember().getId())
                 .stageName(profile.getMember().getStageName())
                 .content(profile.getContent())
                 .type(profile.getType())
@@ -66,7 +66,7 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
                 .updatedTime(TimeChanger.convertUtcToKoreaTime())
                 .gender(profile.getMember().getGender())
                 .birth(extractBirthYear(profile.getMember().getBirth())) //생년만 저장
-                .name(profile.getMember().getName())
+//                .name(profile.getMember().getName())
                 .build();
     }
 

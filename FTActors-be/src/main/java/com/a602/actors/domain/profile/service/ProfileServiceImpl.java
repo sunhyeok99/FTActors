@@ -36,7 +36,7 @@ public class ProfileServiceImpl implements ProfileService{
     private final TmpMemRepoImpl tmpMemRepo;
     private final ProfileMapper profileMapper;
     private final ProfileDocumentRepository profileDocumentRepository; //was 엘라스틱 용
-//    private final ProfileDocumentCustomRepository profileDocumentCustomRepository; //was 엘라스틱 용
+    private final ProfileDocumentCustomRepository profileDocumentCustomRepository;
     private final ElasticsearchOperations elasticsearchOperations;
 
     @Override //삭제할 메서드 (이거 기반으로 searchAllProfile 구현 마무리하고 삭제)
@@ -67,14 +67,14 @@ public class ProfileServiceImpl implements ProfileService{
         //Reop가서 List<도큐먼트>로 뽑아오고
         List<ProfileDocument> list = null;
         if(sorting == 1) { //최신 순
-            list = profileDocumentRepository.findAllByOrderByUpdatedTimeDesc(Sort.by(Sort.Direction.DESC, "updatedTime"));
+            list = profileDocumentCustomRepository.findAllByOrderByUpdatedTimeDesc(Sort.by(Sort.Direction.DESC, "updatedTime"));
         }
-        else { //오래된 순
-            list = profileDocumentRepository.findAllByOrderByUpdatedTimeAsc(Sort.by(Sort.Direction.ASC, "updatedTime"));
-        }
+//        else { //오래된 순
+//            list = profileDocumentRepository.findAllByOrderByUpdatedTimeAsc(Sort.by(Sort.Direction.ASC, "updatedTime"));
+//        }
 
         //리턴에서 mapper사용해서 변환 후 돌려주기
-        if (list == null) return null; // -> 프론트에서 null이면 "조건에 맞는 프로필이 없습니다" 반환
+        if (list == null) new ProfileException(ExceptionCodeSet.PROFILE_NOT_FOUND); // -> 프론트에서 null이면 "조건에 맞는 프로필이 없습니다" 반환
         return profileMapper.ProfileDocumentListToProfileSearchResponseList(list);
     }
 
@@ -133,10 +133,10 @@ public class ProfileServiceImpl implements ProfileService{
         //To do: 3 loginedMember의 id + profileRequest.getType() 기반으로 이미 있는 프로필인지 확인
 
         //이미 프로필이 생성되어 있으면x
-        if( profileCustomRepository.existProfile(profileRequest.getType(), profileRequest.getMemberId()) ) {
-            log.info("생성불가 - 이미 있는 거면 불가!");
-            throw new ProfileException(ExceptionCodeSet.PROFILE_ALREADY_EXIST);
-        }
+//        if( profileCustomRepository.existProfile(profileRequest.getType(), profileRequest.getMemberId()) ) {
+//            log.info("생성불가 - 이미 있는 거면 불가!");
+//            throw new ProfileException(ExceptionCodeSet.PROFILE_ALREADY_EXIST);
+//        }
 
         //jwt 구현 후 삭제
 //        Member loginMember = new Member(
@@ -159,7 +159,6 @@ public class ProfileServiceImpl implements ProfileService{
                 .member(loginMember)
                 .content(profileRequest.getContent())
                 .type(profileRequest.getType())
-                .portfolio(profileRequest.getPortfolioLink())
                 .privatePost('F') //처음 생성할 땐 무조건 공개
                 .build();
 

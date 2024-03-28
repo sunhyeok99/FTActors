@@ -80,10 +80,6 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
             updateClause.set(profile.type, profileRequest.getType());
         }
 
-        if (profileRequest.getPortfolioLink() != null) {
-            updateClause.set(profile.portfolio, profileRequest.getPortfolioLink());
-        }
-
         if(profileRequest.getPrivateProfile() != null) {
             updateClause.set(profile.privatePost, profileRequest.getPrivateProfile());
         }
