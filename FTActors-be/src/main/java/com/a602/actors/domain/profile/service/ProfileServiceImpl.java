@@ -68,6 +68,7 @@ public class ProfileServiceImpl implements ProfileService{
         List<ProfileDocument> list = null;
         if(sorting == 1) { //최신 순
             list = profileDocumentCustomRepository.findAllByOrderByUpdatedTimeDesc(Sort.by(Sort.Direction.DESC, "updatedTime"));
+//            list = profileDocumentRepository.findAllByOrderByUpdatedTimeDesc(Sort.by(Sort.Direction.DESC, "updatedTime"));
         }
 //        else { //오래된 순
 //            list = profileDocumentRepository.findAllByOrderByUpdatedTimeAsc(Sort.by(Sort.Direction.ASC, "updatedTime"));
