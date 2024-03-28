@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.a602.actors.domain.chat.dto.ChatMessageDto;
 import com.a602.actors.domain.chat.service.MessageService;
-import com.a602.actors.domain.notification.document.Notify;
-import com.a602.actors.domain.notification.service.NotificationService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MessageController {
 	private final RabbitTemplate rabbitTemplate;
 	private final MessageService messageService;
-	private final NotificationService notificationService;
+	// private final NotificationService notificationService;
 
 	// 채팅방 입장
 	@MessageMapping("chat.enter.{roomId}")
@@ -49,7 +47,7 @@ public class MessageController {
 	// receiver()는 단순히 큐에 들어온 메세지를 소비만 한다.
 	@RabbitListener(queues = "chat.queue")
 	public void receive(ChatMessageDto chatMessageDto) {
-		log.info("chatDto.getMessage() = {}",chatMessageDto.getMessage());
-		notificationService.send(1L, Notify.NotificationType.CHAT, "새로운 채팅 메시지가 있습니다.");
+		log.info("receive ============ chatDto.getMessage() = {}",chatMessageDto.getMessage());
+		// notificationService.send((long)chatMessageDto.getSender(), Notify.NotificationType.CHAT, "새로운 채팅 메시지가 있습니다.");
 	}
 }

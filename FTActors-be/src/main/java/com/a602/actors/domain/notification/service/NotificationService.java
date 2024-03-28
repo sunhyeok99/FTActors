@@ -56,6 +56,7 @@ public class NotificationService {
 		log.info("NotificationService ============= send() 시작");
 
 		Notify notification = notifyRepository.save(createNotify(receiverId, notificationType, content));
+		// Notify notification = createNotify(receiverId, notificationType, content);
 
 		// receiver = 현재 로그인 한 유저 = 알림 받을 사람
 		// String receiverId = receiver.getMemberId();
