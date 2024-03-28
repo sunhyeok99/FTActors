@@ -1,4 +1,4 @@
-version: "2.8"
+version: "2"
 
 services:
   # 서비스 이름
