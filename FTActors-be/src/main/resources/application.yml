@@ -4,8 +4,8 @@ elasticsearch:
     username: ${ELASTICSEARCH_USERNAME}
     password: ${ELASTICSEARCH_PASSWORD}
 logging:
-    level:
-        org.springframework.data.elasticsearch.client.WIRE: DEBUG
+#    level:
+#        org.springframework.data.elasticsearch.client.WIRE: DEBUG
     file:
         name: ./logs/customer-service.log
 logstash:
@@ -41,13 +41,17 @@ spring:
       max-request-size: 50MB
 
     flyway:
-        enabled: true
-        baseline-on-migrate: true
+      enabled: true
+      baseline-on-migrate: true
+      baseline-version: 0
     data:
         redis:
             host: ${REDIS_HOST} # Redis 서버 호스트 주소
             port: 6379      # Redis 서버 포트
             database: 0
+        mongodb:
+          uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/?retryWrites=true&w=majority&appName=${MONGO_APPNAME}
+          database: ${MONGO_DBNAME}
         # 스프링 시큐리티
     security:
         # oauth2 사용
@@ -87,6 +91,6 @@ cloud:
 
 jwtKey: ${KEY}
 
-#server:
-#    servlet:
-#        context-path: /api
+admin:
+  username: ${ADMIN_USER_NAME}
+  password: ${ADMIN_PASSWORD}
