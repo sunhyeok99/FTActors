@@ -1,8 +1,11 @@
 package com.a602.actors.domain.member.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +34,12 @@ public class MemberController {
         } catch (IOException e) {
             return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "User information registered failed", memberPlusService.toString());
         }
+    }
+
+    @GetMapping("/api/findall/{stageName}")
+    public ApiResponse<List<MemberPlusDTO>> findAllMembersByStageName(@PathVariable String stageName){
+        List<MemberPlusDTO> allMembersByStageName = memberPlusService.findAllMembersByStageName(stageName);
+        return new ApiResponse<>(HttpStatus.OK.value(), "조회 성공 !!", allMembersByStageName);
     }
 
 //    @PostMapping("/login")
