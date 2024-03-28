@@ -78,8 +78,8 @@ public class SecurityConfig {
                 )
                 .exceptionHandling(error -> error
                         .authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
+//                .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
                 .cors(Customizer.withDefaults())
-                // .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
                 .csrf(CsrfConfigurer::disable)
                 .httpBasic(HttpBasicConfigurer::disable)
                 .formLogin(FormLoginConfigurer::disable)
