@@ -8,7 +8,9 @@ import java.util.List;
 
 public interface ProfileDocumentCustomRepository {
 //    @Query("{\"bool\": {\"must_not\": {\"term\": {\"privatePost\": \"T\"}}}}")
-    List<ProfileDocument> findAllByOrderByUpdatedTimeDesc(Sort sort);
+//    List<ProfileDocument> findAllByOrderByUpdatedTimeDesc(Sort sort);
+
+    List<ProfileDocument> findAllByOrderByUpdatedTime(int sorting);
 //    @Query("{\"bool\": {\"must_not\": {\"term\": {\"privatePost\": \"T\"}}}}")
 //    List<ProfileDocument> findAllByOrderByUpdatedTimeAsc(Sort sort);
 
