@@ -12,6 +12,7 @@ public class RecruitmentListResponseDto {
     private String image;
     private String endDate;
     private int wishList;
+    private String privateRecruitment;
 
     @Builder
     public RecruitmentListResponseDto(
@@ -19,13 +20,15 @@ public class RecruitmentListResponseDto {
             String title,
             String image,
             String endDate,
-            int wishlist
+            int wishlist,
+            String privateRecruitment
     ) {
         this.id = id;
         this.title = title;
         this.image = image;
         this.endDate = endDate;
         this.wishList = wishlist;
+        this.privateRecruitment = privateRecruitment;
     }
 
 }
