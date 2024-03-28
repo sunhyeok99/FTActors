@@ -1,6 +1,5 @@
 package com.a602.actors.domain.montage.service;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,10 +56,10 @@ public class MontageCommentService {
         montageRepository.saveComment(req);
 
         Montage montage = montageRepository.getMontage(req.getMontageId()).get();
-        String originalString = montage.getTitle() + "에 새로운 댓글이 달렸습니다.";
-        String utf8String = new String(originalString.getBytes(StandardCharsets.UTF_8));
+        // String originalString = montage.getTitle() + "에 새로운 댓글이 달렸습니다.";
+        // String utf8String = new String(originalString.getBytes(StandardCharsets.UTF_8));
         // 몽타쥬 올린 사람한테 댓글 알림 전송
-        notificationService.send(montage.getMember().getId(), Notify.NotificationType.COMMENT, utf8String);
+        notificationService.send(montage.getMember().getId(), Notify.NotificationType.COMMENT, montage.getTitle() + "에 새로운 댓글이 달렸습니다.");
 
         return "";
     }
