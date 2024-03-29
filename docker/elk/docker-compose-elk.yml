@@ -35,9 +35,9 @@ services:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     init: true
     volumes:
-      - setup/entrypoint.sh:/entrypoint.sh:ro,Z
-      - setup/lib.sh:/lib.sh:ro,Z6
-      - setup/roles:/roles:ro,Z
+      - ./entrypoint.sh:/entrypoint.sh:ro,Z
+      - ./lib.sh:/lib.sh:ro,Z6
+      - ./roles:/roles:ro,Z
     #  - ./bin:/usr/share/elasticsearch/bin # 이 부분이 추가되었습니다.
     environment:
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
