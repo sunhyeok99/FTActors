@@ -30,8 +30,10 @@
       <!-- 마이페이지 탭바 -->
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <!-- 프로필 -->
           <button class="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
             type="button" role="tab" aria-controls="nav-profile" aria-selected="true">프로필</button>
+            <!-- 공고 -->
           <button class="nav-link dropdown" id="nav-board-tab" data-bs-toggle="tab" data-bs-target="#nav-board"
             type="button" role="tab" aria-controls="nav-board" aria-selected="false">
             <p class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false"
@@ -48,10 +50,24 @@
               </li>
             </ul>
           </button>
-          <button class="nav-link" id="nav-montage-tab" data-bs-toggle="tab" data-bs-target="#nav-montage" type="button"
-            role="tab" aria-controls="nav-montage" aria-selected="false">몽타쥬</button>
-          <button class="nav-link" id="nav-companion-tab" data-bs-toggle="tab" data-bs-target="#nav-companion"
-            type="button" role="tab" aria-controls="nav-companion" aria-selected="false">동료</button>
+          <!-- 몽타쥬 -->
+          <button class="nav-link" id="nav-companion-tab" data-bs-toggle="tab" data-bs-target="#nav-montage" type="button"
+            role="tab" aria-controls="nav-companion" aria-selected="false">몽타쥬</button>
+            <!-- 동료 -->
+            <button class="nav-link dropdown" id="nav-board-tab" data-bs-toggle="tab" data-bs-target="#nav-companion"
+            type="button" role="tab" aria-controls="nav-board" aria-selected="false">
+            <p class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false"
+              id="highest">동료</p>
+            <ul class="dropdown-menu">
+              <li>
+                <p class="dropdown-item">팔로우</p>
+              </li>
+              <li>
+                <p class="dropdown-item">팔로잉</p>
+              </li>
+
+            </ul>
+          </button>
         </div>
       </nav>
       <!-- 마이페이지 탭 콘텐츠 -->
