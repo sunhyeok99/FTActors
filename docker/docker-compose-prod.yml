@@ -43,16 +43,6 @@ services:
     expose:
       - "5000"
 
-  elastic:
-    build:
-      context: ../
-      dockerfile: "./docker/dockerfile/elastic-search.dockerfile"
-    networks:
-      - backend
-    env_file: ".env"
-    expose:
-      - "9200"
-
   redis:
     image: redis
     networks:
