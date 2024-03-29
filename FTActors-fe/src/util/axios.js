@@ -117,6 +117,26 @@ const recruitmentApi = {
     },
   };
   
+const chatApi = {
+    createChatRoom: () => {
+    return axiosInstance.post("/api/chat");
+  },
+    getMyChatRooms: (memberId) => {
+      return axiosInstance.get("/api/chat/room/mylist", {
+        params: { memberId },
+      });
+    },
+    joinChatRoom: (roomId, memberId) => {
+      return axiosInstance.post("/api/chat/room/in", {
+        params: { roomId, memberId },
+      });
+    },
+    exitChatRoom: (roomId, memberId) => {
+      return axiosInstance.delete("/api/chat/room/out", {
+        params: { roomId, memberId },
+      });
+    },
+  };
 
-export { memberApi, recruitmentApi, followApi};
+export { memberApi, recruitmentApi, followApi, chatApi};
 
