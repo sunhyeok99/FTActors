@@ -1,0 +1,30 @@
+@import './base.css';
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  /* padding: 2rem; */
+  font-weight: normal;
+}
+
+a,
+.anil {
+  text-decoration: none;
+  color: rgb(39, 16, 171);
+  font-weight: bolder;
+  transition: 0.4s;
+  padding: 3px;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(236, 100%, 51%, 0.2);
+  }
+}
+/* @font-face {
+  font-family: 'tuesday_nightregular';
+  src: url('tuesday_night_regular_400-webfont.woff2') format('woff2'),
+       url('tuesday_night_regular_400-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+} */
