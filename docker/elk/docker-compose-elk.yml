@@ -30,14 +30,14 @@ services:
     profiles:
       - setup
     build:
-      context: .
+      context: setup/
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     init: true
     volumes:
-      - ./setup/entrypoint.sh:/entrypoint.sh:ro,Z
-      - ./setup/lib.sh:/lib.sh:ro,Z6
-      - ./setup/roles:/roles:ro,Z
+      - setup/entrypoint.sh:/entrypoint.sh:ro,Z
+      - setup/lib.sh:/lib.sh:ro,Z6
+      - setup/roles:/roles:ro,Z
     #  - ./bin:/usr/share/elasticsearch/bin # 이 부분이 추가되었습니다.
     environment:
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
@@ -58,12 +58,12 @@ services:
   elasticsearch:
     container_name: elasticsearch
     build:
-      context: .
+      context: elasticsearch/
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
-      - ./elasticsearch/config:/usr/share/elasticsearch/config:ro,Z
-      - ./elasticsearch:/usr/share/elasticsearch/data:Z
+      - elasticsearch/config:/usr/share/elasticsearch/config:ro,Z
+      - elasticsearch:/usr/share/elasticsearch/data:Z
     expose:
       - 9200
       - 9300
@@ -84,12 +84,12 @@ services:
   logstash:
     container_name: logstash
     build:
-      context: .
+      context: logstash/
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
-      - ./logstash/config:/usr/share/logstash/config:ro,Z
-      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
+      - logstash/config:/usr/share/logstash/config:ro,Z
+      - logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
     expose:
       - 5044
       - 50000/tcp
@@ -106,7 +106,7 @@ services:
 
   kibana:
     build:
-      context: .
+      context: kibana/
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
