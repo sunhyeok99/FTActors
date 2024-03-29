@@ -35,9 +35,9 @@ services:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     init: true
     volumes:
-      - ./entrypoint.sh:/entrypoint.sh:ro,Z
-      - ./lib.sh:/lib.sh:ro,Z6
-      - ./roles:/roles:ro,Z
+      - ./setup/entrypoint.sh:/entrypoint.sh:ro,Z
+      - ./setup/lib.sh:/lib.sh:ro,Z6
+      - ./setup/roles:/roles:ro,Z
     #  - ./bin:/usr/share/elasticsearch/bin # 이 부분이 추가되었습니다.
     environment:
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
@@ -62,8 +62,8 @@ services:
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
-      - ./config:/usr/share/elasticsearch/config:ro,Z
-      - ./:/usr/share/elasticsearch/data:Z
+      # - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z
+      - elasticsearch:/usr/share/elasticsearch/data:Z
     expose:
       - 9200
       - 9300
@@ -88,8 +88,7 @@ services:
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
-      - ./config:/usr/share/logstash/config:ro,Z
-      - ./pipeline:/usr/share/logstash/pipeline:ro,Z
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
     expose:
       - 5044
       - 50000/tcp
@@ -110,7 +109,7 @@ services:
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
-      - ./config:/usr/share/kibana/config:ro,Z
+      - ./kibana/config:/usr/share/kibana/config:ro,Z
     ports:
       - 5601
     environment:
