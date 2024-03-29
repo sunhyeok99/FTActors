@@ -3,14 +3,17 @@
     <div class="accordion accordion-flush" id="accordionFlushExample">
       <div class="accordion-item">
         <div class="accordion-header">
+          <!-- 좋아요 버튼 -->
           <button class="like-btn" :class="{ liked: isLiked }" @click.stop="toggleLike()">
             <img v-if="isLiked" src="@/assets/icons/like-filled.png" alt="Liked">
             <img v-else src="@/assets/icons/like-outline.png" alt="Like">
           </button>
+          <!-- 댓글 펼치기 -->
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
             data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
             댓글 5개 펼치기
           </button>
+          <!-- 댓글 작성 인풋-->
           <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="댓글 쓰기" aria-label="Recipient's username"
               aria-describedby="button-addon2" v-model="addComment">
@@ -18,24 +21,29 @@
               @click="uploadComment">작성</button>
           </div>
         </div>
+
         <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
           <div class="accordion-body">
             <div class="list-group list-group-flush border-bottom scrollarea">
+              <!-- 댓글 리스트 -->
               <button class="list-group-item list-group-item-action py-3 lh-tight" v-for="(comment, index) in comments"
                 :key="index" @click.prevent="selectComment(comment)">
-                <div class="d-flex w-100 align-items-center justify-content-between">
+                <div class="d-flex w-100 align-items-center justify-content-between reply-block">
                   <strong class="mb-1" id="reply-member">{{ comment.memberId }}</strong>
                   <div class="col-10 mb-1 small comment-text">{{ comment.content }}</div>
                 </div>
-                <div v-for="(reply, rIndex) in comment.reply" :key="`reply-${rIndex}`" class="mt-2" id="reply">
-                  <p>ㄴ <b id="reply-member">{{ reply.memberId }}</b> {{ reply.content }}</p>
-                </div>
-                <div v-if="selectedComment === comment" class="mt-4 reply-container" @click.stop>
+                 <!-- 대댓글 작성 인풋 -->
+                 <div v-if="selectedComment === comment" class="mt-4 reply-container" @click.stop>
                   <input type="text" class="form-control reply-input" placeholder="대댓글 작성"
                     aria-label="Recipient's username" aria-describedby="reply-button" v-model="addReply">
                   <button class="btn btn-outline-secondary reply-btn" type="button" id="reply-button"
                     @click="uploadReply">작성</button>
                 </div>
+                <!-- 대댓글 리스트 -->
+                <div v-for="(reply, rIndex) in comment.reply" :key="`reply-${rIndex}`" class="mt-2" id="reply">
+                  <p>ㄴ <b id="reply-member">{{ reply.memberId }}</b> {{ reply.content }}</p>
+                </div>
+              
               </button>
             </div>
           </div>
@@ -82,9 +90,9 @@ onMounted(() => {
 const addComment = ref("");
 const uploadComment = () => {
   const content = {
-      "montageId": 1,
-      "content": addComment.value,
-      "isDeleted": false
+    "montageId": 1,
+    "content": addComment.value,
+    "isDeleted": false
   };
   axios
     .post(`http://localhost:8080/api/montage/1/comment`, content)
@@ -117,10 +125,10 @@ const uploadReply = () => {
     return;
   }
   const content = {
-      "montageId": 1,
-      "parentId" : 1,
-      "content": addReply.value,
-      "isDeleted": false
+    "montageId": 1,
+    "parentId": 1,
+    "content": addReply.value,
+    "isDeleted": false
   };
   axios
     .post(`http://localhost:8080/api/montage/${selectedComment.value.commentId}/comment`, content)

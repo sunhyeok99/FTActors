@@ -9,11 +9,6 @@
       <img src="@/assets/icons/Next.png" alt=""id="next" @click="goToNextMontage">
     </div>
     <div class="montagedetail">
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"><label><b>출연배우</b></label>한재혁</li>
-        <li class="list-group-item"><label><b>작품명</b></label>연극<달동네>
-        </li>
-      </ul>
     </div>
   </div>
 </template>
@@ -29,7 +24,7 @@ const goToPreviousMontage = () => {
   const previousId = currentId - 1;
 
   // 이전 몽타쥬로 이동
-  router.push({ name: 'montage', params: { id: previousId } });
+  router.push({ name: 'montageDetail', params: { id: previousId } });
 };
 
 const goToNextMontage = () => {
@@ -38,7 +33,7 @@ const goToNextMontage = () => {
   const nextId = currentId + 1;
 
   // 다음 몽타쥬로 이동
-  router.push({ name: 'montage', params: { id: nextId } });
+  router.push({ name: 'montageDetail', params: { id: nextId } });
 };
 
 </script>

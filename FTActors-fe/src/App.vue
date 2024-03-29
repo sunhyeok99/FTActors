@@ -58,25 +58,6 @@ const goToLogin = () => {
   router.push({ name: 'login' });
 };
 
-// 몽타쥬 팝업 모달
-onMounted(() => {
-  const modalElement = document.getElementById('montagePopup');
-  const modalInstance = new bootstrap.Modal(modalElement, {
-    keyboard: false
-  });
-  modalInstance.show();
-  window.onYouTubeIframeAPIReady = () => {
-    new YT.Player('player', {
-      height: '530',
-      width: '1120',
-      videoId: 'p1',
-      playerVars: {
-        autoplay: 1,
-        mute: 1
-      }
-    });
-  };
-});
 
 </script>
 
@@ -174,4 +155,3 @@ header {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 </style>
-./components/modals/MontagePopup.vue./components/modals/AlarmModal.vue./components/common/FooterBox.vue./components/common/SideBars.vue
