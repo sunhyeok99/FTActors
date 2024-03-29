@@ -70,6 +70,26 @@ public class JWTMemberServiceImpl {
 
         return authResponse;
     }
+    public JwtDto.getPkId getIdByLoginId(String userId) {
+        Optional<Member> optionalMember = jwtMemberRepository.findByUserId(userId);
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            return JwtDto.getPkId.builder()
+                    .id(member.getId())
+                    .userId(member.getUserId())
+                    .name(member.getName())
+                    .email(member.getEmail())
+                    .phone(member.getPhone())
+                    .birth(member.getBirth())
+                    .gender(member.getGender())
+                    .profileImage(member.getProfileImage())
+                    .stageName(member.getStageName())
+                    .createdAt(member.getCreatedAt()) // createdAt 그대로 넣기
+                    .build();
+        } else {
+            return null;
+        }
+    }
 
     public JwtDto.AuthResponse reIssue(JwtDto.AuthResponse tokenRequest) {
         log.info("MemberService :::::::::: reIssue 시작 !!!!!!!");
