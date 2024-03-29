@@ -34,9 +34,9 @@ public class MontageRepositoryImpl implements MontageRepository {
     public List<MontageDto.Montages> getAllMontages() {
         QMontage montage = QMontage.montage;
         QLikeCount likeCount = QLikeCount.likeCount;
-        
+
         // montage에 따라 likeCount 생성
-        
+
         return queryFactory
                         .select(new QMontageDto_Montages(
                                 montage.title,
@@ -101,7 +101,7 @@ public class MontageRepositoryImpl implements MontageRepository {
                         .where(likeCount.member.id.eq(memberId)
                                 .and(likeCount.montage.id.eq(montageId)))
                 .fetchOne();
-        
+
         // 좋아요를 누른 흔적이 있을 때
         if(likeTrace != null){
 

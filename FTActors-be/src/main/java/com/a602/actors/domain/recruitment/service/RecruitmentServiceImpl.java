@@ -37,6 +37,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     private final MemberRepository memberRepository;
     private final WishlistRepository wishlistRepository;
     private final WishlistService wishlistService;
+    private final Crawling crawling;
 
     @Override
     @Transactional
@@ -184,7 +185,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 
     // 마감일자 지난 리스트 불러 다 T로 바꿈
     @Override
-    @Scheduled(cron = "0 0 0 * * *") // 초 분 시 일 월 요일
+//    @Scheduled(cron = "0 0 0 * * *") // 초 분 시 일 월 요일
     @Transactional
     public void scheduleExpiredRecruitment() {
         LocalDate currentTime = LocalDate.now();
@@ -194,7 +195,6 @@ public class RecruitmentServiceImpl implements RecruitmentService {
             System.out.println(recruitment.getTitle());
             recruitment.updatePrivate();
         }
-        Crawling crawling = new Crawling();
         List<Recruitment> recruitmentList = crawling.getRecruitmentDatas(currentTime.minusDays(1));
         recruitmentRepository.saveAll(recruitmentList);
     }
