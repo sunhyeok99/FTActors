@@ -7,11 +7,11 @@
       </button>
       <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
         <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Reels</h5>
+          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel"></h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-          <MontageFeed />
+          <MontageFeed/>
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="#">Home</a>
@@ -45,9 +45,17 @@
   <script setup>
 
 import MontageFeed from '@/components/montagepage/MontageFeed.vue'
+
 </script>
 
 <style>
 .offcanvas-lg {
   width: 80%; /* 또는 원하는 너비 값 */
-}</style>
+
+  }
+
+  #offcanvasDarkNavbarLabel img{
+    width: 50px;
+    height: 50px;
+  }
+</style>

@@ -16,6 +16,7 @@ import axios from 'axios';
 
 const router = useRouter();
 const montages = ref([]);
+const offcanvas = ref(null);
 
 // 몽타쥬리스트 가져오는 메서드
 const getMontages = () => {
@@ -29,6 +30,7 @@ const getMontages = () => {
     });
 };
 
+
 // 일단 페이지 로드 시 실행
 onMounted(() => {
   getMontages();
@@ -36,6 +38,9 @@ onMounted(() => {
 
 const goToMontageDetail = (montageId) => {
   router.push({ name: 'montageDetail' , params: { id: montageId }});
+  const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas.value);
+  bsOffcanvas.hide();
+
 };
 
 </script>
@@ -57,7 +62,7 @@ const goToMontageDetail = (montageId) => {
 }
 .montage-title {
   position: absolute;
-  top: 5%;
+  top: -5%;
   left: 50%;
   transform: translate(-50%, -50%);
   color: rgb(194, 194, 194); /* 필요한 색상으로 설정 */
