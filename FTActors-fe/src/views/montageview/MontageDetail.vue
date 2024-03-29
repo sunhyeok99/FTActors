@@ -2,10 +2,7 @@
   <div class="montagepage">
     <div class="montagethumbnail">
       <img src="@/assets/icons/Next.png" alt="" id="previous" @click="goToPreviousMontage">
-      <iframe width="1120" height="530" src="https://www.youtube.com/embed/lJXaNYTVjrQ?si=jZHMoe0Tu1yo4tPb"
-        title="YouTube video player" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen></iframe>
+      <video :src="montage.link" muted autoplay playsinline></video>
       <img src="@/assets/icons/Next.png" alt=""id="next" @click="goToNextMontage">
     </div>
     <div class="montagedetail">
@@ -13,28 +10,50 @@
   </div>
 </template>
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router';
+import {onMounted, ref} from 'vue';
+import axios from 'axios';
+import { watch } from 'vue';
 
 const router = useRouter();
 const route = useRoute();
 
+const currentId = ref(parseInt(route.params.id, 10));
+
+const getMontage = () => {
+  axios.get(`http://localhost:8080/api/montage/list`)
+    .then((response) => {
+      if (currentId.value >= 0 && currentId.value < response.data.data.length) {
+        montage.value = response.data.data.find((m, index) => index === currentId.value);
+      } else {
+        console.error('Invalid montage ID:', currentId.value);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 const goToPreviousMontage = () => {
-  // 현재 몽타쥬의 ID를 숫자로 변환하고 1을 빼기
-  const currentId = parseInt(route.params.id, 10);
-  const previousId = currentId - 1;
-
-  // 이전 몽타쥬로 이동
+  const previousId = currentId.value - 1;
   router.push({ name: 'montageDetail', params: { id: previousId } });
+  getMontage();
 };
-
 const goToNextMontage = () => {
-  // 현재 몽타쥬의 ID를 숫자로 변환하고 1을 더하기
-  const currentId = parseInt(route.params.id, 10);
-  const nextId = currentId + 1;
-
-  // 다음 몽타쥬로 이동
+  const nextId = currentId.value + 1;
   router.push({ name: 'montageDetail', params: { id: nextId } });
+  getMontage();
 };
+
+const montage = ref([]);
+watch(() => route.params.id, (newId) => {
+  currentId.value = parseInt(newId, 10);
+  getMontage();
+}, { immediate: true });
+
+onMounted(() => {
+  getMontage();
+});
 
 </script>
 <style>

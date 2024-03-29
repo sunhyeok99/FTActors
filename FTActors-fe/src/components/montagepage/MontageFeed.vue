@@ -1,5 +1,5 @@
 <template>
-  <div class="row row-cols-1 row-cols-md-1 g-4">
+  <div class="row row-cols-1 row-cols-md-1">
     <div class="col" v-for="(montage, index) in montages" :key="index" @click="goToMontageDetail(index)">
       <div class="card montage">
         <video :src="montage.link" muted autoplay playsinline></video>
@@ -39,7 +39,7 @@ const goToMontageDetail = (montageId) => {
 };
 
 </script>
-<style>
+<style setup>
 
 .montage {
   border-radius: 0;
@@ -49,11 +49,12 @@ const goToMontageDetail = (montageId) => {
   color:white;
   
 }
-
 .card{
   display: flex;
 }
-
+.col{
+  padding: 0;
+}
 .montage-title {
   position: absolute;
   top: 5%;
