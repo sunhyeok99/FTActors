@@ -50,4 +50,9 @@ public class MessageController {
 		log.info("receive ============ chatDto.getMessage() = {}",chatMessageDto.getMessage());
 		// notificationService.send((long)chatMessageDto.getSender(), Notify.NotificationType.CHAT, "새로운 채팅 메시지가 있습니다.");
 	}
+
+	// @RabbitListener(queues = "#{container.queueNames}")
+	// public void handleMessage(ChatMessageDto chatMessageDto) {
+	// 	log.info("Received message: {}", chatMessageDto.getMessage());
+	// }
 }

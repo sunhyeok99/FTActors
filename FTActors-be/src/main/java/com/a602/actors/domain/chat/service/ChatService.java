@@ -5,18 +5,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.a602.actors.domain.chat.dto.ChatMessageDto;
 import com.a602.actors.domain.chat.dto.ChatRoomDto;
 import com.a602.actors.domain.chat.dto.ParticipantsDto;
 import com.a602.actors.domain.chat.entity.ChatRoom;
@@ -44,33 +36,69 @@ public class ChatService {
 	private final RabbitTemplate rabbitTemplate;
 
 	public void createChatRoom(String title) {
-		Long chatRoomId = chatRoomRepository.save(new ChatRoom(title)).getId();
+		chatRoomRepository.save(new ChatRoom(title)).getId();
 
-		Queue queue = new Queue("chat.queue." + chatRoomId);
-		amqpAdmin.declareQueue(queue);
+		// Long chatRoomId = chatRoomRepository.save(new ChatRoom(title)).getId();
 
-		TopicExchange exchange = new TopicExchange("chat.exchange");
-		amqpAdmin.declareExchange(exchange);
-
-		Binding binding = BindingBuilder.bind(queue).to(exchange).with("*.room." + chatRoomId);
-		amqpAdmin.declareBinding(binding);
-
-		// 해당 채팅방에 대한 @RabbitListener 동적 설정
-		createRabbitListener(chatRoomId);
+		// Queue queue = new Queue("chat.queue." + chatRoomId);
+		// amqpAdmin.declareQueue(queue);
+		//
+		// TopicExchange exchange = new TopicExchange("chat.exchange");
+		// amqpAdmin.declareExchange(exchange);
+		//
+		// Binding binding = BindingBuilder.bind(queue).to(exchange).with("*.room." + chatRoomId);
+		// amqpAdmin.declareBinding(binding);
+		//
+		// // 해당 채팅방에 대한 @RabbitListener 동적 설정
+		// createRabbitListener(chatRoomId);
 	}
 
-	private void createRabbitListener(Long chatRoomId) {
-		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-		container.setConnectionFactory(rabbitTemplate.getConnectionFactory());
-		container.setQueueNames("chat.queue." + chatRoomId);
-		container.setMessageListener(new MessageListenerAdapter(new Object() {
-			@RabbitListener(queues = "#{container.queueNames}")
-			public void receive(ChatMessageDto chatMessageDto) {
-				log.info("receive ============ chatDto.getMessage() = {}", chatMessageDto.getMessage());
-			}
-		}));
-		container.start();
-	}
+	// private void createRabbitListener(Long chatRoomId) {
+	// 	SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+	// 	container.setConnectionFactory(rabbitTemplate.getConnectionFactory());
+	// 	container.setQueueNames("chat.queue." + chatRoomId);
+	//
+	// 	// 메시지 리스너 설정
+	// 	MessageListenerAdapter listenerAdapter = new MessageListenerAdapter();
+	// 	container.setMessageListener(listenerAdapter);
+	// 	container.start();
+	// }
+
+	// @RabbitListener(queues = "#{container.queueNames}")
+	// public void handleMessage(ChatMessageDto chatMessageDto) {
+	// 	log.info("Received message: {}", chatMessageDto.getMessage());
+	// }
+
+	// private void createRabbitListener(Long chatRoomId) {
+	// 	SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+	// 	container.setConnectionFactory(rabbitTemplate.getConnectionFactory());
+	// 	container.setQueueNames("chat.queue." + chatRoomId);
+	// 	container.setMessageListener(new MessageListenerAdapter(new Object() {
+	// 		@RabbitListener(queues = "#{container.queueNames}")
+	// 		public void receive(ChatMessageDto chatMessageDto) {
+	// 			log.info("receive ============ chatDto.getMessage() = {}", chatMessageDto.getMessage());
+	// 		}
+	// 	}));
+	// 	container.start();
+	// }
+
+	// private void createRabbitListener(Long chatRoomId) {
+	// 	SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+	// 	container.setConnectionFactory(rabbitTemplate.getConnectionFactory());
+	// 	container.setQueueNames("chat.queue." + chatRoomId);
+	//
+	// 	// 메시지 리스너 어댑터 설정
+	// 	MessageListenerAdapter listenerAdapter = new MessageListenerAdapter(new Object() {
+	// 		@RabbitListener(queues = "#{container.queueNames}")
+	// 		public void handleMessage(ChatMessageDto chatMessageDto) {
+	// 			log.info("Received message: {}", chatMessageDto.getMessage());
+	// 		}
+	// 	});
+	//
+	// 	// 리스너 어댑터를 컨테이너에 등록
+	// 	container.setMessageListener(listenerAdapter);
+	// 	container.start();
+	// }
 
 	public List<ChatRoomDto> findAllChatRooms() {
 		return chatMapper.ChatRoomListToChatRoomDtoList(chatRoomRepository.findAll());
