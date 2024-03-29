@@ -1,9 +1,11 @@
 package com.a602.actors.global.auth.controller;
 
 import com.a602.actors.global.auth.domain.CustomOAuth2User;
+import com.a602.actors.global.auth.dto.KakaoMemberIdDto;
 import com.a602.actors.global.auth.service.member.MemberService;
 import com.a602.actors.global.auth.service.redis.RedisService;
 import com.a602.actors.global.auth.util.CookieUtil;
+import com.a602.actors.global.common.dto.ApiResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,6 +17,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
 import java.util.Map;
@@ -88,4 +92,11 @@ public class AuthenticationController {
         model.addAttribute("oauthType", oauth2User.getMember().getOauthType());
         return "userInfo";
     }
+
+    @PostMapping("/kakaomember")
+    public ApiResponse<KakaoMemberIdDto> getIdBykakaoId(@RequestBody String kakaoId){
+        KakaoMemberIdDto dto= memberService.getIdByKakaoId(kakaoId);
+        return new ApiResponse<>(HttpStatus.OK.value(), "get Id by kakao id success", dto);
+    }
+
 }
