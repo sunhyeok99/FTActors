@@ -7,7 +7,6 @@ import com.a602.actors.global.exception.MemberException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -19,10 +18,10 @@ import java.util.List;
 public class Crawling {
     private final MemberRepository memberRepository;
 
-    @Autowired
     public Crawling(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
+
     public List<Recruitment> getRecruitmentDatas(LocalDate time) {
         final String RECRUITMENT_URL = "https://www.filmmakers.co.kr/filmmakersWanted/category/";
         String yesterday = time.toString();
@@ -30,17 +29,16 @@ public class Crawling {
         List<Recruitment> recruitmentList = new ArrayList<>();
         try {
             for (int index = 0; index < urlCode.length; index++) {
-                Document document = Jsoup.connect(RECRUITMENT_URL + urlCode[index]+ "/page/6").get(); // 주소뒤에 100, 101 이런식
+                Document document = Jsoup.connect(RECRUITMENT_URL + urlCode[index]).get(); // 주소뒤에 100, 101 이런식
                 Elements content1 = document.select("div.content.date"); // 날짜 불러옴
                 Elements content2 = document.select("table.ui.table a.block"); // 주소 불러옴
-
                 for (int i = 0; i < content1.size(); i++) {
                     String date = content1.get(i).text(); // 날짜는 text만 추출
                     String url = content2.get(i).absUrl("href"); // url은 a태그 추출
                     // 날짜비교해서 전날에 올라온 공고만 크롤링
-//                    if (!date.substring(0, 10).equals(yesterday)) {
-//                        break;
-//                    }
+                    if (!date.substring(0, 10).equals(yesterday)) {
+                        break;
+                    }
                     // url로 이동해서 크롤링
                     document = Jsoup.connect(url).get();
                     String title = document.select("th[colspan=2] h2").text();
@@ -55,7 +53,7 @@ public class Crawling {
                     String category = getCategory(urlCode[index]);
                     String startDate = date;
                     String endDate = "상시 모집";
-                    for (int type = 10; type <= 13; type++) {
+                    for (int type = 9; type <= 13; type++) {
                         if (document.select("table.ui.unstackable tbody tr:nth-of-type(" + type + ") td:nth-of-type(1)").text().equals("모집 마감일")) {
                             endDate = document.select("table.ui.unstackable tbody tr:nth-of-type(" + type + ") td:nth-of-type(2)").text();
                             break;

@@ -2,18 +2,18 @@ version: "2"
 
 services:
   # 서비스 이름
-  spring:
-    container_name: spring
-    hostname: spring
-    # 실행되는 컨텍스트 및 도커파일 지정
-    build:
-      context: ../
-      dockerfile: "./docker/dockerfile/spring.dockerfile"
-    ports:
-      - "8080:8080"
-    restart: "always"
-    networks:
-      - backend
+#  spring:
+#    container_name: spring
+#    hostname: spring
+#    # 실행되는 컨텍스트 및 도커파일 지정
+#    build:
+#      context: ../
+#      dockerfile: "./docker/dockerfile/spring.dockerfile"
+#    ports:
+#      - "8080:8080"
+#    restart: "always"
+#    networks:
+#      - backend
 
   mysql:
     container_name: mysql
@@ -27,7 +27,7 @@ services:
       - /home/ubuntu/volume/mysql:/var/lib/mysql
     env_file: ".env"
     ports:
-      - "3306:3306"
+      - "3307:3306"
 
   flask:
     container_name: flask
@@ -42,14 +42,14 @@ services:
     ports:
       - "5000:5000"
 
-  elastic:
-    build:
-      context: ../
-      dockerfile: "./docker/dockerfile/elastic-search.dockerfile"
-    networks:
-      - backend
-    ports:
-      - "9200:9200"
+#  elastic:
+#    build:
+#      context: ../
+#      dockerfile: "./docker/dockerfile/elastic-search.dockerfile"
+#    networks:
+#      - backend
+#    ports:
+#      - "9200:9200"
 
   redis:
     image: redis
@@ -58,24 +58,24 @@ services:
     ports:
       - "6379:6379"
   #
-  rabbitmq:
-    image: rabbitmq
-    networks:
-      - backend
-    volumes:
-      - /home/ubuntu/volume/mq:/var/lib/rabbitmq
-    ports:
-      - "5672:5672"
-
-  mongo:
-    image: mongo
-    networks:
-      - backend
-    volumes:
-      - /home/ubuntu/volume/data:/data
-    env_file: ".env"
-    ports:
-      - "27017:27017"
+#  rabbitmq:
+#    image: rabbitmq
+#    networks:
+#      - backend
+#    volumes:
+#      - /home/ubuntu/volume/mq:/var/lib/rabbitmq
+#    ports:
+#      - "5672:5672"
+#
+#  mongo:
+#    image: mongo
+#    networks:
+#      - backend
+#    volumes:
+#      - /home/ubuntu/volume/data:/data
+#    env_file: ".env"
+#    ports:
+#      - "27017:27017"
 
 # 브리지 네트워크는 도커가 제공하는 네트워크 드라이버 중 하나로, 가상
 # 인터페이스를 통해 컨테이너들을 연결한다.
