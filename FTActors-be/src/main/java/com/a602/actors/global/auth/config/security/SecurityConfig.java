@@ -89,9 +89,9 @@ public class SecurityConfig {
                 .addFilterAfter(new KakaoAuthenticationTokenFilter(redisService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
-                        .requestMatchers("/auth/**", "/main", "/error", "/static/**", "/api/**",
+                        .requestMatchers("/auth/**", "/main", "/error", "/static/**", "/signin",
                                 "/firebase/**", "/css/**","/js/**", "/firebase-messaging-sw.js",
-                                "/barter/**", "/post/**", "/register", "api/oauth2/authorization/kakao"
+                                "/barter/**", "/post/**", "/register", "/signup", "/ws-stomp"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
