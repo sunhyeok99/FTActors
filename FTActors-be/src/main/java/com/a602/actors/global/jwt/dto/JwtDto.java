@@ -3,6 +3,8 @@ package com.a602.actors.global.jwt.dto;
 import lombok.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import java.time.LocalDateTime;
+
 public class JwtDto {
 
     @Getter
@@ -63,5 +65,22 @@ public class JwtDto {
     @AllArgsConstructor
     public static class checkId {
         private String id;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class getPkId{
+        private Long id;
+        private String userId;
+        private String name;
+        private String email;
+        private String phone;
+        private String birth;
+        private String gender;
+        private String profileImage;
+        private String stageName;
+        private LocalDateTime createdAt;
     }
 }
