@@ -6,7 +6,7 @@
       },
       "korean_edge_3gram_tokenizer": {
         "type": "edge_ngram",
-        "min_gram": 3,
+        "min_gram": 1,
         "max_gram": 3,
         "token_chars": ["letter", "digit"]
       }
@@ -25,7 +25,7 @@
       },
       "korean_edge_3gram_filter": {
         "type": "edge_ngram",
-        "min_gram": 3,
+        "min_gram": 1,
         "max_gram": 3
       },
       "english_lowercase_filter": {

@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 
 public interface ProfileService {
-    List<ProfileDocument> getProfileList(int sorting, Character condition, HttpSession session);
     List<ProfileSearchResponse> searchAllProfile(int sorting);
 
     ProfileDto getProfile(Long profileId, HttpSession session);
@@ -24,6 +23,6 @@ public interface ProfileService {
 
     String updateProfile(Long profileId, ProfileRequest profileRequest);
 
-    List<ProfileDocument> searchProfileDocuments(List<String> keywordArr);
+    List<ProfileSearchResponse> searchProfileDocuments(List<String> keywordArr);
 
 }

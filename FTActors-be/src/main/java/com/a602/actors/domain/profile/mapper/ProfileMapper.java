@@ -6,6 +6,8 @@ import com.a602.actors.domain.profile.entity.Profile;
 import com.a602.actors.domain.profile.entity.ProfileDocument;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +61,15 @@ public class ProfileMapper {
             return null;
         }
 
+        // profileDocument.getCreatedTime()에서 LocalDateTime 객체 가져오기
+        LocalDateTime createdTime = profileDocument.getCreatedTime();
+        LocalDateTime updatedTime = profileDocument.getUpdatedTime();
+
+        // LocalDateTime 객체를 String으로 변환하기 위해 DateTimeFormatter 사용
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String createdTimeString = createdTime.format(formatter);
+        String updatedTimeString = updatedTime.format(formatter);
+
         return ProfileSearchResponse.builder()
                 .id(profileDocument.getId())
                 .stageName(profileDocument.getStageName())
@@ -66,8 +77,10 @@ public class ProfileMapper {
                 .type(profileDocument.getType())
 //                .portfolio(profileDocument.ge)
                 .privatePost(profileDocument.getPrivatePost())
-                .createdTime(profileDocument.getCreatedTime())
-                .updatedTime(profileDocument.getUpdatedTime())
+//                .createdTime(profileDocument.getCreatedTime())
+                .createdTime(createdTimeString)
+//                .updatedTime(profileDocument.getUpdatedTime())
+                .updatedTime(updatedTimeString)
                 .gender(profileDocument.getGender())
                 .birth(profileDocument.getBirth())
                 .build();

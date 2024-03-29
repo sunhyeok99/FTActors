@@ -7,15 +7,20 @@ import org.springframework.data.elasticsearch.annotations.*;
 
 import java.time.LocalDateTime;
 
-@EqualsAndHashCode(of = "id") // equals() 및 hashCode() 메서드를 생성할 때 고려해야 할 필드를 지정
+//@EqualsAndHashCode(of = "id") // equals() 및 hashCode() 메서드를 생성할 때 고려해야 할 필드를 지정
 @Document(indexName = "profile_elasticsearch") //해당 클래스의 인스턴스가 저장될 인덱스의 이름을 지정합니다. 이름 없으면 db 만듦
 @Setting(settingPath = "es-config/nori_redvelvet.json")
+//@Getter
+//@Setter
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Builder
+//@ToString
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @ToString
+@Builder
 public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 거
     @Id
     @Field(type = FieldType.Keyword)
@@ -41,10 +46,12 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     @Field(name = "private_post", type = FieldType.Keyword) //일반 텍스트 (형태소 분석 적용x)
     private Character privatePost;
 
-    @Field(name = "created_at", type = FieldType.Keyword, format = DateFormat.date_hour_minute_second)
+    @Field(name = "created_at", type = FieldType.Keyword)
+//    @Field(name = "created_at", type = FieldType.Date, format = DateFormat.date_hour_minute_second)
     private LocalDateTime createdTime; //생성 일시
 
-    @Field(name = "updated_at", type = FieldType.Keyword, format = DateFormat.date_hour_minute_second)
+//    @Field(name = "updated_at", type = FieldType.Date, format = DateFormat.date_hour_minute_second)
+    @Field(name = "updated_at", type = FieldType.Keyword)
     private LocalDateTime updatedTime; //마지막 업데이트 일시
 
     public static ProfileDocument from (Profile profile) {

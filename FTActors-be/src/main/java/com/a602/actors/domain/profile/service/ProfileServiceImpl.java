@@ -40,41 +40,12 @@ public class ProfileServiceImpl implements ProfileService{
     private final ProfileDocumentCustomRepository profileDocumentCustomRepository;
     private final ElasticsearchOperations elasticsearchOperations;
 
-    @Override //삭제할 메서드 (이거 기반으로 searchAllProfile 구현 마무리하고 삭제)
-    public List<ProfileDocument> getProfileList(int sorting, Character condition, HttpSession session) {
-        log.info("실환가요 - 엘라스틱 서치- 목록 다 뽑기");
-        
-        return null;
-//        String nowLoginId = (String) session.getAttribute("memberName");
-//        List<Profile> profiles = null;
-//        Long loginnedId = (long) -1;
-//
-//        //로그인 여부 확인 후, 로그인이 되어 있으면
-//        if(nowLoginId != null) {
-//            Member loginMember = tmpMemRepo.findByLoginId(nowLoginId);
-//            loginnedId = loginMember.getId();
-//        }
-//
-//        profiles = profileCustomRepository.findAllLatest(sorting, condition, loginnedId);
-//
-//        return profileMapper.ProfileListToProfileDtoList(profiles);
-//        return profileCustomRepository.findAllLatest(sorting, condition);
-    }
-
     @Override //검색 목록 (엘라스틱만 , db사용x)
     public List<ProfileSearchResponse> searchAllProfile(int sorting) {
         //To do: 1. 지금은 비공개여부=T면 다 안 뽑음. jwt들어오면, 로그인 유저의 경우 T라도 같이 뽑아오게 바꾸기
 
         //Reop가서 List<도큐먼트>로 뽑아오고
         List<ProfileDocument> list = new ArrayList<>();
-//        Iterable<ProfileDocument> iterable = findAllByOrderByUpdatedTimeDesc(Sort.by(Sort.Direction.DESC, "updatedTime"));
-//        if (iterable != null) {
-//            iterable.forEach(list::add);
-//        } else {
-//            // iterable이 null인 경우에 대한 처리를 여기에 추가합니다.
-//            // 예를 들어, 로그를 출력하거나 다른 적절한 동작을 수행할 수 있습니다.
-//            System.out.println("Iterable is null!");
-//        }
         list = profileDocumentCustomRepository.findAllByOrderByUpdatedTime(sorting);
 
         //리턴에서 mapper사용해서 변환 후 돌려주기
@@ -82,22 +53,11 @@ public class ProfileServiceImpl implements ProfileService{
         return profileMapper.ProfileDocumentListToProfileSearchResponseList(list);
     }
 
-    @Override //To do: session만 jwt로 바꾸기 (db만, 엘라스틱x)
+    @Override //To do: jwt에서 사람 정보 뽑아와서 그 계정으로 만들기 (db만, 엘라스틱x)
     public ProfileDto getProfile(Long profileId, HttpSession session) {
 //        Long nowLoginId = (Long) session.getAttribute("memberName");
         Long loginnedId = (long) 10;
 
-        //로그인 여부 확인 후, 로그인이 되어 있으면
-//        if(nowLoginId != null) {
-//            Member loginMember = tmpMemRepo.findByLoginId(nowLoginId);
-//            loginnedId = loginMember.getId();
-//        }
-
-        //있는 프로필이라도 비공개여부=T이면 null 반환, 본인 거면 상관 없음
-//        Profile profile = profileCustomRepository.findProfileByIdAndCondition(profileId, loginnedId);
-//        if(profile == null) new ProfileException(ExceptionCodeSet.PROFILE_NOT_FOUND); // -> (실제 없거나, 비공개여부=T) 프론트에서 "해당 프로필을 볼 수 없습니다"
-
-        //
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(() -> new ProfileException(ExceptionCodeSet.PROFILE_NOT_FOUND));
         return profileMapper.ProfileToProfileDto(profile);
@@ -130,7 +90,7 @@ public class ProfileServiceImpl implements ProfileService{
     }
 
     //-------------
-    @Override //프로필 만들기 / 개얼여 (엘라스틱, db 둘 다 사용)
+    @Override //프로필 만들기 -> jwt에서 정보 뽑아서 그 계정으로 만들기 (엘라스틱, db 둘 다 사용)
     public String createProfile(ProfileRequest profileRequest) {
         //To do: 1 jwt에서 로그인한 loginedMember 정보 뽑기
         //To do: 2 loginedMember에서 id(고유 번호) 뽑기
@@ -190,7 +150,7 @@ public class ProfileServiceImpl implements ProfileService{
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(() -> new ProfileException(ExceptionCodeSet.PROFILE_NOT_FOUND)); // "삭제 불가 - 없는 프로필입니다."
 
-        //로그인 멤버와 지금 멤버가 다르면x 
+        //로그인 멤버와 지금 멤버가 다르면x
 //        if( !profile.getMember().getMemberId().equals(nowLoginId) ) {
 //            log.info("삭제불가 - 다른 사람이다!!");
 //        }
@@ -224,16 +184,23 @@ public class ProfileServiceImpl implements ProfileService{
     }
 
     @Override // 다중 검색 용으로 만든 거 같은데 더 연구해야 할 듯 (엘라스틱만)
-    public List<ProfileDocument> searchProfileDocuments(List<String> keywordArr) { //다중 검색?? 어케 하니
+    public List<ProfileSearchResponse> searchProfileDocuments(List<String> keywordArr) { //다중 검색?? 어케 하니
         String keyword = keywordArr.get(0);
         Query query = QueryBuilders.match(queryBuilder -> queryBuilder.field("content").query(keyword));
         NativeQuery nativeQuery = NativeQuery.builder().withQuery(query).build(); //쿼리가 너무 복잡해질 때를 대비해서 네이티브 쿼리로 한 번 돌려서 사용
         SearchHits<ProfileDocument> result = elasticsearchOperations.search(nativeQuery, ProfileDocument.class);
 
-        return result
-                .stream()
-                .map(SearchHit::getContent)
-                .collect(Collectors.toList());
+        List<ProfileDocument> profileDocuments = new ArrayList<>();
+        for (SearchHit<ProfileDocument> hit : result) {
+            profileDocuments.add(hit.getContent());
+        }
+
+        return profileMapper.ProfileDocumentListToProfileSearchResponseList(profileDocuments);
+
+//        return result
+//                .stream()
+//                .map(SearchHit::getContent)
+//                .collect(Collectors.toList());
     }
 
 }
