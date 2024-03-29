@@ -37,7 +37,7 @@
                   <input type="text" class="form-control reply-input" placeholder="대댓글 작성"
                     aria-label="Recipient's username" aria-describedby="reply-button" v-model="addReply">
                   <button class="btn btn-outline-secondary reply-btn" type="button" id="reply-button"
-                    @click="uploadReply">작성</button>
+                    @click="uploadReply()">작성</button>
                 </div>
                 <!-- 대댓글 리스트 -->
                 <div v-for="(reply, rIndex) in comment.reply" :key="`reply-${rIndex}`" class="mt-2" id="reply">
@@ -134,7 +134,7 @@ const uploadReply = () => {
   }
   const content = {
     "montageId": 1,
-    "parentId": 1,
+    "parentId": selectedComment.value.commentId,
     "content": addReply.value,
     "isDeleted": false
   };
@@ -143,6 +143,7 @@ const uploadReply = () => {
     .then((response) => {
       console.log(response.data);
       addReply.value = "";
+      getCommentReply(); 
     })
     .catch((error) => {
       console.error(error);
