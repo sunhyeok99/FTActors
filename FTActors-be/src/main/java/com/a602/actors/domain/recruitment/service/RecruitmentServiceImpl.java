@@ -37,13 +37,14 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     private final MemberRepository memberRepository;
     private final WishlistRepository wishlistRepository;
     private final WishlistService wishlistService;
+    private final Crawling crawling;
 
     @Override
     @Transactional
     public void register(RecruitmentRequestDto recruitmentRequestDto) throws IOException {
         String imageName = "";
         String imageUrl = "";
-        String fileName ="";
+        String fileName = "";
         String fileUrl = "";
         if (recruitmentRequestDto.getImage() != null) {
             imageName = FileUtil.makeFileName(recruitmentRequestDto.getImage().getOriginalFilename());
@@ -128,19 +129,37 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     @Override
     @Transactional
     public List<RecruitmentListResponseDto> getList(Long memberId) {
-        List<Recruitment> recruitments = recruitmentRepository.findAllRecruitment();
-        List<RecruitmentListResponseDto> recruitmentListResponseDtos = recruitments.stream()
-                .map(recruitment -> RecruitmentListResponseDto.builder()
-                        .id(recruitment.getId())
-                        .title(recruitment.getTitle())
-                        .image(recruitment.getImage())
-                        .endDate(recruitment.getEndDate())
-                        .wishlist(wishlistService.detail(recruitment.getId(), memberId))
-                        .privateRecruitment(recruitment.getPrivateRecruitment())
-                        .build())
+//        List<Recruitment> recruitments = recruitmentRepository.findAllRecruitment();
+//        List<RecruitmentListResponseDto> recruitmentListResponseDtos = recruitments.stream()
+//                .map(recruitment -> RecruitmentListResponseDto.builder()
+//                        .id(recruitment.getId())
+//                        .title(recruitment.getTitle())
+//                        .image(recruitment.getImage())
+//                        .endDate(recruitment.getEndDate())
+//                        .wishlist(wishlistService.detail(recruitment.getId(), memberId))
+//                        .privateRecruitment(recruitment.getPrivateRecruitment())
+//                        .build())
+//                .collect(Collectors.toList());
+        List<Object[]> recruitmentList = recruitmentRepository.findAllRecruitment(memberId);
+                List<RecruitmentListResponseDto> recruitmentListResponseDtos = recruitmentList.stream()
+                .map(recruitments -> {
+                            Recruitment recruitment = (Recruitment) recruitments[0];
+                            int wishlist =1;
+                            if(recruitments[1] == null){
+                                wishlist = 0;
+                            }
+                    return RecruitmentListResponseDto.builder()
+                            .id(recruitment.getId())
+                            .title(recruitment.getTitle())
+                            .image(recruitment.getImage())
+                            .endDate(recruitment.getEndDate())
+                            .wishlist(wishlist)
+                            .privateRecruitment(recruitment.getPrivateRecruitment())
+                            .build();
+                })
                 .collect(Collectors.toList());
         return recruitmentListResponseDtos;
-    }
+    };
 
     @Override
     @Transactional
@@ -194,7 +213,6 @@ public class RecruitmentServiceImpl implements RecruitmentService {
             System.out.println(recruitment.getTitle());
             recruitment.updatePrivate();
         }
-        Crawling crawling = new Crawling();
         List<Recruitment> recruitmentList = crawling.getRecruitmentDatas(currentTime.minusDays(1));
         recruitmentRepository.saveAll(recruitmentList);
     }
