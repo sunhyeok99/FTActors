@@ -31,6 +31,7 @@
                 <div class="d-flex w-100 align-items-center justify-content-between reply-block">
                   <strong class="mb-1" id="reply-member">{{ comment.memberId }}</strong>
                   <div class="col-10 mb-1 small comment-text">{{ comment.content }}</div>
+                  <div class="remove"><img src="@/assets/icons/Remove.png" alt="" @click="deleteComment(comment.commentId)"  ></div>
                 </div>
                  <!-- 대댓글 작성 인풋 -->
                  <div v-if="selectedComment === comment" class="mt-4 reply-container" @click.stop>
@@ -114,6 +115,20 @@ const uploadComment = () => {
   
 };
 
+const deleteComment = (id) => {
+  axios
+    .delete(`http://localhost:8080/api/montage/1/comment/${id}`)
+    .then(() => {
+      console.log("댓글이 삭제되었습니다:");
+      getCommentReply();
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+    
+  
+};
 
 // 댓글 선택
 const selectedComment = ref(null);
@@ -188,14 +203,21 @@ const uploadReply = () => {
   justify-content: space-between;
   width: 100%;
 }
+p{
+  margin-bottom: auto;
+}
 
 #reply {
-  margin-left: 200px;
+  margin-left: 120px;
 }
 
 #addreply {
-  margin-left: 200px;
+  margin-left: 120px;
   width: auto;
+}
+.remove img{
+  width: 15px;
+  height: 15px;
 }
 
 .reply-container {
@@ -214,9 +236,12 @@ const uploadReply = () => {
   white-space: nowrap;
   min-width: 80px;
 }
-
+.reply-block{
+  display: flex;
+}
 #reply-member {
   display: inline-block;
+  margin-left: 10px;
   min-width: 5rem;
   max-width: 5rem;
   white-space: nowrap;
