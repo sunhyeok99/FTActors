@@ -39,22 +39,15 @@ services:
       - backend
     volumes:
       - /home/ubuntu/volume/flask:/usr/local/app/
+    env_file: ".env"
     expose:
       - "5000"
-
-  elastic:
-    build:
-      context: ../
-      dockerfile: "./docker/dockerfile/elastic-search.dockerfile"
-    networks:
-      - backend
-    expose:
-      - "9200"
 
   redis:
     image: redis
     networks:
       - backend
+    env_file: ".env"
     expose:
       - "6379"
 #
@@ -64,6 +57,7 @@ services:
       - backend
     volumes:
       - /home/ubuntu/volume/mq:/var/lib/rabbitmq
+    env_file: ".env"
     expose:
       - "5672"
 
@@ -81,8 +75,12 @@ services:
 # 인터페이스를 통해 컨테이너들을 연결한다.
 networks:
   backend:
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.16.20.0/24"
-          gateway: "172.16.20.1"
+    external: true
+
+#networks:
+#  backend:
+#    ipam:
+#      driver: default
+#      config:
+#        - subnet: "172.16.20.0/24"
+#          gateway: "172.16.20.1"

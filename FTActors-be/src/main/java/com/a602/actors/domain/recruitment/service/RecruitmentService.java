@@ -23,5 +23,7 @@ public interface RecruitmentService {
     List<RecruitmentListResponseDto> registerList(Long postMemberId);
     // 7. 공고 마감일자 변경
     void updateDate(Long recruitmentId, String endDate);
+    // 8. 공고 마감일자 지난것들 변경
+    void scheduleExpiredRecruitment();
 
 }

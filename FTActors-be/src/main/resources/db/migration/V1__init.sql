@@ -1,4 +1,3 @@
-
 drop table IF EXISTS alarm;
 
 drop table IF EXISTS apply;
@@ -244,3 +243,4 @@ CREATE TABLE `participants` (
                                 CONSTRAINT `FK_chat_room_TO_participants_1` FOREIGN KEY (`chat_room_id`) REFERENCES `chat_room` (`id`),
                                 CONSTRAINT `FK_Member_TO_participants_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
 );
+

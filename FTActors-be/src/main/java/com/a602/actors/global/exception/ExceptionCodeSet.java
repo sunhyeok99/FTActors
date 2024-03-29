@@ -1,6 +1,5 @@
 package com.a602.actors.global.exception;
 
-import co.elastic.clients.elasticsearch.nodes.Http;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,8 @@ public enum ExceptionCodeSet {
 
     // 유저
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, 1000, "회원이 존재하지 않습니다."),
+    MEMBER_DUPLICATED(HttpStatus.BAD_REQUEST, 1100, "이미 존재하는 회원입니다."),
+
     // 공고
     RECRUITMENT_NOT_FOUND(HttpStatus.BAD_REQUEST, 2000, "존재하지 않는 공고입니다"),
 
