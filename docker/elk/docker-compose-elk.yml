@@ -135,12 +135,7 @@ services:
   #     - elk
 networks:
   backend:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.16.20.0/24"
-          gateway: "172.16.20.1"
+    external: true
 
 volumes:
   elasticsearch:
