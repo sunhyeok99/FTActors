@@ -42,13 +42,23 @@ public class ProfileController {
         return new ApiResponse<>(HttpStatus.OK.value(), "해당 프로필을 불러왔습니다.", profileService.getProfile(profileId, session));
     }
 
-    @GetMapping("/search") //->삭제까지 구현하고 다시, 시큐리티 영향x 처리 필요
-    public ApiResponse<?> searchPost(
+    @GetMapping("/searchcontent") //->삭제까지 구현하고 다시, 시큐리티 영향x 처리 필요
+    public ApiResponse<?> searchByContent(
             @RequestParam(value = "keywords") String keywords) {
         String[] keywordArr = keywords.split(" "); //공백 기준으로 키워드 여러 개 인식
 
         // 배열이 아닌 리스트로 검색어를 보내는 이유
-        List<ProfileSearchResponse> profileSearchResponses = profileService.searchProfileDocuments(Arrays.asList(keywordArr));
+        List<ProfileSearchResponse> profileSearchResponses = profileService.searchProfileByContent(Arrays.asList(keywordArr));
+
+        // To do: 키워드 다중 검색
+        // To do: 형태소 분석... (다 나눠서 찾기 > 가중치 > 오타 잡기 > 자동완성)
+        return new ApiResponse<>(HttpStatus.OK.value(), "프로필 검색 결과입니다.", profileSearchResponses);
+    }
+
+    @GetMapping("/searchname") //->삭제까지 구현하고 다시, 시큐리티 영향x 처리 필요
+        public ApiResponse<?> searchByName( @RequestParam(value = "stage_name") String findName) {
+        // 배열이 아닌 리스트로 검색어를 보내는 이유
+        List<ProfileSearchResponse> profileSearchResponses = profileService.searchProfileByName(findName);
 
         // To do: 키워드 다중 검색
         // To do: 형태소 분석... (다 나눠서 찾기 > 가중치 > 오타 잡기 > 자동완성)

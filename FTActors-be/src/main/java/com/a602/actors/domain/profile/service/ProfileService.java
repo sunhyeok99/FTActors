@@ -23,6 +23,7 @@ public interface ProfileService {
 
     String updateProfile(Long profileId, ProfileRequest profileRequest);
 
-    List<ProfileSearchResponse> searchProfileDocuments(List<String> keywordArr);
+    List<ProfileSearchResponse> searchProfileByContent(List<String> keywordArr);
+    List<ProfileSearchResponse> searchProfileByName(String keyword);
 
 }

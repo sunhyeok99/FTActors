@@ -115,7 +115,7 @@ public class ProfileServiceImpl implements ProfileService{
 //                null,
 //                profileRequest.getStageName()
 //        );
-        Member loginMember = tmpMemRepo.findByLoginId(10L);
+        Member loginMember = tmpMemRepo.findByLoginId(11L);
         //-------jwt 구현 후 삭제
 
         //저장하기
@@ -183,9 +183,13 @@ public class ProfileServiceImpl implements ProfileService{
         return "";
     }
 
-    @Override // 다중 검색 용으로 만든 거 같은데 더 연구해야 할 듯 (엘라스틱만)
-    public List<ProfileSearchResponse> searchProfileDocuments(List<String> keywordArr) { //다중 검색?? 어케 하니
+    @Override // 1. 부분 단어 검색 2. 여러 필드에서 연결되는 거 다 검색 3. 여러 키워드 검색
+    public List<ProfileSearchResponse> searchProfileByContent(List<String> keywordArr) {
         String keyword = keywordArr.get(0);
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return searchAllProfile(1);
+        }
+//        Query query = QueryBuilders.match(queryBuilder -> queryBuilder.field("content").query(keyword));
         Query query = QueryBuilders.match(queryBuilder -> queryBuilder.field("content").query(keyword));
         NativeQuery nativeQuery = NativeQuery.builder().withQuery(query).build(); //쿼리가 너무 복잡해질 때를 대비해서 네이티브 쿼리로 한 번 돌려서 사용
         SearchHits<ProfileDocument> result = elasticsearchOperations.search(nativeQuery, ProfileDocument.class);
@@ -201,6 +205,23 @@ public class ProfileServiceImpl implements ProfileService{
 //                .stream()
 //                .map(SearchHit::getContent)
 //                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProfileSearchResponse> searchProfileByName(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return searchAllProfile(1);
+        }
+        Query query = QueryBuilders.match(queryBuilder -> queryBuilder.field("stage_name").query(keyword));
+        NativeQuery nativeQuery = NativeQuery.builder().withQuery(query).build(); //쿼리가 너무 복잡해질 때를 대비해서 네이티브 쿼리로 한 번 돌려서 사용
+        SearchHits<ProfileDocument> result = elasticsearchOperations.search(nativeQuery, ProfileDocument.class);
+
+        List<ProfileDocument> profileDocuments = new ArrayList<>();
+        for (SearchHit<ProfileDocument> hit : result) {
+            profileDocuments.add(hit.getContent());
+        }
+
+        return profileMapper.ProfileDocumentListToProfileSearchResponseList(profileDocuments);
     }
 
 }
