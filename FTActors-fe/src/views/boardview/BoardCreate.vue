@@ -3,7 +3,8 @@
     <h1>공고 제작 페이지</h1>
     <fieldset>
       <label for="title">공고제목</label>
-      <input type="text" id="title"  v-model="title" placeholder = "공고 제목을 입력해주세요"
+      <input type="text" id="title"  v-model="title" 
+      placeholder="공고 제목을 입력해주세요"
         class="input-field"
       />
       <label for="content">내용</label>
@@ -59,6 +60,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { recruitmentApi } from "../../util/axios.js";
+
 const router = useRouter();
 const title = ref("");
 const content = ref("");

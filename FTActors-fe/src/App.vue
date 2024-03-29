@@ -1,12 +1,15 @@
 <template>
   <!-- 몽타쥬 팝업 -->
   <MontagePopup />
+  <MontageNav>
+    <RouterLink to="/" id="name">배우는 사람</RouterLink>
+  </MontageNav> />
   <div class="wrapper">
+    
     <header>
       <div>
         <!-- 네비게이션 바 -->
-        <nav>
-          <RouterLink to="/" id="name">배우는 사람</RouterLink>
+        <nav id="menu">
           <RouterLink to="/board">진행중인 공고</RouterLink>
           <RouterLink to="/profile">배우 프로필</RouterLink>
           <RouterLink to="/montagemain" id="fontapply">Montage</RouterLink>
@@ -43,6 +46,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { RouterLink, RouterView, useRouter } from 'vue-router'
+import MontageNav from '@/components/montagepage/MontageNav.vue'
 import MypageDropdown from './components/common/MypageDropdown.vue';
 import FooterBox from './components/common/FooterBox.vue';
 import MontagePopup from './components/modals/MontagePopup.vue';
@@ -54,25 +58,6 @@ const goToLogin = () => {
   router.push({ name: 'login' });
 };
 
-// 몽타쥬 팝업 모달
-onMounted(() => {
-  const modalElement = document.getElementById('montagePopup');
-  const modalInstance = new bootstrap.Modal(modalElement, {
-    keyboard: false
-  });
-  modalInstance.show();
-  window.onYouTubeIframeAPIReady = () => {
-    new YT.Player('player', {
-      height: '530',
-      width: '1120',
-      videoId: 'p1',
-      playerVars: {
-        autoplay: 1,
-        mute: 1
-      }
-    });
-  };
-});
 
 </script>
 
@@ -86,7 +71,7 @@ header {
   font-family: 'tuesday_nightregular', impact;
 }
 
-nav {
+#menu {
   width: 100%;
   font-size: 20px;
   text-align: left;
@@ -95,21 +80,21 @@ nav {
   align-items: center;
 }
 
-nav a.router-link-exact-active {
+#menu a.router-link-exact-active {
   color: var(--color-text);
 }
 
-nav a.router-link-exact-active:hover {
+#menu a.router-link-exact-active:hover {
   background-color: transparent;
 }
 
-nav a {
+#menu a {
   display: inline-block;
   padding: 0 1rem;
   border-left: 1px solid var(--color-border);
 }
 
-nav a:first-of-type {
+#menu a:first-of-type {
   border: 0;
 }
 
@@ -122,7 +107,7 @@ nav a:first-of-type {
 }
 
 @media (min-width: 1024px) {
-  nav {
+  #menu {
     text-align: left;
     margin-left: -1rem;
     font-size: 1rem;
@@ -170,4 +155,3 @@ nav a:first-of-type {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 </style>
-./components/modals/MontagePopup.vue./components/modals/AlarmModal.vue./components/common/FooterBox.vue./components/common/SideBars.vue
