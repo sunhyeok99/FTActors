@@ -38,7 +38,6 @@ public class ApplyServiceImpl implements ApplyService {
             savedName = FileUtil.makeFileName(applyDto.getVideoFile().getOriginalFilename());
             url = FileUtil.uploadFile(applyDto.getVideoFile(), savedName, FolderType.APPLY_PATH);
         }
-
         Apply apply = Apply.builder()
                 .recruitment(recruitmentRepository.findById(applyDto.getRecruitmentId()).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND)))
                 .member(memberRepository.findById(applyDto.getMemberId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)))
@@ -77,6 +76,7 @@ public class ApplyServiceImpl implements ApplyService {
                         .memberName(apply.getMember().getName())
                         .content(apply.getContent())
                         .videoLink(apply.getVideoLink())
+                        .createdAt(apply.getCreatedAt().toString())
                         .build())
                 .collect(Collectors.toList());
         return applyDtoList;
@@ -91,6 +91,7 @@ public class ApplyServiceImpl implements ApplyService {
                 .memberName(apply.getMember().getName())
                 .content(apply.getContent())
                 .videoLink(apply.getVideoLink())
+                .createdAt(apply.getCreatedAt().toString())
                 .build();
         return applyDto;
     }
@@ -105,6 +106,7 @@ public class ApplyServiceImpl implements ApplyService {
                         .memberName(apply.getMember().getName())
                         .content(apply.getContent())
                         .videoLink(apply.getVideoLink())
+                        .createdAt(apply.getCreatedAt().toString())
                         .build())
                 .collect(Collectors.toList());
         return applyDtoList;
