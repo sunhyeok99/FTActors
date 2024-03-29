@@ -30,7 +30,7 @@ services:
     profiles:
       - setup
     build:
-      context: setup/
+      context: .
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     init: true
@@ -58,12 +58,12 @@ services:
   elasticsearch:
     container_name: elasticsearch
     build:
-      context: elasticsearch/
+      context: .
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
       - ./elasticsearch/config:/usr/share/elasticsearch/config:ro,Z
-      - elasticsearch:/usr/share/elasticsearch/data:Z
+      - ./elasticsearch:/usr/share/elasticsearch/data:Z
     expose:
       - 9200
       - 9300
@@ -84,7 +84,7 @@ services:
   logstash:
     container_name: logstash
     build:
-      context: logstash/
+      context: .
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
@@ -106,7 +106,7 @@ services:
 
   kibana:
     build:
-      context: kibana/
+      context: .
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
