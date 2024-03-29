@@ -92,6 +92,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**", "/main", "/error", "/static/**", "/signin",
                                 "/firebase/**", "/css/**","/js/**", "/firebase-messaging-sw.js",
                                 "/barter/**", "/post/**", "/register", "/signup", "/ws-stomp"
+                                ,"/oauth2/authorization/kakao"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
