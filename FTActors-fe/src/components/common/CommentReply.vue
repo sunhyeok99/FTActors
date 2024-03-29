@@ -11,7 +11,7 @@
           <!-- 댓글 펼치기 -->
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
             data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-            댓글 5개 펼치기
+            댓글 {{comments.length}}개 펼치기
           </button>
           <!-- 댓글 작성 인풋-->
           <div class="input-group mb-3">
