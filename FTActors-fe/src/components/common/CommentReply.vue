@@ -89,7 +89,8 @@ onMounted(() => {
 // 댓글 추가하기
 const addComment = ref("");
 const uploadComment = () => {
-  const content = {
+  if (addComment.value.trim().length > 0) {
+    const content = {
     "montageId": 1,
     "content": addComment.value,
     "isDeleted": false
@@ -104,6 +105,13 @@ const uploadComment = () => {
     .catch((error) => {
       console.error(error);
     });
+
+    console.log("댓글이 작성되었습니다:", addComment);
+    addComment.value = "";
+  } else {
+    console.log("댓글을 입력해주세요.");
+  }
+  
 };
 
 
