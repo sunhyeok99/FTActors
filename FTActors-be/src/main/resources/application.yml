@@ -1,3 +1,4 @@
+  -- DB 설정 부분
   spring:
     datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -67,8 +68,6 @@
   logging:
     file:
       name: ./logs/customer-service.log
-    level: #뭔지 모르겠는데 있다
-      org.springframework.data.elasticsearch.client.WIRE: DEBUG
   logstash:
     host: localhost
 
