@@ -117,10 +117,10 @@ const recruitmentApi = {
     },
   };
   
-const chatApi = {
+  const chatApi = {
     createChatRoom: () => {
-    return axiosInstance.post("/api/chat");
-  },
+      return axiosInstance.post("/api/chat");
+    },
     getMyChatRooms: (memberId) => {
       return axiosInstance.get("/api/chat/room/mylist", {
         params: { memberId },
