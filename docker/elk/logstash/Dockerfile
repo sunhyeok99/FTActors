@@ -11,7 +11,9 @@ RUN curl -L -o mysql-connector-java-8.0.28.tar.gz https://dev.mysql.com/get/Down
 COPY ./config /usr/share/logstash/config
 COPY ./pipeline/logstash.conf /usr/share/logstash/pipeline/logstash.conf
 
-RUN chmod +rx /usr/share/logstash/pipeline/logstash.conf
+RUN ls -al
+#
+RUN chmod o+rx /usr/share/logstash/pipeline/logstash.conf
 
 # Add your logstash plugins setup here
 # Example: RUN logstash-plugin install logstash-filter-json
