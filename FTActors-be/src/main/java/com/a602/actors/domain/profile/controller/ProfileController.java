@@ -1,11 +1,17 @@
 package com.a602.actors.domain.profile.controller;
 
+import com.a602.actors.domain.member.Member;
 import com.a602.actors.domain.profile.dto.ProfileDto;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.dto.ProfileSearchResponse;
 import com.a602.actors.domain.profile.entity.ProfileDocument;
 import com.a602.actors.domain.profile.service.ProfileService;
+import com.a602.actors.global.auth.service.member.MemberService;
+import com.a602.actors.global.auth.util.CookieUtil;
 import com.a602.actors.global.common.dto.ApiResponse;
+import com.a602.actors.global.jwt.util.JWTUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,6 +28,23 @@ import java.util.List;
 @Slf4j
 public class ProfileController {
     private final ProfileService profileService;
+    private final JWTUtil jwtUtil;
+    private final CookieUtil cookieUtil;
+    private final MemberService memberService;
+
+    public Long findMemberLoginedMemberId(HttpServletRequest request) {
+        Long loginedId = jwtUtil.getLoginMemberId();
+        log.info("loginedId: " + loginedId);
+        if (loginedId == null) {
+            Cookie cookie = cookieUtil.resolveToken(request);
+            Map<String, String> attributes = cookie.getAttributes();
+            String loginedKakaoId = attributes.get("kakaoId");
+            Member loginedMemeber = memberService.getUserByKakaoId(loginedKakaoId);
+            loginedId = loginedMemeber.getId();
+        }
+
+        return loginedId;
+    }
 
     @GetMapping("/list") //1.완성 //To do: 멤버 받아서 본인 확인 후, 비공개여부 T인 것도 리스트에 같이 받아오기, 시큐리티 영향x 처리 필요
     public ApiResponse<List<ProfileSearchResponse>> getAllProfileList(@RequestParam(name = "sort") int sorting)
@@ -30,6 +54,17 @@ public class ProfileController {
         List<ProfileSearchResponse> results = profileService.searchAllProfile(sorting);
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", results);
     }
+//    @GetMapping("/list") //1.완성 //To do: 멤버 받아서 본인 확인 후, 비공개여부 T인 것도 리스트에 같이 받아오기, 시큐리티 영향x 처리 필요
+//    public ApiResponse<List<ProfileSearchResponse>> getAllProfileList(@RequestParam(name = "sort") int sorting, HttpServletRequest request)
+//    {
+//        log.info("배우,감독 프로필 전체 목록 - 컨트롤러");
+//
+//        Long loginedMemberId = findMemberLoginedMemberId(request);
+//
+////        List<ProfileSearchResponse> results = profileService.searchAllProfile(sorting);
+//        List<ProfileSearchResponse> results = profileService.searchAllProfile22(sorting, request);
+//        return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", results);
+//    }
     
     @GetMapping("/detail") //db만 사용 -> jwt에서 멤버 가져오는 걸로 바꾸기, 시큐리티 영향x 처리 필요
     public ApiResponse<ProfileDto> getDetailProfile(@RequestParam(name = "profile_id") Long profileId,

@@ -5,6 +5,7 @@ import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.dto.ProfileSearchRequest;
 import com.a602.actors.domain.profile.dto.ProfileSearchResponse;
 import com.a602.actors.domain.profile.entity.ProfileDocument;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
@@ -26,4 +27,5 @@ public interface ProfileService {
     List<ProfileSearchResponse> searchProfileByContent(List<String> keywordArr);
     List<ProfileSearchResponse> searchProfileByName(String keyword);
 
+    List<ProfileSearchResponse> searchAllProfile22(int sorting, HttpServletRequest request);
 }

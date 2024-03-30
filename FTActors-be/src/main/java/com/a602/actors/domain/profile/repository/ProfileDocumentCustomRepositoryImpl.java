@@ -2,15 +2,11 @@ package com.a602.actors.domain.profile.repository;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import com.a602.actors.domain.profile.entity.ProfileDocument;
-//import com.a602.actors.global.elasticsearch.service.query.queryBuilder.QueryBuilder;
+import com.a602.actors.global.elasticsearch.service.query.queryBuilder.CustomElasticsearchOperations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.query.Criteria;
-import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -23,8 +19,7 @@ import java.util.stream.StreamSupport;
 @Component
 @RequiredArgsConstructor
 public class ProfileDocumentCustomRepositoryImpl implements ProfileDocumentCustomRepository {
-    private final ElasticsearchOperations elasticsearchOperations;
-    private final ProfileDocumentRepository profileDocumentRepository;
+    private final CustomElasticsearchOperations customElasticsearchOperations;
 
     @Override
     public List<ProfileDocument> findAllByOrderByUpdatedTime(int sorting) {
@@ -36,7 +31,7 @@ public class ProfileDocumentCustomRepositoryImpl implements ProfileDocumentCusto
         NativeQuery nativeQuery = queryBuilder.withQuery(q -> q
                         .term(termQueryBuilder.build()))
                 .build();
-        System.out.println(nativeQuery);
+//        System.out.println(nativeQuery);
 
         Sort sort;
         if (sorting == 1) { // 최신
@@ -46,7 +41,9 @@ public class ProfileDocumentCustomRepositoryImpl implements ProfileDocumentCusto
         }
 
         // 정렬 조건을 사용하여 프로필 문서 조회
-        Iterable<ProfileDocument> profileDocuments = profileDocumentRepository.findAll(sort);
+//        Iterable<ProfileDocument> profileDocuments = profileDocumentRepository.findAll(sort);
+        // 정렬 조건과 쿼리를 사용하여 프로필 문서 조회
+        List<ProfileDocument> profileDocuments = customElasticsearchOperations.queryForList(nativeQuery, sort);
 
         // Iterable을 List로 변환하여 반환
         return StreamSupport.stream(profileDocuments.spliterator(), false)

@@ -14,6 +14,7 @@ import com.a602.actors.domain.profile.repository.*;
 import com.a602.actors.global.elasticsearch.TimeChanger;
 import com.a602.actors.global.exception.ExceptionCodeSet;
 import com.a602.actors.global.exception.ProfileException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -222,6 +223,20 @@ public class ProfileServiceImpl implements ProfileService{
         }
 
         return profileMapper.ProfileDocumentListToProfileSearchResponseList(profileDocuments);
+    }
+
+    //으허허허ㅓ허허
+    @Override
+    public List<ProfileSearchResponse> searchAllProfile22(int sorting, HttpServletRequest request) {
+        //To do: 1. 지금은 비공개여부=T면 다 안 뽑음. jwt들어오면, 로그인 유저의 경우 T라도 같이 뽑아오게 바꾸기
+
+        //Reop가서 List<도큐먼트>로 뽑아오고
+        List<ProfileDocument> list = new ArrayList<>();
+        list = profileDocumentCustomRepository.findAllByOrderByUpdatedTime(sorting);
+
+        //리턴에서 mapper사용해서 변환 후 돌려주기
+        if (list == null) new ProfileException(ExceptionCodeSet.PROFILE_NOT_FOUND); // -> 프론트에서 null이면 "조건에 맞는 프로필이 없습니다" 반환
+        return profileMapper.ProfileDocumentListToProfileSearchResponseList(list);
     }
 
 }
