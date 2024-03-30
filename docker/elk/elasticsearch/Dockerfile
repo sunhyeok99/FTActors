@@ -8,5 +8,7 @@ COPY ./config /usr/share/elasticsearch/config
 RUN ["pwd"]
 VOLUME ["$(pwd):/usr/share/elasticsearch/data"]
 
+RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install analysis-nori
+
 # Add your elasticsearch plugins setup here
 # Example: RUN elasticsearch-plugin install analysis-icu
