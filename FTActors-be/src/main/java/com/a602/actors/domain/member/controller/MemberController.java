@@ -36,7 +36,7 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/api/findall/{stageName}")
+    @GetMapping("/findall/{stageName}")
     public ApiResponse<List<MemberPlusDTO>> findAllMembersByStageName(@PathVariable String stageName){
         List<MemberPlusDTO> allMembersByStageName = memberPlusService.findAllMembersByStageName(stageName);
         return new ApiResponse<>(HttpStatus.OK.value(), "조회 성공 !!", allMembersByStageName);
