@@ -1,11 +1,13 @@
 package com.a602.actors.domain.member.service;
 
-import com.a602.actors.domain.member.dto.MemberPlusDTO;
+import java.io.IOException;
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import com.a602.actors.domain.member.dto.MemberPlusDTO;
 
 public interface MemberPlusService {
     void update(MemberPlusDTO memberPlusDTO, MultipartFile profileImage, String kakaoId) throws IOException;
-
+    List<MemberPlusDTO> findAllMembersByStageName(String stageName);
 }
