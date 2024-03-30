@@ -103,22 +103,23 @@ services:
       - elasticsearch
     restart: unless-stopped
 
-  kibana:
-    build:
-      context: kibana/
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION}
-    volumes:
-      - ./kibana/config:/usr/share/kibana/config:ro,Z
-    ports:
-      - 5601
-    environment:
-      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
-    networks:
-      - backend
-    depends_on:
-      - elasticsearch
-    restart: unless-stopped
+#  kibana:
+#    container_name: kibana
+#    build:
+#      context: kibana/
+#      args:
+#        ELASTIC_VERSION: ${ELASTIC_VERSION}
+#    volumes:
+#      - ./kibana/config:/usr/share/kibana/config:ro,Z
+#    ports:
+#      - 5601
+#    environment:
+#      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+#    networks:
+#      - backend
+#    depends_on:
+#      - elasticsearch
+#    restart: unless-stopped
 
   # filebeat:
   #   build:
