@@ -64,7 +64,7 @@ services:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
       # - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z
-      - elasticsearch:/usr/share/elasticsearch/data:Z
+      - ./elasticsearch:/usr/share/elasticsearch/data:Z
     expose:
       - 9200
       - 9300
