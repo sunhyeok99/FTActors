@@ -90,6 +90,7 @@ services:
     volumes:
       - ./logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     #command: ls -al pipeline/logstash.conf
+    # - ./logstash/pipeline/:/usr/share/logstash/pipeline/
     expose:
       - 5044
       - 50000/tcp
