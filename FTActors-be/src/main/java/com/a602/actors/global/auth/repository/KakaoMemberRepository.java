@@ -12,7 +12,5 @@ import java.util.Optional;
 @Repository
 public interface KakaoMemberRepository extends JpaRepository<Member, String> {
     Optional<Member> findByUserId(String userId);
-//    @Query("SELECT m FROM Member m WHERE m.kakaoId = :kakaoId")
-//    Optional<Member> findByKakaoId(@Param("kakaoId") String kakaoId);
     Optional<Member> findByKakaoId(String kakaoId);
 }

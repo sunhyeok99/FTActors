@@ -19,7 +19,7 @@ import java.io.IOException;
 public class MemberController {
     private final MemberPlusService memberPlusService;
     private final MemberRepository memberRepository;
-    @PostMapping("/api/register")
+    @PostMapping("/register")
     public ApiResponse<String> enroll(@RequestPart(value = "dto") MemberPlusDTO memberPlusDTO,
                                          @RequestPart(value = "profileImage") MultipartFile profileImage,
                                          @RequestPart(value = "kakaoId") String kakaoId) {
