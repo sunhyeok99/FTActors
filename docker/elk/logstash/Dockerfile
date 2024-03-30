@@ -13,6 +13,8 @@ COPY ./pipeline/logstash.conf /usr/share/logstash/pipeline/logstash.conf
 
 RUN ls -al
 
+USER root
+
 RUN chmod 644 /usr/share/logstash/pipeline/logstash.conf
 
 # Add your logstash plugins setup here
