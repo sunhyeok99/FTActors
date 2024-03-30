@@ -87,8 +87,15 @@ services:
       context: logstash/
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
+<<<<<<< 6ee5943bfc22967dfbaf2e928cd09147e5001bec
 #    volumes:
 #      - ./logstash/pipeline/:/usr/share/logstash/pipeline/
+=======
+    volumes:
+      - ./logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    #command: ls -al pipeline/logstash.conf
+    # - ./logstash/pipeline/:/usr/share/logstash/pipeline/
+>>>>>>> 42e6aa1fcd9a2f061bc11a834e00553458578fc3
     expose:
       - 5044
       - 50000/tcp

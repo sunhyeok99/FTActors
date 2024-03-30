@@ -15,13 +15,14 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Setter
 @AllArgsConstructor
+@Builder
 @Table(name="member")
 public class Member extends BaseEntity implements Serializable {
     @Column(name = "login_id")
     private String userId;
-//
-//    @Column(name = "password")
-//    private String password;
+
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "name")
     private String name;
@@ -53,13 +54,21 @@ public class Member extends BaseEntity implements Serializable {
     @Column(name="saved_name")
     private String savedName;
 
-    @Builder
-    public Member(String email, String phone, String birth, String gender, String profileImage, String stageName){
-        this.email = email;
-        this.phone = phone;
-        this.birth = birth;
-        this.gender = gender;
-        this.profileImage = profileImage;
-        this.stageName = stageName;
-    }
+//    @Builder
+//    public Member(String userId, String password, String email){
+//        this.userId = userId;
+//        this.password = password;
+//        this.email = email;
+//    }
+//
+//    @Builder
+//    public Member(String email, String phone, String birth, String gender, String profileImage, String stageName){
+//        this.email = email;
+//        this.phone = phone;
+//        this.birth = birth;
+//        this.gender = gender;
+//        this.profileImage = profileImage;
+//        this.stageName = stageName;
+//    }
+
 }

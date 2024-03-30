@@ -8,15 +8,14 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RecruitmentRepository extends JpaRepository<Recruitment, Long>      {
+public interface RecruitmentRepository extends JpaRepository<Recruitment, Long> {
 
     @Query("SELECT r FROM Recruitment r "+
             " WHERE r.member.id = :memberId")
     List<Recruitment> findByMemberId(Long memberId);
 
-    @Query("SELECT r FROM Recruitment r " +
-    "WHERE r.privateRecruitment = 'F'")
-    List<Recruitment> findAllRecruitment();
+    @Query("SELECT r, w.id FROM Recruitment r left join Wishlist w on r.id = w.recruitment.id And :memberId = w.member.id WHERE r.privateRecruitment = 'F'")
+    List<Object[]> findAllRecruitment(Long memberId);
 
     @Query("SELECT r FROM Recruitment r " +
             " WHERE r.endDate < :currentDate AND r.privateRecruitment = 'F'")
