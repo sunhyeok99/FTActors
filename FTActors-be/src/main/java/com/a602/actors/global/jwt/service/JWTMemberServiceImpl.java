@@ -12,6 +12,7 @@ import com.a602.actors.global.jwt.mapper.MemberMapper;
 import com.a602.actors.global.jwt.repository.JWTMemberRepository;
 import com.a602.actors.global.jwt.util.JWTUtil;
 import com.a602.actors.global.jwt.util.TokenUtil;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,8 +53,10 @@ public class JWTMemberServiceImpl {
         Member member = jwtMemberRepository.findByUserId(memberDto.getMemberId())
                 .orElseThrow(() -> new CustomException("일치하는 사용자가 존재하지 않습니다."));
         log.info("로그인 시도한 멤버 :::::::::: {}, {}", member.getId(), member.getPassword());
-        Authentication authentication = authenticationManagerBuilder.getObject()
-                .authenticate(memberDto.toAuthentication());
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken(member.getUserId(), member.getPassword());
+//                authenticationManagerBuilder.getObject()
+//                .authenticate(memberDto.toAuthentication());
         // SecurityContextHolder에 로그인 한 유저 정보 저장
         SecurityContextHolder.getContext().setAuthentication(authentication);
         log.info("로그인 후 SecurityContextHolder에 저장된 사용자 :::::: {}",
@@ -66,6 +69,26 @@ public class JWTMemberServiceImpl {
         tokenUtil.setRefreshToken(authResponse.getRefreshToken());
 
         return authResponse;
+    }
+    public JwtDto.getPkId getIdByLoginId(String userId) {
+        Optional<Member> optionalMember = jwtMemberRepository.findByUserId(userId);
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            return JwtDto.getPkId.builder()
+                    .id(member.getId())
+                    .userId(member.getUserId())
+                    .name(member.getName())
+                    .email(member.getEmail())
+                    .phone(member.getPhone())
+                    .birth(member.getBirth())
+                    .gender(member.getGender())
+                    .profileImage(member.getProfileImage())
+                    .stageName(member.getStageName())
+                    .createdAt(member.getCreatedAt()) // createdAt 그대로 넣기
+                    .build();
+        } else {
+            return null;
+        }
     }
 
     public JwtDto.AuthResponse reIssue(JwtDto.AuthResponse tokenRequest) {
@@ -109,6 +132,14 @@ public class JWTMemberServiceImpl {
         }
     }
 
+    public void deleteMember(){
+        //사용자가 올린 공고 삭제
+        //사용자가 지원한 공고에 지원 내용 삭제
+        //s3에 내가 올린 파일 모두 삭제
+        //사용자의 위시리스트 삭제
+        //프로필 삭제
+        //사용자 정보 삭제
+    }
 //    public void deleteMember() {
 //        logout();
 //

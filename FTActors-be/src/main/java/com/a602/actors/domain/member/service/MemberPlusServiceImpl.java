@@ -36,7 +36,6 @@ public class MemberPlusServiceImpl implements MemberPlusService {
     public void update(MemberPlusDTO memberPlusDTO, MultipartFile profileImage, String kakaoId ) throws IOException {
         log.info("kakao_id : {}", kakaoId);
         Optional<Member> existingMemberOptional = kakaoMemberRepository.findByKakaoId(kakaoId);
-//        Optional<Member> existingMemberOptional2 = kakaoMemberRepository.findById("6");
 
         log.info("{}", existingMemberOptional);
         if (existingMemberOptional.isPresent()) {
