@@ -1,8 +1,11 @@
 package com.a602.actors.global.exception;
 
+// import co.elastic.clients.elasticsearch.nodes.Http;
+
+import org.springframework.http.HttpStatus;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
