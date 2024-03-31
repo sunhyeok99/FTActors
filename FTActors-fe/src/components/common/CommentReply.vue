@@ -1,24 +1,28 @@
 <template>
-  <div class="montagemainpage">
+  <div class="commentreplycomponent">
     <div class="accordion accordion-flush" id="accordionFlushExample">
       <div class="accordion-item">
         <div class="accordion-header">
-          <!-- 좋아요 버튼 -->
-          <button class="like-btn" :class="{ liked: isLiked }" @click.stop="toggleLike()">
-            <img v-if="isLiked" src="@/assets/icons/like-filled.png" alt="Liked">
-            <img v-else src="@/assets/icons/like-outline.png" alt="Unliked">
-          </button>
-          <!-- 댓글 펼치기 -->
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-            data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-            댓글 {{comments.length}}개 펼치기
-          </button>
-          <!-- 댓글 작성 인풋-->
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="댓글 쓰기" aria-label="Recipient's username"
-              aria-describedby="button-addon2" v-model="addComment">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon2"
-              @click="uploadComment">작성</button>
+          <div class="columnthings">
+            <div class="rowthings">
+              <!-- 좋아요 버튼 -->
+              <button class="like-btn" :class="{ liked: isLiked }" @click.stop="toggleLike()">
+                <img v-if="isLiked" src="@/assets/icons/like-filled.png" alt="Liked">
+                <img v-else src="@/assets/icons/like-outline.png" alt="Unliked">
+              </button>
+              <!-- 댓글 펼치기 -->
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne" id="comment-count">
+                댓글 {{ comments.length }}개
+              </button>
+            </div>
+            <!-- 댓글 작성 인풋-->
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="댓글 쓰기" aria-label="Recipient's username"
+                aria-describedby="button-addon2" v-model="addComment">
+              <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+                @click="uploadComment">작성</button>
+            </div>
           </div>
         </div>
 
@@ -31,10 +35,11 @@
                 <div class="d-flex w-100 align-items-center justify-content-between reply-block">
                   <strong class="mb-1" id="reply-member">{{ comment.memberId }}</strong>
                   <div class="col-10 mb-1 small comment-text">{{ comment.content }}</div>
-                  <div class="remove"><img src="@/assets/icons/Remove.png" alt="" @click="deleteComment(comment.commentId)"  ></div>
+                  <div class="remove"><img src="@/assets/icons/Remove.png" alt=""
+                      @click="deleteComment(comment.commentId)"></div>
                 </div>
-                 <!-- 대댓글 작성 인풋 -->
-                 <div v-if="selectedComment === comment" class="mt-4 reply-container" @click.stop>
+                <!-- 대댓글 작성 인풋 -->
+                <div v-if="selectedComment === comment" class="mt-4 reply-container" @click.stop>
                   <input type="text" class="form-control reply-input" placeholder="대댓글 작성"
                     aria-label="Recipient's username" aria-describedby="reply-button" v-model="addReply">
                   <button class="btn btn-outline-secondary reply-btn" type="button" id="reply-button"
@@ -44,7 +49,7 @@
                 <div v-for="(reply, rIndex) in comment.reply" :key="`reply-${rIndex}`" class="mt-2" id="reply">
                   <p>ㄴ <b id="reply-member">{{ reply.memberId }}</b> {{ reply.content }}</p>
                 </div>
-              
+
               </button>
             </div>
           </div>
@@ -92,27 +97,27 @@ const addComment = ref("");
 const uploadComment = () => {
   if (addComment.value.trim().length > 0) {
     const content = {
-    "montageId": 1,
-    "content": addComment.value,
-    "isDeleted": false
-  };
-  axios
-    .post(`http://localhost:8080/api/montage/1/comment`, content)
-    .then((response) => {
-      console.log(response.data);
-      addComment.value = "";
-      getCommentReply();
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+      "montageId": 1,
+      "content": addComment.value,
+      "isDeleted": false
+    };
+    axios
+      .post(`http://localhost:8080/api/montage/1/comment`, content)
+      .then((response) => {
+        console.log(response.data);
+        addComment.value = "";
+        getCommentReply();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
     console.log("댓글이 작성되었습니다:", addComment);
     addComment.value = "";
   } else {
     console.log("댓글을 입력해주세요.");
   }
-  
+
 };
 
 const deleteComment = (id) => {
@@ -126,8 +131,8 @@ const deleteComment = (id) => {
       console.error(error);
     });
 
-    
-  
+
+
 };
 
 // 댓글 선택
@@ -158,7 +163,7 @@ const uploadReply = () => {
     .then((response) => {
       console.log(response.data);
       addReply.value = "";
-      getCommentReply(); 
+      getCommentReply();
     })
     .catch((error) => {
       console.error(error);
@@ -168,12 +173,17 @@ const uploadReply = () => {
 </script>
 
 <style scoped>
-.montagemainpage {
+.commentreplycomponent {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
+/* 스크롤을 적용할 부분에만 해당하는 스타일 */
+.accordion-body {
+  max-height: 38vh; /* 뷰포트 높이의 일정 비율을 최대 높이로 설정 */
+  overflow-y: auto; /* 세로 스크롤바가 필요할 때만 나타나도록 설정 */
+}
 .accordion {
   display: flex;
 }
@@ -186,6 +196,16 @@ const uploadReply = () => {
 .accordion-button {
   width: 25%;
 }
+
+.columnthings {
+  display: flex;
+  flex-direction: column;
+}
+.rowthings{
+  display: flex;
+  flex-direction: row;
+}
+
 
 .like-btn {
   background-color: white;
@@ -203,47 +223,45 @@ const uploadReply = () => {
   justify-content: space-between;
   width: 100%;
 }
-p{
+
+p {
   margin-bottom: auto;
 }
 
 #reply {
-  margin-left: 120px;
+  margin-left: 20px;
 }
 
 #addreply {
-  margin-left: 120px;
+  margin-left: 20px;
   width: auto;
 }
-.remove img{
+
+.remove img {
   width: 15px;
   height: 15px;
 }
 
 .reply-container {
   display: flex;
-  margin-left: 200px;
+  margin-left: 20px;
   align-items: center;
-  width: calc(100% - 200px);
-}
-
-.reply-input {
-  flex-grow: 1;
-  margin-right: 8px;
+  width: calc(100% - 20px);
 }
 
 .reply-btn {
-  white-space: nowrap;
   min-width: 80px;
 }
-.reply-block{
+
+.reply-block {
   display: flex;
 }
+
 #reply-member {
   display: inline-block;
   margin-left: 10px;
-  min-width: 5rem;
-  max-width: 5rem;
+  min-width: 2rem;
+  max-width: 2rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -252,5 +270,9 @@ p{
 .comment-text {
   font-size: 1em;
   /* 또는 원하는 크기로 조정 */
+}
+
+#comment-count{
+  min-width: 150px;
 }
 </style>

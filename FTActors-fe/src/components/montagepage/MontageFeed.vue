@@ -38,8 +38,7 @@ onMounted(() => {
 
 const goToMontageDetail = (montageId) => {
   router.push({ name: 'montageDetail' , params: { id: montageId }});
-  const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas.value);
-  bsOffcanvas.hide();
+
 
 };
 

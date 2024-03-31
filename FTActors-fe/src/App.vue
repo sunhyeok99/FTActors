@@ -1,15 +1,14 @@
 <template>
   <!-- 몽타쥬 팝업 -->
   <MontagePopup />
-  <MontageNav>
-    <RouterLink to="/" id="name">배우는 사람</RouterLink>
-  </MontageNav> />
+  <MontageNav/>
+   
   <div class="wrapper">
     
     <header>
       <div>
         <!-- 네비게이션 바 -->
-        <nav id="menu">
+        <nav id="menu" >
           <RouterLink to="/board">진행중인 공고</RouterLink>
           <RouterLink to="/profile">배우 프로필</RouterLink>
           <RouterLink to="/montagemain" id="fontapply">Montage</RouterLink>
@@ -44,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+
 import { RouterLink, RouterView, useRouter } from 'vue-router'
 import MontageNav from '@/components/montagepage/MontageNav.vue'
 import MypageDropdown from './components/common/MypageDropdown.vue';
@@ -53,10 +52,12 @@ import MontagePopup from './components/modals/MontagePopup.vue';
 import AlarmModal from './components/modals/AlarmModal.vue';
 import SideBars from './components/common/SideBars.vue';
 
+
 const router = useRouter();
 const goToLogin = () => {
   router.push({ name: 'login' });
 };
+
 
 
 </script>
@@ -67,9 +68,20 @@ header {
   max-height: 100vh;
 }
 
+
 #fontapply {
   font-family: 'tuesday_nightregular', impact;
 }
+
+.montagemain-overlay {
+  background-color: rgba(0, 0, 0, 0.7); /* 어두운 오버레이 */
+}
+
+/* 네비게이션 바 폰트 색상을 밝게 만드는 스타일 */
+.light-font a {
+  color: #ffffff; /* 밝은 폰트 색상 */
+}
+
 
 #menu {
   width: 100%;
