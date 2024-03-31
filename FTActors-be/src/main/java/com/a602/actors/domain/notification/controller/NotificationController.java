@@ -2,11 +2,13 @@ package com.a602.actors.domain.notification.controller;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,6 +50,12 @@ public class NotificationController {
 	public ApiResponse<List<NotifyDto.Response>> getUnreadNotifyList(@RequestParam Long loginId){
 		log.info("NotificationController ========== getNotReadNoteList() start ..");
 		return new ApiResponse<>(HttpStatus.OK.value(), "get Unread Notify List Success !!", notificationService.getNotifyList(loginId));
+	}
+
+	@PostMapping("/read")
+	public ApiResponse<String> setUnreadToRead(@RequestBody List<ObjectId> objectIdList){
+		notificationService.markAsRead(objectIdList);
+		return new ApiResponse<>(HttpStatus.OK.value(), "알림 읽음 완료 !!!");
 	}
 
 

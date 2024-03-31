@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -26,6 +28,7 @@ public class NotificationService {
 	private final NotifyRepository notifyRepository;
 	// private final ObjectMapper objectMapper;
 	private final NotifyMapper notifyMapper;
+	private final MongoTemplate mongoTemplate;
 
 	public SseEmitter subscribe(Long memberId, String lastEventId){
 		log.info("NotificationService ============ start subscribe..");
@@ -104,5 +107,23 @@ public class NotificationService {
 	public List<NotifyDto.Response> getNotifyList(Long loginId){
 		List<Notify> notifyList = notifyRepository.findByReceiverIdAndIsRead(loginId, 'F');
 		return notifyMapper.NotifyToNotifyDtoResponse(notifyList);
+	}
+
+	public void markAsRead(List<ObjectId> objectIdList){
+		for(ObjectId objectId : objectIdList){
+			Notify unreadNotify = notifyRepository.findById(objectId)
+				.orElseThrow(() -> new RuntimeException("Document를 찾을 수 없습니다."));
+
+			Notify readNotify = Notify.builder()
+				.id(unreadNotify.getId())
+				.receiverId(unreadNotify.getReceiverId())  // Maintain other fields
+				.content(unreadNotify.getContent())      	// Maintain other fields
+				.notificationType(unreadNotify.getNotificationType())  // Maintain other fields
+				.isRead('T')  // Mark as read
+				.createdAt(unreadNotify.getCreatedAt())  	// Maintain other fields
+				.build();
+
+			mongoTemplate.save(readNotify);
+		}
 	}
 }
