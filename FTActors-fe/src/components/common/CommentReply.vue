@@ -6,7 +6,7 @@
           <!-- 좋아요 버튼 -->
           <button class="like-btn" :class="{ liked: isLiked }" @click.stop="toggleLike()">
             <img v-if="isLiked" src="@/assets/icons/like-filled.png" alt="Liked">
-            <img v-else src="@/assets/icons/like-outline.png" alt="Like">
+            <img v-else src="@/assets/icons/like-outline.png" alt="Unliked">
           </button>
           <!-- 댓글 펼치기 -->
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
