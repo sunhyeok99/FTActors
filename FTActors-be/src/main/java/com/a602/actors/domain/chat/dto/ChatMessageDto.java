@@ -9,11 +9,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ChatMessageDto {
 	public enum MessageType {
-		ENTER, TALK
+		ENTER, TALK, EXIT
 	}
 
 	private String roomId;
-	private String sender;
+	private Long sender;
 	private String message;
+	private char isRead;
 	private MessageType type;
 }

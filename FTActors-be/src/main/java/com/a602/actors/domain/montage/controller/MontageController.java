@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@RequestMapping("/api/montage")
+@RequestMapping("/montage")
 public class MontageController {
 
     private final MontageFileService montageFileService;
