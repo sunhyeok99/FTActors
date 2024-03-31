@@ -8,5 +8,10 @@ FROM rabbitmq
 ###rm -f rabbitmq_delayed_message_exchange-20171201-3.7.x.zip && \
 ###mv rabbitmq_delayed_message_exchange-20171201-3.7.x.ez plugins/
 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    erlang
+
 #RUN rabbitmq-plugins enable rabbitmq_delayed_message_exchange
 RUN rabbitmq-plugins enable rabbitmq_stomp
+RUN rabbitmq-plugins enable --offline rabbitmq_management
