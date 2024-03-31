@@ -52,7 +52,7 @@ public class JWTMemberServiceImpl {
 
     @Transactional
     public JwtDto.AuthResponse signin(JwtDto.AuthRequest memberDto) {
-        Member member = jwtMemberRepository.findByLoginId(memberDto.getMemberId())
+        Member member = jwtMemberRepository.findByLoginId(memberDto.getLoginId())
                 .orElseThrow(() -> new CustomException("일치하는 사용자가 존재하지 않습니다."));
         log.info("로그인 시도한 멤버 :::::::::: {}, {}", member.getId(), member.getPassword());
         Authentication authentication =

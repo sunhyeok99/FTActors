@@ -50,7 +50,7 @@ public class JwtTokenProvider {
                 .compact();
 
         return JwtDto.AuthResponse.builder()
-                .memberId(authentication.getName())
+                .loginId(authentication.getName())
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)

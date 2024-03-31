@@ -30,7 +30,7 @@ public class NoteDto {
 		public static Response from(Note note){
 			return Response.builder()
 				// .sender_id(note.getSender().getMemberId())
-				.receiver_id(note.getReceiver().getUserId())
+				.receiver_id(note.getReceiver().getLoginId())
 				.content(note.getContent())
 				.type(note.getNotificationType().name())
 				.isRead(note.getIsRead())
