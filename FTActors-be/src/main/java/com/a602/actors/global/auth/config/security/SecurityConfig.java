@@ -93,7 +93,8 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**", "/main", "/error", "/static/**", "/signin",
                                 "/firebase/**", "/css/**","/js/**", "/firebase-messaging-sw.js",
                                 "/barter/**", "/post/**", "/register", "/signup", "/ws-stomp"
-                                ,"/oauth2/authorization/kakao"
+                                ,"/oauth2/authorization/kakao", "/chat/**", "/notify/**"
+                            // Todo : "/chat/**", "/notify/**" 삭제
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

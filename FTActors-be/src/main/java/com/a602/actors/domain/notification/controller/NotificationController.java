@@ -1,16 +1,22 @@
 package com.a602.actors.domain.notification.controller;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.a602.actors.domain.notification.document.Notify;
+import com.a602.actors.domain.notification.dto.NotifyDto;
 import com.a602.actors.domain.notification.service.NotificationService;
+import com.a602.actors.global.common.dto.ApiResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/notify")
+@RequestMapping("/notify")
 public class NotificationController {
 	private final NotificationService notificationService;
 
@@ -37,6 +43,13 @@ public class NotificationController {
 	// public ApiResponse<String> markAsRead(){
 	//
 	// }
+
+	@GetMapping("/list")
+	public ApiResponse<List<NotifyDto.Response>> getUnreadNotifyList(@RequestParam Long loginId){
+		log.info("NotificationController ========== getNotReadNoteList() start ..");
+		return new ApiResponse<>(HttpStatus.OK.value(), "get Unread Notify List Success !!", notificationService.getNotifyList(loginId));
+	}
+
 
 	// 디버깅 용 메서드
 	@PostMapping("/sendtest/{senderId}/{receiverId}")

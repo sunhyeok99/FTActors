@@ -1,6 +1,7 @@
 package com.a602.actors.domain.notification.service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.a602.actors.domain.notification.document.Notify;
 import com.a602.actors.domain.notification.dto.NotifyDto;
+import com.a602.actors.domain.notification.mapper.NotifyMapper;
 import com.a602.actors.domain.notification.repository.EmitterRepositoryImpl;
 import com.a602.actors.domain.notification.repository.NotifyRepository;
 
@@ -23,6 +25,7 @@ public class NotificationService {
 	// private final NoteRepository noteRepository;
 	private final NotifyRepository notifyRepository;
 	// private final ObjectMapper objectMapper;
+	private final NotifyMapper notifyMapper;
 
 	public SseEmitter subscribe(Long memberId, String lastEventId){
 		log.info("NotificationService ============ start subscribe..");
@@ -96,5 +99,10 @@ public class NotificationService {
 			emitterRepository.deleteById(id);
 			throw new RuntimeException("연결 오류");
 		}
+	}
+
+	public List<NotifyDto.Response> getNotifyList(Long loginId){
+		List<Notify> notifyList = notifyRepository.findByReceiverIdAndIsRead(loginId, 'F');
+		return notifyMapper.NotifyToNotifyDtoResponse(notifyList);
 	}
 }
