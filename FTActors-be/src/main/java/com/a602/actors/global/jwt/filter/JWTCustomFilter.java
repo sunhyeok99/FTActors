@@ -32,9 +32,9 @@ public class JWTCustomFilter extends OncePerRequestFilter {
 
         // 1. 토큰이 필요하지 않은 API URL에 대해서 배열로 구성한다.
         List<String> list = Arrays.asList(
-                "/api/auth/signup",		// 회원가입 페이지
-                "/api/auth/signin",		// 로그인 페이지
-                "/api/auth/check-id"	// 아이디 중복 검사
+                "/signup",		// 회원가입 페이지
+                "/signin",		// 로그인 페이지
+                "/check-id" 	// 아이디 중복 검사
         );
 
         // 2. 토큰이 필요하지 않은 API URL의 경우 -> 로직 처리없이 다음 필터로 이동한다.
