@@ -1,4 +1,9 @@
 # 개발용
+elasticsearch:
+    host: ${ELASTICSEARCH_HOST}
+    username: ${ELASTICSEARCH_USERNAME}
+    password: ${ELASTICSEARCH_PASSWORD}
+
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
@@ -8,17 +13,20 @@ spring:
 
     jpa:
         hibernate:
-            ddl-auto: create
+            ddl-auto: none
         properties:
             hibernate:
                 format_sql: true
-                jdbc:
-                    time_zone:Asia/Seoul
+                jdbc: time_zone:Asia/Seoul
         show-sql: true
 
     hikari:
         maximum-pool-size:180
         minimum-idle:10
+    devtools:
+        livereload:
+            enabled: true
+
 
     servlet:
         multipart:
@@ -28,6 +36,38 @@ spring:
     flyway:
         enabled: true
         baseline-on-migrate: true
+    data:
+        redis:
+            host: ${HOST} # Redis 서버 호스트 주소
+            port: 6379      # Redis 서버 포트
+            database: 0
+    config:
+        activate:
+            on-profile: oauth
+        # 스프링 시큐리티
+    security:
+        # oauth2 사용
+        oauth2:
+            # client
+            client:
+                # 등록 부분 설정
+                registration:
+                    kakao:
+                        client-id: ${CLIENT_ID}
+                        client-secret: ${CLIENT_SECRET}
+                        client-name: Kakao
+                        authorization-grant-type: authorization_code
+                        redirect-uri: ${REDIRECT_URI}
+                        client-authentication-method: client_secret_post
+                        scope: profile_nickname
+                provider:
+                    kakao:
+                        authorization-uri: https://kauth.kakao.com/oauth/authorize
+                        token-uri: https://kauth.kakao.com/oauth/token
+                        user-info-uri: https://kapi.kakao.com/v2/user/me
+                        user-name-attribute: id
+auth-redirect-url: ${AUTH_REDIRECT_URL}
+
 
 cloud:
     aws:
@@ -43,6 +83,7 @@ cloud:
             auto: false
 
 
+
 server:
     servlet:
-        context-path: /api
+#        context-path: /api
