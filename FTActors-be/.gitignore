@@ -43,3 +43,6 @@ config.yml
 **/generated/**
 
 .env
+
+#logs 엘라스틱
+/logs/

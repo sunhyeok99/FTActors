@@ -176,9 +176,13 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override // 3. 여러 키워드 검색
     public List<ProfileSearchResponse> searchProfileByContent(List<String> keywords) {
-        if (keywords == null || keywords.isEmpty()) {
-            return searchAllProfile(1);
-        }
+
+        System.out.println("keywords = " + keywords);
+        System.out.println("keywords.size() = " + keywords.size());
+        System.out.println("keywords.isEmpty() = " + keywords.isEmpty());
+//        if (!keywords.isEmpty()) {
+//            return searchAllProfile(1);
+//        }
 
         queryBuilderInterface.createQuery(keywords);
         NativeQuery nativeQuery = queryBuilderInterface.getSearch();

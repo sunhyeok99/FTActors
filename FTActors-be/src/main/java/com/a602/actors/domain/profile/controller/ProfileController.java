@@ -18,13 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/profile")
+@RequestMapping("/profile")
 @Slf4j
 public class ProfileController {
     private final ProfileService profileService;
@@ -81,6 +82,10 @@ public class ProfileController {
     @GetMapping("/searchcontent") //->삭제까지 구현하고 다시, 시큐리티 영향x 처리 필요
     public ApiResponse<?> searchByContent(
             @RequestParam(value = "keywords") String keywords) {
+
+        if (keywords==null || keywords.isEmpty() || keywords.isBlank() || keywords.length()==0) {
+            return new ApiResponse<>(HttpStatus.OK.value(), "프로필 검색 결과입니다.", profileService.searchAllProfile(1));
+        }
         String[] keywordArr = keywords.split(" "); //공백 기준으로 키워드 여러 개 인식
 
         // 배열이 아닌 리스트로 검색어를 보내는 이유
