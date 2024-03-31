@@ -24,6 +24,10 @@ import Notification from '../components/homepage/Notification.vue';
 import ProfileList from '../components/homepage/ProfileList.vue';
 import Board from '../components/homepage/Board.vue';
 import Montage from '../components/homepage/Montage.vue';
+
+
+
+
 </script>
 
 <style></style>
