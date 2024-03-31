@@ -34,9 +34,13 @@ const getMontage = () => {
 };
 
 const goToPreviousMontage = () => {
-  const previousId = currentId.value - 1;
-  router.push({ name: 'montageDetail', params: { id: previousId } });
-  getMontage();
+  if (currentId.value > 0) {
+    const previousId = currentId.value - 1;
+    router.push({ name: 'montageDetail', params: { id: previousId } });
+    getMontage();
+  } else {
+    alert('이전 컨텐츠가 없습니다.');
+  };
 };
 const goToNextMontage = () => {
   const nextId = currentId.value + 1;
@@ -73,8 +77,9 @@ onMounted(() => {
   align-items: center;
   margin-bottom: 4rem;
 }
+
 .montagethumbnail video {
-  height: 75vh; 
+  height: 75vh;
   width: auto;
   z-index: 2;
 }
