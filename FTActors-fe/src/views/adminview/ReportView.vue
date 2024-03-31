@@ -37,15 +37,15 @@ onMounted(() => {
   getReports();
 });
 
-const acceptedId = ref();
 const acceptReport = (reporteeId) => {
   const body = {
     reportId : reporteeId
   }
+  console.log(reporteeId)
   axios.post(`http://localhost:8080/admin/report/acceptance`, body)
     .then((response) => {
-      alert(response.data)
-      console.log('###############',response)
+      alert(response)
+      console.log('###############',reporteeId)
     })
     .catch((error) => {
       console.error(error);
