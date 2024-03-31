@@ -76,7 +76,7 @@ const comments = ref([]);
 
 // 댓글/대댓글 가져오는 메서드
 const getCommentReply = () => {
-  axios.get(`http://localhost:8080/api/montage/1/comment`)
+  axios.get(`http://localhost:8080/montage/1/comment`)
     .then((response) => {
       console.log(response.data.data);
       comments.value = response.data.data;
@@ -101,7 +101,7 @@ const uploadComment = () => {
       "isDeleted": false
     };
     axios
-      .post(`http://localhost:8080/api/montage/1/comment`, content)
+      .post(`http://localhost:8080/montage/1/comment`, content)
       .then((response) => {
         console.log(response.data);
         addComment.value = "";
@@ -121,7 +121,7 @@ const uploadComment = () => {
 
 const deleteComment = (id) => {
   axios
-    .delete(`http://localhost:8080/api/montage/1/comment/${id}`)
+    .delete(`http://localhost:8080/montage/1/comment/${id}`)
     .then(() => {
       console.log("댓글이 삭제되었습니다:");
       getCommentReply();
@@ -159,7 +159,7 @@ const uploadReply = () => {
     "isDeleted": false
   };
   axios
-    .post(`http://localhost:8080/api/montage/${selectedComment.value.commentId}/comment`, content)
+    .post(`http://localhost:8080/montage/${selectedComment.value.commentId}/comment`, content)
     .then((response) => {
       console.log(response.data);
       addReply.value = "";

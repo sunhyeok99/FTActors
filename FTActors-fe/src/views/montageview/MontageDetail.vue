@@ -22,7 +22,7 @@ const thumbnail = ref(null);
 const currentId = ref(parseInt(route.params.id, 10));
 
 const getMontage = () => {
-  axios.get(`http://localhost:8080/api/montage/list`)
+  axios.get(`http://localhost:8080/montage/list`)
     .then((response) => {
       if (currentId.value >= 0 && currentId.value < response.data.data.length) {
         montage.value = response.data.data.find((m, index) => index === currentId.value);
