@@ -60,6 +60,8 @@ services:
     env_file: ".env"
     expose:
       - "5672"
+      - "15672"
+      - "61613"
 
   mongo:
     image: mongo
