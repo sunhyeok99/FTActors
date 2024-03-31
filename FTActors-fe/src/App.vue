@@ -32,7 +32,8 @@
     <!-- 메시지 버튼 -->
     <button class="btn btn-primary" id="floating-map-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
     aria-controls="offcanvasWithBothOptions"> <img width="40" src="@/assets/icons/Message.png" alt="message icon"></button>
-    <SideBars />
+    <!-- <SideBars /> -->
+    <ChatList />
   </div>
   <!-- 푸터 -->
   <footer>
@@ -48,6 +49,7 @@ import FooterBox from './components/common/FooterBox.vue';
 import MontagePopup from './components/modals/MontagePopup.vue';
 import AlarmModal from './components/modals/AlarmModal.vue';
 import SideBars from './components/common/SideBars.vue';
+import ChatList from './components/chatpage/chatlist.vue';
 
 const router = useRouter();
 const goToLogin = () => {

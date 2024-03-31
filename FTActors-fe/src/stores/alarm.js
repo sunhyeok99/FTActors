@@ -5,6 +5,8 @@ import axios from 'axios';
 export const useAlarmStore = defineStore(
   'alarmStore',
   () => {
+    // 로그인한 아이디
+    const loginId = 1;
     // 안 읽은 알림 개수
     const alarmUnReadTotal = ref();
     // 안 읽은 알림 목록
@@ -12,10 +14,13 @@ export const useAlarmStore = defineStore(
     // 안 읽은 알림 목록 불러오기
     const getUnReadAlarmList = function () {
       axios
-        .get(`${import.meta.env.VITE_API_BASE_URL}alarms/getUncheckAlarmList`)
+      // .get(`${import.meta.env.VITE_API_BASE_URL}notify/list`, {
+        .get(`http://localhost:8080/notify/list`, {
+          params: { loginId },
+        })
         .then((res) => {
-          const sortedAlarmList = res.data.result.sort(
-            (a, b) => new Date(b.createdDate) - new Date(a.createdDate),
+          const sortedAlarmList = res.data.data.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
           );
           alarmUnReadTotal.value = sortedAlarmList.length;
           alarmUnReadList.value = sortedAlarmList;

@@ -21,6 +21,7 @@ import BlacklistView from "@/views/adminview/BlacklistView.vue";
 import ReportView from "@/views/adminview/ReportView.vue";
 import ChatDetail from "@/components/chatpage/chatdetail.vue";
 import ChatList from "@/components/chatpage/chatlist.vue";
+import ChatRoomView from "@/views/chatview/ChatRoomView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -141,6 +142,12 @@ const router = createRouter({
       name: 'chatdetail',
       component: ChatDetail,
       props: true,
+    },
+    {
+      path: '/chatroomview/:roomId',
+      name: 'ChatRoomView',
+      component: ChatRoomView,
+      props: true
     },
   ],
 });
