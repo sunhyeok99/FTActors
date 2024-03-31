@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Service
 @Slf4j
 @Component
@@ -32,7 +34,7 @@ public class AdminAccountInitializer {
     }
 
     @PostConstruct
-    public void createAdminAccount() {
+    public void createAdminAccount() throws IOException {
         // 어드민 계정이 이미 존재하는지 확인
         if (!jwtMemberService.isAdminAccountExists(adminUsername)) {
             // 어드민 계정 생성

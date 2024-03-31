@@ -1,9 +1,12 @@
 package com.a602.actors.global.jwt.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
 import com.a602.actors.domain.member.Member;
+import com.a602.actors.global.common.config.FileUtil;
+import com.a602.actors.global.common.enums.FolderType;
 import com.a602.actors.global.exception.CustomException;
 import com.a602.actors.global.exception.MemberException;
 import com.a602.actors.global.exception.TokenException;
@@ -41,12 +44,28 @@ public class JWTMemberServiceImpl {
     private final JWTUtil jwtUtil;
 
     @Transactional
-    public String signup(JwtDto.Simple jwtDto) {
+    public String signup(JwtDto.Simple jwtDto) throws IOException {
         String encodePassword = bCryptPasswordEncoder.encode(jwtDto.getPassword());
         log.info("encodePassword : {}", encodePassword);
         jwtDto.setPassword(encodePassword);
-        isDuplicatedId(jwtDto.getLoginId());
-        jwtMemberRepository.save(memberMapper.MemberDtoToMember(jwtDto));
+
+
+        String savedName = FileUtil.makeFileName(jwtDto.getProfileImage().getOriginalFilename());
+        String profileImageUrl = FileUtil.uploadFile(jwtDto.getProfileImage(), savedName, FolderType.PROFILE_PATH);
+
+        Member member = Member.builder()
+                .loginId(jwtDto.getLoginId())
+                .password(jwtDto.getPassword())
+                .name(jwtDto.getName())
+                .email(jwtDto.getEmail())
+                .phone(jwtDto.getPhone())
+                .birth(jwtDto.getBirth())
+                .profileImage(profileImageUrl)
+                .stageName(jwtDto.getStageName())
+                .savedName(savedName)
+                .build();
+
+        jwtMemberRepository.save(member);
         return "";
     }
 

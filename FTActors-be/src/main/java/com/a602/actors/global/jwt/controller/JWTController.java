@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -16,7 +18,7 @@ public class JWTController {
     private final JWTMemberServiceImpl jwtMemberService;
 
     @PostMapping("/signup")
-    public ApiResponse<String> regist(@RequestBody JwtDto.Simple jwtDto) {
+    public ApiResponse<String> regist(@RequestBody JwtDto.Simple jwtDto) throws IOException {
         log.info("Success register login_id : {}", jwtDto.getLoginId());
         return new ApiResponse<>(HttpStatus.OK.value(), "sign up success", jwtMemberService.signup(jwtDto));
     }
