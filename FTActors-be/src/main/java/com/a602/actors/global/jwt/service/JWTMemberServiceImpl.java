@@ -12,7 +12,7 @@ import com.a602.actors.global.exception.MemberException;
 import com.a602.actors.global.exception.TokenException;
 import com.a602.actors.global.jwt.JwtTokenProvider;
 import com.a602.actors.global.jwt.dto.JwtDto;
-import com.a602.actors.global.jwt.mapper.MemberMapper;
+//import com.a602.actors.global.jwt.mapper.MemberMapper;
 import com.a602.actors.global.jwt.repository.JWTMemberRepository;
 import com.a602.actors.global.jwt.util.JWTUtil;
 import com.a602.actors.global.jwt.util.TokenUtil;
@@ -36,7 +36,7 @@ import static com.a602.actors.global.exception.ExceptionCodeSet.MEMBER_DUPLICATE
 @Slf4j
 public class JWTMemberServiceImpl {
     private final JWTMemberRepository jwtMemberRepository;
-    private final MemberMapper memberMapper;
+    //private final MemberMapper memberMapper;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -49,9 +49,12 @@ public class JWTMemberServiceImpl {
         log.info("encodePassword : {}", encodePassword);
         jwtDto.setPassword(encodePassword);
 
-
-        String savedName = FileUtil.makeFileName(jwtDto.getProfileImage().getOriginalFilename());
-        String profileImageUrl = FileUtil.uploadFile(jwtDto.getProfileImage(), savedName, FolderType.PROFILE_PATH);
+        String savedName = "";
+        String url = "";
+        if(jwtDto.getProfileImage() != null){
+            savedName = FileUtil.makeFileName(jwtDto.getProfileImage().getOriginalFilename());
+            url = FileUtil.uploadFile(jwtDto.getProfileImage(), savedName, FolderType.PROFILE_PATH);
+        }
 
         Member member = Member.builder()
                 .loginId(jwtDto.getLoginId())
@@ -60,7 +63,7 @@ public class JWTMemberServiceImpl {
                 .email(jwtDto.getEmail())
                 .phone(jwtDto.getPhone())
                 .birth(jwtDto.getBirth())
-                .profileImage(profileImageUrl)
+                .profileImage(url)
                 .stageName(jwtDto.getStageName())
                 .savedName(savedName)
                 .build();

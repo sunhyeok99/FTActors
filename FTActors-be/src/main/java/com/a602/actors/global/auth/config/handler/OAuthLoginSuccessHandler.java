@@ -117,6 +117,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
         // 유저 아이디
         response.addHeader("Set-Cookie",
+
                 "userId=" + member.getLoginId() + "; " +
                         "Path=/;" +
 //                        "HttpOnly; " +
