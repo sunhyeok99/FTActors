@@ -46,3 +46,6 @@ config.yml
 
 #logs 엘라스틱
 **/logs/*
+
+*.gz
+*.log
