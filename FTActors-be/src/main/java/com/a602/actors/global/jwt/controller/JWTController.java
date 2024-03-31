@@ -1,6 +1,5 @@
 package com.a602.actors.global.jwt.controller;
 
-import com.a602.actors.global.auth.dto.KakaoMemberIdDto;
 import com.a602.actors.global.common.dto.ApiResponse;
 import com.a602.actors.global.jwt.dto.JwtDto;
 import com.a602.actors.global.jwt.service.JWTMemberServiceImpl;

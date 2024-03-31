@@ -1,7 +1,5 @@
 package com.a602.actors.global.jwt.service;
 
-import java.util.Optional;
-
 import com.a602.actors.domain.member.Member;
 import com.a602.actors.global.exception.CustomException;
 import com.a602.actors.global.exception.MemberException;
@@ -12,6 +10,9 @@ import com.a602.actors.global.jwt.mapper.MemberMapper;
 import com.a602.actors.global.jwt.repository.JWTMemberRepository;
 import com.a602.actors.global.jwt.util.JWTUtil;
 import com.a602.actors.global.jwt.util.TokenUtil;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -19,10 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Optional;
 
 import static com.a602.actors.global.exception.ExceptionCodeSet.MEMBER_DUPLICATED;
 
