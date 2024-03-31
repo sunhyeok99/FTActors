@@ -53,8 +53,10 @@ services:
       - "6379"
 #
   rabbitmq:
-    image: rabbitmq
     container_name: rabbitmq
+    build:
+      context: ../
+      dockerfile: "./docker/dockerfile/rabbitmq.dockerfile"
     networks:
       - backend
     volumes:
