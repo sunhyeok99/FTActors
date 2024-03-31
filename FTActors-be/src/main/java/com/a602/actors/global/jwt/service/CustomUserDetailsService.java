@@ -27,10 +27,10 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member findMember = jwtMemberRepository.findByUserId(username)
+        Member findMember = jwtMemberRepository.findByLoginId(username)
                 .orElseThrow(() -> new CustomException("사용자가 존재하지 않습니다."));
         UserDetails userDetails = new User(
-                findMember.getUserId(),
+                findMember.getLoginId(),
                 findMember.getPassword(),
                 new ArrayList<>()
         );

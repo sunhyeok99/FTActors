@@ -38,7 +38,7 @@ public class CustomLogoutHandler implements LogoutHandler {
             // 로그아웃 필터가 유저 인증 필터 보다 앞에 있기 때문에 회원 정보는 레디스에 얻어와야 한다.
             Map<String, Object> userData = redisService.getMapData(accessToken);
             CustomOAuth2User customOAuth2User = (CustomOAuth2User) userData.get("oauth2User");
-            log.info("유저 아이디: {}", customOAuth2User.getMember().getUserId());
+            log.info("유저 아이디: {}", customOAuth2User.getMember().getLoginId());
             // 레디스에 저장된 회원 데이터 지우기
             redisService.deleteMapData(accessToken);
 

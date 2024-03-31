@@ -1,10 +1,13 @@
 package com.a602.actors.global.auth.config.handler;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.a602.actors.domain.member.Member;
+import com.a602.actors.global.auth.domain.CustomOAuth2User;
+import com.a602.actors.global.auth.service.member.MemberService;
+import com.a602.actors.global.auth.service.redis.RedisService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -18,15 +21,10 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.a602.actors.domain.member.Member;
-import com.a602.actors.global.auth.domain.CustomOAuth2User;
-import com.a602.actors.global.auth.service.member.MemberService;
-import com.a602.actors.global.auth.service.redis.RedisService;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * OAuthLoginSuccessHandler 구현
@@ -35,8 +33,8 @@ import lombok.extern.slf4j.Slf4j;
  * 로그인 상태 유지를 위해 Access token을 쿠키에 저장하고 token을 가지고 로그인 유무를 판단
  * Spring Controller에서는 Redis에 저장된 User 정보를 가지고 로직을 처리
  */
-@Component
 @Slf4j
+@Component
 public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Value("${auth-redirect-url}")
     String mainPage;
@@ -58,7 +56,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-        Authentication authentication) throws IOException, ServletException {
+                                        Authentication authentication) throws IOException, ServletException {
         // 인증 객체
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
         log.info("token success : " + token);
@@ -89,8 +87,8 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
         // 유저 데이터 저장 확인
         log.debug("[OAuthLoginSuccessHandler] - UserInfo : {}, {}, {}"
-            ,member.getUserId(),
-            member.getKakaoId(), member.getOauthType()
+                ,member.getLoginId(),
+                member.getKakaoId(), member.getOauthType()
         );
         redisData.put("authenticationToken", token);
         redisData.put("oauth2User", oauth2User);
@@ -103,7 +101,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         log.info("redis data : {}", redisService.getMapData(accessToken));
 
         // 로그인 성공
-        log.debug("[OAuthLoginSuccessHandler] - LOGIN SUCCESS : {} FROM {}",oauth2User.getMember().getUserId(), oauthType);
+        log.debug("[OAuthLoginSuccessHandler] - LOGIN SUCCESS : {} FROM {}",oauth2User.getMember().getLoginId(), oauthType);
 
         // 쿠키에 Access token을 저장, 3시간 유지
         int time = (60*60*3) + (60*60*9);
@@ -119,11 +117,11 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
         // 유저 아이디
         response.addHeader("Set-Cookie",
-            "userId=" + member.getUserId() + "; " +
-                "Path=/;" +
-                //                        "HttpOnly; " +
-                "Max-Age=" +
-                time
+                "userId=" + member.getLoginId() + "; " +
+                        "Path=/;" +
+//                        "HttpOnly; " +
+                        "Max-Age=" +
+                        time
         );
 
         response.sendRedirect(mainPage);
@@ -153,4 +151,3 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         return tokens;
     }
 }
-
