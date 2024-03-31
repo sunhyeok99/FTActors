@@ -21,6 +21,9 @@ import BlacklistView from "@/views/adminview/BlacklistView.vue";
 import ReportView from "@/views/adminview/ReportView.vue";
 import ChatDetail from "@/components/chatpage/chatdetail.vue";
 import ChatList from "@/components/chatpage/chatlist.vue";
+import ApplyCreate from "../views/applyview/ApplyCreate.vue";
+import ApplyDetail from "../views/applyview/ApplyDetail.vue";
+import MyApply from "../views/applyview/MyApply.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -140,6 +143,24 @@ const router = createRouter({
       path: '/chat/:id',
       name: 'chatdetail',
       component: ChatDetail,
+      props: true,
+    },
+     {
+      path: '/applyCreate/:recruitmentId/:memberId',
+      name: 'applyCreate',
+      component: ApplyCreate,
+      props : true,
+    },
+    {
+      path: '/applyDetail/:id',
+      name: 'applyDetail',
+      component: ApplyDetail,
+      props: true,
+    },
+    {
+      path: '/myApply',
+      name: 'myApply',
+      component: MyApply,
       props: true,
     },
   ],
