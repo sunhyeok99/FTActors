@@ -17,7 +17,7 @@ public class AdminService {
     }
 
     public List<MontageReportDto.ReportList> getReportList(){
-        return adminRepository.getReportList().stream().map(MontageReportDto.ReportList::toDto).toList();
+        return adminRepository.getReportList();
     }
 
     public List<BlackListDto.BlackListSet> getBlackList(){

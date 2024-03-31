@@ -15,6 +15,7 @@ public interface MontageRepository {
     boolean addLike(Long montageId, Long memberId);
     List<Montage> getMyMontages(Long memberId);
     Optional<Montage> getMontage(Long montageId);
+    Optional<Comment> getComment(Long montageId, Long commentId);
     void saveMontage(String originalName, String saveName, String url);
     void deleteMontage(Long montageId);
     List<Comment> findCommentAndReplies(Long montageId);
@@ -23,5 +24,5 @@ public interface MontageRepository {
     void deleteComment(Long montageId, Long commentId);
 
     void addReport(Long reporteeId, Long montageId, String reason, String link);
-
+    void addCommentReport(Long reporterId, Long montageId, Long commentId, String reason, String link);
 }

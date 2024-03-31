@@ -4,10 +4,11 @@ import com.a602.actors.domain.admin.dto.BlackListDto;
 import com.a602.actors.domain.admin.dto.QBlackListDto_BlackListSet;
 import com.a602.actors.domain.member.Member;
 import com.a602.actors.domain.member.QMember;
+import com.a602.actors.domain.montage.dto.MontageReportDto;
+import com.a602.actors.domain.montage.dto.QMontageReportDto_ReportList;
 import com.a602.actors.domain.montage.entity.BlackList;
 import com.a602.actors.domain.montage.entity.QBlackList;
 import com.a602.actors.domain.montage.entity.QReport;
-import com.a602.actors.domain.montage.entity.Report;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -29,13 +30,23 @@ class AdminRepositoryImpl implements AdminRepository {
     }
 
     @Override
-    public List<Report> getReportList() {
+    public List<MontageReportDto.ReportList> getReportList() {
 
         QReport report = QReport.report;
+        QMember member = QMember.member;
 
         return queryFactory
-                .selectFrom(report)
-                .fetch();
+                    .select(
+                        new QMontageReportDto_ReportList(
+                                report.id,
+                                report.reporter.stageName,
+                                report.reportee.stageName,
+                                report.reason,
+                                report.link
+                        )
+                    )
+                    .from(report)
+                    .fetch();
     }
 
     @Override
@@ -56,7 +67,6 @@ class AdminRepositoryImpl implements AdminRepository {
     @Override
     @Transactional
     public void acceptReport(Long reportId) throws IllegalArgumentException{
-
 
         QReport report = QReport.report;
         QBlackList blackList = QBlackList.blackList;
