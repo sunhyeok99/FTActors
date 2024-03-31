@@ -24,8 +24,7 @@ public interface ProfileService {
 
     String updateProfile(Long profileId, ProfileRequest profileRequest);
 
-    List<ProfileSearchResponse> searchProfileByContent(List<String> keywordArr);
+    List<ProfileSearchResponse> searchProfileByContent(List<String> keywords);
     List<ProfileSearchResponse> searchProfileByName(String keyword);
 
-    List<ProfileSearchResponse> searchAllProfile22(int sorting, HttpServletRequest request);
 }

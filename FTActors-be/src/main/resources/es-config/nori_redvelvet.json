@@ -37,13 +37,13 @@
         "type": "custom",
         "tokenizer": "korean_nori_tokenizer",
         "char_filter": ["remove_emoji"],
-        "filter": ["korean_stop_filter", "english_lowercase_filter"]
+        "filter": ["korean_edge_3gram_filter", "english_lowercase_filter"]
       },
       "content_and_title_analyzer": {
         "type": "custom",
         "tokenizer": "korean_edge_3gram_tokenizer",
         "char_filter": ["remove_emoji"],
-        "filter": ["korean_edge_3gram_filter", "english_lowercase_filter"]
+        "filter": ["korean_edge_3gram_filter", "english_lowercase_filter", "korean_stop_filter"]
       }
     }
   }

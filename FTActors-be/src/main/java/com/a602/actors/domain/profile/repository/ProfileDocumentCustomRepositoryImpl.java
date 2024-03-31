@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +21,8 @@ import java.util.stream.StreamSupport;
 @Component
 @RequiredArgsConstructor
 public class ProfileDocumentCustomRepositoryImpl implements ProfileDocumentCustomRepository {
+
+    private final ElasticsearchOperations elasticsearchOperations;
     private final CustomElasticsearchOperations customElasticsearchOperations;
 
     @Override
@@ -48,6 +52,11 @@ public class ProfileDocumentCustomRepositoryImpl implements ProfileDocumentCusto
         // Iterable을 List로 변환하여 반환
         return StreamSupport.stream(profileDocuments.spliterator(), false)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public SearchHits<ProfileDocument> search(NativeQuery nativeQuery) {
+        return elasticsearchOperations.search(nativeQuery, ProfileDocument.class);
     }
 
 //    @Override

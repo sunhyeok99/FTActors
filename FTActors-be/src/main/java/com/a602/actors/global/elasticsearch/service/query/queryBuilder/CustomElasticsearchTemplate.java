@@ -16,10 +16,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomElasticsearchTemplate implements CustomElasticsearchOperations {
     private final ElasticsearchTemplate elasticsearchTemplate;
+
     @Override
     public List<ProfileDocument> queryForList(NativeQuery nativeQuery, Sort sort) {
 
-//        SearchHits<ProfileDocument> searchHits = elasticsearchClient.search(nativeQuery, ProfileDocument.class);
         SearchHits<ProfileDocument> searchHits = elasticsearchTemplate.search(nativeQuery, ProfileDocument.class);
 
         List<ProfileDocument> profileDocuments = new ArrayList<>();

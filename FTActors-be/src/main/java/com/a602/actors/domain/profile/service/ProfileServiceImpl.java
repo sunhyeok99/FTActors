@@ -1,7 +1,6 @@
 package com.a602.actors.domain.profile.service;
 
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
+import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import com.a602.actors.domain.member.Member;
 import com.a602.actors.domain.profile.dto.ProfileDto;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
@@ -12,6 +11,8 @@ import com.a602.actors.domain.profile.entity.ProfileDocument;
 import com.a602.actors.domain.profile.mapper.ProfileMapper;
 import com.a602.actors.domain.profile.repository.*;
 import com.a602.actors.global.elasticsearch.TimeChanger;
+import com.a602.actors.global.elasticsearch.filter.ContentFilter;
+import com.a602.actors.global.elasticsearch.filter.QueryBuilderInterface;
 import com.a602.actors.global.exception.ExceptionCodeSet;
 import com.a602.actors.global.exception.ProfileException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
+import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
 import org.springframework.data.elasticsearch.core.*;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +41,8 @@ public class ProfileServiceImpl implements ProfileService{
     private final ProfileMapper profileMapper;
     private final ProfileDocumentRepository profileDocumentRepository; //was 엘라스틱 용
     private final ProfileDocumentCustomRepository profileDocumentCustomRepository;
-    private final ElasticsearchOperations elasticsearchOperations;
+//    private final ElasticsearchOperations elasticsearchOperations;
+    private final QueryBuilderInterface queryBuilderInterface;
 
     @Override //검색 목록 (엘라스틱만 , db사용x)
     public List<ProfileSearchResponse> searchAllProfile(int sorting) {
@@ -103,19 +106,6 @@ public class ProfileServiceImpl implements ProfileService{
 //            throw new ProfileException(ExceptionCodeSet.PROFILE_ALREADY_EXIST);
 //        }
 
-        //jwt 구현 후 삭제
-//        Member loginMember = new Member(
-//                "daniel",
-//                "다니엘",
-//                "daniel@naver.com",
-//                null,
-//                null,
-//                "010-8888-8888",
-//                "951111",
-//                "F",
-//                null,
-//                profileRequest.getStageName()
-//        );
         Member loginMember = tmpMemRepo.findByLoginId(11L);
         //-------jwt 구현 후 삭제
 
@@ -184,28 +174,26 @@ public class ProfileServiceImpl implements ProfileService{
         return "";
     }
 
-    @Override // 1. 부분 단어 검색 2. 여러 필드에서 연결되는 거 다 검색 3. 여러 키워드 검색
-    public List<ProfileSearchResponse> searchProfileByContent(List<String> keywordArr) {
-        String keyword = keywordArr.get(0);
-        if (keyword == null || keyword.trim().isEmpty()) {
+    @Override // 3. 여러 키워드 검색
+    public List<ProfileSearchResponse> searchProfileByContent(List<String> keywords) {
+        if (keywords == null || keywords.isEmpty()) {
             return searchAllProfile(1);
         }
-//        Query query = QueryBuilders.match(queryBuilder -> queryBuilder.field("content").query(keyword));
-        Query query = QueryBuilders.match(queryBuilder -> queryBuilder.field("content").query(keyword));
-        NativeQuery nativeQuery = NativeQuery.builder().withQuery(query).build(); //쿼리가 너무 복잡해질 때를 대비해서 네이티브 쿼리로 한 번 돌려서 사용
-        SearchHits<ProfileDocument> result = elasticsearchOperations.search(nativeQuery, ProfileDocument.class);
 
+        queryBuilderInterface.createQuery(keywords);
+        NativeQuery nativeQuery = queryBuilderInterface.getSearch();
+        System.out.println(nativeQuery.getQuery().toString());
+
+        //
+//        NativeQuery nativeQuery = NativeQuery.builder().withQuery(query).build(); //쿼리가 너무 복잡해질 때를 대비해서 네이티브 쿼리로 한 번 돌려서 사용
+        SearchHits<ProfileDocument> searchHits = profileDocumentCustomRepository.search(nativeQuery);
+        System.out.println(searchHits.getTotalHits());
         List<ProfileDocument> profileDocuments = new ArrayList<>();
-        for (SearchHit<ProfileDocument> hit : result) {
+        for (SearchHit<ProfileDocument> hit : searchHits) {
             profileDocuments.add(hit.getContent());
         }
 
         return profileMapper.ProfileDocumentListToProfileSearchResponseList(profileDocuments);
-
-//        return result
-//                .stream()
-//                .map(SearchHit::getContent)
-//                .collect(Collectors.toList());
     }
 
     @Override
@@ -215,7 +203,7 @@ public class ProfileServiceImpl implements ProfileService{
         }
         Query query = QueryBuilders.match(queryBuilder -> queryBuilder.field("stage_name").query(keyword));
         NativeQuery nativeQuery = NativeQuery.builder().withQuery(query).build(); //쿼리가 너무 복잡해질 때를 대비해서 네이티브 쿼리로 한 번 돌려서 사용
-        SearchHits<ProfileDocument> result = elasticsearchOperations.search(nativeQuery, ProfileDocument.class);
+        SearchHits<ProfileDocument> result = profileDocumentCustomRepository.search(nativeQuery);
 
         List<ProfileDocument> profileDocuments = new ArrayList<>();
         for (SearchHit<ProfileDocument> hit : result) {
@@ -223,20 +211,6 @@ public class ProfileServiceImpl implements ProfileService{
         }
 
         return profileMapper.ProfileDocumentListToProfileSearchResponseList(profileDocuments);
-    }
-
-    //으허허허ㅓ허허
-    @Override
-    public List<ProfileSearchResponse> searchAllProfile22(int sorting, HttpServletRequest request) {
-        //To do: 1. 지금은 비공개여부=T면 다 안 뽑음. jwt들어오면, 로그인 유저의 경우 T라도 같이 뽑아오게 바꾸기
-
-        //Reop가서 List<도큐먼트>로 뽑아오고
-        List<ProfileDocument> list = new ArrayList<>();
-        list = profileDocumentCustomRepository.findAllByOrderByUpdatedTime(sorting);
-
-        //리턴에서 mapper사용해서 변환 후 돌려주기
-        if (list == null) new ProfileException(ExceptionCodeSet.PROFILE_NOT_FOUND); // -> 프론트에서 null이면 "조건에 맞는 프로필이 없습니다" 반환
-        return profileMapper.ProfileDocumentListToProfileSearchResponseList(list);
     }
 
 }

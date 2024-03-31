@@ -32,6 +32,7 @@ public class ProfileController {
     private final CookieUtil cookieUtil;
     private final MemberService memberService;
 
+    //어케 쓸 수 있겠찌
     public Long findMemberLoginedMemberId(HttpServletRequest request) {
         Long loginedId = jwtUtil.getLoginMemberId();
         log.info("loginedId: " + loginedId);

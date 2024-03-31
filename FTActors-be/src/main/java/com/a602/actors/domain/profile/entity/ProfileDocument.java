@@ -27,11 +27,17 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     private Long id; //게시글 번호
 
     //제목, 예명 TO do: Member에서 수정이 일어나면, profile에서도 똑같이 수정이 일어나야 한다. elasticsearch를 쓰게 되면서 문제가 생겼따
-    @Field(name = "stage_name", type = FieldType.Text, analyzer = "name_analyzer") // -> (초성 검색 허용), 오타 허용
+    @Field(name = "stage_name", type = FieldType.Text, analyzer = "name_analyzer", searchAnalyzer = "name_analyzer") // -> (초성 검색 허용), 오타 허용
     private String stageName;
 
 //    @Field(type = FieldType.Text, analyzer = "korean_analyzer", searchAnalyzer = "korean_analyzer")
-    @Field(type = FieldType.Text, analyzer = "content_and_title_analyzer") // -> 오타 허용, 자동 완성 (검색어 우선순위 적용)
+    @Field(type = FieldType.Text, analyzer = "content_and_title_analyzer", searchAnalyzer = "content_and_title_analyzer")
+    // -> 오타 허용, 자동 완성 (검색어 우선순위 적용)
+//@Field(type = FieldType.Text,
+//        analyzer = "content_and_title_analyzer",
+//        searchAnalyzer = "content_and_title_analyzer")
+//@MultiField(mainField = @Field(type = FieldType.Text),
+//        otherFields = {@InnerField(suffix = "keyword", type = FieldType.Keyword)})
     private String content; //내용(자기소개)
 
     @Field(type = FieldType.Keyword)
