@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Member findMember = jwtMemberRepository.findByUserId(username)
                 .orElseThrow(() -> new CustomException("사용자가 존재하지 않습니다."));
         UserDetails userDetails = new User(
-                findMember.getUserId(),
+                findMember.getLoginId(),
                 findMember.getPassword(),
                 new ArrayList<>()
         );

@@ -88,15 +88,15 @@ public class SecurityConfig {
                         (session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .addFilterAfter(new KakaoAuthenticationTokenFilter(redisService), UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(request -> request
-                        .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
-                        .requestMatchers("/auth/**", "/main", "/error", "/static/**", "/signin",
-                                "/firebase/**", "/css/**","/js/**", "/firebase-messaging-sw.js",
-                                "/barter/**", "/post/**", "/register", "/signup", "/ws-stomp"
-                                ,"/oauth2/authorization/kakao"
-                        ).permitAll()
-                        .anyRequest().authenticated()
-                )
+//                .authorizeHttpRequests(request -> request
+//                        .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
+//                        .requestMatchers("/auth/**", "/main", "/error", "/static/**", "/signin",
+//                                "/firebase/**", "/css/**","/js/**", "/firebase-messaging-sw.js",
+//                                "/barter/**", "/post/**", "/register", "/signup", "/ws-stomp"
+//                                ,"/oauth2/authorization/kakao"
+//                        ).permitAll()
+//                        .anyRequest().authenticated()
+//                )
                 // oauth2.0 로그인 설정
                 .oauth2Login(oAuth -> oAuth
                         .loginPage("/login")

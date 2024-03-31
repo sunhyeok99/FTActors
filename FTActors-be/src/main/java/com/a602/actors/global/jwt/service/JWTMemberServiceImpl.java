@@ -1,14 +1,17 @@
 package com.a602.actors.global.jwt.service;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import com.a602.actors.domain.member.Member;
+import com.a602.actors.global.common.config.FileUtil;
+import com.a602.actors.global.common.enums.FolderType;
 import com.a602.actors.global.exception.CustomException;
 import com.a602.actors.global.exception.MemberException;
 import com.a602.actors.global.exception.TokenException;
 import com.a602.actors.global.jwt.JwtTokenProvider;
 import com.a602.actors.global.jwt.dto.JwtDto;
-import com.a602.actors.global.jwt.mapper.MemberMapper;
+//import com.a602.actors.global.jwt.mapper.MemberMapper;
 import com.a602.actors.global.jwt.repository.JWTMemberRepository;
 import com.a602.actors.global.jwt.util.JWTUtil;
 import com.a602.actors.global.jwt.util.TokenUtil;
@@ -31,7 +34,7 @@ import static com.a602.actors.global.exception.ExceptionCodeSet.MEMBER_DUPLICATE
 @Slf4j
 public class JWTMemberServiceImpl {
     private final JWTMemberRepository jwtMemberRepository;
-    private final MemberMapper memberMapper;
+    //private final MemberMapper memberMapper;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -39,12 +42,32 @@ public class JWTMemberServiceImpl {
     private final JWTUtil jwtUtil;
 
     @Transactional
-    public String signup(JwtDto.Simple jwtDto) {
+    public String signup(JwtDto.Simple jwtDto) throws IOException {
         String encodePassword = bCryptPasswordEncoder.encode(jwtDto.getPassword());
         log.info("encodePassword : {}", encodePassword);
         jwtDto.setPassword(encodePassword);
-        isDuplicatedId(jwtDto.getUserId());
-        jwtMemberRepository.save(memberMapper.MemberDtoToMember(jwtDto));
+
+        String savedName = "";
+        String url = "";
+        if(jwtDto.getProfileImage() != null){
+            savedName = FileUtil.makeFileName(jwtDto.getProfileImage().getOriginalFilename());
+            url = FileUtil.uploadFile(jwtDto.getProfileImage(), savedName, FolderType.PROFILE_PATH);
+        }
+
+
+        Member member = Member.builder()
+                .loginId(jwtDto.getLoginId())
+                .password(jwtDto.getPassword())
+                .name(jwtDto.getName())
+                .email(jwtDto.getEmail())
+                .phone(jwtDto.getPhone())
+                .birth(jwtDto.getBirth())
+                .profileImage(url)
+                .stageName(jwtDto.getStageName())
+                .savedName(savedName)
+                .build();
+
+        jwtMemberRepository.save(member);
         return "";
     }
 
@@ -54,7 +77,7 @@ public class JWTMemberServiceImpl {
                 .orElseThrow(() -> new CustomException("일치하는 사용자가 존재하지 않습니다."));
         log.info("로그인 시도한 멤버 :::::::::: {}, {}", member.getId(), member.getPassword());
         Authentication authentication =
-                new UsernamePasswordAuthenticationToken(member.getUserId(), member.getPassword());
+                new UsernamePasswordAuthenticationToken(member.getLoginId(), member.getPassword());
 //                authenticationManagerBuilder.getObject()
 //                .authenticate(memberDto.toAuthentication());
         // SecurityContextHolder에 로그인 한 유저 정보 저장
@@ -76,7 +99,7 @@ public class JWTMemberServiceImpl {
             Member member = optionalMember.get();
             return JwtDto.getPkId.builder()
                     .id(member.getId())
-                    .userId(member.getUserId())
+                    .userId(member.getLoginId())
                     .name(member.getName())
                     .email(member.getEmail())
                     .phone(member.getPhone())
