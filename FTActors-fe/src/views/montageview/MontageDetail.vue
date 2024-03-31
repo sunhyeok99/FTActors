@@ -74,6 +74,8 @@ onMounted(() => {
 
 .montage {
   align-items: center;
+  display: flex;
+  justify-content: center;
 }
 
 .montage video {

@@ -1,7 +1,6 @@
 <template>
   <div class="montagemainpage">
     <MontageCarousel />
-    <CommentReply />
   </div>
 
 </template>

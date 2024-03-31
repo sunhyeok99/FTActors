@@ -181,7 +181,7 @@ const uploadReply = () => {
 
 /* 스크롤을 적용할 부분에만 해당하는 스타일 */
 .accordion-body {
-  max-height: 50vh; /* 뷰포트 높이의 일정 비율을 최대 높이로 설정 */
+  max-height: 38vh; /* 뷰포트 높이의 일정 비율을 최대 높이로 설정 */
   overflow-y: auto; /* 세로 스크롤바가 필요할 때만 나타나도록 설정 */
 }
 .accordion {
