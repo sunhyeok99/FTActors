@@ -1,7 +1,7 @@
 <template>
 <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">배우는 사람</a>
+      <a class="navbar-brand" id="toHome" @click="goToHomeview">배우는 사람</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -45,6 +45,11 @@
   <script setup>
 
 import MontageFeed from '@/components/montagepage/MontageFeed.vue'
+import { RouterLink, RouterView, useRouter } from 'vue-router'
+const router = useRouter();
+const goToHomeview = () => {
+  router.push({ name: 'home' });
+};
 
 </script>
 
@@ -57,5 +62,8 @@ import MontageFeed from '@/components/montagepage/MontageFeed.vue'
   #offcanvasDarkNavbarLabel img{
     width: 50px;
     height: 50px;
+  }
+  #toHome {
+cursor: pointer;
   }
 </style>
