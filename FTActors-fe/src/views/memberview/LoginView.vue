@@ -73,9 +73,9 @@ formData.append("password", password.value);
       member.value = {
         id: responseMember.Id,
         name: responseMember.name,
-        // nickname: responseMember.nickname,
+        stageName: responseMember.stageName,
         email: responseMember.email,
-        // profile : responseMember.profileImage,
+        profile : responseMember.profileImage,
         phone : responseMember.phone,
         createdAt : responseMember.createdAt
       };
