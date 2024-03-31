@@ -54,6 +54,7 @@ const goToLogin = () => {
   router.push({ name: 'login' });
 };
 
+
 </script>
 
 <style scoped>

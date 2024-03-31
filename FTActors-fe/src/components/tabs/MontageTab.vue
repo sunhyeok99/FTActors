@@ -23,7 +23,7 @@ const myMontages = ref([]);
 
 // 몽타쥬리스트 가져오는 메서드
 const getMyMontages = () => {
-  axios.get(`http://localhost:8080/api/montage/my-montage`)
+  axios.get(`http://localhost:8080/montage/my-montage`)
     .then((response) => {
       console.log(response.data.data);
       myMontages.value = response.data.data;
