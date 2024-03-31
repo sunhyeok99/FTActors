@@ -34,7 +34,7 @@ public class JwtTokenProvider {
     }
 
     //JWT 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
-    public JwtDto.AuthResponse genereateToken(Authentication authentication){
+    public JwtDto.AuthResponse generateToken(Authentication authentication){
         long now = new Date().getTime();
 
         String accessToken = Jwts.builder()
@@ -63,14 +63,15 @@ public class JwtTokenProvider {
         //jwt 복호화
         Claims claims = parseClaims(accessToken);
 
-        if (claims.get("auth") == null) {
-            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
-        }
+//        log.info("{}", claims.getId());
+//        if (claims.get("auth") == null) {
+//            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+//        }
         // UserDetails 객체를 만들어서 Authentication return
         // UserDetails: interface, User: UserDetails를 구현한 class
         UserDetails principal = new User(claims.getSubject(), "", new ArrayList<>());
 
-        return new UsernamePasswordAuthenticationToken(principal, "");
+        return new UsernamePasswordAuthenticationToken(principal, "", new ArrayList<>());
 
     }
 

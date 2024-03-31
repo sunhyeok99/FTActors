@@ -17,7 +17,7 @@ public class JWTController {
 
     @PostMapping("/signup")
     public ApiResponse<String> regist(@RequestBody JwtDto.Simple jwtDto) {
-        log.info("Success register login_id : {}", jwtDto.getUserId());
+        log.info("Success register login_id : {}", jwtDto.getLoginId());
         return new ApiResponse<>(HttpStatus.OK.value(), "sign up success", jwtMemberService.signup(jwtDto));
     }
 

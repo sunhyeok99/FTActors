@@ -19,7 +19,7 @@ import java.io.Serializable;
 @Table(name="member")
 public class Member extends BaseEntity implements Serializable {
     @Column(name = "login_id")
-    private String userId;
+    private String loginId;
 
     @Column(name = "password")
     private String password;

@@ -47,7 +47,7 @@ public class JwtDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Simple {
-        private String userId;
+        private String loginId;
         private String password;
     }
 
@@ -73,7 +73,7 @@ public class JwtDto {
     @AllArgsConstructor
     public static class getPkId{
         private Long id;
-        private String userId;
+        private String loginId;
         private String name;
         private String email;
         private String phone;

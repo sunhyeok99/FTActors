@@ -87,7 +87,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
         // 유저 데이터 저장 확인
         log.debug("[OAuthLoginSuccessHandler] - UserInfo : {}, {}, {}"
-                ,member.getUserId(),
+                ,member.getLoginId(),
                 member.getKakaoId(), member.getOauthType()
         );
         redisData.put("authenticationToken", token);
@@ -101,7 +101,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         log.info("redis data : {}", redisService.getMapData(accessToken));
 
         // 로그인 성공
-        log.debug("[OAuthLoginSuccessHandler] - LOGIN SUCCESS : {} FROM {}",oauth2User.getMember().getUserId(), oauthType);
+        log.debug("[OAuthLoginSuccessHandler] - LOGIN SUCCESS : {} FROM {}",oauth2User.getMember().getLoginId(), oauthType);
 
         // 쿠키에 Access token을 저장, 3시간 유지
         int time = (60*60*3) + (60*60*9);
@@ -117,7 +117,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
         // 유저 아이디
         response.addHeader("Set-Cookie",
-                "userId=" + member.getUserId() + "; " +
+                "userId=" + member.getLoginId() + "; " +
                         "Path=/;" +
 //                        "HttpOnly; " +
                         "Max-Age=" +

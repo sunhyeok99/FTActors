@@ -37,7 +37,7 @@ public class AdminAccountInitializer {
         if (!jwtMemberService.isAdminAccountExists(adminUsername)) {
             // 어드민 계정 생성
             JwtDto.Simple adminUser = new JwtDto.Simple();
-            adminUser.setUserId(adminUsername);
+            adminUser.setLoginId(adminUsername);
             adminUser.setPassword(bCryptPasswordEncoder.encode(adminPassword));
             // 이하 어드민 권한 등 설정
             jwtMemberService.signup(adminUser);

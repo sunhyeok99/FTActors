@@ -7,6 +7,8 @@ import com.a602.actors.global.auth.config.handler.OAuthLoginSuccessHandler;
 import com.a602.actors.global.auth.filter.KakaoAuthenticationTokenFilter;
 import com.a602.actors.global.auth.service.member.MemberService;
 import com.a602.actors.global.auth.service.redis.RedisService;
+import com.a602.actors.global.jwt.JwtTokenProvider;
+import com.a602.actors.global.jwt.filter.JWTCustomFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -59,6 +61,8 @@ public class SecurityConfig {
 //    @Value("${project.front-url}")
 //    String frontUrl;
 
+    private final JwtTokenProvider jwtTokenProvider;
+
     @Bean
     public CustomLogoutHandler customLogoutHandler() {
         return new CustomLogoutHandler(redisService, memberService);
@@ -87,6 +91,7 @@ public class SecurityConfig {
                         (session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .addFilterAfter(new KakaoAuthenticationTokenFilter(redisService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new JWTCustomFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
                         .requestMatchers("/auth/**", "/main", "/error", "/static/**", "/signin",
