@@ -1,10 +1,7 @@
 <template>
-  <!-- 몽타쥬 팝업 -->
-  <MontagePopup />
+  <!-- 몽타쥬 사이드바로 가는 네비게이션 바 -->
   <MontageNav/>
-   
   <div class="wrapper">
-    
     <header>
       <div>
         <!-- 네비게이션 바 -->
@@ -48,7 +45,6 @@ import { RouterLink, RouterView, useRouter } from 'vue-router'
 import MontageNav from '@/components/montagepage/MontageNav.vue'
 import MypageDropdown from './components/common/MypageDropdown.vue';
 import FooterBox from './components/common/FooterBox.vue';
-import MontagePopup from './components/modals/MontagePopup.vue';
 import AlarmModal from './components/modals/AlarmModal.vue';
 import SideBars from './components/common/SideBars.vue';
 
@@ -58,8 +54,6 @@ const goToLogin = () => {
   router.push({ name: 'login' });
 };
 
-
-
 </script>
 
 <style scoped>
@@ -68,7 +62,9 @@ header {
   max-height: 100vh;
 }
 
-
+#loginbtn {
+  min-width: 75px;
+}
 #fontapply {
   font-family: 'tuesday_nightregular', impact;
 }

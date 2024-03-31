@@ -49,7 +49,6 @@
                 <div v-for="(reply, rIndex) in comment.reply" :key="`reply-${rIndex}`" class="mt-2" id="reply">
                   <p>ㄴ <b id="reply-member">{{ reply.memberId }}</b> {{ reply.content }}</p>
                 </div>
-
               </button>
             </div>
           </div>
@@ -115,7 +114,7 @@ const uploadComment = () => {
     console.log("댓글이 작성되었습니다:", addComment);
     addComment.value = "";
   } else {
-    console.log("댓글을 입력해주세요.");
+    alert("댓글을 입력해주세요.");
   }
 
 };
@@ -151,7 +150,8 @@ const uploadReply = () => {
   if (!selectedComment.value) {
     alert("댓글을 선택해주세요.");
     return;
-  }
+  } 
+  if (addReply.value.trim().length > 0) {
   const content = {
     "montageId": 1,
     "parentId": selectedComment.value.commentId,
@@ -168,6 +168,10 @@ const uploadReply = () => {
     .catch((error) => {
       console.error(error);
     });
+  }
+  else {
+    alert("대댓글을 입력해주세요.");
+  }
 };
 
 </script>
@@ -179,10 +183,9 @@ const uploadReply = () => {
   justify-content: center;
 }
 
-/* 스크롤을 적용할 부분에만 해당하는 스타일 */
 .accordion-body {
-  max-height: 38vh; /* 뷰포트 높이의 일정 비율을 최대 높이로 설정 */
-  overflow-y: auto; /* 세로 스크롤바가 필요할 때만 나타나도록 설정 */
+  max-height: 38vh;
+  overflow-y: auto; 
 }
 .accordion {
   display: flex;

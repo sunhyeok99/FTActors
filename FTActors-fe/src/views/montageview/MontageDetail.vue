@@ -6,7 +6,7 @@
       <img src="@/assets/icons/Next.png" alt="" id="next" @click="goToNextMontage">
     </div>
     <div class="commentreply">
-      <CommentReply/>
+      <CommentReply />
     </div>
   </div>
 </template>
@@ -68,7 +68,6 @@ onMounted(() => {
 <style scoped>
 .montagedetail {
   display: flex;
-  padding: 0.5rem;
   width: 100%;
 }
 
@@ -82,7 +81,7 @@ onMounted(() => {
   height: auto;
   width: 50vw;
   z-index: 2;
-  flex: 3;
+  flex: 1;
 }
 
 .montage img {
@@ -90,8 +89,9 @@ onMounted(() => {
   height: 25px;
   margin: 2rem;
 }
+
 .commentreply {
-  flex:3;
+  flex: 2;
 }
 
 #previous {
