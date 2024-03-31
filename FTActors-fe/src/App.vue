@@ -1,4 +1,5 @@
 <template>
+<div :class="{ 'full-screen':true,'montage-page': isMontagePage}">
   <!-- 몽타쥬 사이드바로 가는 네비게이션 바 -->
   <MontageNav/>
   <div class="wrapper">
@@ -33,15 +34,17 @@
     aria-controls="offcanvasWithBothOptions"> <img width="40" src="@/assets/icons/Message.png" alt="message icon"></button>
     <SideBars />
   </div>
+
   <!-- 푸터 -->
   <footer>
     <FooterBox />
   </footer>
+</div>
 </template>
 
 <script setup>
-
-import { RouterLink, RouterView, useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
+import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
 import MontageNav from '@/components/montagepage/MontageNav.vue'
 import MypageDropdown from './components/common/MypageDropdown.vue';
 import FooterBox from './components/common/FooterBox.vue';
@@ -49,15 +52,29 @@ import AlarmModal from './components/modals/AlarmModal.vue';
 import SideBars from './components/common/SideBars.vue';
 
 
+const route = useRoute();
 const router = useRouter();
 const goToLogin = () => {
   router.push({ name: 'login' });
 };
 
+const isMontagePage = ref(false);
+
+// 현재 라우트가 변경될 때마다 실행되는 watch 함수
+watch(() => route.path, (newPath) => {
+  isMontagePage.value = newPath === '/montagemain'; // Montage 페이지인지 확인
+  console.log('몽타쥬페이지 라우팅')
+});
 
 </script>
 
 <style scoped>
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -70,15 +87,23 @@ header {
   font-family: 'tuesday_nightregular', impact;
 }
 
-.montagemain-overlay {
-  background-color: rgba(0, 0, 0, 0.7); /* 어두운 오버레이 */
-}
 
 /* 네비게이션 바 폰트 색상을 밝게 만드는 스타일 */
 .light-font a {
   color: #ffffff; /* 밝은 폰트 색상 */
 }
 
+.montage-page {
+  background-color: #000; /* 전체 배경을 검은색으로 설정 */
+  padding: 0;
+  margin:0;
+  transition: background-color 1s ease;
+}
+
+.montage-page #menu a, /* 네비게이션 링크 */
+.montage-page #menu #fontapply { /* Montage 링크 특별 스타일 */
+  color: #fff; /* 폰트 색상을 흰색으로 변경 */
+}
 
 #menu {
   width: 100%;
@@ -109,10 +134,8 @@ header {
 
 #loginbtn {
   border-radius: 25px;
-  /* 그라데이션 적용 */
   background-image: linear-gradient(to right, rgb(58, 123, 213), rgb(39, 16, 171));
   border: none;
-  /* 기존 border 설정을 수정 */
 }
 
 @media (min-width: 1024px) {
@@ -141,10 +164,15 @@ header {
   height: 24px;
 }
 
-.wrapper {
-  padding: 2rem;
-}
 
+.full-screen {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* 내용이 화면을 초과할 경우 스크롤바를 숨깁니다 */
+
+}
 
 #floating-map-button {
   position: fixed;
