@@ -45,7 +45,6 @@ config.yml
 .env
 
 #logs 엘라스틱
-**/logs/*
 
-*.gz
-*.log
+customer-service.log.*
+customer-service.log
