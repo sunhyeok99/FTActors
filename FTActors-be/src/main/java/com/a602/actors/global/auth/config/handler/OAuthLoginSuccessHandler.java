@@ -108,11 +108,11 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
         // 토큰 설정
         response.addHeader("Set-Cookie",
-                "token=" + accessToken + "; " +
-                        "Path=/;" +
-//                        "HttpOnly; " +
-                        "Max-Age=" +
-                        time
+            "token=" + accessToken + "; " +
+                "Path=/;" +
+                //                        "HttpOnly; " +
+                "Max-Age=" +
+                time
         );
 
         // 유저 아이디
@@ -135,7 +135,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
         // 인증 객체에 정보 불러오기
         OAuth2AuthorizedClient authorizedClient =
-                authorizedClientService.loadAuthorizedClient(clientRegistrationId, name);
+            authorizedClientService.loadAuthorizedClient(clientRegistrationId, name);
 
         // Access token
         OAuth2AccessToken accessToken = authorizedClient.getAccessToken();

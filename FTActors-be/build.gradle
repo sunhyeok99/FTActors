@@ -47,9 +47,16 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	// STOMP
-	implementation 'org.webjars:stomp-websocket:2.3.3-1'
+//	implementation 'org.webjars:stomp-websocket:2.3.3-1'
+	implementation 'org.webjars:stomp-websocket:2.3.4'
+	// reactor netty
+	implementation 'org.springframework.boot:spring-boot-starter-reactor-netty:2.6.4'
+	// jackson	-> Spring Boot에서 default로 추가되므로 또 추가하면 충돌 난다 !!!
+//	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
 	// 낮은 버전의 브라우저에서도 WebSocket 사용할 수 있게 해줌
 	implementation 'org.webjars:sockjs-client:1.1.2'
+	// RabbitMQ를 위한 AMQP
+	implementation 'org.springframework.boot:spring-boot-starter-amqp:2.6.4'
 
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-mysql'
@@ -66,6 +73,9 @@ dependencies {
 
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation 'mysql:mysql-connector-java:8.0.28'
+
+	// MongoDB
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
 	annotationProcessor 'org.projectlombok:lombok'
 

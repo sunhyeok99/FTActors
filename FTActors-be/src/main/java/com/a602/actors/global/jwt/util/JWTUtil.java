@@ -1,12 +1,12 @@
 package com.a602.actors.global.jwt.util;
 
-import com.a602.actors.domain.member.Member;
-import com.a602.actors.global.exception.CustomException;
-import com.a602.actors.global.jwt.dto.JwtDto;
-import com.a602.actors.global.jwt.mapper.MemberMapper;
-import com.a602.actors.global.jwt.repository.JWTMemberRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import com.a602.actors.domain.member.Member;
+import com.a602.actors.global.exception.CustomException;
+import com.a602.actors.global.jwt.mapper.MemberMapper;
+import com.a602.actors.global.jwt.repository.JWTMemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

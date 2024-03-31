@@ -26,6 +26,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import static jakarta.servlet.DispatcherType.ERROR;
 import static jakarta.servlet.DispatcherType.FORWARD;
+import com.a602.actors.global.auth.config.handler.CustomAuthenticationEntryPoint;
+import com.a602.actors.global.auth.config.handler.CustomLogoutHandler;
+import com.a602.actors.global.auth.config.handler.OAuthLoginFailureHandler;
+import com.a602.actors.global.auth.config.handler.OAuthLoginSuccessHandler;
+import com.a602.actors.global.auth.filter.KakaoAuthenticationTokenFilter;
+import com.a602.actors.global.auth.service.member.MemberService;
+import com.a602.actors.global.auth.service.redis.RedisService;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * Spring Security 설정
