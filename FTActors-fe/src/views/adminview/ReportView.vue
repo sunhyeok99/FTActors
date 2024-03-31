@@ -3,11 +3,7 @@
     <h2>신고 총 {{reports.length}}개</h2>
     <div class="row row-cols-1 row-cols-md-2 g-4">
       <div class="col-lg-3" v-for="(report, index) in reports" :key="index" id="one">
-        <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg"
-          role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
-          <rect width="100%" height="100%" fill="#777"></rect>
-          <text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
-        </svg>
+        <img :src="report.link" alt="" id="reportImage">
         <h3>{{ report.reporteeId }}</h3> 
         <p>{{ report.reporterId }} - {{ report.reason }}</p> 
         <div class="accept-rejection">
@@ -22,6 +18,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+
 const reports = ref([]);
 const getReports = () => {
   axios.get(`http://localhost:8080/admin/report/list`)
@@ -55,7 +52,10 @@ const acceptReport = (reporteeId) => {
 
 
 </script>
-<style>
+<style scoped>
+h2{
+  padding: 15px;
+}
 .accept-rejection {
   display: flex;
 }
@@ -71,5 +71,9 @@ margin: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+#reportImage{
+  width: 250px;
 }
 </style>
