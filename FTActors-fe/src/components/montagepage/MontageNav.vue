@@ -1,17 +1,20 @@
 <template>
-<nav class="navbar navbar-dark bg-dark fixed-top">
+  <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
       <a class="navbar-brand" id="toHome" @click="goToHomeview">배우는 사람</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
+        aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+      <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
+        aria-labelledby="offcanvasDarkNavbarLabel">
         <div class="offcanvas-header">
           <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel"></h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-          <MontageFeed/>
+          <MontageFeed />
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="#">Home</a>
@@ -20,7 +23,8 @@
               <a class="nav-link" href="#">Link</a>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 Dropdown
               </a>
               <ul class="dropdown-menu dropdown-menu-dark">
@@ -41,8 +45,8 @@
       </div>
     </div>
   </nav>
-  </template>
-  <script setup>
+</template>
+<script setup>
 
 import MontageFeed from '@/components/montagepage/MontageFeed.vue'
 import { RouterLink, RouterView, useRouter } from 'vue-router'
@@ -55,15 +59,15 @@ const goToHomeview = () => {
 
 <style>
 .offcanvas-lg {
-  width: 80%; /* 또는 원하는 너비 값 */
+  width: 80%;
+}
 
-  }
+#offcanvasDarkNavbarLabel img {
+  width: 50px;
+  height: 50px;
+}
 
-  #offcanvasDarkNavbarLabel img{
-    width: 50px;
-    height: 50px;
-  }
-  #toHome {
-cursor: pointer;
-  }
+#toHome {
+  cursor: pointer;
+}
 </style>
