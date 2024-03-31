@@ -1,6 +1,9 @@
 {
   "analysis": {
     "tokenizer": {
+      "standard": {
+        "type": "standard"
+      },
       "korean_nori_tokenizer": {
         "type": "nori_tokenizer"
       },
@@ -35,13 +38,13 @@
     "analyzer": {
       "name_analyzer": {
         "type": "custom",
-        "tokenizer": "korean_edge_3gram_tokenizer",
+        "tokenizer": ["korean_edge_3gram_tokenizer", "standard"],
         "char_filter": ["remove_emoji"],
         "filter": ["korean_edge_3gram_filter", "english_lowercase_filter"]
       },
       "content_and_title_analyzer": {
         "type": "custom",
-        "tokenizer": "korean_edge_3gram_tokenizer",
+        "tokenizer": ["korean_edge_3gram_tokenizer", "standard"],
         "char_filter": ["remove_emoji"],
         "filter": ["korean_edge_3gram_filter", "english_lowercase_filter", "korean_stop_filter"]
       }

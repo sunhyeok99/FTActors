@@ -1,4 +1,4 @@
-  spring:
+spring:
     datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
@@ -43,10 +43,10 @@
               token-uri: https://kauth.kakao.com/oauth/token
               user-info-uri: https://kapi.kakao.com/v2/user/me
               user-name-attribute: id
-  auth-redirect-url: ${AUTH_REDIRECT_URL}
+auth-redirect-url: ${AUTH_REDIRECT_URL}
 
   # S3 설정 추가
-  cloud:
+cloud:
     aws:
       s3:
         bucket: ${S3_BUCKET_NAME}
@@ -60,26 +60,26 @@
         auto: false
 
   # 엘라스틱 서치 설정 추가
-  elasticsearch:
+elasticsearch:
     host: ${ELASTICSEARCH_HOST}
     username: ${ELASTICSEARCH_USERNAME}
     password: ${ELASTICSEARCH_PASSWORD}
-  logging:
+logging:
     file:
       name: ./logs/customer-service.log
-  logstash:
+logstash:
     host: localhost
 
   # RabbitMQ
-  rabbit:
+rabbit:
     queue-name: ${MQ_QUEUE_NAME}
     exchange-name: ${MQ_EXCHANGE_NAME}
     routing-key: ${MQ_ROUTING_KEY}
     user_name: ${MQ_USER_NAME}
     password: ${MQ_PASSWORD}
 
-  jwtKey: ${KEY}
+jwtKey: ${KEY}
 
-  admin:
+admin:
     username: ${ADMIN_USER_NAME}
     password: ${ADMIN_PASSWORD}
