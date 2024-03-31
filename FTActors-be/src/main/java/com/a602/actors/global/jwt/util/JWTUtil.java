@@ -19,9 +19,10 @@ public class JWTUtil {
     private final MemberMapper memberMapper;
 
     public Long getLoginMemberId() {
+
         // 현재 로그인한 유저의 id(pk)를 반환
-        log.info("getLoginMemberId ::::::::::: memberId '{}'", SecurityContextHolder.getContext().getAuthentication().getName());
-        Member member = jwtMemberRepository.findByUserId(SecurityContextHolder.getContext().getAuthentication().getName())
+//        log.info("getLoginMemberId ::::::::::: memberId '{}'", SecurityContextHolder.getContext().getAuthentication().getName());
+        Member member = jwtMemberRepository.findByLoginId(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(() -> new CustomException("일치하는 사용자가 없습니다."));
         log.info("MemberUtil getLoginMemberId ::::::::: id '{}'", member.getId());
         return member.getId();

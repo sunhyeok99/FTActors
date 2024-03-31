@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -16,18 +18,18 @@ public class JWTController {
     private final JWTMemberServiceImpl jwtMemberService;
 
     @PostMapping("/signup")
-    public ApiResponse<String> regist(@RequestBody JwtDto.Simple jwtDto) {
-        log.info("Success register login_id : {}", jwtDto.getUserId());
+    public ApiResponse<String> regist(@RequestBody JwtDto.Simple jwtDto) throws IOException {
+        log.info("Success register login_id : {}", jwtDto.getLoginId());
         return new ApiResponse<>(HttpStatus.OK.value(), "sign up success", jwtMemberService.signup(jwtDto));
     }
 
     @PostMapping("/signin")
     public ApiResponse<JwtDto.AuthResponse> login(@RequestBody JwtDto.AuthRequest memberDto) {
-        log.info("로그인 시도 : {}", memberDto.getMemberId());
+        log.info("로그인 시도 : {}", memberDto.getLoginId());
         JwtDto.AuthResponse member = jwtMemberService.signin(memberDto);
-        log.info("로그인 결과 : {}", member.getMemberId());
+        log.info("로그인 결과 : {}", member.getLoginId());
 
-        if (member.getMemberId() != null) {
+        if (member.getLoginId() != null) {
             return new ApiResponse<>(HttpStatus.OK.value(), "sign in success", member);
         } else {
             return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "sign in failed", member);
