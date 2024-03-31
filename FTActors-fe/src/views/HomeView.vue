@@ -14,9 +14,6 @@
   <div>
     <ProfileList />
   </div>
-
-
-
 </template>
 
 <script setup>

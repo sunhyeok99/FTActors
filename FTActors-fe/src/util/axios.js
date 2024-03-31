@@ -15,12 +15,11 @@ const formDataInstance = axios.create({
     },
   });
 const memberApi = {
-  login: (member) => {
-    // Promise를 반환하도록 수정
-    return axiosInstance.post("/api/member/login", null, { params: member });
+  login: (memberDto) => {
+    return axiosInstance.post("/signin",  memberDto );
   },
-  signup: (member) =>
-    axiosInstance.post("/api/member/signup", null, { params: member }),
+  signup: (jwtDto) =>
+    axiosInstance.post("/signup", jwtDto ),
   updatepassword: (user) =>
     axiosInstance.post("/api/member/updatePassword", null, { params: member }),
 };

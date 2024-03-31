@@ -25,6 +25,8 @@ const boardCreate = () => {
   router.push({ name: 'boardCreate' });
 };
 
+
+
 </script>
 
   <style>
