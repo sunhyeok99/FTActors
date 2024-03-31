@@ -96,7 +96,7 @@ public class MemberService extends DefaultOAuth2UserService{
         }
     }
     public Member getUserByUserId(String userId) {
-        return kakaoMemberRepository.findByUserId(userId).orElse(null);
+        return kakaoMemberRepository.findByLoginId(userId).orElse(null);
     }
 
     public Boolean modifyUserLoginStatus(String accessToken) {

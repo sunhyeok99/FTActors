@@ -13,11 +13,11 @@ public class JwtDto {
     @AllArgsConstructor
     public static class AuthRequest {
         @Setter
-        private String memberId;
+        private String loginId;
         private String password;
 
         public UsernamePasswordAuthenticationToken toAuthentication() {
-            return new UsernamePasswordAuthenticationToken(memberId, password);
+            return new UsernamePasswordAuthenticationToken(loginId, password);
         }
     }
     @Data
@@ -36,7 +36,7 @@ public class JwtDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class AuthResponse {
-        private String memberId;
+        private String loginId;
         private String grantType;
         private String accessToken;
         private String refreshToken;
@@ -93,7 +93,7 @@ public class JwtDto {
     @AllArgsConstructor
     public static class getPkId{
         private Long id;
-        private String userId;
+        private String loginId;
         private String name;
         private String email;
         private String phone;
@@ -103,4 +103,6 @@ public class JwtDto {
         private String stageName;
         private LocalDateTime createdAt;
     }
+
+
 }
