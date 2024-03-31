@@ -45,4 +45,4 @@ config.yml
 .env
 
 #logs 엘라스틱
-/logs/**
+**/logs/**
