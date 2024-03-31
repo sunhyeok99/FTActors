@@ -1,6 +1,7 @@
 package com.a602.actors.domain.recruitment.controller;
 
 import com.a602.actors.domain.apply.dto.ApplyDto;
+import com.a602.actors.domain.apply.dto.ApplyListDto;
 import com.a602.actors.domain.apply.service.ApplyService;
 import com.a602.actors.domain.recruitment.dto.RecruitmentListResponseDto;
 import com.a602.actors.domain.recruitment.dto.RecruitmentRequestDto;
@@ -89,7 +90,7 @@ public class RecruitmentController {
 
     // 지원 내역 리스트
     @GetMapping("myApply")
-    public ApiResponse<List<ApplyDto>> myApplyList(@RequestParam Long memberId){
+    public ApiResponse<List<ApplyListDto>> myApplyList(@RequestParam Long memberId){
         return new ApiResponse<>(HttpStatus.OK.value(), "내 지원 내역을 불러왔습니다", applyService.myApplyList(memberId));
     }
 
@@ -101,7 +102,7 @@ public class RecruitmentController {
 
     // 공고별 지원자리스트
     @GetMapping("applyList")
-    public ApiResponse<List<ApplyDto>> applyList(@RequestParam Long recruitmentId){
+    public ApiResponse<List<ApplyListDto>> applyList(@RequestParam Long recruitmentId){
         return new ApiResponse<>(HttpStatus.OK.value(), "해당 공고 지원 리스트를 불러왔습니다", applyService.applyList(recruitmentId));
     }
 
