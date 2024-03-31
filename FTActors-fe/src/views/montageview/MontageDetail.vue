@@ -1,11 +1,12 @@
 <template>
-  <div class="montagepage">
-    <div class="montagethumbnail" ref="thumbnail">
+  <div class="montagedetail">
+    <div class="montage" ref="thumbnail">
       <img src="@/assets/icons/Next.png" alt="" id="previous" @click="goToPreviousMontage">
       <video :src="montage.link" muted autoplay playsinline></video>
       <img src="@/assets/icons/Next.png" alt="" id="next" @click="goToNextMontage">
     </div>
-    <div class="montagedetail">
+    <div class="commentreply">
+      <CommentReply/>
     </div>
   </div>
 </template>
@@ -13,6 +14,7 @@
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import { watch, onMounted, ref } from 'vue';
+import CommentReply from '@/components/common/CommentReply.vue'
 
 const router = useRouter();
 const route = useRoute();
@@ -63,35 +65,31 @@ onMounted(() => {
 
 
 </script>
-<style>
-.montagepage {
+<style scoped>
+.montagedetail {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
+  padding: 0.5rem;
+  width: 100%;
 }
 
-.montagethumbnail {
-  display: flex;
+.montage {
   align-items: center;
-  margin-bottom: 4rem;
 }
 
-.montagethumbnail video {
-  height: 75vh;
-  width: auto;
+.montage video {
+  height: auto;
+  width: 50vw;
   z-index: 2;
+  flex: 3;
 }
 
-.montagethumbnail img {
+.montage img {
   width: 25px;
   height: 25px;
   margin: 2rem;
 }
-
-.montagedetail {
-  width: 30rem;
+.commentreply {
+  flex:3;
 }
 
 #previous {
