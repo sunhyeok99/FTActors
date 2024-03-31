@@ -106,7 +106,7 @@ public class ProfileServiceImpl implements ProfileService{
 //            throw new ProfileException(ExceptionCodeSet.PROFILE_ALREADY_EXIST);
 //        }
 
-        Member loginMember = tmpMemRepo.findByLoginId(11L);
+        Member loginMember = tmpMemRepo.findByLoginId(20L);
         //-------jwt 구현 후 삭제
 
         //저장하기

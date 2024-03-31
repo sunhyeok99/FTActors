@@ -47,8 +47,10 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	// STOMP
-	implementation 'org.webjars:stomp-websocket:2.3.3-1'
-	// 낮은 버전의 브라우저에서도 WebSocket 사용할 수 있게 해줌
+//    implementation 'org.webjars:stomp-websocket:2.3.3-1'
+	implementation 'org.webjars:stomp-websocket:2.3.4'
+	// reactor netty
+	implementation 'org.springframework.boot:spring-boot-starter-reactor-netty:2.6.4'
 	implementation 'org.webjars:sockjs-client:1.1.2'
 
 	implementation 'org.flywaydb:flyway-core'

@@ -4,6 +4,7 @@ package com.a602.actors.global.auth.service.member;
 
 import com.a602.actors.domain.member.Member;
 import com.a602.actors.global.auth.domain.CustomOAuth2User;
+import com.a602.actors.global.auth.dto.KakaoMemberIdDto;
 import com.a602.actors.global.auth.repository.KakaoMemberRepository;
 import com.a602.actors.global.auth.service.redis.RedisService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -78,9 +80,23 @@ public class MemberService extends DefaultOAuth2UserService{
     public Member getUserByKakaoId(String kakaoId) {
         return kakaoMemberRepository.findByKakaoId(kakaoId).orElse(null);
     }
+//    public KakaoMemberIdDto getIdByKakaoId(String kakaoId){
+//        return kakaoMemberRepository.findByKakaoId(kakaoId).
+//    }
 
+    public KakaoMemberIdDto getIdByKakaoId(String kakaoId) {
+        Optional<Member> optionalMember = kakaoMemberRepository.findByKakaoId(kakaoId);
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            return new KakaoMemberIdDto(member.getId(), member.getKakaoId(), member.getName(), member.getEmail()
+                    , member.getOauthType(),member.getPhone(), member.getBirth(), member.getGender(),
+                    member.getStageName(), member.getProfileImage(), member.getCreatedAt());
+        } else {
+            return null;
+        }
+    }
     public Member getUserByUserId(String userId) {
-        return kakaoMemberRepository.findByUserId(userId).orElse(null);
+        return kakaoMemberRepository.findByLoginId(userId).orElse(null);
     }
 
     public Boolean modifyUserLoginStatus(String accessToken) {

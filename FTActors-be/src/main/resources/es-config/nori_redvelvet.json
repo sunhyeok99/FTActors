@@ -35,7 +35,7 @@
     "analyzer": {
       "name_analyzer": {
         "type": "custom",
-        "tokenizer": "korean_nori_tokenizer",
+        "tokenizer": "korean_edge_3gram_tokenizer",
         "char_filter": ["remove_emoji"],
         "filter": ["korean_edge_3gram_filter", "english_lowercase_filter"]
       },

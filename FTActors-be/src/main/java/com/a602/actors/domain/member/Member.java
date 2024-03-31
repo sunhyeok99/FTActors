@@ -1,13 +1,19 @@
 package com.a602.actors.domain.member;
 
-import com.a602.actors.global.common.entity.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.Serializable;
+
+import org.hibernate.annotations.DynamicUpdate;
+
+import com.a602.actors.global.common.entity.BaseEntity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -19,7 +25,7 @@ import java.io.Serializable;
 @Table(name="member")
 public class Member extends BaseEntity implements Serializable {
     @Column(name = "login_id")
-    private String userId;
+    private String loginId;
 
     @Column(name = "password")
     private String password;

@@ -1,3 +1,4 @@
+
 version: '3.7'
 
 services:
@@ -35,9 +36,9 @@ services:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     init: true
     volumes:
-      - ./entrypoint.sh:/entrypoint.sh:ro,Z
-      - ./lib.sh:/lib.sh:ro,Z6
-      - ./roles:/roles:ro,Z
+      - ./setup/entrypoint.sh:/entrypoint.sh:ro,Z
+      - ./setup/lib.sh:/lib.sh:ro,Z6
+      - ./setup/roles:/roles:ro,Z
     #  - ./bin:/usr/share/elasticsearch/bin # 이 부분이 추가되었습니다.
     environment:
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
@@ -61,9 +62,8 @@ services:
       context: elasticsearch/
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
-    volumes:
-      - ./config:/usr/share/elasticsearch/config:ro,Z
-      - ./:/usr/share/elasticsearch/data:Z
+#    volumes:
+#      - elasticsearch:/usr/share/elasticsearch/data:Z
     expose:
       - 9200
       - 9300
@@ -87,9 +87,11 @@ services:
       context: logstash/
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
-    volumes:
-      - ./config:/usr/share/logstash/config:ro,Z
-      - ./pipeline:/usr/share/logstash/pipeline:ro,Z
+#    volumes:
+#      - ./logstash/pipeline/:/usr/share/logstash/pipeline/
+    #command: ls -al pipeline/logstash.conf
+    # - ./logstash/pipeline/:/usr/share/logstash/pipeline/
+
     expose:
       - 5044
       - 50000/tcp
@@ -104,22 +106,23 @@ services:
       - elasticsearch
     restart: unless-stopped
 
-  kibana:
-    build:
-      context: kibana/
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION}
-    volumes:
-      - ./config:/usr/share/kibana/config:ro,Z
-    ports:
-      - 5601
-    environment:
-      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
-    networks:
-      - backend
-    depends_on:
-      - elasticsearch
-    restart: unless-stopped
+#  kibana:
+#    container_name: kibana
+#    build:
+#      context: kibana/
+#      args:
+#        ELASTIC_VERSION: ${ELASTIC_VERSION}
+#    volumes:
+#      - ./kibana/config:/usr/share/kibana/config:ro,Z
+#    ports:
+#      - 5601
+#    environment:
+#      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+#    networks:
+#      - backend
+#    depends_on:
+#      - elasticsearch
+#    restart: unless-stopped
 
   # filebeat:
   #   build:
@@ -136,6 +139,3 @@ services:
 networks:
   backend:
     external: true
-
-volumes:
-  elasticsearch:

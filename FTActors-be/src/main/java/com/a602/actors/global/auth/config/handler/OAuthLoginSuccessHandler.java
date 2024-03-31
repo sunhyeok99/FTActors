@@ -87,7 +87,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
         // 유저 데이터 저장 확인
         log.debug("[OAuthLoginSuccessHandler] - UserInfo : {}, {}, {}"
-                ,member.getUserId(),
+                ,member.getLoginId(),
                 member.getKakaoId(), member.getOauthType()
         );
         redisData.put("authenticationToken", token);
@@ -101,23 +101,23 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         log.info("redis data : {}", redisService.getMapData(accessToken));
 
         // 로그인 성공
-        log.debug("[OAuthLoginSuccessHandler] - LOGIN SUCCESS : {} FROM {}",oauth2User.getMember().getUserId(), oauthType);
+        log.debug("[OAuthLoginSuccessHandler] - LOGIN SUCCESS : {} FROM {}",oauth2User.getMember().getLoginId(), oauthType);
 
         // 쿠키에 Access token을 저장, 3시간 유지
         int time = (60*60*3) + (60*60*9);
 
         // 토큰 설정
         response.addHeader("Set-Cookie",
-                "token=" + accessToken + "; " +
-                        "Path=/;" +
-//                        "HttpOnly; " +
-                        "Max-Age=" +
-                        time
+            "token=" + accessToken + "; " +
+                "Path=/;" +
+                //                        "HttpOnly; " +
+                "Max-Age=" +
+                time
         );
 
         // 유저 아이디
         response.addHeader("Set-Cookie",
-                "userId=" + member.getUserId() + "; " +
+                "userId=" + member.getLoginId() + "; " +
                         "Path=/;" +
 //                        "HttpOnly; " +
                         "Max-Age=" +
@@ -135,7 +135,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
         // 인증 객체에 정보 불러오기
         OAuth2AuthorizedClient authorizedClient =
-                authorizedClientService.loadAuthorizedClient(clientRegistrationId, name);
+            authorizedClientService.loadAuthorizedClient(clientRegistrationId, name);
 
         // Access token
         OAuth2AccessToken accessToken = authorizedClient.getAccessToken();

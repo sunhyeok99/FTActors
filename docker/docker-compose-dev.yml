@@ -1,3 +1,5 @@
+version: "2"
+
 services:
   # 서비스 이름
 #  spring:
@@ -7,12 +9,8 @@ services:
 #    build:
 #      context: ../
 #      dockerfile: "./docker/dockerfile/spring.dockerfile"
-<<<<<<< HEAD
-#    env_file: ".env"
-=======
 #    ports:
 #      - "8080:8080"
->>>>>>> develop-be
 #    restart: "always"
 #    networks:
 #      - backend
@@ -25,13 +23,10 @@ services:
       dockerfile: "./docker/dockerfile/mysql.dockerfile"
     networks:
       - backend
+    volumes:
+      - /home/ubuntu/volume/mysql:/var/lib/mysql
     env_file: ".env"
     ports:
-<<<<<<< HEAD
-      - "3306:3306"
-    restart: "always"
-
-=======
       - "3307:3306"
 
   flask:
@@ -47,18 +42,14 @@ services:
     ports:
       - "5000:5000"
 
->>>>>>> develop-be
 #  elastic:
 #    build:
 #      context: ../
 #      dockerfile: "./docker/dockerfile/elastic-search.dockerfile"
 #    networks:
 #      - backend
-<<<<<<< HEAD
-=======
 #    ports:
 #      - "9200:9200"
->>>>>>> develop-be
 
   redis:
     image: redis
@@ -66,13 +57,6 @@ services:
       - backend
     ports:
       - "6379:6379"
-<<<<<<< HEAD
-
-#  rabbitMQ:
-#    image: rabbitmq
-#    networks:
-#      backend:
-=======
   #
 #  rabbitmq:
 #    image: rabbitmq
@@ -92,7 +76,6 @@ services:
 #    env_file: ".env"
 #    ports:
 #      - "27017:27017"
->>>>>>> develop-be
 
 # 브리지 네트워크는 도커가 제공하는 네트워크 드라이버 중 하나로, 가상
 # 인터페이스를 통해 컨테이너들을 연결한다.

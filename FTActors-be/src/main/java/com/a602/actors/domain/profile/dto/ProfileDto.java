@@ -13,6 +13,6 @@ public class ProfileDto {
     private String content; //자기소개
     private Character type; //배우 프로필? 관계자 프로필?
     private String portfolio; //포트폴리오 링크
-//    private ArrayList<String> additionalImages; //추가 이미지
+    //    private ArrayList<String> additionalImages; //추가 이미지
     private Character privatePost; //공개여부
 }

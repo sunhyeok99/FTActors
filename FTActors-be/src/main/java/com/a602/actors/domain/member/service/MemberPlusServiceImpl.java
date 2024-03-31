@@ -1,20 +1,24 @@
 package com.a602.actors.domain.member.service;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.a602.actors.domain.member.Member;
 import com.a602.actors.domain.member.dto.MemberPlusDTO;
+import com.a602.actors.domain.member.mapper.MemberPlusMapper;
 import com.a602.actors.domain.member.repository.MemberRepository;
 import com.a602.actors.global.auth.repository.KakaoMemberRepository;
 import com.a602.actors.global.auth.service.redis.RedisService;
 import com.a602.actors.global.common.config.FileUtil;
 import com.a602.actors.global.common.enums.FolderType;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +28,7 @@ public class MemberPlusServiceImpl implements MemberPlusService {
     private final KakaoMemberRepository kakaoMemberRepository;
     private final RedisService redisService;
     private final FileUtil fileUtil;
+    private final MemberPlusMapper memberPlusMapper;
 
     @Value("${S3_BUCKET_NAME}")
     private String bucketName;
@@ -63,5 +68,11 @@ public class MemberPlusServiceImpl implements MemberPlusService {
             // throw new RuntimeException("Kakao member not found");
             // 또는 다른 처리 방법을 선택
         }
+    }
+
+    public List<MemberPlusDTO> findAllMembersByStageName(String stageName){
+        List<Member> memberList = memberPlusRepository.findAllByStageName(stageName);
+        log.info("MemberPlusServiceImpl ========= memberList size() : {}", memberList.size());
+        return memberPlusMapper.MemberListToMemberPlusDtoList(memberList);
     }
 }
