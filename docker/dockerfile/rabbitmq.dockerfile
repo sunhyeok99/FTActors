@@ -14,6 +14,7 @@ ENV RABBITMQ_DEFAULT_USER=${RABBITMQ_USERNAME}
 ENV RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
 
 RUN rabbitmq-plugins enable --offline rabbitmq_stomp
+RUN rabbitmq-plugins enable --offline rabbitmq_web_stomp
 RUN rabbitmq-plugins enable --offline rabbitmq_management
 
 CMD ["rabbitmq-server"]
