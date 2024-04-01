@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +30,8 @@ public class ChatService {
 	private final ParticipantsRepository participantsRepository;
 	private final ChatMapper chatMapper;
 	private final ParticipantsMapperImpl participantsMapper;
-	private final AmqpAdmin amqpAdmin;
-	private final RabbitTemplate rabbitTemplate;
+	// private final AmqpAdmin amqpAdmin;
+	// private final RabbitTemplate rabbitTemplate;
 
 	public void createChatRoom(String title) {
 		chatRoomRepository.save(new ChatRoom(title)).getId();

@@ -106,4 +106,12 @@ public class MontageController {
 
     }
 
+    @PostMapping("/{montageId}/comment/{commentId}")
+    public ApiResponse<String> reportComment(@RequestPart(name="req") MontageReportDto.CreateReport req,
+                                             @RequestPart(name="file") MultipartFile file,
+                                             @PathVariable("montageId") Long montageId,
+                                             @PathVariable("commentId") Long commentId) throws IOException {
+        return new ApiResponse<>(HttpStatus.OK.value(), "신고를 눌렀습니다.", montageCommentService.report(req, file, montageId, commentId));
+    }
+
 }

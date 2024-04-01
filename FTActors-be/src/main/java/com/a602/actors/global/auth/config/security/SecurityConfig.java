@@ -4,9 +4,11 @@ import com.a602.actors.global.auth.config.handler.CustomAuthenticationEntryPoint
 import com.a602.actors.global.auth.config.handler.CustomLogoutHandler;
 import com.a602.actors.global.auth.config.handler.OAuthLoginFailureHandler;
 import com.a602.actors.global.auth.config.handler.OAuthLoginSuccessHandler;
+import com.a602.actors.global.auth.filter.KakaoAuthenticationTokenFilter;
 import com.a602.actors.global.auth.service.member.MemberService;
 import com.a602.actors.global.auth.service.redis.RedisService;
 import com.a602.actors.global.jwt.JwtTokenProvider;
+import com.a602.actors.global.jwt.filter.JWTCustomFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +22,19 @@ import org.springframework.security.config.annotation.web.configurers.HttpBasicC
 import org.springframework.security.config.annotation.web.configurers.RememberMeConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static jakarta.servlet.DispatcherType.ERROR;
+import static jakarta.servlet.DispatcherType.FORWARD;
+import com.a602.actors.global.auth.config.handler.CustomAuthenticationEntryPoint;
+import com.a602.actors.global.auth.config.handler.CustomLogoutHandler;
+import com.a602.actors.global.auth.config.handler.OAuthLoginFailureHandler;
+import com.a602.actors.global.auth.config.handler.OAuthLoginSuccessHandler;
+import com.a602.actors.global.auth.filter.KakaoAuthenticationTokenFilter;
+import com.a602.actors.global.auth.service.member.MemberService;
+import com.a602.actors.global.auth.service.redis.RedisService;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * Spring Security 설정
@@ -84,17 +99,27 @@ public class SecurityConfig {
                 .sessionManagement(
                         (session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-//                .addFilterAfter(new KakaoAuthenticationTokenFilter(redisService), UsernamePasswordAuthenticationFilter.class)
-//                .addFilterAfter(new JWTCustomFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-//                .authorizeHttpRequests(request -> request
-//                        .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
-//                        .requestMatchers("/auth/**", "/main", "/error", "/static/**", "/signin",
-//                                "/firebase/**", "/css/**","/js/**", "/firebase-messaging-sw.js",
-//                                "/barter/**", "/post/**", "/register", "/ws-stomp"
-//                                ,"/oauth2/authorization/kakao"
-//                        ).permitAll()
-//                        .anyRequest().authenticated()
-//                )
+                .addFilterAfter(new KakaoAuthenticationTokenFilter(redisService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new JWTCustomFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(request -> request
+                        .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
+                        .requestMatchers("/auth/**", "/main", "/error", "/static/**", "/signin",
+                                "/firebase/**", "/css/**","/js/**", "/firebase-messaging-sw.js",
+                                "/barter/**", "/post/**", "/register", "/signup", "/ws-stomp"
+                                ,"/oauth2/authorization/kakao", "/montage/list",
+                                "/recruitment/list",
+                                "/recruitment/detail",
+                                "/follow/followingList",
+                                "/follow/followerList",
+                                "/follow/followingNum",
+                                "/follow/followerNum",
+                                "/profile/list",
+                                "/profile/detail",
+                                "/profile/searchcontent",
+                                "/profile/searchname"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
                 // oauth2.0 로그인 설정
                 .oauth2Login(oAuth -> oAuth
                         .loginPage("/login")

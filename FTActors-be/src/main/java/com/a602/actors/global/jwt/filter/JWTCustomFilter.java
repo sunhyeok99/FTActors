@@ -1,5 +1,6 @@
 package com.a602.actors.global.jwt.filter;
 
+import com.a602.actors.global.exception.CustomException;
 import com.a602.actors.global.exception.TokenException;
 import com.a602.actors.global.jwt.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
@@ -33,21 +34,32 @@ public class JWTCustomFilter extends OncePerRequestFilter {
         List<String> list = Arrays.asList(
                 "/signup",		// 회원가입 페이지
                 "/signin",		// 로그인 페이지
-                "/check-id" 	// 아이디 중복 검사
+                "/check-id", 	// 아이디 중복 검사
+                "/montage/list",
+                "/recruitment/list",
+                "/recruitment/detail",
+                "/follow/followingList",
+                "/follow/followerList",
+                "/follow/followingNum",
+                "/follow/followerNum",
+                "/profile/list",
+                "/profile/detail",
+                "/profile/searchcontent",
+                "/profile/searchname"
+
         );
 
         // 2. 토큰이 필요하지 않은 API URL의 경우 -> 로직 처리없이 다음 필터로 이동한다.
-        if (list.contains(request.getRequestURI()) || request.getRequestURI().contains("recruitment") || request.getRequestURI().contains("follow")) {
+        if (list.contains(request.getRequestURI())) {
             filterChain.doFilter(request, response);
             return;
         }
 
         String token = resolveToken(request);
         if (token == null) {
-            filterChain.doFilter(request, response);
-            //throw new CustomException("토큰이 없어요.");
+            throw new CustomException("토큰이 없어요.");
         }
-//        log.info("JwtFilter ::::::::: resolvedToken = {}", token.toString());
+        log.info("JwtFilter ::::::::: resolvedToken = {}", token.toString());
 
         boolean isValidate = false;
         boolean isRefresh = false;

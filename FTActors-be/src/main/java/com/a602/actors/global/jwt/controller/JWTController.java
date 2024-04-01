@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -16,10 +17,17 @@ import java.io.IOException;
 public class JWTController {
     private final JWTMemberServiceImpl jwtMemberService;
 
+//    @PostMapping("/signup")
+//    public ApiResponse<String> regist(@RequestBody JwtDto.Simple jwtDto, MultipartFile multipartFile) throws IOException {
+//        log.info("Success register login_id : {}", jwtDto.getLoginId());
+//        return new ApiResponse<>(HttpStatus.OK.value(), "sign up success", jwtMemberService.signup(jwtDto));
+//    }
+
     @PostMapping("/signup")
-    public ApiResponse<String> regist(@RequestBody JwtDto.Simple jwtDto) throws IOException {
+    public ApiResponse<String> regist(@RequestPart(value = "dto") JwtDto.Simple jwtDto,
+                                      @RequestPart(value = "profileImage") MultipartFile profileImage) throws IOException {
         log.info("Success register login_id : {}", jwtDto.getLoginId());
-        return new ApiResponse<>(HttpStatus.OK.value(), "sign up success", jwtMemberService.signup(jwtDto));
+        return new ApiResponse<>(HttpStatus.OK.value(), "sign up success", jwtMemberService.signup(jwtDto, profileImage));
     }
 
     @PostMapping("/signin")
@@ -70,4 +78,10 @@ public class JWTController {
 //        memberService.deleteMember();
 //        return ApiResponse.success(SuccessCode.DELETE_SUCCESS, "회원탈퇴 성공");
 //    }
+@PutMapping("/update")
+public ApiResponse<String> updateUser(@RequestBody JwtDto.UpdateRequest updateRequest) {
+    log.info("사용자 정보 수정 시도: {}", updateRequest.getLoginId());
+    jwtMemberService.updateUser(updateRequest);
+    return new ApiResponse<>(HttpStatus.OK.value(), "User information updated successfully", "");
+}
 }
