@@ -99,27 +99,18 @@ public class SecurityConfig {
                 .sessionManagement(
                         (session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterAfter(new KakaoAuthenticationTokenFilter(redisService), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(new JWTCustomFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(request -> request
-                        .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
-                        .requestMatchers("/auth/**", "/main", "/error", "/static/**", "/signin",
-                                "/firebase/**", "/css/**","/js/**", "/firebase-messaging-sw.js",
-                                "/barter/**", "/post/**", "/register", "/signup", "/ws-stomp"
-                                ,"/oauth2/authorization/kakao", "/montage/list",
-                                "/recruitment/list",
-                                "/recruitment/detail",
-                                "/follow/followingList",
-                                "/follow/followerList",
-                                "/follow/followingNum",
-                                "/follow/followerNum",
-                                "/profile/list",
-                                "/profile/detail",
-                                "/profile/searchcontent",
-                                "/profile/searchname"
-                        ).permitAll()
-                        .anyRequest().authenticated()
-                )
+//                .addFilterAfter(new KakaoAuthenticationTokenFilter(redisService), UsernamePasswordAuthenticationFilter.class)
+//                .addFilterAfter(new JWTCustomFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+//                .authorizeHttpRequests(request -> request
+//                        .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
+//                        .requestMatchers("/auth/**", "/main", "/error", "/static/**", "/signin",
+//                                "/firebase/**", "/css/**","/js/**", "/firebase-messaging-sw.js",
+//                                "/barter/**", "/post/**", "/register", "/signup", "/ws-stomp"
+//                                ,"/oauth2/authorization/kakao", "/chat/**", "/notify/**"
+//                            // Todo : "/chat/**", "/notify/**" 삭제
+//                        ).permitAll()
+//                        .anyRequest().authenticated()
+//                )
                 // oauth2.0 로그인 설정
                 .oauth2Login(oAuth -> oAuth
                         .loginPage("/login")
