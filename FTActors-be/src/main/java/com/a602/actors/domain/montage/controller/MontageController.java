@@ -85,14 +85,13 @@ public class MontageController {
     }
 
     @PostMapping("/{montageId}/like")
-    public ApiResponse<String> likeMontage(@PathVariable("montageId") Long montageId){
+    public ApiResponse<Boolean> likeMontage(@PathVariable("montageId") Long montageId){
 
         boolean result = montageFileService.pushLike(montageId);
-
         if(result)
-            return new ApiResponse<>(HttpStatus.OK.value(), "좋아요를 눌렀습니다.", "");
+            return new ApiResponse<>(HttpStatus.OK.value(), "좋아요를 눌렀습니다.", result);
         else
-            return new ApiResponse<>(HttpStatus.OK.value(), "좋아요를 해제했습니다.", "");
+            return new ApiResponse<>(HttpStatus.OK.value(), "좋아요를 해제했습니다.", result);
     }
 
     // 몽타주 아이디를 보내는데 굳이 reportee 아이디를 보낼 필요가 없다.
@@ -104,6 +103,14 @@ public class MontageController {
         System.out.println("HELLO");
         return new ApiResponse<>(HttpStatus.OK.value(), "신고를 눌렀습니다.", montageFileService.report(req, file, montageId));
 
+    }
+
+    @PostMapping("/{montageId}/comment/{commentId}")
+    public ApiResponse<String> reportComment(@RequestPart(name="req") MontageReportDto.CreateReport req,
+                                             @RequestPart(name="file") MultipartFile file,
+                                             @PathVariable("montageId") Long montageId,
+                                             @PathVariable("commentId") Long commentId) throws IOException {
+        return new ApiResponse<>(HttpStatus.OK.value(), "신고를 눌렀습니다.", montageCommentService.report(req, file, montageId, commentId));
     }
 
 }

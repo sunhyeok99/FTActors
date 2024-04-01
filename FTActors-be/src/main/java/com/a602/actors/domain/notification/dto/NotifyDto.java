@@ -17,6 +17,7 @@ public class NotifyDto {
 	@Getter
 	@Builder
 	public static class Response {
+		String id;
 		Long receiverId;
 		String content;
 		String type;
@@ -25,6 +26,7 @@ public class NotifyDto {
 
 		public static NotifyDto.Response from(Notify notify){
 			return NotifyDto.Response.builder()
+				.id(notify.getId().toString())
 				.receiverId(notify.getReceiverId())
 				.content(notify.getContent())
 				.type(notify.getNotificationType().name())

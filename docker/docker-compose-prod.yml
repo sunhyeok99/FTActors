@@ -45,6 +45,7 @@ services:
 
   redis:
     container_name: redis
+    hostname: redis
     image: redis
     networks:
       - backend
@@ -53,21 +54,29 @@ services:
       - "6379"
 #
   rabbitmq:
-    image: rabbitmq
     container_name: rabbitmq
+    hostname: rabbitmq
+    build:
+      context: ../
+      dockerfile: "./docker/dockerfile/rabbitmq.dockerfile"
     networks:
       - backend
     volumes:
       - /home/ubuntu/volume/mq:/var/lib/rabbitmq
     env_file: ".env"
     expose:
+      - "1883"
+      - "4369"
       - "5672"
+      - "15670"
       - "15672"
+      - "15692"
       - "61613"
 
   mongo:
     image: mongo
     container_name: mongo
+    hostname: mongo
     networks:
       - backend
     volumes:
