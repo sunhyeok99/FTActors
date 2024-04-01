@@ -26,8 +26,8 @@
           </div>
         </div>
         <div class="accept-rejection">
-        <p><a class="btn btn-secondary" id="accept" :href="`#details${index}`" @click="acceptReport(report.reporteeId)" >신고 수락</a></p> 
-        <p><a class="btn btn-secondary" id="rejection" :href="`#details${index}`" @click="rejectReport(report.reporteeId)" >신고 거절</a></p> 
+        <p><a class="btn btn-secondary" id="accept" :href="`#details${index}`" @click="acceptReport(report.reportId)" >신고 수락</a></p> 
+        <p><a class="btn btn-secondary" id="rejection" :href="`#details${index}`" @click="rejectReport(report.reportId)" >신고 거절</a></p> 
       </div>
       </div>
     </div>
@@ -54,30 +54,32 @@ onMounted(() => {
   getReports();
 });
 
-const acceptReport = (reporteeId) => {
+const acceptReport = (reportId) => {
   const body = {
-    reportId : reporteeId
+    reportId : reportId
   }
-  console.log(reporteeId)
+  console.log(reportId)
   axios.post(`http://localhost:8080/admin/report/acceptance`, body)
     .then((response) => {
-      alert(response)
-      console.log('###############',reporteeId)
+      alert(response.data.message)
+      console.log(response.data)
+      getReports();
     })
     .catch((error) => {
       console.error(error);
     });
 };
 
-const rejectReport = (reporteeId) => {
+const rejectReport = (reportId) => {
   const body = {
-    reportId : reporteeId
+    reportId : reportId
   }
-  console.log(reporteeId)
+  console.log(reportId)
   axios.post(`http://localhost:8080/admin/report/rejection`, body)
     .then((response) => {
-      alert(response)
-      console.log('###############',reporteeId)
+      alert(response.data.message)
+      console.log(response.data)
+      getReports();
     })
     .catch((error) => {
       console.error(error);
