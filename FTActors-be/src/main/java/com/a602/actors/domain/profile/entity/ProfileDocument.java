@@ -8,7 +8,7 @@ import org.springframework.data.elasticsearch.annotations.*;
 import java.time.LocalDateTime;
 
 //@EqualsAndHashCode(of = "id") // equals() 및 hashCode() 메서드를 생성할 때 고려해야 할 필드를 지정
-@Document(indexName = "profile_elasticsearch") //해당 클래스의 인스턴스가 저장될 인덱스의 이름을 지정합니다. 이름 없으면 db 만듦
+@Document(indexName = "profile_elasticsearch") //해당 클래스의 인스턴스가 저장될 인덱스의 이름을 지정합니다. 이름 없으면
 @Setting(settingPath = "es-config/nori_redvelvet.json")
 //@Getter
 //@Setter
