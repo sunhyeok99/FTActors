@@ -13,9 +13,9 @@ RUN apt-get update && \
     erlang
 
 #RUN rabbitmq-plugins enable rabbitmq_delayed_message_exchange
-RUN rabbitmq-plugins enable --offline rabbitmq_stomp
-RUN rabbitmq-plugins enable --offline rabbitmq_web_stomp
-RUN rabbitmq-plugins enable --offline rabbitmq_web_stomp_examples
-RUN rabbitmq-plugins enable --offline rabbitmq_management
+RUN rabbitmq-plugins enable rabbitmq_stomp
+RUN rabbitmq-plugins enable rabbitmq_web_stomp
+RUN rabbitmq-plugins enable rabbitmq_web_stomp_examples
+RUN rabbitmq-plugins enable rabbitmq_management
 
 CMD ["rabbitmq-server"]
