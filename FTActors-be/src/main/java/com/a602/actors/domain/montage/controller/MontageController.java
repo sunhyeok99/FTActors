@@ -88,8 +88,10 @@ public class MontageController {
     public ApiResponse<Boolean> likeMontage(@PathVariable("montageId") Long montageId){
 
         boolean result = montageFileService.pushLike(montageId);
-        return new ApiResponse<>(HttpStatus.OK.value(), "좋아요를 눌렀습니다.", result);
-
+        if(result)
+            return new ApiResponse<>(HttpStatus.OK.value(), "좋아요를 눌렀습니다.", result);
+        else
+            return new ApiResponse<>(HttpStatus.OK.value(), "좋아요를 해제했습니다.", result);
     }
 
     // 몽타주 아이디를 보내는데 굳이 reportee 아이디를 보낼 필요가 없다.
