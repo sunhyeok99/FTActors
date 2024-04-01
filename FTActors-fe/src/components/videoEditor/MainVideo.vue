@@ -3,7 +3,10 @@ import { ref, watch, onMounted, provide } from "vue";
 import VideoSideBar from "./VideoSideBar.vue";
 import Editor from "./Editor.vue"
 
+import { videoApi } from '@/util/axios';
 import { useRoute, useRouter } from "vue-router";
+
+
 //import { storeToRefs } from "pinia";
 //import { useAttrStore } from "@/stores/schedule";
 
@@ -22,6 +25,42 @@ const videoFiles = ref([
   { src: '@/assets/montage/핸드크림.mp4' },
   { src: '@/assets/montage/담요.mp4' }
 ]);
+
+import { recruitmentApi } from '@/util/axios';
+import { useMemberStore } from "@/stores/member-store.js";
+  
+// const MemberStore = useMemberStore();
+// const loginMember = ref(null);
+// loginMember.value = MemberStore.memberInfo;
+// const adminId = 11;
+
+// const router = useRouter();
+// const boards = ref([]);
+
+// // getList 함수 정의: 백엔드로부터 공고 리스트를 받아오는 함수
+// const getList = async (memberId) => {
+//   try {
+//     await recruitmentApi.getList(memberId).then((res) => {
+//       boards.value = res.data.data;
+//     })   
+//   } catch (error) {
+//     console.error('Error fetching recruitment list:', error);
+//   }
+// };
+
+
+const recruitmentId = ref(2);
+//const videoFiles = ref([])
+onMounted(
+  async ()=>{
+    await videoApi.getAllPerformVideo(recruitmentId.value).then((res) => {
+      console.log(res)
+      console.log(res.data.data);
+      videoList.value = res.data.data;
+    })  
+  }
+)
+
 
 
 </script>
