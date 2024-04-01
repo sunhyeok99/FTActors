@@ -70,13 +70,14 @@
 
 <script setup>
 
-import { onMounted, ref, defineProps } from 'vue';
+import { onMounted, ref, defineProps, watch } from 'vue';
 import axios from 'axios';
 import ReportModal from '@/components/modals/ReportModal.vue';
 
 const props = defineProps({
   currentId: Number
 });
+
 // 몽타쥬 좋아요
 const isLiked = ref(false);
 const toggleLike = () => {
@@ -99,6 +100,17 @@ const getCommentReply = () => {
 };
 
 // 일단 페이지 로드 시 실행
+onMounted(() => {
+  getCommentReply();
+});
+
+// currentId 변화 감시
+watch(() => props.currentId, (newId, oldId) => {
+  // currentId가 바뀌면 getCommentReply 함수 호출
+  getCommentReply();
+}, { immediate: true }); // immediate: true 옵션을 사용하면 컴포넌트가 마운트될 때도 감시 함수가 즉시 실행됩니다.
+
+// 페이지 로드 시 getCommentReply 함수 실행
 onMounted(() => {
   getCommentReply();
 });
@@ -133,7 +145,7 @@ const uploadComment = () => {
 
 const deleteComment = (id) => {
   axios
-    .delete(`http://localhost:8080/montage/1/comment/${id}`)
+    .delete(`http://localhost:8080/montage/${props.currentId}/comment/${id}`)
     .then(() => {
       console.log("댓글이 삭제되었습니다:");
       getCommentReply();
@@ -144,7 +156,7 @@ const deleteComment = (id) => {
 };
 const deleteReply = (id) => {
   axios
-    .delete(`http://localhost:8080/montage/1/comment/${id}`)
+    .delete(`http://localhost:8080/montage/${props.currentId}/comment/${id}`)
     .then(() => {
       console.log("댓글이 삭제되었습니다:");
       getCommentReply();

@@ -65,7 +65,6 @@
               <li>
                 <p class="dropdown-item">팔로워</p>
               </li>
-
             </ul>
           </button>
         </div>
