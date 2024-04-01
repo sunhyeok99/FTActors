@@ -42,7 +42,7 @@ public class AdminAccountInitializer {
             adminUser.setLoginId(adminUsername);
             adminUser.setPassword(bCryptPasswordEncoder.encode(adminPassword));
             // 이하 어드민 권한 등 설정
-            jwtMemberService.signup(adminUser);
+            jwtMemberService.signup(adminUser, null);
         }
     }
 }
