@@ -21,7 +21,7 @@
               <!-- 로그인 -->
               <button type="button" class="btn btn-dark" id="loginbtn" @click="goToLogin">로그인</button>
               <!-- 회원가입 -->
-              <button type="button" class="btn btn-dark" id="loginbtn" @click="goToJoin">회원가입</button>
+              <button type="button" class="btn btn-dark" id="joinbtn" @click="goToJoin">회원가입</button>
 
               <!-- 마이페이지 -->
               <MypageDropdown />
@@ -91,8 +91,19 @@ header {
   max-height: 100vh;
 }
 
+
 #loginbtn {
+  border-radius: 25px;
+  background-image: linear-gradient(to right, rgb(58, 123, 213), rgb(39, 16, 171));
+  border: none;
   min-width: 75px;
+}
+
+#joinbtn {
+  min-width: 100px;
+  border-radius: 25px;
+  background-image: linear-gradient(to right, rgb(39, 16, 171), rgb(84, 84, 84) );
+  border: none;
 }
 
 #fontapply {
@@ -149,11 +160,6 @@ header {
   border: 0;
 }
 
-#loginbtn {
-  border-radius: 25px;
-  background-image: linear-gradient(to right, rgb(58, 123, 213), rgb(39, 16, 171));
-  border: none;
-}
 
 @media (min-width: 1024px) {
   #menu {

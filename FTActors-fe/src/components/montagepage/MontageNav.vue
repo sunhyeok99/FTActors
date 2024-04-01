@@ -13,7 +13,7 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
             aria-label="Close"></button>
         </div>
-        <div class="offcanvas-body">
+        <div class="offcanvas-body" id="offcanvas-body">
           <MontageFeed />
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
@@ -60,6 +60,10 @@ const goToHomeview = () => {
 <style>
 .offcanvas-lg {
   width: 80%;
+}
+
+#offcanvas-body{
+  background-color: black;
 }
 
 #offcanvasDarkNavbarLabel img {

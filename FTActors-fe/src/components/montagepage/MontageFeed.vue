@@ -16,7 +16,6 @@ import axios from 'axios';
 
 const router = useRouter();
 const montages = ref([]);
-const offcanvas = ref(null);
 
 // 몽타쥬리스트 가져오는 메서드
 const getMontages = () => {

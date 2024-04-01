@@ -10,7 +10,6 @@
         </svg>
         <h3>{{ black.name }}</h3> 
         <p>{{ black.email }}</p> 
-        <p><a class="btn btn-secondary" :href="`#details${index}`">블랙리스트 해제</a></p> 
       </div>
     </div>
   </div>
