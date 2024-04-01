@@ -2,9 +2,9 @@
 FROM node:lts-alpine as build-stage
 WORKDIR /app
 
-COPY ./FTActors-fe .
-
-RUN npm install
+COPY package*.json ./
+RUN npm install --production
+COPY . .
 
 RUN npm run build
 
