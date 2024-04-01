@@ -28,13 +28,13 @@
   import { useRouter } from 'vue-router';
   import { recruitmentApi } from '@/util/axios';
   import { useMemberStore } from "@/stores/member-store.js";
-
-  const memberStore = useMemberStore();
+  
+const MemberStore = useMemberStore();
 const loginMember = ref(null);
-loginMember.value = memberStore.userInfo;
+loginMember.value = MemberStore.memberInfo;
 
 let script = null;
-  let fileReader = new FileReader(); // FileReader 변수를 함수 외부에서 정의
+let fileReader = new FileReader(); // FileReader 변수를 함수 외부에서 정의
 
   const content = ref("");
   
@@ -45,7 +45,7 @@ let script = null;
   
   const fetchRecruitmentDetail = async () => {
     const recruitmentId = router.currentRoute.value.params.recruitmentId; // 현재 라우트의 파라미터 사용
-    const response = await recruitmentApi.getDetail(recruitmentId, 1);
+    const response = await recruitmentApi.getDetail(recruitmentId, loginMember.id);
       recruitment.value = response.data.data
 };
   
@@ -54,7 +54,7 @@ let script = null;
   const apply = async () => {
   let formData = new FormData();
   formData.append("recruitmentId", recruitment.value.id);
-  formData.append("memberId", 1);
+  formData.append("memberId", loginMember.id);
   formData.append("videoFile", script);
   formData.append("content", content.value);
     try {

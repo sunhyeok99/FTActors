@@ -20,7 +20,7 @@
   import { recruitmentApi } from '@/util/axios';
   import { useMemberStore } from "@/stores/member-store.js";
   
-  const MmeberStore = useMemberStore();
+  const MemberStore = useMemberStore();
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
   const router = useRouter();
