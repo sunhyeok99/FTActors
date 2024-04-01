@@ -16,7 +16,7 @@ import com.a602.actors.global.common.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/follow")
+@RequestMapping("/follow")
 @RestController
 public class FollowController {
 

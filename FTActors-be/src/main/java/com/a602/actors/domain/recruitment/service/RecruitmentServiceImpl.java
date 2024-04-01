@@ -17,7 +17,6 @@ import com.a602.actors.global.exception.ExceptionCodeSet;
 import com.a602.actors.global.exception.MemberException;
 import com.a602.actors.global.exception.RecruitmentException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,6 +62,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
                 .imageName(imageName)
                 .startDate(recruitmentRequestDto.getStartDate())
                 .endDate(recruitmentRequestDto.getEndDate())
+                .privateRecruitment("F")
                 .file(fileUrl)
                 .fileName(fileName)
                 .build();
@@ -129,17 +129,6 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     @Override
     @Transactional
     public List<RecruitmentListResponseDto> getList(Long memberId) {
-//        List<Recruitment> recruitments = recruitmentRepository.findAllRecruitment();
-//        List<RecruitmentListResponseDto> recruitmentListResponseDtos = recruitments.stream()
-//                .map(recruitment -> RecruitmentListResponseDto.builder()
-//                        .id(recruitment.getId())
-//                        .title(recruitment.getTitle())
-//                        .image(recruitment.getImage())
-//                        .endDate(recruitment.getEndDate())
-//                        .wishlist(wishlistService.detail(recruitment.getId(), memberId))
-//                        .privateRecruitment(recruitment.getPrivateRecruitment())
-//                        .build())
-//                .collect(Collectors.toList());
         List<Object[]> recruitmentList = recruitmentRepository.findAllRecruitment(memberId);
                 List<RecruitmentListResponseDto> recruitmentListResponseDtos = recruitmentList.stream()
                 .map(recruitments -> {

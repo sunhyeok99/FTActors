@@ -32,7 +32,7 @@ public class RecruitmentController {
     }
 
     @DeleteMapping("")
-    public ApiResponse<String> remove(@RequestParam Long recruitmentId) throws IOException {
+    public ApiResponse<String> remove(@RequestParam(name = "recruitmentId") Long recruitmentId) throws IOException {
         recruitmentService.remove(recruitmentId);
         return new ApiResponse<>(HttpStatus.OK.value(), "공고를 제거하였습니다.","");
     }
@@ -44,34 +44,35 @@ public class RecruitmentController {
     }
 
     @PutMapping("updateDate")
-    public ApiResponse<String> updateDate(@RequestParam Long recruitmentId, @RequestParam String endDate) {
+    public ApiResponse<String> updateDate(@RequestParam(name = "recruitmentId") Long recruitmentId, @RequestParam(name = "endDate") String endDate) {
         recruitmentService.updateDate(recruitmentId , endDate);
         return new ApiResponse<>(HttpStatus.OK.value(), "공고 마감날자를 변경하였습니다.","");
     }
 
     @GetMapping("list")
-    public ApiResponse<List<RecruitmentListResponseDto>> getList(@RequestParam Long memberId) {
+    public ApiResponse<List<RecruitmentListResponseDto>> getList(@RequestParam(name = "memberId") Long memberId) {
+        System.out.println(memberId);
         return new ApiResponse<>(HttpStatus.OK.value(), "공고 리스트를 불러왔습니다.", recruitmentService.getList(memberId));
     }
 
     @GetMapping("detail")
-    public ApiResponse<RecruitmentResponseDto> getDetail(@RequestParam Long recruitmentId, @RequestParam Long memberId) {
+    public ApiResponse<RecruitmentResponseDto> getDetail(@RequestParam(name = "recruitmentId") Long recruitmentId, @RequestParam(name = "memberId") Long memberId) {
         return new ApiResponse<>(HttpStatus.OK.value(), "공고 내용을 불러왔습니다.", recruitmentService.getDetail(recruitmentId, memberId));
     }
 
     @GetMapping("postList")
-    public ApiResponse<List<RecruitmentListResponseDto>> getPostList(@RequestParam Long postMemberId) {
+    public ApiResponse<List<RecruitmentListResponseDto>> getPostList(@RequestParam(name = "postMemberId") Long postMemberId) {
         return new ApiResponse<>(HttpStatus.OK.value(), "해당 멤버가 게시한 공고를 불러왔습니다.", recruitmentService.registerList(postMemberId));
     }
 
     // 찜등록 / 찜 삭제
     @PutMapping("wishlist")
-    public ApiResponse<Integer> wishList(@RequestParam Long recruitmentId, @RequestParam Long memberId){
+    public ApiResponse<Integer> wishList(@RequestParam(name = "recruitmentId") Long recruitmentId, @RequestParam(name = "memberId") Long memberId){
         return new ApiResponse<>(HttpStatus.OK.value(), "변경 성공/ 1이면 찜 등록, 0이면 찜 해제", wishlistService.wishlist(recruitmentId, memberId));
     }
     // 찜한 공고 리스트
     @GetMapping("wishlist")
-    public ApiResponse<List<RecruitmentListResponseDto>> getWishList(@RequestParam Long memberId){
+    public ApiResponse<List<RecruitmentListResponseDto>> getWishList(@RequestParam(name = "memberId") Long memberId){
         return new ApiResponse<>(HttpStatus.OK.value(), "찜한 공고 리스트를 불러왔습니다", wishlistService.list(memberId));
     }
 
@@ -83,26 +84,26 @@ public class RecruitmentController {
     }
     // 지원취소
     @DeleteMapping("apply")
-    public ApiResponse<String> applyCancel(@RequestParam Long recruitmentId, @RequestParam Long memberId) throws IOException {
+    public ApiResponse<String> applyCancel(@RequestParam(name = "recruitmentId") Long recruitmentId, @RequestParam(name = "memberId") Long memberId) throws IOException {
         applyService.applyCancel(recruitmentId, memberId);
         return new ApiResponse<>(HttpStatus.OK.value(), "지원 취소하였습니다","");
     }
 
     // 지원 내역 리스트
     @GetMapping("myApply")
-    public ApiResponse<List<ApplyListDto>> myApplyList(@RequestParam Long memberId){
+    public ApiResponse<List<ApplyListDto>> myApplyList(@RequestParam(name = "memberId") Long memberId){
         return new ApiResponse<>(HttpStatus.OK.value(), "내 지원 내역을 불러왔습니다", applyService.myApplyList(memberId));
     }
 
     // 지원상세내역
     @GetMapping("applyDetail")
-    public ApiResponse<ApplyDto> applyDetail(@RequestParam Long applyId){
+    public ApiResponse<ApplyDto> applyDetail(@RequestParam(name = "applyId") Long applyId){
         return new ApiResponse<>(HttpStatus.OK.value(), "지원 상세내역을 불러왔습니다", applyService.detail(applyId));
     }
 
     // 공고별 지원자리스트
     @GetMapping("applyList")
-    public ApiResponse<List<ApplyListDto>> applyList(@RequestParam Long recruitmentId){
+    public ApiResponse<List<ApplyListDto>> applyList(@RequestParam(name = "recruitmentId") Long recruitmentId){
         return new ApiResponse<>(HttpStatus.OK.value(), "해당 공고 지원 리스트를 불러왔습니다", applyService.applyList(recruitmentId));
     }
 

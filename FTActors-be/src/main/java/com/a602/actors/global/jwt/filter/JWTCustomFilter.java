@@ -1,6 +1,5 @@
 package com.a602.actors.global.jwt.filter;
 
-import com.a602.actors.global.exception.CustomException;
 import com.a602.actors.global.exception.TokenException;
 import com.a602.actors.global.jwt.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
@@ -38,16 +37,17 @@ public class JWTCustomFilter extends OncePerRequestFilter {
         );
 
         // 2. 토큰이 필요하지 않은 API URL의 경우 -> 로직 처리없이 다음 필터로 이동한다.
-        if (list.contains(request.getRequestURI()) || request.getRequestURI().contains("swagger")) {
+        if (list.contains(request.getRequestURI()) || request.getRequestURI().contains("recruitment") || request.getRequestURI().contains("follow")) {
             filterChain.doFilter(request, response);
             return;
         }
 
         String token = resolveToken(request);
         if (token == null) {
-            throw new CustomException("토큰이 없어요.");
+            filterChain.doFilter(request, response);
+            //throw new CustomException("토큰이 없어요.");
         }
-        log.info("JwtFilter ::::::::: resolvedToken = {}", token.toString());
+//        log.info("JwtFilter ::::::::: resolvedToken = {}", token.toString());
 
         boolean isValidate = false;
         boolean isRefresh = false;
