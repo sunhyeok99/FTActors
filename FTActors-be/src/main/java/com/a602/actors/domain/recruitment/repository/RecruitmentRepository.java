@@ -20,5 +20,9 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, Long> 
     @Query("SELECT r FROM Recruitment r " +
             " WHERE r.endDate < :currentDate AND r.privateRecruitment = 'F'")
     List<Recruitment> findByActivatedRecruitment(String currentDate);
+    
+    // 위시리스트만 가져오는 함수를 만들기
+    @Query("SELECT r, w.id FROM Recruitment r inner join Wishlist w on r.id = w.recruitment.id And :memberId = w.member.id WHERE r.privateRecruitment = 'F'")
+    List<Recruitment> findWishlistOnly(Long memberId);
 
 }

@@ -107,6 +107,7 @@ public class JWTMemberServiceImpl {
         // Refresh Token Redis에 저장
         tokenUtil.setRefreshToken(authResponse.getRefreshToken());
 //        String loginId = jwtUtil.getLoginMemberId();
+
         return authResponse;
     }
     public JwtDto.getPkId getIdByLoginId(String userId) {
