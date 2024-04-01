@@ -45,6 +45,7 @@ services:
 
   redis:
     container_name: redis
+    hostname: redis
     image: redis
     networks:
       - backend
@@ -53,8 +54,11 @@ services:
       - "6379"
 #
   rabbitmq:
-    image: rabbitmq
     container_name: rabbitmq
+    hostname: rabbitmq
+    build:
+      context: ../
+      dockerfile: "./docker/dockerfile/rabbitmq.dockerfile"
     networks:
       - backend
     volumes:
@@ -68,6 +72,7 @@ services:
   mongo:
     image: mongo
     container_name: mongo
+    hostname: mongo
     networks:
       - backend
     volumes:

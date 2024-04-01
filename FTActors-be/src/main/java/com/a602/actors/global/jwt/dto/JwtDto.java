@@ -71,7 +71,6 @@ public class JwtDto {
 //            this.savedName = savedName;
         }
     }
-
     @Getter
     @Builder
     @NoArgsConstructor

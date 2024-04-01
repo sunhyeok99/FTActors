@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.a602.actors.domain.member.Member;
 import com.a602.actors.global.exception.CustomException;
-import com.a602.actors.global.jwt.mapper.MemberMapper;
+//import com.a602.actors.global.jwt.mapper.MemberMapper;
 import com.a602.actors.global.jwt.repository.JWTMemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JWTUtil {
     private final JWTMemberRepository jwtMemberRepository;
-    private final MemberMapper memberMapper;
+    //private final MemberMapper memberMapper;
 
     public Long getLoginMemberId() {
 

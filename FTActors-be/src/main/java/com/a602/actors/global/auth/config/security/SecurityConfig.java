@@ -99,7 +99,7 @@ public class SecurityConfig {
                 .sessionManagement(
                         (session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-//                .addFilterAfter(new KakaoAuthenticationTokenFilter(redisService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new KakaoAuthenticationTokenFilter(redisService), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(new JWTCustomFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
