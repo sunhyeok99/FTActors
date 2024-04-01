@@ -1,6 +1,6 @@
 package com.a602.actors.domain.member.controller;
 
-import com.a602.actors.domain.member.dto.MemberPlusDTO;
+import com.a602.actors.domain.member.dto.MemberDTO;
 import com.a602.actors.domain.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,13 +16,13 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/register")
-    public String registerMember(@RequestBody MemberPlusDTO memberDTO){
+    public String registerMember(@RequestBody MemberDTO memberDTO){
         memberService.register(memberDTO);
         return "User registered successfully";
     }
 
     @PostMapping("/login")
-    public String loginMember(@RequestBody MemberPlusDTO memberDTO, HttpSession session){
+    public String loginMember(@RequestBody MemberDTO memberDTO, HttpSession session){
         if(memberService.login(memberDTO)){
             session.setAttribute("memberName", memberDTO.getMemberId());
             return "Login Success";
