@@ -10,7 +10,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="input-group mb-3">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                        <!-- <button class="btn btn-outline-secondary dropdown-toggle" type="button"
                             data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">Action</a></li>
@@ -20,13 +20,13 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="#">Separated link</a></li>
-                        </ul>
-                        <input type="text" class="form-control" aria-label="Text input with dropdown button">
+                        </ul> -->
+                        <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="경력사항">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-bs-target="#directorModalToggle2" data-bs-toggle="modal">
-                        2단계</button>
+                        다음으로</button>
                 </div>
             </div>
         </div>
@@ -49,8 +49,12 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
+                <button class="btn btn-secondary" data-bs-target="#actorModalToggle1"
+                    data-bs-toggle="modal">이전으로</button> <!-- @#$ 왜???? 여기서만 1로 안 돌아가고 꺼짐-->
+
                     <button class="btn btn-secondary" data-bs-target="#directorModalToggle3"
-                        data-bs-toggle="modal">3단계</button>
+                        data-bs-toggle="modal">다음으로</button>
                 </div>
             </div>
         </div>
@@ -75,8 +79,12 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
+                <button class="btn btn-secondary" data-bs-target="#actorModalToggle2"
+                    data-bs-toggle="modal">이전으로</button>
+
                     <button class="btn btn-secondary" data-bs-target="#directorModalToggle4"
-                        data-bs-toggle="modal">4단계</button>
+                        data-bs-toggle="modal">다음으로</button>
                 </div>
             </div>
         </div>
@@ -101,6 +109,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
+                <button class="btn btn-secondary" data-bs-target="#actorModalToggle3"
+                    data-bs-toggle="modal">이전으로</button>
                     
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">프로필 생성</button>
                 </div>

@@ -60,13 +60,13 @@
 </template>
 <script setup>
 
-import { useRouter } from 'vue-router'
+import { ref, reactive, onMounted } from 'vue';
 import axios from 'axios';
-import { ref, reactive, onMounted,watch } from 'vue';
+import { useRouter } from 'vue-router'
 // import ReportModal from '@/components/modals/ReportModal.vue';
 
 const router = useRouter();
-const profileId = ref(null); // 프로필 ID 가져오기
+const profileId = 20; // 프로필 ID 가져오기
 
 // 프로필 수정 페이지로 이동하는 함수
 const goToProfileUpdate = () => {
@@ -87,18 +87,11 @@ const profile = ref({
   // videos: [] // 연기영상 목록
 });
 
-// 컴포넌트가 마운트된 후 프로필 정보를 가져오는 함수 호출
-// 페이지가 마운트될 때 프로필 ID를 가져옵니다.
-onMounted(() => {
-  profileId.value = parseInt(router.params.id, 10); //10은 진법을 의미...
-  getProfileDetail();
-});
-
 // 프로필 상세 정보를 가져오는 함수 정의
-const getProfileDetail = async () => {
+const fetchProfileDetail = async () => {
   try {
     // const profileId = 20; // 프로필 ID 또는 해당하는 정보의 ID
-    const response = await axios.get(`/profile/detail?profile_id=${profileId.value}`);
+    const response = await axios.get(`/profile/detail?profile_id=${profileId}`);
     const data = response.data; // API 응답에서 데이터 추출
     // API 응답에서 가져온 프로필 정보를 프로필 객체에 설정
     profile.value = {
@@ -118,6 +111,10 @@ const getProfileDetail = async () => {
   }
 };
 
+// 컴포넌트가 마운트된 후 프로필 정보를 가져오는 함수 호출
+onMounted(() => {
+  fetchProfileDetail();
+});
 
 // // 프로필 정보를 가져오는 함수
 // const fetchProfileInfo = async () => {

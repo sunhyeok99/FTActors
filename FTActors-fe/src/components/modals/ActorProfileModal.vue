@@ -10,9 +10,9 @@
               </div>
               <div class="modal-body">
                   <div class="input-group mb-3">
-                      <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                          data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
-                      <ul class="dropdown-menu">
+                      <!-- <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                          data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button> -->
+                      <!-- <ul class="dropdown-menu">
                           <li><a class="dropdown-item" href="#">Action</a></li>
                           <li><a class="dropdown-item" href="#">Another action</a></li>
                           <li><a class="dropdown-item" href="#">Something else here</a></li>
@@ -20,14 +20,14 @@
                               <hr class="dropdown-divider">
                           </li>
                           <li><a class="dropdown-item" href="#">Separated link</a></li>
-                      </ul>
+                      </ul> -->
                 
-                      <input type="text" class="form-control" aria-label="Text input with dropdown button">
+                      <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="경력사항">
                   </div>
               </div>
               <div class="modal-footer">
                   <button class="btn btn-secondary" data-bs-target="#actorModalToggle2" data-bs-toggle="modal">
-                      2단계</button>
+                      다음으로</button>
               </div>
           </div>
       </div>
@@ -50,8 +50,12 @@
                   </div>
               </div>
               <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
+                <button class="btn btn-secondary" data-bs-target="#actorModalToggle1"
+                    data-bs-toggle="modal">이전으로</button> <!-- @#$ 왜???? 여기서만 1로 안 돌아가고 꺼짐-->
+
                   <button class="btn btn-secondary" data-bs-target="#actorModalToggle3"
-                      data-bs-toggle="modal">3단계</button>
+                      data-bs-toggle="modal">다음으로</button>
               </div>
           </div>
       </div>
@@ -71,13 +75,17 @@
                           <input type="file" class="form-control" id="inputGroupFile04"
                               aria-describedby="inputGroupFileAddon04" aria-label="Upload">
                           <button class="btn btn-outline-secondary" type="button"
-                              id="inputGroupFileAddon04">업로드</button>
+                              id="inputGroupFileAddon04">업로드</button> <!-- @#$ null 허용이니까, 업로드 안할 땐 건너뛰기로 바꾸고, 업로드하면 4단계로 바꾸기-->
                       </div>
                   </div>
               </div>
               <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
+                <button class="btn btn-secondary" data-bs-target="#actorModalToggle2"
+                    data-bs-toggle="modal">이전으로</button>
+
                   <button class="btn btn-secondary" data-bs-target="#actorModalToggle4"
-                      data-bs-toggle="modal">4단계</button>
+                      data-bs-toggle="modal">다음으로</button>
               </div>
           </div>
       </div>
@@ -102,6 +110,10 @@
                   </div>
               </div>
               <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
+                <button class="btn btn-secondary" data-bs-target="#actorModalToggle3"
+                    data-bs-toggle="modal">이전으로</button>
+
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">프로필 생성</button>
               </div>
           </div>
@@ -110,22 +122,24 @@
 
 
   <!-- 토글 버튼 -->
-  <button class="btn btn-primary" data-bs-target="#actorModalToggle" data-bs-toggle="modal">감독 프로필 만들기</button>
+  <button class="btn btn-primary" data-bs-target="#actorModalToggle" data-bs-toggle="modal"> 배우 프로필 만들기</button>
 </template>
 
 <script setup>
 
-$(function () {
-    $('input[name="birthday"]').daterangepicker({
-        singleDatePicker: true,
-        showDropdowns: true,
-        minYear: 1901,
-        maxYear: parseInt(moment().format('YYYY'), 10)
-    }, function (start, end, label) {
-        var years = moment().diff(start, 'years');
-        // alert("You are " + years + " years old!");
-    });
-});
+// $(function () {
+//     $('input[name="birthday"]').daterangepicker({
+//         singleDatePicker: true,
+//         showDropdowns: true,
+//         minYear: 1901,
+//         maxYear: parseInt(moment().format('YYYY'), 10)
+//     }, function (start, end, label) {
+//         var years = moment().diff(start, 'years');
+//         // alert("You are " + years + " years old!");
+//     });
+// });
+
+
 </script>
 
 <style></style>

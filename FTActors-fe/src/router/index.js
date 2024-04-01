@@ -109,12 +109,20 @@ const router = createRouter({
       name: "montageUpdate",
       component: MontageUpdate,
     },
-    {
-      path: "/profiledetail/:id",
+    { ///뭔지 모름
+      path: "/profile/detail/:profileId",
       name: "profileDetail",
       component: ProfileDetail,
       props: true,
     },
+    {
+      path: "/profile/detail",
+      name: "profileDetailWithQuery",
+      component: ProfileDetail,
+      props: route => ({
+        profileId: route.query.profile_id
+      }),
+    } ,///뭔지 모름----
     {
       path: "/profilecreate",
       name: "profileCreate",

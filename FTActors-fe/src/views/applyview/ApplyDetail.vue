@@ -30,7 +30,7 @@
 
   const fetctApplyDetail = async () => {
     const applyId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
-      const response = await recruitmentApi.getApplyDetail(applyId);
+      let response = await recruitmentApi.getApplyDetail(applyId);
       apply.value = response.data.data
       response = await recruitmentApi.getDetail(apply.value.recruitmentId , 1);
       recruitment.value = response.data.data

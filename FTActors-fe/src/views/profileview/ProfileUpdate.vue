@@ -27,7 +27,7 @@
           
           <li class="list-group-item"><label><b>전화번호</b></label> 010-5454-5454 </li>
           <li class="list-group-item"><label><b>이름</b></label> 배사람 </li>
-          <li class="list-group-item"><label><b>닉네임</b></label>춤추는 산양 </li>
+          <li class="list-group-item"><label><b>닉네임</b></label>우아아악 </li>
           <li class="list-group-item"><label><b>이메일</b></label> bausa@gmail.com </li>
           <li class="list-group-item"><label><b>전화번호</b></label> 010-5454-5454 </li>
           <li class="list-group-item"><label><b>이름</b></label> 배사람 </li>
