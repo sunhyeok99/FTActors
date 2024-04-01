@@ -32,8 +32,8 @@ public class ChatService {
 	private final ParticipantsRepository participantsRepository;
 	private final ChatMapper chatMapper;
 	private final ParticipantsMapperImpl participantsMapper;
-//	private final AmqpAdmin amqpAdmin;
-//	private final RabbitTemplate rabbitTemplate;
+	private final AmqpAdmin amqpAdmin;
+	private final RabbitTemplate rabbitTemplate;
 
 	public void createChatRoom(String title) {
 		chatRoomRepository.save(new ChatRoom(title)).getId();

@@ -56,18 +56,7 @@ public class ProfileController {
         List<ProfileSearchResponse> results = profileService.searchAllProfile(sorting);
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", results);
     }
-//    @GetMapping("/list") //1.완성 //To do: 멤버 받아서 본인 확인 후, 비공개여부 T인 것도 리스트에 같이 받아오기, 시큐리티 영향x 처리 필요
-//    public ApiResponse<List<ProfileSearchResponse>> getAllProfileList(@RequestParam(name = "sort") int sorting, HttpServletRequest request)
-//    {
-//        log.info("배우,감독 프로필 전체 목록 - 컨트롤러");
-//
-//        Long loginedMemberId = findMemberLoginedMemberId(request);
-//
-////        List<ProfileSearchResponse> results = profileService.searchAllProfile(sorting);
-//        List<ProfileSearchResponse> results = profileService.searchAllProfile22(sorting, request);
-//        return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", results);
-//    }
-    
+
     @GetMapping("/detail") //db만 사용 -> jwt에서 멤버 가져오는 걸로 바꾸기, 시큐리티 영향x 처리 필요
     public ApiResponse<ProfileDto> getDetailProfile(@RequestParam(name = "profile_id") Long profileId,
                                                         HttpSession session)
@@ -105,16 +94,6 @@ public class ProfileController {
         // To do: 형태소 분석... (다 나눠서 찾기 > 가중치 > 오타 잡기 > 자동완성)
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필 검색 결과입니다.", profileSearchResponses);
     }
-
-//    @GetMapping("/search")
-//    public ApiResponse<List<ProfileSearchResponse>> search(@Validated @ModelAttribute ProfileSearchRequest profileSearchRequest)
-//    {
-//        log.info("도현이의 코드를 따서 만든 키워드 검색 - 엘라스틱서치");
-//        List<ProfileSearchResponse> results = profileService.search(profileSearchRequest);
-//        System.out.println(results);
-//        return new ApiResponse<>(HttpStatus.OK.value(), "프로필 키워드 검색 결과입니다.", results);
-//    }
-
 
     /////////////////////-----------------------위에는 read, 아래는 cud
 
