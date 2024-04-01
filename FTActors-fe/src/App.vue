@@ -1,45 +1,49 @@
 <template>
-<div :class="{ 'full-screen':true,'montage-page': isMontagePage}">
-  <!-- 몽타쥬 사이드바로 가는 네비게이션 바 -->
-  <MontageNav/>
-  <div class="wrapper">
-    <header>
-      <div>
-        <!-- 네비게이션 바 -->
-        <nav id="menu" >
-          <RouterLink to="/board">진행중인 공고</RouterLink>
-          <RouterLink to="/profile">배우 프로필</RouterLink>
-          <RouterLink to="/montagemain" id="fontapply">Montage</RouterLink>
-          <RouterLink to="/report">신고 목록</RouterLink>
-          <RouterLink to="/blacklist">블랙리스트</RouterLink>
-          <div class="pageright">
-            <!-- 알람 -->
-            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              <img src="@/assets/icons/Alarm.png" alt="">
-            </button>
-            <AlarmModal />
-            <!-- 로그인 -->
-            <button type="button" class="btn btn-dark" id="loginbtn" @click="goToLogin">로그인</button>
-            <!-- 마이페이지 -->
-            <MypageDropdown />
-          </div>
-        </nav>
+  <div :class="{ 'full-screen': true, 'montage-page': isMontagePage }">
+    <!-- 몽타쥬 사이드바로 가는 네비게이션 바 -->
+    <MontageNav />
+    <div class="wrapper">
+      <header>
+        <div>
+          <!-- 네비게이션 바 -->
+          <nav id="menu">
+            <RouterLink to="/board">진행중인 공고</RouterLink>
+            <RouterLink to="/profile">배우 프로필</RouterLink>
+            <RouterLink to="/montagemain" id="fontapply">Montage</RouterLink>
+            <RouterLink to="/report">신고 목록</RouterLink>
+            <RouterLink to="/blacklist">블랙리스트</RouterLink>
+            <div class="pageright">
+              <!-- 알람 -->
+              <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <img src="@/assets/icons/Alarm.png" alt="">
+              </button>
+              <AlarmModal />
+              <!-- 로그인 -->
+              <button type="button" class="btn btn-dark" id="loginbtn" @click="goToLogin">로그인</button>
+              <!-- 회원가입 -->
+              <button type="button" class="btn btn-dark" id="loginbtn" @click="goToJoin">회원가입</button>
 
-      </div>
-    </header>
-    <!-- 라우팅된 화면 -->
-    <RouterView />
-    <!-- 메시지 버튼 -->
-    <button class="btn btn-primary" id="floating-map-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
-    aria-controls="offcanvasWithBothOptions"> <img width="40" src="@/assets/icons/Message.png" alt="message icon"></button>
-    <SideBars />
+              <!-- 마이페이지 -->
+              <MypageDropdown />
+            </div>
+          </nav>
+
+        </div>
+      </header>
+      <!-- 라우팅된 화면 -->
+      <RouterView />
+      <!-- 메시지 버튼 -->
+      <button class="btn btn-primary" id="floating-map-button" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"> <img width="40"
+          src="@/assets/icons/Message.png" alt="message icon"></button>
+      <SideBars />
+    </div>
+
+    <!-- 푸터 -->
+    <footer>
+      <FooterBox />
+    </footer>
   </div>
-
-  <!-- 푸터 -->
-  <footer>
-    <FooterBox />
-  </footer>
-</div>
 </template>
 
 <script setup>
@@ -58,6 +62,11 @@ const goToLogin = () => {
   router.push({ name: 'login' });
 };
 
+const goToJoin = () => {
+  router.push({ name: 'join' });
+};
+
+
 const isMontagePage = ref(false);
 
 // 현재 라우트가 변경될 때마다 실행되는 watch 함수
@@ -69,12 +78,14 @@ watch(() => route.path, (newPath) => {
 </script>
 
 <style scoped>
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
 }
+
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -83,6 +94,7 @@ header {
 #loginbtn {
   min-width: 75px;
 }
+
 #fontapply {
   font-family: 'tuesday_nightregular', impact;
 }
@@ -90,19 +102,24 @@ header {
 
 /* 네비게이션 바 폰트 색상을 밝게 만드는 스타일 */
 .light-font a {
-  color: #ffffff; /* 밝은 폰트 색상 */
+  color: #ffffff;
+  /* 밝은 폰트 색상 */
 }
 
 .montage-page {
-  background-color: #000; /* 전체 배경을 검은색으로 설정 */
+  background-color: #000;
+  /* 전체 배경을 검은색으로 설정 */
   padding: 0;
-  margin:0;
+  margin: 0;
   transition: background-color 1s ease;
 }
 
-.montage-page #menu a, /* 네비게이션 링크 */
-.montage-page #menu #fontapply { /* Montage 링크 특별 스타일 */
-  color: #fff; /* 폰트 색상을 흰색으로 변경 */
+.montage-page #menu a,
+/* 네비게이션 링크 */
+.montage-page #menu #fontapply {
+  /* Montage 링크 특별 스타일 */
+  color: #fff;
+  /* 폰트 색상을 흰색으로 변경 */
 }
 
 #menu {
@@ -170,7 +187,8 @@ header {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* 내용이 화면을 초과할 경우 스크롤바를 숨깁니다 */
+  overflow: hidden;
+  /* 내용이 화면을 초과할 경우 스크롤바를 숨깁니다 */
 
 }
 
