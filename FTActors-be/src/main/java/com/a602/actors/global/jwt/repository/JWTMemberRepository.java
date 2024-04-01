@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface JWTMemberRepository extends JpaRepository<Member, String> {
-    Optional<Member> findByUserId(String userId);
+    Optional<Member> findByLoginId(String loginId);
 }

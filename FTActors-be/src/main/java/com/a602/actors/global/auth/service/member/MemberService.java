@@ -59,7 +59,7 @@ public class MemberService extends DefaultOAuth2UserService{
 
         if(check == null){
             // 시간 정보는 DB안에서 생성됨, 닉네임은 초기값으로 이메일로 통일
-//            kakaoMember.setUserId(UUID.randomUUID().toString());
+//            kakaoMember.setLoginId(UUID.randomUUID().toString());
             member.setEmail(email);
             member.setName(userName);
             member.setKakaoId(kakaoId);
@@ -96,7 +96,7 @@ public class MemberService extends DefaultOAuth2UserService{
         }
     }
     public Member getUserByUserId(String userId) {
-        return kakaoMemberRepository.findByUserId(userId).orElse(null);
+        return kakaoMemberRepository.findByLoginId(userId).orElse(null);
     }
 
     public Boolean modifyUserLoginStatus(String accessToken) {

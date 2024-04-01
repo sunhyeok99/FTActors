@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class KakaoMemberDTO {
-    private String login_id;
+    private String loginId;
     private String password;
     private String name;
     private String oauthType;

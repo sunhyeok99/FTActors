@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Slf4j
 @RestController
@@ -15,19 +18,26 @@ import org.springframework.web.bind.annotation.*;
 public class JWTController {
     private final JWTMemberServiceImpl jwtMemberService;
 
+//    @PostMapping("/signup")
+//    public ApiResponse<String> regist(@RequestBody JwtDto.Simple jwtDto, MultipartFile multipartFile) throws IOException {
+//        log.info("Success register login_id : {}", jwtDto.getLoginId());
+//        return new ApiResponse<>(HttpStatus.OK.value(), "sign up success", jwtMemberService.signup(jwtDto));
+//    }
+
     @PostMapping("/signup")
-    public ApiResponse<String> regist(@RequestBody JwtDto.Simple jwtDto) {
-        log.info("Success register login_id : {}", jwtDto.getUserId());
-        return new ApiResponse<>(HttpStatus.OK.value(), "sign up success", jwtMemberService.signup(jwtDto));
+    public ApiResponse<String> regist(@RequestPart(value = "dto") JwtDto.Simple jwtDto,
+                                      @RequestPart(value = "profileImage") MultipartFile profileImage) throws IOException {
+        log.info("Success register login_id : {}", jwtDto.getLoginId());
+        return new ApiResponse<>(HttpStatus.OK.value(), "sign up success", jwtMemberService.signup(jwtDto, profileImage));
     }
 
     @PostMapping("/signin")
     public ApiResponse<JwtDto.AuthResponse> login(@RequestBody JwtDto.AuthRequest memberDto) {
-        log.info("로그인 시도 : {}", memberDto.getMemberId());
+        log.info("로그인 시도 : {}", memberDto.getLoginId());
         JwtDto.AuthResponse member = jwtMemberService.signin(memberDto);
-        log.info("로그인 결과 : {}", member.getMemberId());
+        log.info("로그인 결과 : {}", member.getLoginId());
 
-        if (member.getMemberId() != null) {
+        if (member.getLoginId() != null) {
             return new ApiResponse<>(HttpStatus.OK.value(), "sign in success", member);
         } else {
             return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "sign in failed", member);
@@ -69,4 +79,10 @@ public class JWTController {
 //        memberService.deleteMember();
 //        return ApiResponse.success(SuccessCode.DELETE_SUCCESS, "회원탈퇴 성공");
 //    }
+@PutMapping("/update")
+public ApiResponse<String> updateUser(@RequestBody JwtDto.UpdateRequest updateRequest) {
+    log.info("사용자 정보 수정 시도: {}", updateRequest.getLoginId());
+    jwtMemberService.updateUser(updateRequest);
+    return new ApiResponse<>(HttpStatus.OK.value(), "User information updated successfully", "");
+}
 }

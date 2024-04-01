@@ -81,12 +81,12 @@ public class AuthenticationController {
      */
     public String mainPage(Model model, @AuthenticationPrincipal CustomOAuth2User oauth2User, HttpServletRequest request) {
         // 레디스 세션에서 사용
-        log.info("user : {}", oauth2User.getMember().getUserId());
+        log.info("user : {}", oauth2User.getMember().getLoginId());
 
         tokenCookie = CookieUtil.resolveToken(request);
         Map<String, Object> userData = redisService.getMapData(tokenCookie.getValue());
 
-        model.addAttribute("userId", oauth2User.getMember().getUserId());
+        model.addAttribute("userId", oauth2User.getMember().getLoginId());
 //        model.addAttribute("password", oauth2User.getMember().getPassword());
         model.addAttribute("kakaoId", oauth2User.getMember().getKakaoId());
         model.addAttribute("oauthType", oauth2User.getMember().getOauthType());
