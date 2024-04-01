@@ -43,3 +43,8 @@ config.yml
 **/generated/**
 
 .env
+
+#logs 엘라스틱
+
+customer-service.log.*
+customer-service.log

@@ -111,6 +111,7 @@ public class NotificationService {
 
 	public void markAsRead(List<ObjectId> objectIdList){
 		for(ObjectId objectId : objectIdList){
+			log.info("objectId : " + objectId);
 			Notify unreadNotify = notifyRepository.findById(objectId)
 				.orElseThrow(() -> new RuntimeException("Document를 찾을 수 없습니다."));
 
