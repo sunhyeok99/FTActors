@@ -21,8 +21,10 @@
                <a :href="recruitment.file" download="recruitment_file">파일 다운로드</a>
               </p>
           </div>
+          <h3> 영상을 올릴 때 꼭 [이름]배역이름으로 파일 명을 지정해주세요.
+         <br><br>  ex) [실제이름]배역이름</h3>
     <!-- recruitment.postMemberId가 로그인유저인 경우 -->
-    <template v-if="recruitment.postMemberId === 1">
+    <template v-if="recruitment.postMemberId === loginMember.id">
       <button @click="boardUpdate" class="btn-create">공고 변경</button>
       <button @click="confirmDelete" class="btn-create">공고 삭제</button>
     </template>
@@ -42,13 +44,19 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { recruitmentApi } from '@/util/axios';
+import { useMemberStore } from "@/stores/member-store.js";
+  
+  const MemberStore = useMemberStore();
+const loginMember = ref(null);
+loginMember.value = MemberStore.memberInfo;
 
 const router = useRouter();
 const recruitment = ref({});
 
 const fetchRecruitmentDetail = async () => {
   const recruitmentId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
-    const response = await recruitmentApi.getDetail(recruitmentId, 1);
+  const tmp = loginMember.id ? loginMember.id : 11;
+    const response = await recruitmentApi.getDetail(recruitmentId, tmp);
     recruitment.value = response.data.data
 };
 
@@ -67,10 +75,12 @@ const confirmDelete = () => {
 };
 
 const apply = () => {
+  if(loginMember == ""){
+    alert("로그인이 필요합니다")
+    router.push({ name: 'login'});
+  }
   const recruitmentId = recruitment.value.id;
-  const loginUser = 1;
-  console.log(recruitment)
-  router.push({ name: 'applyCreate' , params : { recruitmentId: recruitmentId, memberId: loginUser }}); // 멤버아이디는 나중에 로그인으로 수정
+  router.push({ name: 'applyCreate' , params : { recruitmentId: recruitmentId }}); // 멤버아이디는 나중에 로그인으로 수정
 };
 
 const deleteRecruitment = async () => {

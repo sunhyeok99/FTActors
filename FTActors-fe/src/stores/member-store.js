@@ -3,7 +3,7 @@ import { ref } from "vue";
 
 export const useMemberStore = defineStore("member", () => {
   // 로컬 스토리지에서 사용자 정보를 불러오는 함수
-  const loadUserInfo = () => {
+  const loadMemberInfo = () => {
     const storedMemberInfo = localStorage.getItem("memberInfo");
     return storedMemberInfo ? JSON.parse(storedMemberInfo) : null;
   };
@@ -23,7 +23,7 @@ export const useMemberStore = defineStore("member", () => {
     isAuthenticated.value = false;
   }
 
-  return { userInfo, isAuthenticated, setUser, clearUser };
+  return { memberInfo, isAuthenticated, setUser, clearUser };
 });
 
 export const useJwtStore = defineStore("jwt", () => {
