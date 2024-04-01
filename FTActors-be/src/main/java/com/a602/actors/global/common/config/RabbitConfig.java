@@ -75,8 +75,8 @@ public class RabbitConfig {
 	public ConnectionFactory connectionFactory(@Value("${rabbit.user_name}") String USER_NAME, @Value("${rabbit.password}") String PASSWORD){
 		log.info("connectionFactory 등록 !!");
 		CachingConnectionFactory factory = new CachingConnectionFactory();
-		//factory.setHost("localhost");
-		factory.setHost("rabbitmq");
+		factory.setHost("localhost");
+//		factory.setHost("rabbitmq");
 		factory.setPort(5672);
 		// factory.setPort(58153);
 		factory.setVirtualHost("/");	// ?? 이게 뭘까
