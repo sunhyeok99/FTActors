@@ -65,8 +65,12 @@ services:
       - /home/ubuntu/volume/mq:/var/lib/rabbitmq
     env_file: ".env"
     expose:
+      - "1883"
+      - "4369"
       - "5672"
+      - "15670"
       - "15672"
+      - "15692"
       - "61613"
 
   mongo:
