@@ -73,6 +73,17 @@ public class MontageRepositoryImpl implements MontageRepository {
                 .fetchOne());
     }
 
+    public Optional<Comment> getComment(Long montageId, Long commentId) {
+        QMontage montage = QMontage.montage;
+        QComment comment = QComment.comment;
+
+        return Optional.ofNullable(queryFactory
+                .selectFrom(comment)
+                .where(montage.id.eq(montageId).and(comment.id.eq(commentId)))
+                .fetchOne());
+    }
+
+
     @Override
     @Transactional
     public void saveMontage(String originalName, String savedName, String url){
@@ -225,6 +236,39 @@ public class MontageRepositoryImpl implements MontageRepository {
                 .from(montage)
                 .innerJoin(montage.member, member)
                 .where(montage.id.eq(montageId))
+                .fetchOne();
+
+        Member reporter = entityManager.getReference(Member.class, reporterId);
+
+        log.info("신고당한 사람의 정보 : " + reportee);
+        log.info("신고한 사람의 정보 : " + reporter);
+
+        Report report =
+                Report.builder()
+                        .reporter(reporter)
+                        .reportee(reportee)
+                        .reason(reason)
+                        .link(link)
+                        .build();
+
+        entityManager.persist(report);
+    }
+
+
+    @Override
+    @Transactional
+    public void addCommentReport(Long reporterId, Long montageId, Long commentId, String reason, String link) {
+
+        QMember member = QMember.member;
+        QMontage montage = QMontage.montage;
+        QComment comment = QComment.comment;
+
+        // 신고당한 사람 아이디를 얻음
+        Member reportee = queryFactory
+                .select(member)
+                .from(comment)
+                .innerJoin(montage.member, member)
+                .where(montage.id.eq(montageId).and(comment.id.eq(commentId)))
                 .fetchOne();
 
         Member reporter = entityManager.getReference(Member.class, reporterId);
