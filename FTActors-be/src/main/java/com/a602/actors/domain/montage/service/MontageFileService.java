@@ -13,7 +13,9 @@ import com.a602.actors.global.common.enums.FolderType;
 import com.a602.actors.global.exception.ExceptionCodeSet;
 import com.a602.actors.global.exception.FileException;
 import com.a602.actors.global.exception.MontageException;
+import com.a602.actors.global.jwt.util.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.MemberUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,9 +32,11 @@ import java.util.Optional;
 public class MontageFileService {
 
     private final MontageRepository montageRepository;
+    private final JWTUtil jwtUtil;
 
-    public MontageFileService(MontageRepository montageRepository) {
+    public MontageFileService(MontageRepository montageRepository, JWTUtil jwtUtil) {
         this.montageRepository = montageRepository;
+        this.jwtUtil = jwtUtil;
     }
     public List<MontageDto.Montages> getAllMontageList(){
         return montageRepository.getAllMontages();
@@ -61,6 +65,13 @@ public class MontageFileService {
         Montage montage = montageRepository.getMontage(montageId)
                 .orElseThrow(() -> new MontageException(ExceptionCodeSet.ENTITY_NOT_EXISTS));
 
+        Long memberId = jwtUtil.getLoginMemberId();
+        
+        // 업로드 한 사람이 아니면
+        if(!Objects.equals(montage.getMember().getId(), memberId)){
+            throw new MontageException(ExceptionCodeSet.INVALID_AUTHORIZATION);
+        }
+
         FileUtil.deleteFile(montage.getSavedName(), FolderType.MONTAGE_PATH);
 
         montageRepository.deleteMontage(montageId);
@@ -69,7 +80,7 @@ public class MontageFileService {
     }
 
     public boolean pushLike(Long montageId){
-        Long memberId = 1L;
+        Long memberId = jwtUtil.getLoginMemberId();;
         return montageRepository.addLike(montageId, memberId);
     }
 
@@ -78,7 +89,7 @@ public class MontageFileService {
                          MultipartFile file,
                          Long montageId) throws IOException, MontageException, FileException {
 
-        Long reporterId = 1L;
+        Long reporterId = jwtUtil.getLoginMemberId();
 
         // 파일이 없는 경우
         if(file == null){
@@ -100,7 +111,7 @@ public class MontageFileService {
 
         String url = FileUtil.uploadFile(file, savedName, FolderType.REPORT_PATH);
         log.info("URL : {}", url);
-        montageRepository.addReport(1L, montageId, req.getReason(), url);
+        montageRepository.addReport(reporterId, montageId, req.getReason(), url);
 
         return "";
     }

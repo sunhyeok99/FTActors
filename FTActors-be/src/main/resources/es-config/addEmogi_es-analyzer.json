@@ -4,7 +4,7 @@
       "my_nori_tokenizer": {
         "type": "nori_tokenizer",
         "decompound_mode": "mixed",
-        "di scard_punctuation": "false"
+        "discard_punctuation": "false"
       }
     },
     "filter": {
@@ -13,6 +13,13 @@
         "stopwords": [
           " "
         ]
+      }
+    },
+    "char_filter": {
+      "remove_emoji": {
+        "type": "pattern_replace",
+        "pattern": "[\\uD800-\\uDBFF][\\uDC00-\\uDFFF]",
+        "replacement": ""
       }
     },
     "analyzer": {
@@ -26,7 +33,8 @@
           "nori_part_of_speech"
         ],
         "char_filter": [
-          "html_strip"
+          "html_strip",
+          "remove_emoji"
         ]
       }
     }

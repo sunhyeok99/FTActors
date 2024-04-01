@@ -14,8 +14,8 @@ import com.a602.actors.domain.follow.entity.Follow;
 import com.a602.actors.domain.follow.repository.FollowRepository;
 import com.a602.actors.domain.member.Member;
 import com.a602.actors.domain.member.repository.MemberRepository;
-import com.a602.actors.domain.notification.document.Notify;
-import com.a602.actors.domain.notification.service.NotificationService;
+//import com.a602.actors.domain.notification.document.Notify;
+//import com.a602.actors.domain.notification.service.NotificationService;
 import com.a602.actors.global.exception.MemberException;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class FollowServiceImpl implements FollowService{
 
     private final FollowRepository followRepository;
     private final MemberRepository memberRepository;
-    private final NotificationService notificationService;
+//    private final NotificationService notificationService;
 
     @Override
     @Transactional
@@ -46,7 +46,7 @@ public class FollowServiceImpl implements FollowService{
             Member member = memberRepository.findById(followingId)
                 .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
 
-            notificationService.send(followerId, Notify.NotificationType.FOLLOW, member.getStageName() + "님이 팔로우 했습니다.");
+//            notificationService.send(followerId, Notify.NotificationType.FOLLOW, member.getStageName() + "님이 팔로우 했습니다.");
 
             return "팔로우 성공";
         }
