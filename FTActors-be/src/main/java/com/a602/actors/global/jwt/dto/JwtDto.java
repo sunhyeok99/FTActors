@@ -54,11 +54,11 @@ public class JwtDto {
         private String phone;
         private String birth;
         private String gender;
-        private MultipartFile profileImage;
+//        private MultipartFile profileImage;
         private String stageName;
-        private String savedName;
+//        private String savedName;
         @Builder
-        public Simple(String loginId, String password, String name, String email, String phone, String birth, String gender, MultipartFile profileImage, String stageName, String savedName){
+        public Simple(String loginId, String password, String name, String email, String phone, String birth, String gender, String stageName){
             this.loginId = loginId;
             this.password = password;
             this.name = name;
@@ -66,9 +66,9 @@ public class JwtDto {
             this.phone = phone;
             this.birth = birth;
             this.gender = gender;
-            this.profileImage = profileImage;
+//            this.profileImage = profileImage;
             this.stageName = stageName;
-            this.savedName = savedName;
+//            this.savedName = savedName;
         }
     }
 
@@ -104,6 +104,19 @@ public class JwtDto {
         private String stageName;
         private LocalDateTime createdAt;
     }
-
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public class UpdateRequest {
+        private String loginId;
+        private String name;
+        private String email;
+        private String phone;
+        private String birth;
+        private String gender;
+        private String stageName;
+        // 필요한 다른 정보들을 추가할 수 있습니다.
+    }
 
 }

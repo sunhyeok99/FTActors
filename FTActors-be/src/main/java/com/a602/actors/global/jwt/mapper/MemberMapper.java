@@ -9,5 +9,5 @@ import org.mapstruct.ReportingPolicy;
 public interface    MemberMapper {
 //    Member MemberDtoToMember(JwtDto.Simple jwtDto);
 
-    JwtDto.Simple MemberToMemberDtoResponse(Member member);
+//    JwtDto.Simple MemberToMemberDtoResponse(Member member);
 }

@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.a602.actors.global.exception.ExceptionCodeSet.MEMBER_DUPLICATED;
 
@@ -44,30 +45,44 @@ public class JWTMemberServiceImpl {
     private final JWTUtil jwtUtil;
 
     @Transactional
-    public String signup(JwtDto.Simple jwtDto) throws IOException {
+    public String signup(JwtDto.Simple jwtDto, MultipartFile profileImage) throws IOException {
+
+        JwtDto.checkIdResult idResult = isDuplicatedId(jwtDto.getLoginId());
+        if (idResult.getIsDuplicate()) {
+            throw new MemberException(MEMBER_DUPLICATED);
+        }
         String encodePassword = bCryptPasswordEncoder.encode(jwtDto.getPassword());
         log.info("encodePassword : {}", encodePassword);
         jwtDto.setPassword(encodePassword);
 
+        String savedName = "";
+        String url = "";
+        try{
+            //        if(jwtDto.getProfileImage() != null){
+            savedName = FileUtil.makeFileName(profileImage.getOriginalFilename());
+            url = FileUtil.uploadFile(profileImage, savedName, FolderType.PROFILE_PATH);
+//        }
 
-        String savedName = FileUtil.makeFileName(jwtDto.getProfileImage().getOriginalFilename());
-        String profileImageUrl = FileUtil.uploadFile(jwtDto.getProfileImage(), savedName, FolderType.PROFILE_PATH);
+            Member member = Member.builder()
+                    .loginId(jwtDto.getLoginId())
+                    .password(jwtDto.getPassword())
+                    .name(jwtDto.getName())
+                    .email(jwtDto.getEmail())
+                    .phone(jwtDto.getPhone())
+                    .birth(jwtDto.getBirth())
+                    .profileImage(url)
+                    .stageName(jwtDto.getStageName())
+                    .build();
 
-        Member member = Member.builder()
-                .loginId(jwtDto.getLoginId())
-                .password(jwtDto.getPassword())
-                .name(jwtDto.getName())
-                .email(jwtDto.getEmail())
-                .phone(jwtDto.getPhone())
-                .birth(jwtDto.getBirth())
-                .profileImage(profileImageUrl)
-                .stageName(jwtDto.getStageName())
-                .savedName(savedName)
-                .build();
-
-        jwtMemberRepository.save(member);
+            jwtMemberRepository.save(member);
+        }catch (IOException e){
+            // 프로필 이미지 업로드 실패 시 예외 처리
+            log.error("Failed to upload profile image to S3", e);
+            throw e;
+        }
         return "";
     }
+
 
     @Transactional
     public JwtDto.AuthResponse signin(JwtDto.AuthRequest memberDto) {
@@ -173,4 +188,23 @@ public class JWTMemberServiceImpl {
 //                        .orElseThrow(() -> new RuntimeException("일치하는 사용자가 없습니다 !!!!!"))
 //        );
 //    }
+
+    @Transactional
+    public void updateUser(JwtDto.UpdateRequest updateRequest) {
+        Optional<Member> optionalMember = jwtMemberRepository.findByLoginId(updateRequest.getLoginId());
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            member.setName(updateRequest.getName());
+            member.setEmail(updateRequest.getEmail());
+            member.setPhone(updateRequest.getPhone());
+            member.setBirth(updateRequest.getBirth());
+            member.setGender(updateRequest.getGender());
+            member.setStageName(updateRequest.getStageName());
+            // 여기에 필요한 다른 정보들을 수정하는 코드를 추가할 수 있습니다.
+            jwtMemberRepository.save(member);
+            log.info("사용자 정보 수정 완료: {}", updateRequest.getLoginId());
+        } else {
+            throw new CustomException("사용자를 찾을 수 없습니다.");
+        }
+    }
 }

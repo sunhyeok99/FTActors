@@ -99,14 +99,24 @@ public class SecurityConfig {
                 .sessionManagement(
                         (session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterAfter(new KakaoAuthenticationTokenFilter(redisService), UsernamePasswordAuthenticationFilter.class)
+//                .addFilterAfter(new KakaoAuthenticationTokenFilter(redisService), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(new JWTCustomFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
                         .requestMatchers("/auth/**", "/main", "/error", "/static/**", "/signin",
                                 "/firebase/**", "/css/**","/js/**", "/firebase-messaging-sw.js",
                                 "/barter/**", "/post/**", "/register", "/signup", "/ws-stomp"
-                                ,"/oauth2/authorization/kakao"
+                                ,"/oauth2/authorization/kakao", "/montage/list",
+                                "/recruitment/list",
+                                "/recruitment/detail",
+                                "/follow/followingList",
+                                "/follow/followerList",
+                                "/follow/followingNum",
+                                "/follow/followerNum",
+                                "/profile/list",
+                                "/profile/detail",
+                                "/profile/searchcontent",
+                                "/profile/searchname"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
