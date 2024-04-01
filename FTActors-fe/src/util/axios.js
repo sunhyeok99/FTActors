@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const BASE_URL = `http://localhost:8080`;
+const SERVER_URL = 'https://j10a602.p.ssafy.io/api'
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -15,70 +16,69 @@ const formDataInstance = axios.create({
     },
   });
 const memberApi = {
-  login: (member) => {
-    // Promise를 반환하도록 수정
-    return axiosInstance.post("/api/member/login", null, { params: member });
+  login: (memberDto) => {
+    return axiosInstance.post("/signin",  memberDto );
   },
-  signup: (member) =>
-    axiosInstance.post("/api/member/signup", null, { params: member }),
+  signup: (jwtDto) =>
+    axiosInstance.post("/signup", jwtDto ),
   updatepassword: (user) =>
     axiosInstance.post("/api/member/updatePassword", null, { params: member }),
 };
 
 const recruitmentApi = {
     getList: (memberId) => {    
-      return axiosInstance.get("/api/recruitment/list", { params: { memberId } });
+      return axiosInstance.get("/recruitment/list", { params: { memberId } });
     },
     register: (recruitmentDto) => {
-      return formDataInstance.post("/api/recruitment", recruitmentDto);
+      return formDataInstance.post("/recruitment", recruitmentDto);
     },
     remove: (recruitmentId) => {
-      return axiosInstance.delete("/api/recruitment", { params: { recruitmentId } });
+      return axiosInstance.delete("/recruitment", { params: { recruitmentId } });
     },
     update: (recruitmentDto) => {
-      return formDataInstance.put("/api/recruitment/update", recruitmentDto);
+      return formDataInstance.put("/recruitment/update", recruitmentDto);
     },
     updateDate: (recruitmentId, endDate) => {
-      return axiosInstance.put("/api/recruitment/updateDate", null, {
+      return axiosInstance.put("/recruitment/updateDate", null, {
         params: { recruitmentId, endDate },
       });
     },
     getDetail: (recruitmentId, memberId) => {
-      return axiosInstance.get("/api/recruitment/detail", {
+      return axiosInstance.get("/recruitment/detail", {
         params: { recruitmentId, memberId },
       });
     },
     getPostList: (postMemberId) => {
-      return axiosInstance.get("/api/recruitment/postList", {
+      return axiosInstance.get("/recruitment/postList", {
         params: { postMemberId },
       });
     },
     updateWishlist: (recruitmentId, memberId) => {
-      return axiosInstance.put("/api/recruitment/wishlist", null, {
+      return axiosInstance.put("/recruitment/wishlist", null, {
         params: { recruitmentId, memberId },
       });
     },
     getWishlist: (memberId) => {
-      return axiosInstance.get("/api/recruitment/wishlist", {
+      return axiosInstance.get("/recruitment/wishlist", {
         params: { memberId },
       });
     },
     apply: (applyDto) => {
-      return formDataInstance.post("/api/recruitment/apply", applyDto);
+      return formDataInstance.post("/recruitment/apply", applyDto);
     },
     cancelApply: (recruitmentId, memberId) => {
-      return axiosInstance.delete("/api/recruitment/apply", {
+      return axiosInstance.delete("/recruitment/apply", {
         params: { recruitmentId, memberId },
       });
     },
     getMyApply: (memberId) => {
-      return axiosInstance.get("/api/recruitment/myApply", { params: { memberId } });
+      return axiosInstance.get("/recruitment/myApply", { params: { memberId } });
     },
     getApplyDetail: (applyId) => {
-      return axiosInstance.get("/api/recruitment/applyDetail", { params: { applyId } });
+      return axiosInstance.get("/recruitment/applyDetail", { params: { applyId } });
     },
     getApplyList: (recruitmentId) => {
-      return axiosInstance.get("/api/recruitment/applyList", {
+      return axiosInstance.get("/recruitment/applyList", {
         params: { recruitmentId },
       });
     },
@@ -86,37 +86,57 @@ const recruitmentApi = {
 
   const followApi = {
     following: (followingId, followerId) => {
-      return axiosInstance.put("/api/follow", null, {
+      return axiosInstance.put("/follow", null, {
         params: { followingId, followerId },
       });
     },
     followingList: (followingId) => {
-      return axiosInstance.get("/api/follow/followingList", {
+      return axiosInstance.get("/follow/followingList", {
         params: { followingId },
       });
     },
     followerList: (followerId) => {
-      return axiosInstance.get("/api/follow/followerList", {
+      return axiosInstance.get("/follow/followerList", {
         params: { followerId },
       });
     },
     followDetail: (followingId, followerId) => {
-      return axiosInstance.get("/api/follow/detail", {
+      return axiosInstance.get("/follow/detail", {
         params: { followingId, followerId },
       });
     },
     followingNum: (followingId) => {
-      return axiosInstance.get("/api/follow/followingNum", {
+      return axiosInstance.get("/follow/followingNum", {
         params: { followingId },
       });
     },
     followerNum: (followerId) => {
-      return axiosInstance.get("/api/follow/followerNum", {
+      return axiosInstance.get("/follow/followerNum", {
         params: { followerId },
       });
     },
   };
   
+  const chatApi = {
+    createChatRoom: () => {
+      return axiosInstance.post("/api/chat");
+    },
+    getMyChatRooms: (memberId) => {
+      return axiosInstance.get("/api/chat/room/mylist", {
+        params: { memberId },
+      });
+    },
+    joinChatRoom: (roomId, memberId) => {
+      return axiosInstance.post("/api/chat/room/in", {
+        params: { roomId, memberId },
+      });
+    },
+    exitChatRoom: (roomId, memberId) => {
+      return axiosInstance.delete("/api/chat/room/out", {
+        params: { roomId, memberId },
+      });
+    },
+  };
 
-export { memberApi, recruitmentApi, followApi};
+export { memberApi, recruitmentApi, followApi, chatApi};
 

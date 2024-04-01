@@ -15,9 +15,10 @@
     "bootstrap": "^5.3.3",
     "bootstrap-vue": "^2.23.1",
     "pinia": "^2.1.7",
+    "sockjs-client": "^1.6.1",
+    "stompjs": "^2.3.3",
     "vue": "^3.4.15",
-    "vue-router": "^4.2.5",
-    "vue3-dropzone": "^2.2.1"
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@ffmpeg/ffmpeg": "^0.12.10",

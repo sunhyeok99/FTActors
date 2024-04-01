@@ -21,9 +21,17 @@ export default defineConfig({
       'Cross-Origin-Opener-Policy': 'same-origin',
       'Cross-Origin-Embedder-Policy': 'require-corp'
     }
-  }
+  },
+   // server: {
+  //   proxy: {
+  //     '/api': {
+  //       target: 'http://localhost:8080', // 백엔드 서버 주소
+  //       changeOrigin: true, // 호스트 헤더를 target URL로 변경
+  //       secure: false, // HTTPS 사용 시 true로 설정
+  //     },
+  //   },
+  // },
   
 })
-
 
 
