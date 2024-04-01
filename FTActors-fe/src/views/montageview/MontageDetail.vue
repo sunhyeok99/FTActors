@@ -6,7 +6,7 @@
       <img src="@/assets/icons/Next.png" alt="" id="next" @click="goToNextMontage">
     </div>
     <div class="commentreply">
-      <CommentReply />
+      <CommentReply :current-id="currentId" />
     </div>
   </div>
 </template>

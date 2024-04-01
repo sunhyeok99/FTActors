@@ -5,7 +5,6 @@
         <div class="accordion-header">
           <div class="columnthings">
             <div class="rowthings">
-
               <!-- 좋아요 버튼 -->
               <button class="like-btn" :class="{ liked: isLiked }" @click.stop="toggleLike()">
                 <img v-if="isLiked" src="@/assets/icons/like-filled.png" alt="Liked">
@@ -74,6 +73,9 @@
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
 import ReportModal from '@/components/modals/ReportModal.vue';
+
+defineProps(['currentId']);
+
 // 몽타쥬 좋아요
 const isLiked = ref(false);
 const toggleLike = () => {
@@ -85,7 +87,7 @@ const comments = ref([]);
 
 // 댓글/대댓글 가져오는 메서드
 const getCommentReply = () => {
-  axios.get(`http://localhost:8080/montage/1/comment`)
+  axios.get(`http://localhost:8080/montage/${currentId.value}/comment`)
     .then((response) => {
       console.log(response.data.data);
       comments.value = response.data.data;
@@ -110,7 +112,7 @@ const uploadComment = () => {
       "isDeleted": false
     };
     axios
-      .post(`http://localhost:8080/montage/1/comment`, content)
+      .post(`http://localhost:8080/montage/${currentId.value}/comment`, content)
       .then((response) => {
         console.log(response.data);
         addComment.value = "";
