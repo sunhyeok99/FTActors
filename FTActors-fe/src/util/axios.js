@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const BASE_URL = `http://localhost:8080`;
+const tmp = 'https://j10a602.p.ssafy.io/api';
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -22,6 +23,9 @@ const memberApi = {
     axiosInstance.post("/signup", jwtDto ),
   updatepassword: (user) =>
     axiosInstance.post("/api/member/updatePassword", null, { params: member }),
+    getById: (id) => {
+    return axiosInstance.get("/loginmember", { params: { id } })
+    },
 };
 
 const recruitmentApi = {
@@ -38,7 +42,7 @@ const recruitmentApi = {
       return formDataInstance.put("/recruitment/update", recruitmentDto);
     },
     updateDate: (recruitmentId, endDate) => {
-      return axiosInstance.put("/recruitment/updateDate", null, {
+      return axiosInstance.put("/recruitment/updateDate", {
         params: { recruitmentId, endDate },
       });
     },
@@ -53,7 +57,7 @@ const recruitmentApi = {
       });
     },
     updateWishlist: (recruitmentId, memberId) => {
-      return axiosInstance.put("/recruitment/wishlist", null, {
+      return axiosInstance.put("/recruitment/wishlist", null,  {
         params: { recruitmentId, memberId },
       });
     },

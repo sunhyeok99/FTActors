@@ -34,7 +34,6 @@
   <button v-else @click="apply" class="btn-create">지원하기</button>
 </template>
   </div>
-
       </ul>
     </div>
   </div>
@@ -49,15 +48,21 @@ import { useMemberStore } from "@/stores/member-store.js";
   const MemberStore = useMemberStore();
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
-
+const adminId = 11;
 const router = useRouter();
 const recruitment = ref({});
 
 const fetchRecruitmentDetail = async () => {
   const recruitmentId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
-  const tmp = loginMember.id ? loginMember.id : 11;
-    const response = await recruitmentApi.getDetail(recruitmentId, tmp);
+  if(loginMember.value == "" || loginMember.value == null){
+    const response = await recruitmentApi.getDetail(recruitmentId, adminId);
     recruitment.value = response.data.data
+  }
+  else{
+     const memberId = loginMember.value;
+    const response = await recruitmentApi.getDetail(recruitmentId, memberId); 
+    recruitment.value = response.data.data
+  }
 };
 
 onMounted(fetchRecruitmentDetail);
@@ -75,12 +80,14 @@ const confirmDelete = () => {
 };
 
 const apply = () => {
-  if(loginMember == ""){
+  if(loginMember.value == "" || loginMember.value == null){
     alert("로그인이 필요합니다")
     router.push({ name: 'login'});
   }
-  const recruitmentId = recruitment.value.id;
-  router.push({ name: 'applyCreate' , params : { recruitmentId: recruitmentId }}); // 멤버아이디는 나중에 로그인으로 수정
+  else{
+    const recruitmentId = recruitment.value.id;
+    router.push({ name: 'applyCreate' , params : { recruitmentId: recruitmentId, memberId : loginMember.value }}); // 멤버아이디는 나중에 로그인으로 수정
+  }
 };
 
 const deleteRecruitment = async () => {

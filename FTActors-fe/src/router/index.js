@@ -41,7 +41,7 @@ const router = createRouter({
     {
       path: "/board",
       name: "board",
-      component: BoardView,
+      component: BoardView, 
     },
     {
       path: "/montagelist",
