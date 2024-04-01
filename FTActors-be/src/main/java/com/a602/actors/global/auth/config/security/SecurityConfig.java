@@ -1,15 +1,7 @@
 package com.a602.actors.global.auth.config.security;
 
-import com.a602.actors.global.auth.config.handler.CustomAuthenticationEntryPoint;
-import com.a602.actors.global.auth.config.handler.CustomLogoutHandler;
-import com.a602.actors.global.auth.config.handler.OAuthLoginFailureHandler;
-import com.a602.actors.global.auth.config.handler.OAuthLoginSuccessHandler;
-import com.a602.actors.global.auth.filter.KakaoAuthenticationTokenFilter;
-import com.a602.actors.global.auth.service.member.MemberService;
-import com.a602.actors.global.auth.service.redis.RedisService;
-import com.a602.actors.global.jwt.JwtTokenProvider;
-import com.a602.actors.global.jwt.filter.JWTCustomFilter;
-import lombok.RequiredArgsConstructor;
+import static jakarta.servlet.DispatcherType.*;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +16,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static jakarta.servlet.DispatcherType.ERROR;
-import static jakarta.servlet.DispatcherType.FORWARD;
 import com.a602.actors.global.auth.config.handler.CustomAuthenticationEntryPoint;
 import com.a602.actors.global.auth.config.handler.CustomLogoutHandler;
 import com.a602.actors.global.auth.config.handler.OAuthLoginFailureHandler;
@@ -33,6 +23,8 @@ import com.a602.actors.global.auth.config.handler.OAuthLoginSuccessHandler;
 import com.a602.actors.global.auth.filter.KakaoAuthenticationTokenFilter;
 import com.a602.actors.global.auth.service.member.MemberService;
 import com.a602.actors.global.auth.service.redis.RedisService;
+import com.a602.actors.global.jwt.JwtTokenProvider;
+import com.a602.actors.global.jwt.filter.JWTCustomFilter;
 
 import lombok.RequiredArgsConstructor;
 
