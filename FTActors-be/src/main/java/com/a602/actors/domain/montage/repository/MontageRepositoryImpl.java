@@ -39,6 +39,7 @@ public class MontageRepositoryImpl implements MontageRepository {
 
         return queryFactory
                         .select(new QMontageDto_Montages(
+                                montage.id,
                                 montage.title,
                                 montage.link,
                                 Expressions.as(
