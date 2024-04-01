@@ -168,6 +168,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
                 .apply(applyService.existApply(recruitmentId, memberId))
                 .privateRecruitment(recruitment.getPrivateRecruitment())
                 .file(recruitment.getFile())
+                .loginName(memberRepository.findById(memberId).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)).getName())
                 .build();
         return recruitmentResponseDto;
     }
