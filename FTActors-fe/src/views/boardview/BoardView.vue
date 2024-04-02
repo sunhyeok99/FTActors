@@ -1,13 +1,12 @@
 <template>
+
   <div>
     <BoardSearchBar />
   </div>
   <div>
     <BoardAll />
   </div>
-  <div>
-    <BoardCreateBar />
-  </div>
+
   <div>
     <Pagenation />
   </div>
