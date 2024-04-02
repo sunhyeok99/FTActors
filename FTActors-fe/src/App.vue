@@ -22,6 +22,8 @@
               <button type="button" class="btn btn-dark" id="loginbtn" @click="goToLogin">로그인</button>
               <!-- 회원가입 -->
               <button type="button" class="btn btn-dark" id="joinbtn" @click="goToJoin">회원가입</button>
+              <!-- 마이페이지 -->
+              <MypageDropdown/>
             </div>
             </nav>
       </div>
@@ -33,6 +35,9 @@
     aria-controls="offcanvasWithBothOptions"> <img width="40" src="@/assets/icons/Message.png" alt="message icon"></button>
     <SideBars />
   </div>
+  <footer>
+    <FooterBox />
+  </footer>
 </div>
 </template>
 
