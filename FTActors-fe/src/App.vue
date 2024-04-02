@@ -32,7 +32,7 @@
     <!-- 라우팅된 화면 -->
     <RouterView />
     <!-- 메시지 버튼 -->
-    <button class="btn btn-primary" id="floating-map-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+    <button :class="{ 'btn': true, 'floating-map-button': isMontagePage }" id="floating-map-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
     aria-controls="offcanvasWithBothOptions"> <img width="40" src="@/assets/icons/Message.png" alt="message icon"></button>
     <SideBars />
   </div>
@@ -201,6 +201,9 @@ header {
   overflow: hidden;
   /* 내용이 화면을 초과할 경우 스크롤바를 숨깁니다 */
 
+}
+.floating-map-button {
+  background: black;
 }
 
 #floating-map-button {
