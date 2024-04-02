@@ -27,8 +27,9 @@ export const useMemberStore = defineStore("member", () => {
 });
 
 export const useJwtStore = defineStore("jwt", () => {
-  const getToken = () => {
-    const storedMemberInfo = localStorage.getItem("token");
+
+  function getToken(){
+    const storedMemberInfo = localStorage.getItem("jwt-token");
     return storedMemberInfo ? storedMemberInfo : null;
   };
   const token = ref(getToken() || "");
@@ -43,6 +44,6 @@ export const useJwtStore = defineStore("jwt", () => {
     localStorage.removeItem("jwt-token");
   }
 
-  return { token, setToken, deleteToken };
+  return { token, setToken, deleteToken, getToken };
 });
 
