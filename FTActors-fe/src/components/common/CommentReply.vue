@@ -32,7 +32,6 @@
             </div>
           </div>
         </div>
-
         <transition name="slide">
           <div class="accordion-collapse collapse show" v-if="comments.length > 0">
             <div class="accordion-body">
@@ -169,8 +168,9 @@ const uploadComment = () => {
       .post(`${BASE_URL}/montage/${props.currentId}/comment`, content)
       .then((response) => {
         console.log(response.data);
-        addComment.value = "";
         getCommentReply();
+        addComment.value = "";
+        
       })
       .catch((error) => {
         console.error(error);
@@ -302,8 +302,8 @@ const deleteReply = (id) => {
 }
 
 .report-btn img {
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
 }
 
 
