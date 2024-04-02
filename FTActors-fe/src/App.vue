@@ -3,6 +3,7 @@
     <!-- 몽타쥬 사이드바로 가는 네비게이션 바 -->
     <MontageNav />
     <div class="wrapper">
+      <img src="@/assets/icons/Light.png" alt="" id="light">
       <header>
         <div>
           <!-- 네비게이션 바 -->
@@ -74,7 +75,7 @@ watch(() => route.path, (newPath) => {
 });
 
 const scrollToPosition = () => {
-  const scrollDistance = 6 * 16;
+  const scrollDistance = 12 * 16;
   window.scrollTo({
     top: scrollDistance,
     behavior: 'smooth' 
@@ -89,6 +90,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
 html,
 body {
   margin: 0;
@@ -103,7 +105,11 @@ header {
 }
 
 
-
+#light{
+  width: 100px;
+  height: 100px;
+  margin-left: 0;
+}
 
 #fontapply {
   font-family: 'tuesday_nightregular', impact;
