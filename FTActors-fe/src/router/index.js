@@ -24,6 +24,7 @@ import ChatList from "@/components/chatpage/chatlist.vue";
 import ApplyCreate from "../views/applyview/ApplyCreate.vue";
 import ApplyDetail from "../views/applyview/ApplyDetail.vue";
 import MyApply from "../views/applyview/MyApply.vue";
+import ApplyList from "../views/applyview/ApplyList.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -73,6 +74,7 @@ const router = createRouter({
       path: "/mypage",
       name: "mypage",
       component: MypageView,
+      props: true,
     },
     {
       path: "/boarddetail/:id",
@@ -162,6 +164,12 @@ const router = createRouter({
       name: 'myApply',
       component: MyApply,
       props: true,
+    },
+    {
+      path : '/applyList',
+      name : 'applyList',
+      component : ApplyList,
+      props : true,
     },
   ],
 });

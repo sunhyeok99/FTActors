@@ -149,11 +149,11 @@ const updateRecruitment = async () => {
 formData.append("id", editedRecruitment.value.id);
 formData.append("title", editedRecruitment.value.title);
 formData.append("content", editedRecruitment.value.content);
-formData.append("postMemberId", loginMember.id.value);
+formData.append("postMemberId", loginMember.value);
 formData.append("category", editedRecruitment.value.category);
 formData.append("startDate", editedRecruitment.value.startDate);
 formData.append("endDate", editedRecruitment.value.endDate);
-formData.append("memberId", loginMember.id.value);
+formData.append("memberId", loginMember.value);
 
   try {
     console.log(formData)
