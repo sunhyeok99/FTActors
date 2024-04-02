@@ -1,7 +1,7 @@
 <script setup>
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { ref, defineProps } from "vue";
+import { ref, defineProps, defineEmits } from "vue";
 
 // const { attrList } = defineProps({
 //   attrList: Array,
@@ -12,12 +12,19 @@ import { ref, defineProps } from "vue";
 // })
 
 const isShowing = ref(false);
+const selectedVideoIndex = ref(null);
 
 const props = defineProps({
     videoList : Array
 })
 
+const emit = defineEmits(["videoSelected"]); // videoSelected 이벤트 정의
+
 const {videoList} = props;
+
+const selectVideo = (index) => {
+    emit("videoSelected", index); // videoSelected 이벤트 발생
+};
 
 
 </script>
@@ -31,8 +38,6 @@ const {videoList} = props;
       <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
         <li class="nav-item"></li>
         <li>
-          <ScheduleStepButton name="일정 설정"></ScheduleStepButton>
-          <ScheduleStepButton name="장소 설정"></ScheduleStepButton>
         </li>
       </ul>
     </div>
@@ -50,10 +55,11 @@ const {videoList} = props;
           >영상 목록</span
         >
       </div>
-      <h3 class="mx-auto m-4">여행 일정을 정해주세요!</h3>
       <div class="list-group list-group-flush border-bottom scrollarea">
-        <li v-for="(item, index) in videoList" :key="index">
-            <video :src="item.src"></video>
+        <li v-for="(item, index) in videoList" :key="index" @click="selectVideo(index)">
+            <video class="video-list" controls="controls" autoplay="autoplay" preload="auto" >
+              <source :src=item.src type="video/mp4" />
+            </video>
         </li>
       </div>
     </div>
@@ -65,7 +71,6 @@ const {videoList} = props;
       aria-controls="basket"
       style="background-color: white; border: 2px solid #85d5e4"
     >
-      >
     </button>
     <div
       id="basket"
@@ -77,11 +82,15 @@ const {videoList} = props;
 </template>
 
 <style scoped>
-.container-sidebar {
+/* .container-sidebar {
   display: flex;
   width: fit-content;
   height: 100%;
   position: relative;
+} */
+
+.container-sidebar {
+  flex: 1;
 }
 
 div#basket {
@@ -142,5 +151,10 @@ div#basket {
 
 .list-group {
   height: 100vh;
+}
+
+.video-list {
+  width: 100%;
+  height: 200px;
 }
 </style>

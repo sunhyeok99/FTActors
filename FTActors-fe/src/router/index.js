@@ -21,7 +21,7 @@ import BlacklistView from "@/views/adminview/BlacklistView.vue";
 import ReportView from "@/views/adminview/ReportView.vue";
 import ChatDetail from "@/components/chatpage/chatdetail.vue";
 import ChatList from "@/components/chatpage/chatlist.vue";
-import Editor from "@/components/videoEditor/Editor.vue";
+import MainVideo from "@/components/videoEditor/MainVideo.vue";
 import ChatRoomView from "@/views/chatview/ChatRoomView.vue";
 import ApplyCreate from "../views/applyview/ApplyCreate.vue";
 import ApplyDetail from "../views/applyview/ApplyDetail.vue";
@@ -174,7 +174,7 @@ const router = createRouter({
     {
       path: '/edit',
       name: 'edit',
-      component: Editor,
+      component: MainVideo,
     }
   ],
 });
