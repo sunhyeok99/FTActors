@@ -72,6 +72,7 @@ public class ProfileMapper {
 
         return ProfileSearchResponse.builder()
                 .id(profileDocument.getId())
+                .name(profileDocument.getName())
                 .stageName(profileDocument.getStageName())
                 .content(profileDocument.getContent())
                 .type(profileDocument.getType())
