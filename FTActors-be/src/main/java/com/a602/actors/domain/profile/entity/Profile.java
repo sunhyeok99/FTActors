@@ -5,12 +5,7 @@ import com.a602.actors.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.util.Assert;
-
-import java.util.ArrayList;
-import java.util.Date;
 
 @Entity(name = "profile")
 @Getter
@@ -21,12 +16,8 @@ import java.util.Date;
 @ToString
 @EntityListeners(AuditingEntityListener.class) //시간 찍기
 public class Profile extends BaseEntity {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member; //회원 번호 (member테이블에서 가져옴)
 
     private String content; //자기소개
@@ -40,22 +31,6 @@ public class Profile extends BaseEntity {
 
     @Column(name = "private_post")
     private Character privatePost; //'T', 'F' (기본으로 F 설정)
-
-//    @CreatedDate
-//    @Column(name = "created_at")
-//    private Date createdAt;
-//
-//    @CreatedDate
-//    @Column(name = "updated_at")
-//    private Date updatedAt;
-//
-//    @PrePersist //createdAt은 처음 값에서 변하지 않게 하기 (-> 테스트 해보기!)
-//    protected void onCreat() {
-//        if(this.createdAt == null) {
-//            this.createdAt = new Date();
-//        }
-//        this.updatedAt = this.createdAt;
-//    }
 
     @Builder
     public Profile (Member member, String content,
@@ -73,4 +48,6 @@ public class Profile extends BaseEntity {
 //        this.additionalImages = additionalImages;
         this.privatePost = privatePost;
     }
+
+
 }

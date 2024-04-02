@@ -25,17 +25,19 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
+	//시큐리티
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	// Oauth2
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	//JWT
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 	//Json
 	implementation 'org.json:json:20210307'
 	//레디스
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	// Oauth2
-	// implementation 'org.springframework.security:spring-security-oauth2-jose'
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -45,9 +47,16 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	// STOMP
-	implementation 'org.webjars:stomp-websocket:2.3.3-1'
+//    implementation 'org.webjars:stomp-websocket:2.3.3-1'
+	implementation 'org.webjars:stomp-websocket:2.3.4'
+	// reactor netty
+	implementation 'org.springframework.boot:spring-boot-starter-reactor-netty:2.6.4'
+	// jackson    -> Spring Boot에서 default로 추가되므로 또 추가하면 충돌 난다 !!!
+//    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
 	// 낮은 버전의 브라우저에서도 WebSocket 사용할 수 있게 해줌
 	implementation 'org.webjars:sockjs-client:1.1.2'
+	// RabbitMQ를 위한 AMQP
+	implementation 'org.springframework.boot:spring-boot-starter-amqp:2.6.4'
 
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-mysql'
@@ -64,6 +73,9 @@ dependencies {
 
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation 'mysql:mysql-connector-java:8.0.28'
+
+	// MongoDB
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
 	annotationProcessor 'org.projectlombok:lombok'
 
@@ -82,6 +94,8 @@ dependencies {
 	// java.lang.NoClassDefFoundError:javax/persistence/Entity 에러 방지
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+	// JSoup
+	implementation 'org.jsoup:jsoup:1.15.3'
 
 	// 엘라스틱 서치
 	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'

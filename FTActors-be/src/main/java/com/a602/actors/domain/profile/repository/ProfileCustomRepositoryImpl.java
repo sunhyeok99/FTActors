@@ -14,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,48 +27,23 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
     private final EntityManager entityManager;
 
     @Override
-    public List<Profile> findAllLatest(int sorting, Character condition, Long loginnedId) {
-        QProfile profile = QProfile.profile;
-
-        //조건에 따라 order by문 변화
-        OrderSpecifier<?> orderSpecifier = sorting == 1 ? profile.updatedAt.desc() : profile.updatedAt.asc();
-        BooleanBuilder whereClause = new BooleanBuilder();
-
-        //컨디션이 E이면 where절 쓰지 않음
-        if(condition != 'E') {
-            whereClause.and(profile.type.eq(condition)); //condition에 맞는 조건 넣어주기
-        }
-
-        // where 절에 id와 loginnedId가 같은 경우 추가
-        whereClause.and(
-                profile.privatePost.eq('F')
-                        .or(profile.privatePost.eq('T').and(profile.member.id.eq(loginnedId)))
-        );
-
-        return jpaQueryFactory
-                .selectFrom(profile)
-                .where(whereClause)
-                .orderBy(orderSpecifier)
-                .fetch();
-    }
-
-    @Override
-    public Profile findProfileByIdAndCondition(Long profileId, Long loginnedId) {
+//    public Profile findProfileByIdAndCondition(Long profileId, Long loginnedId) {
+    public Optional<Profile> findProfileByIdAndCondition(Long profileId, Long loginnedId) {
         QProfile profile = QProfile.profile;
 
         // profileId와 일치하는 Profile을 조회하고,
         // 그 중 privatePost가 'F'이거나 memberId가 loginnedId와 일치하는 경우에만 반환
-        Profile result = jpaQueryFactory
+        return Optional.ofNullable(jpaQueryFactory
                 .selectFrom(profile)
                 .where(profile.id.eq(profileId)
                         .and(profile.privatePost.eq('F')
                                 .or(profile.member.id.eq(loginnedId))))
-                .fetchOne();
+                .fetchOne());
 
-        return result;
+//        return result;
     }
 
-    @Override
+    @Override // 생성 - 이미 있는 프로필인지 확인
     public boolean existProfile(Character condition, Long loginMemberId) {
         QProfile profile = QProfile.profile;
 
@@ -95,21 +72,19 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
 
         JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, profile); //업데이트?
 
-        if (profileRequest.getSelfIntroduction() != null) {
-            updateClause.set(profile.content, profileRequest.getSelfIntroduction());
+        if (profileRequest.getContent() != null) {
+            updateClause.set(profile.content, profileRequest.getContent());
         }
 
-        if (profileRequest.getCondition() != null) {
-            updateClause.set(profile.type, profileRequest.getCondition());
-        }
-
-        if (profileRequest.getPortfolioLink() != null) {
-            updateClause.set(profile.portfolio, profileRequest.getPortfolioLink());
+        if (profileRequest.getType() != null) {
+            updateClause.set(profile.type, profileRequest.getType());
         }
 
         if(profileRequest.getPrivateProfile() != null) {
             updateClause.set(profile.privatePost, profileRequest.getPrivateProfile());
         }
+
+        updateClause.set(profile.updatedAt, LocalDateTime.now());
 
         updateClause.where(profile.id.eq(profileId)).execute();
     }

@@ -13,22 +13,26 @@ public class ApplyDto {
     private Long id;
     private Long recruitmentId;
     private Long memberId;
+    private String memberName;
     private MultipartFile videoFile;
     private String videoLink;
     private String content;
+    private String createdAt;
     @Builder
     public ApplyDto(
             Long id,
             Long recruitmentId,
-            Long memberId,
+            String memberName,
             String videoLink,
-            String content
+            String content,
+            String createdAt
     ) {
         this.id = id;
         this.recruitmentId = recruitmentId;
-        this.memberId = memberId;
+        this.memberName = memberName;
         this.videoLink = videoLink;
         this.content = content;
+        this.createdAt = createdAt;
     }
 
     @Builder

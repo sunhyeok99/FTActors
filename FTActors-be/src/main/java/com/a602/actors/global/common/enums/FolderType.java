@@ -7,8 +7,7 @@ public enum FolderType{
     PROFILE_PATH("profiles/"),
     REPORT_PATH("reports/"),
     RECRUIT_PATH("recruits/"),
-
-    APPLY_Path("applies/");
+    APPLY_PATH("applies/");
     private final String folderPath;
 
     FolderType(String folderPath){

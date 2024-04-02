@@ -1,4 +1,4 @@
-
+version: "2"
 
 services:
   # 서비스 이름
@@ -9,7 +9,6 @@ services:
     build:
       context: ../
       dockerfile: "./docker/dockerfile/spring.dockerfile"
-    env_file: ".env"
     ports:
       - "8080:8080"
     restart: "always"
@@ -40,40 +39,62 @@ services:
       - backend
     volumes:
       - /home/ubuntu/volume/flask:/usr/local/app/
+    env_file: ".env"
     expose:
       - "5000"
 
-  elastic:
-    build:
-      context: ../
-      dockerfile: "./docker/dockerfile/elastic-search.dockerfile"
-    networks:
-      - backend
-    expose:
-      - "9200"
-  
   redis:
+    container_name: redis
+    hostname: redis
     image: redis
     networks:
       - backend
+    env_file: ".env"
     expose:
       - "6379"
 #
   rabbitmq:
-    image: rabbitmq
+    container_name: rabbitmq
+    hostname: rabbitmq
+    build:
+      context: ../
+      dockerfile: "./docker/dockerfile/rabbitmq.dockerfile"
     networks:
       - backend
     volumes:
       - /home/ubuntu/volume/mq:/var/lib/rabbitmq
+    env_file: ".env"
     expose:
+      - "1883"
+      - "4369"
       - "5672"
+      - "15670"
+      - "15672"
+      - "15692"
+      - "61613"
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    hostname: mongo
+    networks:
+      - backend
+    volumes:
+      - /home/ubuntu/volume/data:/data
+    env_file: ".env"
+    expose:
+      - "27017"
 
 # 브리지 네트워크는 도커가 제공하는 네트워크 드라이버 중 하나로, 가상
 # 인터페이스를 통해 컨테이너들을 연결한다.
 networks:
   backend:
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.16.20.0/24"
-          gateway: "172.16.20.1"
+    external: true
+
+#networks:
+#  backend:
+#    ipam:
+#      driver: default
+#      config:
+#        - subnet: "172.16.20.0/24"
+#          gateway: "172.16.20.1"

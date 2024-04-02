@@ -1,18 +1,24 @@
 package com.a602.actors.domain.follow.service;
 
-import com.a602.actors.domain.follow.dto.FollowDto;
-import com.a602.actors.domain.follow.entity.Follow;
-import com.a602.actors.domain.follow.repository.FollowRepository;
-import com.a602.actors.domain.member.repository.MemberRepository;
-import com.a602.actors.global.exception.ExceptionCodeSet;
-import com.a602.actors.global.exception.MemberException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static com.a602.actors.global.exception.ExceptionCodeSet.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.a602.actors.domain.follow.dto.FollowDto;
+import com.a602.actors.domain.follow.entity.Follow;
+import com.a602.actors.domain.follow.repository.FollowRepository;
+import com.a602.actors.domain.member.Member;
+import com.a602.actors.domain.member.repository.MemberRepository;
+//import com.a602.actors.domain.notification.document.Notify;
+//import com.a602.actors.domain.notification.service.NotificationService;
+import com.a602.actors.global.exception.MemberException;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -21,7 +27,7 @@ public class FollowServiceImpl implements FollowService{
 
     private final FollowRepository followRepository;
     private final MemberRepository memberRepository;
-
+//    private final NotificationService notificationService;
 
     @Override
     @Transactional
@@ -35,6 +41,13 @@ public class FollowServiceImpl implements FollowService{
                     .updatedAt(LocalDateTime.now())
                     .build();
             followRepository.save(follow);
+
+            // followingId가 followerId를 팔로잉한다.
+            Member member = memberRepository.findById(followingId)
+                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
+
+//            notificationService.send(followerId, Notify.NotificationType.FOLLOW, member.getStageName() + "님이 팔로우 했습니다.");
+
             return "팔로우 성공";
         }
         followRepository.deleteByFollowId_FollowingIdAndFollowId_FollowerId(followingId, followerId);
@@ -51,7 +64,8 @@ public class FollowServiceImpl implements FollowService{
                 .map(follow -> FollowDto.builder()
                         .followingId(followingId)
                         .followerId(follow.getFollowId().getFollowerId())
-                        .memberName(memberRepository.findById(follow.getFollowId().getFollowerId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)).getMemberId())
+                        .memberName(memberRepository.findById(follow.getFollowId().getFollowerId()).orElseThrow(() -> new MemberException(
+                            MEMBER_NOT_FOUND)).getName())
                         .follow(1)
                         .build())
                 .collect(Collectors.toList());
@@ -68,7 +82,8 @@ public class FollowServiceImpl implements FollowService{
                 .map(follow -> FollowDto.builder()
                         .followingId(follow.getFollowId().getFollowingId())
                         .followerId(followerId)
-                        .memberName(memberRepository.findById(follow.getFollowId().getFollowingId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)).getMemberId())
+                        .memberName(memberRepository.findById(follow.getFollowId().getFollowingId()).orElseThrow(() -> new MemberException(
+                            MEMBER_NOT_FOUND)).getName())
                         .follow(followDetail(followerId,follow.getFollowId().getFollowingId()))
                         .build())
                 .collect(Collectors.toList());

@@ -32,13 +32,18 @@ public class ApplyServiceImpl implements ApplyService {
     @Override
     @Transactional
     public void apply(ApplyDto applyDto) throws IOException {
-        String url = FileUtil.uploadFile(applyDto.getVideoFile(), FolderType.APPLY_Path);
-
+        String savedName ="";
+        String url = "";
+        if (applyDto.getVideoFile() != null) {
+            savedName = FileUtil.makeFileName(applyDto.getVideoFile().getOriginalFilename());
+            url = FileUtil.uploadFile(applyDto.getVideoFile(), savedName, FolderType.APPLY_PATH);
+        }
         Apply apply = Apply.builder()
                 .recruitment(recruitmentRepository.findById(applyDto.getRecruitmentId()).orElseThrow(() -> new RecruitmentException(ExceptionCodeSet.RECRUITMENT_NOT_FOUND)))
                 .member(memberRepository.findById(applyDto.getMemberId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)))
                 .content(applyDto.getContent())
                 .videoLink(url)
+                .savedName(savedName)
                 .build();
         applyRepository.save(apply);
     }
@@ -47,11 +52,13 @@ public class ApplyServiceImpl implements ApplyService {
     @Transactional
     public void applyCancel(Long recruitmentId, Long memberId) throws IOException {
         Apply apply = applyRepository.findByRecruitmentIdAndMemberId(recruitmentId, memberId);
-
+        if(apply ==null){
+            throw new ApplyException(ExceptionCodeSet.APPLY_NOT_FOUND);
+        }
         // 지원을 취소하기 전에 S3에서 파일을 삭제합니다.
-        String videoLink = apply.getVideoLink();
+        String videoLink = apply.getSavedName();
         if (videoLink != null) {
-            FileUtil.deleteFile(videoLink, FolderType.APPLY_Path);
+            FileUtil.deleteFile(videoLink, FolderType.APPLY_PATH);
         }
 
         // 지원 취소를 처리합니다.
@@ -66,9 +73,10 @@ public class ApplyServiceImpl implements ApplyService {
                 .map(apply -> ApplyDto.builder()
                         .id(apply.getId())
                         .recruitmentId(apply.getRecruitment().getId())
-                        .memberId(apply.getMember().getId())
+                        .memberName(apply.getMember().getName())
                         .content(apply.getContent())
                         .videoLink(apply.getVideoLink())
+                        .createdAt(apply.getCreatedAt().toString())
                         .build())
                 .collect(Collectors.toList());
         return applyDtoList;
@@ -80,9 +88,10 @@ public class ApplyServiceImpl implements ApplyService {
         ApplyDto applyDto = ApplyDto.builder()
                 .id(apply.getId())
                 .recruitmentId(apply.getRecruitment().getId())
-                .memberId(apply.getMember().getId())
+                .memberName(apply.getMember().getName())
                 .content(apply.getContent())
                 .videoLink(apply.getVideoLink())
+                .createdAt(apply.getCreatedAt().toString())
                 .build();
         return applyDto;
     }
@@ -94,14 +103,15 @@ public class ApplyServiceImpl implements ApplyService {
                 .map(apply -> ApplyDto.builder()
                         .id(apply.getId())
                         .recruitmentId(apply.getRecruitment().getId())
-                        .memberId(apply.getMember().getId())
+                        .memberName(apply.getMember().getName())
                         .content(apply.getContent())
                         .videoLink(apply.getVideoLink())
+                        .createdAt(apply.getCreatedAt().toString())
                         .build())
                 .collect(Collectors.toList());
         return applyDtoList;
     }
-    
+
     // 해당 공고에 유저가 지원했는지 확인
     @Override
     public int existApply(Long recruitmentId, Long memberId) {

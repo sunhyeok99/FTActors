@@ -1,10 +1,15 @@
 package com.a602.actors.domain.member.repository;
 
-import com.a602.actors.domain.member.Member;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.a602.actors.domain.member.Member;
+
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    Member findByMemberId(String memberId);
+    Optional<Member> findById(Long id);
+    List<Member> findAllByStageName(String stageName);
 }

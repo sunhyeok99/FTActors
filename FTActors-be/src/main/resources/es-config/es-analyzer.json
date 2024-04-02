@@ -4,7 +4,7 @@
       "my_nori_tokenizer": {
         "type": "nori_tokenizer",
         "decompound_mode": "mixed",
-        "discard_punctuation": "false"
+        "di scard_punctuation": "false"
       }
     },
     "filter": {
