@@ -37,13 +37,13 @@
     },
       "analyzer": {
         "name_analyzer": {
-          "type": "json",
+          "type": "custom",
           "tokenizer": ["korean_edge_3gram_tokenizer", "standard"],
           "char_filter": ["remove_emoji"],
           "filter": ["korean_edge_3gram_filter", "english_lowercase_filter"]
         },
         "content_and_title_analyzer": {
-          "type": "json",
+          "type": "custom",
           "tokenizer": ["korean_edge_3gram_tokenizer", "standard"],
           "char_filter": ["remove_emoji"],
           "filter": ["korean_edge_3gram_filter", "english_lowercase_filter", "korean_stop_filter"]
