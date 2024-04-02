@@ -6,7 +6,7 @@
       <img src="@/assets/icons/Next.png" alt="" id="next" @click="goToNextMontage">
     </div>
     <div class="commentreply">
-      <CommentReply />
+      <CommentReply :current-id="currentId" />
     </div>
   </div>
 </template>
@@ -20,12 +20,14 @@ const router = useRouter();
 const route = useRoute();
 const thumbnail = ref(null);
 const currentId = ref(parseInt(route.params.id, 10));
+const montageLength = ref();
 
 const getMontage = () => {
-  axios.get(`http://localhost:8080/api/montage/list`)
+  axios.get(`http://localhost:8080/montage/list`)
     .then((response) => {
       if (currentId.value >= 0 && currentId.value < response.data.data.length) {
         montage.value = response.data.data.find((m, index) => index === currentId.value);
+        montageLength.value = response.data.data.length
       } else {
         console.error('Invalid montage ID:', currentId.value);
       }
@@ -45,9 +47,14 @@ const goToPreviousMontage = () => {
   };
 };
 const goToNextMontage = () => {
-  const nextId = currentId.value + 1;
+  if (currentId.value < montageLength.value -1) {
+    const nextId = currentId.value + 1;
   router.push({ name: 'montageDetail', params: { id: nextId } });
   getMontage();
+  } else {
+    alert('다음 컨텐츠가 없습니다.');
+  };
+
 };
 
 const montage = ref([]);

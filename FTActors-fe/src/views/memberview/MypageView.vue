@@ -47,12 +47,11 @@
               id="highest">동료</p>
             <ul class="dropdown-menu">
               <li>
-                <p class="dropdown-item" @click="getFollowingList">팔로우</p>
+                <p class="dropdown-item" @click="getFollowingList">팔로잉</p>
               </li>
               <li>
-                <p class="dropdown-item" @click="getFollowerList">팔로잉</p>
+                <p class="dropdown-item" @click="getFollowerList">팔로워</p>
               </li>
-
             </ul>
           </button>
         </div>
