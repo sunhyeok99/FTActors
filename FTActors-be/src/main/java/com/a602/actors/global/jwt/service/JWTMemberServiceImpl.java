@@ -55,10 +55,13 @@ public class JWTMemberServiceImpl {
         String savedName = "";
         String url = "";
         try{
-            //        if(jwtDto.getProfileImage() != null){
-            savedName = FileUtil.makeFileName(profileImage.getOriginalFilename());
-            url = FileUtil.uploadFile(profileImage, savedName, FolderType.PROFILE_PATH);
-//        }
+            if(profileImage != null){
+                savedName = FileUtil.makeFileName(profileImage.getOriginalFilename());
+                url = FileUtil.uploadFile(profileImage, savedName, FolderType.PROFILE_PATH);
+            }
+            else {
+                url = "";
+            }
 
             Member member = Member.builder()
                     .loginId(jwtDto.getLoginId())
@@ -72,6 +75,7 @@ public class JWTMemberServiceImpl {
                     .build();
 
             jwtMemberRepository.save(member);
+
         }catch (IOException e){
             // 프로필 이미지 업로드 실패 시 예외 처리
             log.error("Failed to upload profile image to S3", e);
