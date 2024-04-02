@@ -6,7 +6,7 @@
           <div class="text-center mb-4">
             <h1><b>회원가입</b></h1>
           </div>
-          <form>
+          <form @submit.prevent="signup">
             <div class="form-group mb-3">
               <label for="id" class="form-label">아이디</label>
               <input type="text" id="id" v-model="form.id" class="form-control" placeholder="사용하실 아이디를 입력해주세요">
@@ -24,12 +24,12 @@
             <div class="form-group mb-3">
               <label for="confirmPassword" class="form-label">비밀번호 확인</label>
               <div class="passrow">
-              <input :type="form.showConfirmPassword ? 'text' : 'password'" id="confirmPassword"
-                v-model="form.confirmPassword" class="form-control" placeholder="비밀번호를 다시 입력해주세요">
-              <span class="input-group-text" @click="toggleConfirmPasswordVisibility">
-                <i :class="{ 'bi-eye': !form.showConfirmPassword, 'bi-eye-slash': form.showConfirmPassword }"></i>
-              </span>
-            </div>
+                <input :type="form.showConfirmPassword ? 'text' : 'password'" id="confirmPassword"
+                  v-model="form.confirmPassword" class="form-control" placeholder="비밀번호를 다시 입력해주세요">
+                <span class="input-group-text" @click="toggleConfirmPasswordVisibility">
+                  <i :class="{ 'bi-eye': !form.showConfirmPassword, 'bi-eye-slash': form.showConfirmPassword }"></i>
+                </span>
+              </div>
             </div>
             <div class="form-group mb-3">
               <label for="name" class="form-label">이름</label>
@@ -49,20 +49,28 @@
             </div>
             <div class="form-group mb-3">
               <label for="image" class="form-label">이미지</label>
-              <input type="file" id="image"  @change="onImageChange"  class="input-field" />
+              <input type="file" id="image" @change="onImageChange" class="form-control" />
               <div v-if="selectedImage">
-                <span @click="clearSelectedImage"> X</span></div>
-                <img :src="selectedImage" v-if="selectedImage">       
+                <span @click="clearSelectedImage"> X</span>
+              </div>
+              <img :src="selectedImage" v-if="selectedImage">
             </div>
             <div class="form-group mb-3">
               <label for="gender" class="form-label">성별</label>
-              <select id="gender" v-model="form.gender" class="input-field">
-                <option value="">성별을 선택하세요</option>
-                <option value="M">남자</option>
-                <option value="F">여자</option>
-                </select>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="radio" v-model="form.gender" value="M" id="genderMale">
+                <label class="form-check-label" for="genderMale">
+                  남자
+                </label>
+              </div>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="radio" v-model="form.gender" value="F" id="genderFemale">
+                <label class="form-check-label" for="genderFemale">
+                  여자
+                </label>
+              </div>
             </div>
-            <button :disabled="!isFormValid" class="btn btn-primary w-100 mb-2" @click="signup">회원가입</button>
+            <button :disabled="!isFormValid" class="btn btn-primary w-100 mb-2" @click.prevent="signup">회원가입</button>
           </form>
         </div>
       </div>
@@ -197,17 +205,21 @@ const signup = async () => {
 .passrow {
   display: flex;
   align-items: center;
-  position: relative; 
+  position: relative;
 }
 
 .input-group-text {
   cursor: pointer;
-  margin-left: -40px; /* 아이콘 버튼을 입력 필드 내로 겹치게 하여 공간 활용 */
-  border: 0; /* 테두리 제거 */
-  background-color: transparent; /* 배경색 투명 */
+  margin-left: -40px;
+  /* 아이콘 버튼을 입력 필드 내로 겹치게 하여 공간 활용 */
+  border: 0;
+  /* 테두리 제거 */
+  background-color: transparent;
+  /* 배경색 투명 */
 }
 
 .input-group-text i {
-  font-size: 1rem; /* 아이콘 크기 조정 */
+  font-size: 1rem;
+  /* 아이콘 크기 조정 */
 }
 </style>
