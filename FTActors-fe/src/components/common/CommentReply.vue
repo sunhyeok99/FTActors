@@ -224,8 +224,9 @@ const uploadReply = () => {
       .post(`${BASE_URL}/montage/${selectedComment.value.commentId}/comment`, content)
       .then((response) => {
         console.log(response.data);
-        addReply.value = "";
         getCommentReply();
+        addReply.value = "";
+ 
       })
       .catch((error) => {
         console.error(error);
