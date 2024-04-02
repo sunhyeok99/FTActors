@@ -2,9 +2,9 @@
  
     <div id="carouselExampleAutoplaying" class="carousel slide w-75 m-auto" data-bs-ride="carousel">
       <div class="carousel-inner">
-        <div class="carousel-item" v-for="(montage, index) in montages" :key="index" :class="{ active: index === 0 }">
+        <div class="carousel-item" v-for="montage in montages" :key="montage.id">
           <div class="col">
-            <div class="card montage" @click="goToMontageDetail(index)">
+            <div class="card montage" @click="goToMontageDetail(montage.id)">
               <video :src="montage.link" muted autoplay playsinline></video>
               <div class="montage-title">{{ montage.title }}</div>
             </div>
@@ -12,8 +12,6 @@
         </div>
       </div>
     </div>
- 
-  
 </template>
 
 <script setup>

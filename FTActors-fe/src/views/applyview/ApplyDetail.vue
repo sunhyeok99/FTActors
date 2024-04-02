@@ -15,7 +15,6 @@
           </p>
           <button @click="goToBoardDetail(apply.recruitmentId)" class="btn-create">공고 보기</button>
         <button @click="confirmDelete" class="btn-create">지원 삭제</button>
-  
         </ul>
       </div>
     </div>
@@ -34,12 +33,12 @@ loginMember.value = MemberStore.memberInfo;
   const router = useRouter();
   const apply = ref({});
   const recruitment = ref({});
-const response = ref();
 
   const fetctApplyDetail = async () => {
     const applyId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
-      response.value = await recruitmentApi.getApplyDetail(applyId);
+    const response = await recruitmentApi.getApplyDetail(applyId);
       apply.value = response.data.data
+      console.log(apply.value)
   };
   
   onMounted(fetctApplyDetail);

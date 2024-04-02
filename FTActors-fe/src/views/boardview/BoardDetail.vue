@@ -49,7 +49,7 @@ import { useMemberStore } from "@/stores/member-store.js";
 const MemberStore = useMemberStore();
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
-const adminId = 11;
+const adminId = 1;
 const router = useRouter();
 const recruitment = ref({});
 

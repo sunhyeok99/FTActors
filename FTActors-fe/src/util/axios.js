@@ -26,13 +26,13 @@ axios.interceptors.request.use(
 
 
 const axiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: SERVER_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 const formDataInstance = axios.create({
-    baseURL: BASE_URL,
+    baseURL: SERVER_URL,
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -162,6 +162,47 @@ const recruitmentApi = {
       });
     },
   };
+  const profileApi = { // 프로필 api
+    getAllProfileList: (sorting = 1) => {  // 소팅 값이 따로 안 들어오면 1로 세팅 (1, 2중 가능)
+      return axiosInstance.get("/profile/list", { params: { sort: sorting } });
+    },
 
-export { memberApi, recruitmentApi, followApi, chatApi};
+    createProfile: (profileRequest) => {
+      return axiosInstance.post("/profile", profileRequest);
+    },
+    removeProfile: (profileId) => {
+      return axiosInstance.delete("/myprofile", { params: { profile_id: profileId } });
+    },
+    modifyProfile: (profileId, profileRequest) => {
+      return axiosInstance.put("/myprofile", profileRequest, { params: { profile_id: profileId } });
+    },
+    
+    // updateDate: (recruitmentId, endDate) => {
+    //   return axiosInstance.put("/api/recruitment/updateDate", null, {
+    //     params: { recruitmentId, endDate },
+    //   });
+    // },
+    getDetailProfile: (profileId) => {
+      return axiosInstance.get("/profile/detail", {
+        params: { profile_id: profileId },
+      });
+    },
+    // getPostList: (postMemberId) => {
+    //   return axiosInstance.get("/api/recruitment/postList", {
+    //     params: { postMemberId },
+    //   });
+    // },
+    searchContent: (keywords) => {
+      return axiosInstance.get("/profile/searchcontent", { params: { keywords: keywords } });
+    },
+    searchByStageName: (findName) => {
+      return axiosInstance.get("/profile/searchstagename", { params: { stage_name: findName } });
+    },
+    searchByName: (findName) => {
+      return axiosInstance.get("/profile/searchname", { params: { name: findName } });
+    },
+    
+  };
+
+export { memberApi, recruitmentApi, followApi, chatApi, profileApi };
 
