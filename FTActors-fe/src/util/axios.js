@@ -138,5 +138,14 @@ const recruitmentApi = {
     },
   };
 
-export { memberApi, recruitmentApi, followApi, chatApi};
+  const videoApi = {
+    getAllPerformVideo: (recruitmentId) => {
+      return axiosInstance.get('/recruitment/applyList', {
+        params: { recruitmentId }
+      });
+    }
+
+  }
+
+export { memberApi, recruitmentApi, followApi, chatApi, videoApi};
 

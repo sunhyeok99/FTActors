@@ -53,7 +53,8 @@ const recruitmentId = ref(2);
 //const videoFiles = ref([])
 onMounted(
   async ()=>{
-    await videoApi.getAllPerformVideo(recruitmentId.value).then((res) => {
+    await videoApi.getAllPerformVideo(recruitmentId.value)
+    .then((res) => {
       console.log(res)
       console.log(res.data.data);
       videoList.value = res.data.data;
