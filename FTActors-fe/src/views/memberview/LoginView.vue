@@ -15,7 +15,7 @@
               <label for="password">비밀번호</label>
               <input :type="showPassword ? 'text' : 'password'" id="password" v-model="password" class="form-control" placeholder="비밀번호를 입력해주세요">
             </div>
-            <button type="button" class="btn btn-primary w-100 mb-2" @click="login">로그인</button>
+            <button type="button" class="btn btn-dark w-100 mb-2" @click="login">로그인</button>
             <button type="button" class="btn w-100" @click="goToJoin">아직 회원이 아니라면? </button>
           </form>
         </div>

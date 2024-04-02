@@ -70,7 +70,10 @@
                 </label>
               </div>
             </div>
-            <button :disabled="!isFormValid" class="btn btn-primary w-100 mb-2" @click.prevent="signup">회원가입</button>
+            <button :disabled="!isFormValid" class="btn btn-dark w-100 mb-2"ㄴ type="button" disabled @click.prevent="signup">
+              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+              <span role="status">회원가입</span>
+            </button>
             <button type="button" class="btn w-100" @click="goToLogin">이미 회원이라면?</button>
           </form>
         </div>
