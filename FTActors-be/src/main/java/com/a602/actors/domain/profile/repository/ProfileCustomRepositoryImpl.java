@@ -1,11 +1,8 @@
 package com.a602.actors.domain.profile.repository;
 
-import com.a602.actors.domain.member.QMember;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.entity.Profile;
 import com.a602.actors.domain.profile.entity.QProfile;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import jakarta.persistence.EntityManager;
@@ -15,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Repository

@@ -1,6 +1,7 @@
 package com.a602.actors.domain.apply.service;
 
 import com.a602.actors.domain.apply.dto.ApplyDto;
+import com.a602.actors.domain.apply.dto.ApplyListDto;
 import com.a602.actors.domain.apply.entity.Apply;
 import com.a602.actors.domain.apply.repository.ApplyRepository;
 import com.a602.actors.domain.member.repository.MemberRepository;
@@ -66,16 +67,16 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
-    public List<ApplyDto> myApplyList(Long memberId) {
+    public List<ApplyListDto> myApplyList(Long memberId) {
         List<Apply> applyList = applyRepository.findByMemberId(memberId);
         // builder 교체
-        List<ApplyDto> applyDtoList = applyList.stream()
-                .map(apply -> ApplyDto.builder()
+        List<ApplyListDto> applyDtoList = applyList.stream()
+                .map(apply -> ApplyListDto.builder()
                         .id(apply.getId())
-                        .recruitmentId(apply.getRecruitment().getId())
+                        .recruitmentTitle(apply.getRecruitment().getTitle())
                         .memberName(apply.getMember().getName())
-                        .content(apply.getContent())
                         .videoLink(apply.getVideoLink())
+                        .videoName(apply.getSavedName())
                         .createdAt(apply.getCreatedAt().toString())
                         .build())
                 .collect(Collectors.toList());
@@ -88,24 +89,26 @@ public class ApplyServiceImpl implements ApplyService {
         ApplyDto applyDto = ApplyDto.builder()
                 .id(apply.getId())
                 .recruitmentId(apply.getRecruitment().getId())
+                .recruitmentTitle(apply.getRecruitment().getTitle())
                 .memberName(apply.getMember().getName())
                 .content(apply.getContent())
                 .videoLink(apply.getVideoLink())
+                .videoName(apply.getSavedName())
                 .createdAt(apply.getCreatedAt().toString())
                 .build();
         return applyDto;
     }
 
     @Override
-    public List<ApplyDto> applyList(Long recruitmentId) {
+    public List<ApplyListDto> applyList(Long recruitmentId) {
         List<Apply> applyList = applyRepository.findByRecruitmentId(recruitmentId);
-        List<ApplyDto> applyDtoList = applyList.stream()
-                .map(apply -> ApplyDto.builder()
+        List<ApplyListDto> applyDtoList = applyList.stream()
+                .map(apply -> ApplyListDto.builder()
                         .id(apply.getId())
-                        .recruitmentId(apply.getRecruitment().getId())
+                        .recruitmentTitle(apply.getRecruitment().getTitle())
                         .memberName(apply.getMember().getName())
-                        .content(apply.getContent())
                         .videoLink(apply.getVideoLink())
+                        .videoName(apply.getSavedName())
                         .createdAt(apply.getCreatedAt().toString())
                         .build())
                 .collect(Collectors.toList());
