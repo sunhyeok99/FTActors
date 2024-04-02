@@ -1,12 +1,10 @@
 <template>
   <div class="spacer">
-
   </div>
   <div class="montagemainpage">
     <MontageCarousel />
   </div>
   <div class="spacer2">
-
   </div>
 
 </template>

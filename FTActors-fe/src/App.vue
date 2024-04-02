@@ -19,9 +19,9 @@
               </button>
               <AlarmModal />
               <!-- 로그인 -->
-              <button type="button" class="btn btn-dark" id="loginbtn" @click="goToLogin">로그인</button>
+              <button type="button" class="btn btn-secondary" id="loginbtn" @click="goToLogin">로그인</button>
               <!-- 회원가입 -->
-              <button type="button" class="btn btn-dark" id="joinbtn" @click="goToJoin">회원가입</button>
+              <button type="button" class="btn btn-secondary" id="joinbtn" @click="goToJoin">회원가입</button>
               <!-- 마이페이지 -->
               <MypageDropdown/>
             </div>
@@ -103,19 +103,7 @@ header {
 }
 
 
-#loginbtn {
-  border-radius: 25px;
-  background-image: linear-gradient(to right, rgb(58, 123, 213), rgb(39, 16, 171));
-  border: none;
-  min-width: 75px;
-}
 
-#joinbtn {
-  min-width: 100px;
-  border-radius: 25px;
-  background-image: linear-gradient(to right, rgb(39, 16, 171), rgb(84, 84, 84) );
-  border: none;
-}
 
 #fontapply {
   font-family: 'tuesday_nightregular', impact;

@@ -63,7 +63,7 @@ const goToHomeview = () => {
 
 </script>
 
-<style>
+<style scoped>
 .offcanvas-lg {
   width: 80%;
 }
