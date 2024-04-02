@@ -214,4 +214,12 @@ header {
   z-index: 10;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+#loginbtn {
+  min-width: 80px;
+}
+
+#joinbtn {
+  min-width: 100px;
+}
 </style>

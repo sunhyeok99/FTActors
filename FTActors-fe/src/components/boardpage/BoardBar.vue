@@ -18,11 +18,14 @@
 import BoardCreateModal from '@/components/modals/BoardCreateModal.vue';
 </script>
 
-<style>
+<style scoped>
 .search-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.dropdown-menu {
+  z-index: 10;
 }
 
 #search {
