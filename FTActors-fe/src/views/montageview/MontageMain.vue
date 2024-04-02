@@ -5,7 +5,7 @@
   <div class="montagemainpage">
     <MontageCarousel />
   </div>
-  <div class="spacer">
+  <div class="spacer2">
 
   </div>
 
@@ -18,5 +18,9 @@ import MontageCarousel from '@/components/montagepage/MontageCarousel.vue'
 <style scoped>
 .spacer {
   height: 5rem;
+}
+
+.spacer2 {
+  height: 15rem;
 }
 </style>

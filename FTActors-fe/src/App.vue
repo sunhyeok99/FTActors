@@ -74,8 +74,7 @@ watch(() => route.path, (newPath) => {
 });
 
 const scrollToPosition = () => {
-
-  const scrollDistance = 5 * 16;
+  const scrollDistance = 6 * 16;
   window.scrollTo({
     top: scrollDistance,
     behavior: 'smooth' 

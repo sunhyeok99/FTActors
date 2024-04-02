@@ -52,7 +52,13 @@ import MontageFeed from '@/components/montagepage/MontageFeed.vue'
 import { RouterLink, RouterView, useRouter } from 'vue-router'
 const router = useRouter();
 const goToHomeview = () => {
-  router.push({ name: 'home' });
+  router.push({ name: 'home' }).then(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  });
 };
 
 </script>
