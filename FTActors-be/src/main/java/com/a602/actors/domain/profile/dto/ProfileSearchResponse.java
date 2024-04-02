@@ -14,6 +14,7 @@ public class ProfileSearchResponse implements Serializable {
     // 게시물 목록 양식에 들어갈 데이터만 제공
     // ??? - articleId는 MariaDB에 찾으러 갈 때 필요
     private Long id;
+    private String name;
     private String stageName; //stage_name
     private String content;
     private Character type;

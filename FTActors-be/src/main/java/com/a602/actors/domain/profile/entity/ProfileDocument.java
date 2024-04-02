@@ -26,6 +26,9 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     @Field(type = FieldType.Keyword)
     private Long id; //게시글 번호
 
+    @Field(type = FieldType.Text, analyzer = "name_analyzer", searchAnalyzer = "name_analyzer") // -> (초성 검색 허용), 오타 허용
+    private String name;
+
     //제목, 예명 TO do: Member에서 수정이 일어나면, profile에서도 똑같이 수정이 일어나야 한다. elasticsearch를 쓰게 되면서 문제가 생겼따
     @Field(name = "stage_name", type = FieldType.Text, analyzer = "name_analyzer", searchAnalyzer = "name_analyzer") // -> (초성 검색 허용), 오타 허용
     private String stageName;
