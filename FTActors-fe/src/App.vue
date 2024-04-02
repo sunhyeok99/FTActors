@@ -35,14 +35,15 @@
     aria-controls="offcanvasWithBothOptions"> <img width="40" src="@/assets/icons/Message.png" alt="message icon"></button>
     <SideBars />
   </div>
-  <footer>
-    <FooterBox />
-  </footer>
+
 </div>
+<footer>
+  <FooterBox />
+</footer>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch,onMounted } from 'vue'
 import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
 import MontageNav from '@/components/montagepage/MontageNav.vue'
 import MypageDropdown from './components/common/MypageDropdown.vue';
@@ -62,15 +63,30 @@ const goToJoin = () => {
   router.push({ name: 'join' });
 };
 
-
 const isMontagePage = ref(false);
-
-// 현재 라우트가 변경될 때마다 실행되는 watch 함수
 watch(() => route.path, (newPath) => {
-  isMontagePage.value = newPath === '/montagemain'; // Montage 페이지인지 확인
-  console.log('몽타쥬페이지 라우팅')
+  isMontagePage.value = newPath === '/montagemain'; 
+ 
+  if (isMontagePage.value) {
+    console.log('몽타쥬페이지 라우팅')
+    scrollToPosition();
+  }
 });
 
+const scrollToPosition = () => {
+
+  const scrollDistance = 5 * 16;
+  window.scrollTo({
+    top: scrollDistance,
+    behavior: 'smooth' 
+  });
+};
+
+onMounted(() => {
+  if (isMontagePage.value) {
+    scrollToPosition();
+  }
+});
 </script>
 
 <style scoped>

@@ -4,7 +4,6 @@
       <div class="card montage">
         <video :src="montage.link" muted autoplay playsinline></video>
         <div class="montage-title"><strong> {{ montage.title }}   </strong> {{ formatDate(montage.created_at) }}  </div>
-
       </div>
     </div>
   </div>

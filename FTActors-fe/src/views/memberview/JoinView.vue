@@ -71,6 +71,7 @@
               </div>
             </div>
             <button :disabled="!isFormValid" class="btn btn-primary w-100 mb-2" @click.prevent="signup">회원가입</button>
+            <button type="button" class="btn w-100" @click="goToLogin">이미 회원이라면?</button>
           </form>
         </div>
       </div>
@@ -189,6 +190,10 @@ const signup = async () => {
     alert("회원가입 실패");
     router.push("/");
   }
+};
+
+const goToLogin = () => {
+  router.push({ name: 'login' });
 };
 
 </script>
