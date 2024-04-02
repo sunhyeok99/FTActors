@@ -42,9 +42,9 @@ public class JWTController {
             return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "sign in failed", member);
         }
     }
-    @PostMapping("/loginmember")
-    public ApiResponse<JwtDto.getPkId> getIdByLoginId(@RequestBody String userId){
-        JwtDto.getPkId dto= jwtMemberService.getIdByLoginId(userId);
+    @GetMapping("/loginmember")
+    public ApiResponse<JwtDto.getPkId> getById(@RequestParam(name = "id") Long id){
+        JwtDto.getPkId dto= jwtMemberService.getIdByLoginId(id);
         return new ApiResponse<>(HttpStatus.OK.value(), "get Id by login id success", dto);
     }
 

@@ -42,14 +42,12 @@ services:
 #    ports:
 #      - "5000:5000"
 
-#  elastic:
-#    build:
-#      context: ../
-#      dockerfile: "./docker/dockerfile/elastic-search.dockerfile"
-#    networks:
-#      - backend
-#    ports:
-#      - "9200:9200"
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.4.3
+    networks:
+      - backend
+    ports:
+      - "9200:9200"
 
   redis:
     image: redis

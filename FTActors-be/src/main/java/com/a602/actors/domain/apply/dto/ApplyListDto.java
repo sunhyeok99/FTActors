@@ -13,6 +13,7 @@ public class ApplyListDto {
     private String recruitmentTitle;
     private String memberName;
     private String videoLink;
+    private String videoName;
     private String createdAt;
     @Builder
     public ApplyListDto(
@@ -20,12 +21,14 @@ public class ApplyListDto {
             String recruitmentTitle,
             String memberName,
             String videoLink,
+            String videoName,
             String createdAt
     ) {
         this.id = id;
         this.recruitmentTitle = recruitmentTitle;
         this.memberName = memberName;
         this.videoLink = videoLink;
+        this.videoName = videoName;
         this.createdAt = createdAt;
     }
 

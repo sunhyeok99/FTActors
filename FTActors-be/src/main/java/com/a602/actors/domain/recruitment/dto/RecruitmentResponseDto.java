@@ -20,6 +20,7 @@ public class RecruitmentResponseDto {
     private int apply;
     private String privateRecruitment;
     private String file;
+    private String fileName;
     private String loginName;
 
     @Builder
@@ -37,6 +38,7 @@ public class RecruitmentResponseDto {
             int apply,
             String privateRecruitment,
             String file,
+            String fileName,
             String loginName
     ) {
         this.id = id;
@@ -52,6 +54,7 @@ public class RecruitmentResponseDto {
         this.apply = apply;
         this.privateRecruitment = privateRecruitment;
         this.file = file;
+        this.fileName = fileName;
         this.loginName = loginName;
     }
 

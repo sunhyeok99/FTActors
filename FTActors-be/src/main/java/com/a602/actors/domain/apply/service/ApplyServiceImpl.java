@@ -76,6 +76,7 @@ public class ApplyServiceImpl implements ApplyService {
                         .recruitmentTitle(apply.getRecruitment().getTitle())
                         .memberName(apply.getMember().getName())
                         .videoLink(apply.getVideoLink())
+                        .videoName(apply.getSavedName())
                         .createdAt(apply.getCreatedAt().toString())
                         .build())
                 .collect(Collectors.toList());
@@ -92,6 +93,7 @@ public class ApplyServiceImpl implements ApplyService {
                 .memberName(apply.getMember().getName())
                 .content(apply.getContent())
                 .videoLink(apply.getVideoLink())
+                .videoName(apply.getSavedName())
                 .createdAt(apply.getCreatedAt().toString())
                 .build();
         return applyDto;
@@ -106,6 +108,7 @@ public class ApplyServiceImpl implements ApplyService {
                         .recruitmentTitle(apply.getRecruitment().getTitle())
                         .memberName(apply.getMember().getName())
                         .videoLink(apply.getVideoLink())
+                        .videoName(apply.getSavedName())
                         .createdAt(apply.getCreatedAt().toString())
                         .build())
                 .collect(Collectors.toList());

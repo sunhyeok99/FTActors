@@ -17,6 +17,7 @@ public class ApplyDto {
     private String memberName;
     private MultipartFile videoFile;
     private String videoLink;
+    private String videoName;
     private String content;
     private String createdAt;
     @Builder
@@ -26,6 +27,7 @@ public class ApplyDto {
             String recruitmentTitle,
             String memberName,
             String videoLink,
+            String videoName,
             String content,
             String createdAt
     ) {
@@ -34,6 +36,7 @@ public class ApplyDto {
         this.recruitmentTitle = recruitmentTitle;
         this.memberName = memberName;
         this.videoLink = videoLink;
+        this.videoName = videoName;
         this.content = content;
         this.createdAt = createdAt;
     }
