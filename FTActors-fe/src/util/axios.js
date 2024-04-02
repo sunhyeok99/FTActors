@@ -20,7 +20,7 @@ const memberApi = {
     return axiosInstance.post("/signin",  memberDto );
   },
   signup: (jwtDto) =>
-    axiosInstance.post("/signup", jwtDto ),
+    formDataInstance.post("/signup", jwtDto),
   updatepassword: (user) =>
     axiosInstance.post("/api/member/updatePassword", null, { params: member }),
     getById: (id) => {
