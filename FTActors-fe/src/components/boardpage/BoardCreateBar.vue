@@ -1,9 +1,5 @@
 <template>
-<button @click="boardCreate" class="btn btn-create" type="submit">공고 작성</button>
-
  <BoardCreateModal />
-
-
 </template>
 
 <script setup>

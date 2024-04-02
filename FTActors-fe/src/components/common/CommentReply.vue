@@ -1,71 +1,58 @@
 <template>
   <div class="commentreplycomponent">
-    <div class="accordion accordion-flush" id="accordionFlushExample">
-      <div class="accordion-item">
-        <div class="accordion-header">
-          <div class="columnthings">
-            <div class="rowthings">
-              <!-- 좋아요 버튼 -->
-              <button class="like-btn" :class="{ liked: isLiked }" @click.stop="toggleLike() ,addLike()">
-                <img v-if="isLiked" src="@/assets/icons/like-filled.png" alt="Liked">
-                <img v-else src="@/assets/icons/like-outline.png" alt="Unliked">
-                <p>{{ montageInfo.likeCount }}</p>
-              </button>
-              <!-- 신고 버튼 -->
-              <button type="button" class="report-btn" data-bs-toggle="modal" data-bs-target="#reportModal" >
-                <img src="@/assets/icons/Scissors.png" alt="cut">
-              </button>
-              <ReportModal :current-id="currentId" />
-              <!-- 댓글 펼치기 -->
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"
-                id="comment-count">
-                댓글 {{ comments.length }}개
-              </button>
-            </div>
-            <!-- 댓글 작성 인풋-->
-            <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="댓글 쓰기" aria-label="Recipient's username"
-                aria-describedby="button-addon2" v-model="addComment">
-              <button class="btn btn-outline-secondary" type="button" id="button-addon2"
-                @click.prevent="uploadComment">작성</button>
-            </div>
-          </div>
+    <div class="accordion-header">
+      <div class="columnthings">
+        <div class="rowthings">
+          <!-- 좋아요 버튼 -->
+          <button class="like-btn" :class="{ liked: isLiked }" @click.stop="toggleLike(), addLike()">
+            <img v-if="isLiked" src="@/assets/icons/like-filled.png" alt="Liked">
+            <img v-else src="@/assets/icons/like-outline.png" alt="Unliked">
+            <p>{{ montageInfo.likeCount }}</p>
+          </button>
+          <!-- 신고 버튼 -->
+          <button type="button" class="report-btn" data-bs-toggle="modal" data-bs-target="#reportModal">
+            <img src="@/assets/icons/Scissors.png" alt="cut">
+          </button>
+          <ReportModal :current-id="currentId" />
+          <!-- 댓글 개수 표시 -->
+          <span id="comment-count">댓글 {{ comments.length }}개</span>
         </div>
-
-        <transition name="slide">
-          <div class="accordion-collapse collapse show" v-if="comments.length > 0">
-            <div class="accordion-body">
-              <div class="list-group list-group-flush border-bottom scrollarea">
-                <!-- 댓글 리스트 -->
-                <button class="list-group-item list-group-item-action py-3 lh-tight"
-                  v-for="(comment, index) in comments" :key="index" @click.prevent="selectComment(comment)">
-                  <div class="d-flex w-100 align-items-center justify-content-between reply-block">
-                    <strong class="mb-1" id="reply-member">{{ comment.memberId }}</strong>
-                    <div class="col-10 mb-1 small comment-text">{{ comment.content }}</div>
-                    <!-- 삭제 버튼 -->
-                    <div class="remove"><img src="@/assets/icons/Remove.png" alt=""
-                        @click.stop="deleteComment(comment.commentId)"></div>
-                  </div>
-                  <!-- 대댓글 작성 인풋 -->
-                  <div v-if="selectedComment === comment" class="mt-4 reply-container">
-                    <input type="text" class="form-control reply-input" placeholder="대댓글 작성"
-                      aria-label="Recipient's username" aria-describedby="reply-button" v-model="addReply" @click.stop>
-                    <button class="btn btn-outline-secondary reply-btn" type="button" id="reply-button"
-                      @click.stop="uploadReply()">작성</button>
-                  </div>
-                  <!-- 대댓글 리스트 -->
-                  <div v-for="(reply, rIndex) in comment.reply" :key="`reply-${rIndex}`" class="mt-2" id="reply">
-                    <p>ㄴ <b id="reply-member">{{ reply.memberId }}</b> {{ reply.content }}</p>
-                    <!-- 삭제 버튼 -->
-                    <div class="remove"><img src="@/assets/icons/Remove.png" alt=""
-                      @click.stop="deleteReply(reply.commentId)"></div>
-                  </div>
-                </button>
-              </div>
-            </div>
+        <!-- 댓글 작성 인풋 -->
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="댓글 쓰기" aria-label="Recipient's username"
+            aria-describedby="button-addon2" v-model="addComment">
+          <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+            @click.prevent="uploadComment">작성</button>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-body">
+      <div class="list-group list-group-flush border-bottom scrollarea">
+        <!-- 댓글 리스트 -->
+        <button class="list-group-item list-group-item-action py-3 lh-tight"
+          v-for="(comment, index) in comments" :key="index" @click.prevent="selectComment(comment)">
+          <div class="d-flex w-100 align-items-center justify-content-between reply-block">
+            <strong class="mb-1" id="reply-member">{{ comment.memberId }}</strong>
+            <div class="col-10 mb-1 small comment-text">{{ comment.content }}</div>
+            <!-- 삭제 버튼 -->
+            <div class="remove"><img src="@/assets/icons/Remove.png" alt=""
+                @click.stop="deleteComment(comment.commentId)"></div>
           </div>
-        </transition>
+          <!-- 대댓글 작성 인풋 -->
+          <div v-if="selectedComment === comment" class="mt-4 reply-container">
+            <input type="text" class="form-control reply-input" placeholder="대댓글 작성"
+              aria-label="Recipient's username" aria-describedby="reply-button" v-model="addReply" @click.stop>
+            <button class="btn btn-outline-secondary reply-btn" type="button" id="reply-button"
+              @click.stop="uploadReply()">작성</button>
+          </div>
+          <!-- 대댓글 리스트 -->
+          <div v-for="(reply, rIndex) in comment.reply" :key="`reply-${rIndex}`" class="mt-2" id="reply">
+            <p>ㄴ <b id="reply-member">{{ reply.memberId }}</b> {{ reply.content }}</p>
+            <!-- 삭제 버튼 -->
+            <div class="remove"><img src="@/assets/icons/Remove.png" alt=""
+              @click.stop="deleteReply(reply.commentId)"></div>
+          </div>
+        </button>
       </div>
     </div>
   </div>
@@ -82,6 +69,8 @@ import ReportModal from '@/components/modals/ReportModal.vue';
 const props = defineProps({
   currentId: Number
 });
+
+const BASE_URL = 'https://j10a602.p.ssafy.io/api';
 
 // 몽타쥬 좋아요
 const isLiked = ref(false);
@@ -102,16 +91,14 @@ const montageInfo = ref([]);
 
 // 몽타쥬정보 가져오기
 const getMontageInfo = () => {
-  axios.get(`http://localhost:8080/montage/list`)
+  axios.get(`${BASE_URL}/montage/list`)
     .then((response) => {
-      const found = response.data.data.find(m => m.id === props.currentId); // 여기서 m.id가 몽타쥬의 ID와 일치하는지 확인
-      if (found) {
-        montageInfo.value = found;
+      const found = response.data.data
+        montageInfo.value = found[props.currentId];
         console.log('몽타쥬아이디:', props.currentId);
         console.log('좋아요개수:', montageInfo.value.likeCount);
-      } else {
-        alert('해당 컨텐츠를 찾을 수 없습니다.');
-      }
+        console.log('링크:', montageInfo.value.link);
+
     })
     .catch((error) => {
       console.error(error);
@@ -120,7 +107,7 @@ const getMontageInfo = () => {
 
 // 댓글/대댓글 가져오는 메서드
 const getCommentReply = () => {
-  axios.get(`http://localhost:8080/montage/${props.currentId}/comment`)
+  axios.get(`${BASE_URL}/montage/${props.currentId}/comment`)
     .then((response) => {
       console.log(response.data.data);
       comments.value = response.data.data;
@@ -139,7 +126,7 @@ onMounted(() => {
 // 좋아요 추가하기
 const addLike = () => {
     axios
-      .post(`http://localhost:8080/montage/${props.currentId}/like`)
+      .post(`${BASE_URL}/montage/${props.currentId}/like`)
       .then((response) => {
         console.log(response.data.data);
         isLiked.value = response.data.data;
@@ -166,11 +153,12 @@ const uploadComment = () => {
       "isDeleted": false
     };
     axios
-      .post(`http://localhost:8080/montage/${props.currentId}/comment`, content)
+      .post(`${BASE_URL}/montage/${props.currentId}/comment`, content)
       .then((response) => {
         console.log(response.data);
-        addComment.value = "";
         getCommentReply();
+        addComment.value = "";
+        
       })
       .catch((error) => {
         console.error(error);
@@ -186,7 +174,7 @@ const uploadComment = () => {
 
 const deleteComment = (id) => {
   axios
-    .delete(`http://localhost:8080/montage/${props.currentId}/comment/${id}`)
+    .delete(`${BASE_URL}/montage/${props.currentId}/comment/${id}`)
     .then(() => {
       console.log("댓글이 삭제되었습니다:");
       getCommentReply();
@@ -221,11 +209,12 @@ const uploadReply = () => {
       "isDeleted": false
     };
     axios
-      .post(`http://localhost:8080/montage/${selectedComment.value.commentId}/comment`, content)
+      .post(`${BASE_URL}/montage/${selectedComment.value.commentId}/comment`, content)
       .then((response) => {
         console.log(response.data);
-        addReply.value = "";
         getCommentReply();
+        addReply.value = "";
+ 
       })
       .catch((error) => {
         console.error(error);
@@ -239,7 +228,7 @@ const uploadReply = () => {
 // 대댓글 삭제
 const deleteReply = (id) => {
   axios
-    .delete(`http://localhost:8080/montage/${props.currentId}/comment/${id}`)
+    .delete(`${BASE_URL}/montage/${props.currentId}/comment/${id}`)
     .then(() => {
       console.log("대댓글이 삭제되었습니다:");
       getCommentReply();
@@ -302,8 +291,8 @@ const deleteReply = (id) => {
 }
 
 .report-btn img {
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
 }
 
 
