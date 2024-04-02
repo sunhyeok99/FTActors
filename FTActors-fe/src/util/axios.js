@@ -1,7 +1,29 @@
 import axios from "axios";
+import { useJwtStore } from "@/stores/member-store";
 
 const BASE_URL = `http://localhost:8080`;
-const tmp = 'https://j10a602.p.ssafy.io/api';
+const SERVER_URL = 'https://j10a602.p.ssafy.io/api';
+
+axios.interceptors.request.use(
+  config => {
+    // 인증 토큰을 여기에서 설정하거나 수정합니다.
+    
+    const jwtStore = useJwtStore();
+    const token = jwtStore.getToken();
+    
+    config.headers.Authorization = token == undefined ? '' : `Bearer ${token}`;
+    
+    console.log("TOKEN 출력");
+    console.log(token);
+    
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
+
+
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -20,7 +42,7 @@ const memberApi = {
     return axiosInstance.post("/signin",  memberDto );
   },
   signup: (jwtDto) =>
-    axiosInstance.post("/signup", jwtDto ),
+    formDataInstance.post("/signup", jwtDto),
   updatepassword: (user) =>
     axiosInstance.post("/api/member/updatePassword", null, { params: member }),
     getById: (id) => {

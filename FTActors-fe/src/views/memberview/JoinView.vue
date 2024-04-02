@@ -169,13 +169,16 @@ const signup = async () => {
     gender: form.gender,
   };
   const formData = new FormData();
-  for (const key in newMember) {
-    formData.append(key, newMember[key]);
-  }
+  // for (const key in newMember) {
+  //     formData.append(key, JSON.stringify(newMember[key]));
+  // }
+  formData.append("dto", new Blob([JSON.stringify(newMember)], {
+      type: "application/json"
+  }));
   formData.append("profileImage", image)
   try {
     console.log(image)
-    const response = await memberApi.signup(newMember);
+    const response = await memberApi.signup(formData);
     console.log(response)
     if (response.status === 200) {
       alert("회원가입 성공");
