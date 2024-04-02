@@ -31,21 +31,15 @@ loginMember.value = MemberStore.memberInfo;
 
   const router = useRouter();
   const apply = ref({});
-<<<<<<< HEAD
   const recruitment = ref({});
 const response = ref();
-=======
 
->>>>>>> 9e53fa715b99da2700d342e1726a54e51960e856
   const fetctApplyDetail = async () => {
     const applyId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
       response.value = await recruitmentApi.getApplyDetail(applyId);
       apply.value = response.data.data
-<<<<<<< HEAD
       response.value = await recruitmentApi.getDetail(apply.value.recruitmentId , 1);
       recruitment.value = response.data.data
-=======
->>>>>>> 9e53fa715b99da2700d342e1726a54e51960e856
   };
   
   onMounted(fetctApplyDetail);
