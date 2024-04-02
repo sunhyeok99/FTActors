@@ -20,7 +20,7 @@ const offcanvas = ref(null);
 
 // 몽타쥬리스트 가져오는 메서드
 const getMontages = () => {
-  axios.get(`http://localhost:8080/api/montage/list`)
+  axios.get(`http://localhost:8080/montage/list`)
     .then((response) => {
       console.log(response.data.data);
       montages.value = response.data.data;

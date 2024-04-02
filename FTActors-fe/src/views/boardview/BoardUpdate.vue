@@ -55,7 +55,7 @@ import { useRouter } from 'vue-router';
 import { recruitmentApi } from '@/util/axios';
 import { useMemberStore } from "@/stores/member-store.js";
   
-  const MmeberStore = useMemberStore();
+  const MemberStore = useMemberStore();
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
 
@@ -123,7 +123,7 @@ const onScriptChange = (e) => {
 const fetchRecruitmentDetail = async () => {
   try {
     const recruitmentId = history.state.id;
-    const response = await recruitmentApi.getDetail(recruitmentId, loginMember.id);
+    const response = await recruitmentApi.getDetail(recruitmentId, loginMember.value);
     editedRecruitment.value = response.data.data;
      // 초기 이미지 설정
      if (response.data.data.image != null) {

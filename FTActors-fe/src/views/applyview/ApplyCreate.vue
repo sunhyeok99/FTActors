@@ -7,7 +7,7 @@
         <p>{{ recruitment.title }}</p>
   
         <label for="postMemberId">회원 이름</label>
-        <p>{{ recruitment.postMemberName }}</p>
+        <p>{{ recruitment.loginName }}</p>
   
         <label for="content">지원 내용</label>
         <textarea  type="text"  id="content"  v-model="content"  placeholder="지원 내용을 간단하게 적어주세요"  class="input-field" width="400px" height="400px"></textarea>  
@@ -45,7 +45,8 @@ let fileReader = new FileReader(); // FileReader 변수를 함수 외부에서 �
   
   const fetchRecruitmentDetail = async () => {
     const recruitmentId = router.currentRoute.value.params.recruitmentId; // 현재 라우트의 파라미터 사용
-    const response = await recruitmentApi.getDetail(recruitmentId, loginMember.id);
+    const response = await recruitmentApi.getDetail(recruitmentId, loginMember.value);
+    console.log(response.data.data)
       recruitment.value = response.data.data
 };
   
@@ -54,7 +55,7 @@ let fileReader = new FileReader(); // FileReader 변수를 함수 외부에서 �
   const apply = async () => {
   let formData = new FormData();
   formData.append("recruitmentId", recruitment.value.id);
-  formData.append("memberId", loginMember.id);
+  formData.append("memberId", loginMember.value);
   formData.append("videoFile", script);
   formData.append("content", content.value);
     try {

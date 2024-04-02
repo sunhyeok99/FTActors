@@ -138,12 +138,12 @@ const register = async () => {
 let formData = new FormData();
 formData.append("title", title.value);
 formData.append("content", content.value);
-formData.append("postMemberId", loginUser.id.value);
+formData.append("postMemberId", loginMember.value);
 formData.append("category", category.value);
 formData.append("image", image);
 formData.append("startDate", startDate.value);
 formData.append("endDate", endDate.value);
-formData.append("memberId", loginUser.id.value);
+formData.append("memberId", loginMember.value);
   try {
     const response = await recruitmentApi.register(formData);
     if (response.status === 200) {
