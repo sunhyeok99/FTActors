@@ -1,106 +1,170 @@
+<template>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- 왼쪽에 배치된 div -->
+      <div class="col-md-6">
+        <h3>영상 리스트</h3>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+          <div class="col" v-for="apply in applys" :key="apply.id" @click="toggleVideos(apply.id)">
+            <div class="card" id="apply">
+              <video class="video" controls preload>
+                <source :src="apply.videoLink" type="video/mp4" />
+              </video>
+              <h5 class="card-title"><b>{{ apply.memberName }}</b></h5>
+              <p>{{ truncateVideoName(apply.videoName) }}</p>
+              <p class="card-text">{{ apply.createdAt }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 오른쪽에 배치된 div -->
+      <div class="col-md-6">
+        <h3>선택된 영상</h3>
+        <div v-if="selectedApplyIds.length > 0" class="row row-cols-1 g-4">
+          <div class="col" v-for="video in filteredVideos" :key="video.id" @click="toggleVideos(video.id)">
+            <div class="card" id="video">
+              <video class="video" controls preload>
+                <source :src="video.videoLink" type="video/mp4" />
+              </video>
+              <h5 class="card-title"><b>{{ video.memberName }}</b></h5>
+              <p class="card-text">{{ video.createdAt }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 하단에 선택된 영상 개수 표시 -->
+    <p>선택된 영상 개수: {{ selectedApplyIds.length }}</p>
+
+    <!-- 영상 편집하려 이동하는 버튼 -->
+    <button @click="navigateToVideoEditingPage" :disabled="selectedApplyIds.length === 0">
+      영상 편집하러 가기
+    </button>
+  </div>
+</template>
+
 <script setup>
-import { ref, watch, onMounted, onBeforeUnmount, provide } from "vue";
-import VideoSideBar from "./VideoSideBar.vue";
-// import Editor from "./Editor.vue"
-import Editor from "./Editor2.vue"
+import { ref, onMounted, computed  } from 'vue';
+import { useRouter } from 'vue-router';
+import { recruitmentApi } from '@/util/axios';
+import { useMemberStore } from "@/stores/member-store.js";
 
-const videoFiles = ref([
-  { src: '/src/assets/montage/콘트라베이스.mp4' },
-  { src: '/src/assets/montage/핸드크림.mp4' },
-  { src: '/src/assets/montage/담요.mp4' }
+const router = useRouter();
+const MemberStore = useMemberStore();
+const loginMember = ref(null);
+loginMember.value = MemberStore.memberInfo;
+const recruitmentId = router.currentRoute.value.params.id;
+
+// const applys = ref([]);
+const videos = ref([]);
+const applys = ref([
+  { videoLink: '/src/assets/montage/콘트라베이스.mp4' },
+  { videoLink: '/src/assets/montage/핸드크림.mp4' },
+  { videoLink: '/src/assets/montage/담요.mp4' }
 ]);
+const selectedApplyIds = ref([]);
 
-const videos = ref({});
 
-const selectedVideoIndex = ref(null);
-
-const handleVideoSelected = (index) => {
-  selectedVideoIndex.value = index;
-  console.log("selected video index from Main !! ", selectedVideoIndex.value);
-};
-
-// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
-const currentTime = ref(0);
-
-const updateCurrentTime = () => {
-  if (videoElement.value) {
-    currentTime.value = videoElement.value.currentTime;
+// getList 함수 정의: 백엔드로부터 공고 리스트를 받아오는 함수
+const getList = async (recruitmentId) => {
+  try {
+    await recruitmentApi.getApplyList(recruitmentId).then((res) => {
+      // applys.value = res.data.data;
+      videos.value = res.data.data;
+    })   
+  } catch (error) {
+    console.error('Error fetching recruitment list:', error);
   }
 };
 
-const saveCurrentTime = () => {
-  console.log("Current Time:", currentTime.value);
-};
-
-// 비디오 요소 참조
-const videoElement = ref(null);
-
+// 페이지가 로드될 때 getList 함수 호출
 onMounted(() => {
-  videoElement.value.addEventListener('timeupdate', updateCurrentTime);
+  console.log(recruitmentId)
+  getList(recruitmentId);
 });
 
-onBeforeUnmount(() => {
-  videoElement.value.removeEventListener('timeupdate', updateCurrentTime);
-});
-
-const handleVideoPlay = () => {
-  videoElement.value = document.querySelector('.video');
+// apply를 클릭하면 해당 apply의 id를 selectedApplyIds에 추가하거나 삭제
+const toggleVideos = (applyId) => {
+  console.log(applyId)
+if (isSelectedApply(applyId)) {
+  console.log("포함되있었음")
+  selectedApplyIds.value = selectedApplyIds.value.filter(id => id !== applyId);
+} else {
+  console.log('포함안되어있었음')
+  if (selectedApplyIds.value.length < 5) {
+    selectedApplyIds.value.push(applyId);
+  }
+}
 };
 
-// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+// 선택된 apply인지 확인하는 메서드
+const isSelectedApply = (applyId) => {
+return selectedApplyIds.value.includes(applyId);
+};
 
+// 선택된 apply에 해당하는 영상들을 필터링
+const filteredVideos = computed(() => {
+return videos.value.filter(video => selectedApplyIds.value.includes(video.id));
+});
+
+// 영상 편집 페이지로 이동하는 메서드
+const navigateToVideoEditingPage = () => {
+if (selectedApplyIds.value.length > 1) {
+  router.push({ name: 'editPage', params: { params: { id: selectedApplyIds.value } } });
+} else {
+  alert('최소 2개의 영상을 선택해주세요.');
+}
+};
+
+const truncateVideoName = (name) => {
+if (!name) return ''; // name이 정의되어 있지 않으면 빈 문자열 반환
+for (let i = 0; i < name.length; i++) {
+  if (name.substring(i, i + 1) === "_") {
+    return name.substring(i + 1, name.length);
+  }
+}
+return name;
+};
 
 </script>
 
-<template>
-  <div class="sch-container">
-    <Role></Role>
-    <!-- <VideoSideBar :videoList="videoFiles" class="item" @videoSelected="handleVideoSelected" />
-    <Editor2 :videoList="videoFiles" class="item" :selectedVideoIndex="selectedVideoIndex" /> -->
-
-    <div v-for="video in videoFiles" :key="video.id">
-      <video class="video" controls preload @timeupdate="updateCurrentTime" @play="handleVideoPlay">
-        <source :src="video.src" type="video/mp4" />
-      </video>
-      <button @click="saveCurrentTime">재생 시간 저장</button>
-    </div>
-
-
-  </div>
-  <SendButton></SendButton>
-</template>
-
-<style scope>
-body {
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
+<style scoped>
+#board {
+  border: none;
 }
 
-html {
-  height: -webkit-fill-available;
+.image-container {
+  position: relative;
+  display: inline-block;
 }
 
-.sch-container {
-  display: flex;
-  height: 100vh;
+.card-img-top {
   width: 100%;
-  flex-direction: row;
+  /* Adjust the size as needed */
+  display: block;
 }
 
-.container-sidebar {
-  flex: 1;
+.like-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
-.container-editor2 {
-  flex: 3;
+.liked img {
+  filter: invert(36%) sepia(94%) saturate(3013%) hue-rotate(346deg) brightness(100%) contrast(97%);
 }
 
-/* .item:nth-child(1) {
-  flex-grow: 1;
+.like-btn img {
+  width: 20px;
+  height: 20px;
 }
-
-.item:nth-child(2) {
-  flex-grow: 4;
-} */
+.card {
+  width: 100%;
+  margin-bottom: 20px; /* Adjust as needed */
+}
 </style>

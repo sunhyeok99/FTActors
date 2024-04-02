@@ -22,6 +22,7 @@ import ReportView from "@/views/adminview/ReportView.vue";
 import ChatDetail from "@/components/chatpage/chatdetail.vue";
 import ChatList from "@/components/chatpage/chatlist.vue";
 import MainVideo from "@/components/videoEditor/MainVideo.vue";
+import Editpage from "@/components/videoEditor/Editpage.vue";
 import ChatRoomView from "@/views/chatview/ChatRoomView.vue";
 import ApplyCreate from "../views/applyview/ApplyCreate.vue";
 import ApplyDetail from "../views/applyview/ApplyDetail.vue";
@@ -174,8 +175,14 @@ const router = createRouter({
     {
       path: '/edit',
       name: 'edit',
-      component: MainVideo,
-    }
+      component: Editpage,
+    },
+    {
+      path : '/mainVideo/:id',
+      name : 'mainVideo',
+      component : MainVideo,
+      props : true,
+    },
   ],
 });
 
