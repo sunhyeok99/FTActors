@@ -106,14 +106,12 @@ const montageInfo = ref([]);
 const getMontageInfo = () => {
   axios.get(`${BASE_URL}/montage/list`)
     .then((response) => {
-      const found = response.data.data.find(m => m.id === props.currentId); // 여기서 m.id가 몽타쥬의 ID와 일치하는지 확인
-      if (found) {
-        montageInfo.value = found;
+      const found = response.data.data
+        montageInfo.value = found[props.currentId];
         console.log('몽타쥬아이디:', props.currentId);
         console.log('좋아요개수:', montageInfo.value.likeCount);
-      } else {
-        alert('해당 컨텐츠를 찾을 수 없습니다.');
-      }
+        console.log('링크:', montageInfo.value.link);
+
     })
     .catch((error) => {
       console.error(error);
