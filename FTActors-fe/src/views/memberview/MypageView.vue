@@ -93,8 +93,8 @@
         v-show="posts.length > 0">
         <div class="col" v-for="post in posts" :key="post.id">
             <div class="card" id="posts">
-                <img :src="post.image" alt="" @click="goToBoardDetail(post.id)">
-                <div class="card-body" @click="goToBoardDetail(post.id)">
+                <img :src="post.image" alt="" @click="goToApplyList(post.id)">
+                <div class="card-body" @click="goToApplyList(post.id)">
                     <h5 class="card-title"><b>{{ post.title }}</b></h5>
                     <p class="card-text">종료일자: {{ post.endDate }}</p>
                 </div>
@@ -138,9 +138,7 @@
 
 <script setup>
 import ProfileTab from '@/components/tabs/ProfileTab.vue';
-import BoardTab from '@/components/tabs/BoardTab.vue';
 import MontageTab from '@/components/tabs/MontageTab.vue';
-import CompanionTab from '@/components/tabs/CompanionTab.vue';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { recruitmentApi, memberApi, followApi } from '@/util/axios';
@@ -250,6 +248,10 @@ const goToBoardDetail = (boardId) => {
 
 const goToApplyDetail = (applyId) => {
   router.push({ name: 'applyDetail', params: { id: applyId } });
+};
+
+const goToApplyList = (postId) => {
+  router.push({ name: 'applyList', params: { id : postId } });
 };
 
 const changeFollow = async (followingId, followerId, index) => {
