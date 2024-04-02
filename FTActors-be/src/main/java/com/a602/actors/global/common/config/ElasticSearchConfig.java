@@ -29,10 +29,13 @@ public class ElasticSearchConfig extends ElasticsearchConfiguration {
     @Value("${elasticsearch.password}")
     private String password;
 
+    @Value("${elasticsearch.port}")
+    private String port;
+
     @Override
     public ClientConfiguration clientConfiguration() {
         return ClientConfiguration.builder()
-                .connectedTo(host)
+                .connectedTo(host+":"+port)
 //                .usingSsl() // ssl 사용
                 .withBasicAuth(username, password)
                 .build();
