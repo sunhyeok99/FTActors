@@ -7,7 +7,6 @@
                 <img v-if="board.wishList === 1" src="@/assets/icons/like-filled.png" alt="Liked">
                 <img v-else src="@/assets/icons/like-outline.png" alt="Like">         
               </button>
-              
             <div class="col-md-8">
               <div class="card-body" @click="goToBoardDetail(board.id)">
                 <h5 class="card-title"><b>{{ board.title }}</b></h5>

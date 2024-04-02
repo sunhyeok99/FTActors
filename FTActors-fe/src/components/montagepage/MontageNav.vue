@@ -61,6 +61,14 @@ const goToHomeview = () => {
   });
 };
 
+const formatDate = () => {
+      const date = new Date();
+      const year = date.getFullYear().toString().substr(-2); 
+      const month = ('0' + (date.getMonth() + 1)).slice(-2); 
+      const day = ('0' + date.getDate()).slice(-2); 
+      return `${year} - ${month} - ${day}`;
+}
+
 </script>
 
 <style scoped>
@@ -90,6 +98,17 @@ const goToHomeview = () => {
   background-image: linear-gradient(45deg, rgb(33, 37, 41) 25%, #ADB5BD 25%, #ADB5BD 50%, rgb(33, 37, 41) 50%, rgb(33, 37, 41) 75%, #ADB5BD 75%, #ADB5BD);
   background-size: 100px 100px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.name {
+  color: rgb(255, 255, 234);
+  font-weight: 100;
+}
+#pin{
+  width: 100px;
+}
+
+#today{
+  color: white;
 }
 
 
