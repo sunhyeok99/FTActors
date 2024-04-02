@@ -26,7 +26,7 @@ public class JWTController {
 
     @PostMapping("/signup")
     public ApiResponse<String> regist(@RequestPart(value = "dto") JwtDto.Simple jwtDto,
-                                      @RequestPart(value = "profileImage") MultipartFile profileImage) throws IOException {
+                                      @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) throws IOException {
         log.info("Success register login_id : {}", jwtDto.getLoginId());
         return new ApiResponse<>(HttpStatus.OK.value(), "sign up success", jwtMemberService.signup(jwtDto, profileImage));
     }
