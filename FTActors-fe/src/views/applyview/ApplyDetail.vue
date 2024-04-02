@@ -33,13 +33,13 @@ loginMember.value = MemberStore.memberInfo;
 
   const router = useRouter();
   const apply = ref({});
-  const recruitment = ref({});
-const response = ref();
+
 
   const fetctApplyDetail = async () => {
     const applyId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
-      response.value = await recruitmentApi.getApplyDetail(applyId);
+    const response = await recruitmentApi.getApplyDetail(applyId);
       apply.value = response.data.data
+      console.log(apply.value)
   };
   
   onMounted(fetctApplyDetail);
