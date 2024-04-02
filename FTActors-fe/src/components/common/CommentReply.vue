@@ -83,6 +83,8 @@ const props = defineProps({
   currentId: Number
 });
 
+const BASE_URL = 'https://j10a602.p.ssafy.io/api';
+
 // 몽타쥬 좋아요
 const isLiked = ref(false);
 const toggleLike = () => {
@@ -102,7 +104,7 @@ const montageInfo = ref([]);
 
 // 몽타쥬정보 가져오기
 const getMontageInfo = () => {
-  axios.get(`http://localhost:8080/montage/list`)
+  axios.get(`${BASE_URL}/montage/list`)
     .then((response) => {
       const found = response.data.data.find(m => m.id === props.currentId); // 여기서 m.id가 몽타쥬의 ID와 일치하는지 확인
       if (found) {
@@ -120,7 +122,7 @@ const getMontageInfo = () => {
 
 // 댓글/대댓글 가져오는 메서드
 const getCommentReply = () => {
-  axios.get(`http://localhost:8080/montage/${props.currentId}/comment`)
+  axios.get(`${BASE_URL}/montage/${props.currentId}/comment`)
     .then((response) => {
       console.log(response.data.data);
       comments.value = response.data.data;
@@ -139,7 +141,7 @@ onMounted(() => {
 // 좋아요 추가하기
 const addLike = () => {
     axios
-      .post(`http://localhost:8080/montage/${props.currentId}/like`)
+      .post(`${BASE_URL}/montage/${props.currentId}/like`)
       .then((response) => {
         console.log(response.data.data);
         isLiked.value = response.data.data;
@@ -166,7 +168,7 @@ const uploadComment = () => {
       "isDeleted": false
     };
     axios
-      .post(`http://localhost:8080/montage/${props.currentId}/comment`, content)
+      .post(`${BASE_URL}/montage/${props.currentId}/comment`, content)
       .then((response) => {
         console.log(response.data);
         addComment.value = "";
@@ -186,7 +188,7 @@ const uploadComment = () => {
 
 const deleteComment = (id) => {
   axios
-    .delete(`http://localhost:8080/montage/${props.currentId}/comment/${id}`)
+    .delete(`${BASE_URL}/montage/${props.currentId}/comment/${id}`)
     .then(() => {
       console.log("댓글이 삭제되었습니다:");
       getCommentReply();
@@ -221,7 +223,7 @@ const uploadReply = () => {
       "isDeleted": false
     };
     axios
-      .post(`http://localhost:8080/montage/${selectedComment.value.commentId}/comment`, content)
+      .post(`${BASE_URL}/montage/${selectedComment.value.commentId}/comment`, content)
       .then((response) => {
         console.log(response.data);
         addReply.value = "";
@@ -239,7 +241,7 @@ const uploadReply = () => {
 // 대댓글 삭제
 const deleteReply = (id) => {
   axios
-    .delete(`http://localhost:8080/montage/${props.currentId}/comment/${id}`)
+    .delete(`${BASE_URL}/montage/${props.currentId}/comment/${id}`)
     .then(() => {
       console.log("대댓글이 삭제되었습니다:");
       getCommentReply();

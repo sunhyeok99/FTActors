@@ -15,12 +15,13 @@ import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import axios from 'axios';
 
+const BASE_URL = 'https://j10a602.p.ssafy.io/api';
 const router = useRouter();
 const montages = ref([]);
 
 // 몽타쥬리스트 가져오는 메서드
 const getMontages = () => {
-  axios.get(`http://localhost:8080/montage/list`)
+  axios.get(`${BASE_URL}/montage/list`)
     .then((response) => {
       console.log(response.data.data);
       montages.value = response.data.data;
@@ -32,10 +33,10 @@ const getMontages = () => {
 
 const formatDate = (dateStr) => {
       const date = new Date(dateStr);
-      const year = date.getFullYear().toString().substr(-2); // 'YY' 포맷으로 연도 가져오기
-      const month = ('0' + (date.getMonth() + 1)).slice(-2); // 'mm' 포맷으로 월 가져오기
-      const day = ('0' + date.getDate()).slice(-2); // 'DD' 포맷으로 일 가져오기
-      return `${year}${month}${day}`; // 'YY-mm-DD' 형식으로 반환
+      const year = date.getFullYear().toString().substr(-2); 
+      const month = ('0' + (date.getMonth() + 1)).slice(-2); 
+      const day = ('0' + date.getDate()).slice(-2); 
+      return `${year}${month}${day}`;
 }
 
 // 일단 페이지 로드 시 실행
@@ -45,8 +46,6 @@ onMounted(() => {
 
 const goToMontageDetail = (montageId) => {
   router.push({ name: 'montageDetail' , params: { id: montageId }});
-
-
 };
 
 </script>
