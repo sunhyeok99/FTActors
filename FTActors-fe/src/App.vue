@@ -22,28 +22,18 @@
               <button type="button" class="btn btn-dark" id="loginbtn" @click="goToLogin">로그인</button>
               <!-- 회원가입 -->
               <button type="button" class="btn btn-dark" id="joinbtn" @click="goToJoin">회원가입</button>
-
-              <!-- 마이페이지 -->
-              <MypageDropdown />
             </div>
-          </nav>
-
-        </div>
-      </header>
-      <!-- 라우팅된 화면 -->
-      <RouterView />
-      <!-- 메시지 버튼 -->
-      <button class="btn btn-primary" id="floating-map-button" type="button" data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"> <img width="40"
-          src="@/assets/icons/Message.png" alt="message icon"></button>
-      <SideBars />
-    </div>
-
-    <!-- 푸터 -->
-    <footer>
-      <FooterBox />
-    </footer>
+            </nav>
+      </div>
+    </header>
+    <!-- 라우팅된 화면 -->
+    <RouterView />
+    <!-- 메시지 버튼 -->
+    <button class="btn btn-primary" id="floating-map-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+    aria-controls="offcanvasWithBothOptions"> <img width="40" src="@/assets/icons/Message.png" alt="message icon"></button>
+    <SideBars />
   </div>
+</div>
 </template>
 
 <script setup>
@@ -54,6 +44,7 @@ import MypageDropdown from './components/common/MypageDropdown.vue';
 import FooterBox from './components/common/FooterBox.vue';
 import AlarmModal from './components/modals/AlarmModal.vue';
 import SideBars from './components/common/SideBars.vue';
+import ChatList from './components/chatpage/chatlist.vue';
 
 
 const route = useRoute();

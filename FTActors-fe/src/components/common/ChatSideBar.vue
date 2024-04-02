@@ -11,10 +11,10 @@
             <button class="btn btn-primary" id="floating-map-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
             aria-controls="offcanvasWithBothOptions"> <img width="40" src="@/assets/icons/Message.png" alt="message icon"></button>
             <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" 
-               v-for="(chat, index) in chats" 
-               :key="index" 
-               @click.prevent="selectChat(chat)"
-               >
+              v-for="(chat, index) in chats" 
+              :key="index" 
+              @click.prevent="selectChat(chat)"
+              >
               <div class="d-flex w-100 align-items-center justify-content-between" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions">
                 <strong class="mb-1">{{ chat.name }}</strong>
                 <small class="text-muted">{{ chat.day }}</small>

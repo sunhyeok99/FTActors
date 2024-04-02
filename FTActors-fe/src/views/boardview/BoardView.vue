@@ -21,12 +21,6 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-const boardCreate = () => {
-  router.push({ name: 'boardCreate' });
-};
-
-
-
 </script>
 
   <style>

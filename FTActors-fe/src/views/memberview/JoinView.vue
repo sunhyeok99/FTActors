@@ -116,16 +116,16 @@
             </div>
         <div class="form-group">
             <label>성별</label>
-            <select id="gender" v-model="gender" class="input-field">
+            <select id="gender" v-model="form.gender" class="input-field">
             <option value="">성별을 선택하세요</option>
             <option value="M">남자</option>
             <option value="F">여자</option>
             </select>
         </div>
-        <button :disabled="!isFormValid" class="btn-signup" @click="signup">
-            회원가입
-        </button>
-        </form>
+      </form>
+      <button :disabled="!isFormValid" class="btn-signup" @click="signup">
+          회원가입
+      </button>
             </div>
         </div>
     </div>
@@ -150,7 +150,7 @@ const form = reactive({
   phone: "",
   showPassword: false,
   showConfirmPassword: false,
-  gender: ref('M')
+  gender: "",
 });
 let image = null;
 const selectedImage = ref(null);
@@ -193,7 +193,6 @@ const onImageChange = (e) => {
     };
     imageReader.readAsDataURL(file);
     image = file;
-    console.log(imageReader)
   }
   else{
     image = null;
@@ -204,7 +203,8 @@ const onImageChange = (e) => {
 };
 const clearSelectedImage = () => {
       selectedImage.value = null
-      const input = document.getElementById('image');
+      form.profileImage = null;
+const input = document.getElementById('image');
   input.value = ''; // input 요소의 값을 초기화하여 파일 이름을 지움
     image = null;
 };
@@ -227,15 +227,8 @@ for (const key in newMember) {
 }
 formData.append("profileImage", image)
   try {
-    console.log(formData.get("loginId"))
-    console.log(formData.get("password"))
-    console.log(formData.get("name"))
-    console.log(formData.get("stageName"))
-    console.log(formData.get("email"))
-    console.log(formData.get("birth"))
-    console.log(formData.get("phone"))
-    console.log(formData.get("gender"))
-    const response = await memberApi.signup(formData);
+    console.log(image)
+    const response = await memberApi.signup(newMember);
     console.log(response)
     if (response.status === 200) {
       alert("회원가입 성공");

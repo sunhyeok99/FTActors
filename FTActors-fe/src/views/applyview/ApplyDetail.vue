@@ -7,9 +7,9 @@
       <div class="boardlist">
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><label><b>공고명</b></label>{{ apply.recruitmentTitle }} </li>
-          <li class="list-group-item"><label><b>담당자</b></label>{{ apply.memberName }}</li>
-          <li class="list-group-item"><label><b>공고분류</b></label>{{ apply.content }}</li>
-          <li class="list-group-item"><label><b>지원시작일자</b></label>{{ apply.createdAt }}</li>
+          <li class="list-group-item"><label><b>지원자 이름</b></label>{{ apply.memberName }}</li>
+          <li class="list-group-item"><label><b>지원 내용</b></label>{{ apply.content }}</li>
+          <li class="list-group-item"><label><b>지원 날짜</b></label>{{ apply.createdAt }}</li>
           
           <button @click="goToBoardDetail(apply.recruitmentId)" class="btn-create">공고 보기</button>
         <button @click="confirmDelete" class="btn-create">지원 삭제</button>
@@ -23,17 +23,29 @@
   import { ref, onMounted } from 'vue';
   import { useRouter } from 'vue-router';
   import { recruitmentApi } from '@/util/axios';
+  import { useMemberStore } from "@/stores/member-store.js";
   
+  const MemberStore = useMemberStore();
+const loginMember = ref(null);
+loginMember.value = MemberStore.memberInfo;
+
   const router = useRouter();
   const apply = ref({});
+<<<<<<< HEAD
   const recruitment = ref({});
 const response = ref();
+=======
+
+>>>>>>> 9e53fa715b99da2700d342e1726a54e51960e856
   const fetctApplyDetail = async () => {
     const applyId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
       response.value = await recruitmentApi.getApplyDetail(applyId);
       apply.value = response.data.data
+<<<<<<< HEAD
       response.value = await recruitmentApi.getDetail(apply.value.recruitmentId , 1);
       recruitment.value = response.data.data
+=======
+>>>>>>> 9e53fa715b99da2700d342e1726a54e51960e856
   };
   
   onMounted(fetctApplyDetail);
@@ -59,7 +71,7 @@ const response = ref();
       console.error("Error deleting recruitment:", error);
     }
   };
-  
+
   const goToBoardDetail = (boardId) => {
   router.push({ name: 'boardDetail', params: { id: boardId } });
 };

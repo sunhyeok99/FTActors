@@ -64,7 +64,7 @@ import { useRouter } from "vue-router";
 import { recruitmentApi } from "../../util/axios.js";
 import { useMemberStore } from "@/stores/member-store.js";
   
-  const MmeberStore = useMemberStore();
+  const MemberStore = useMemberStore();
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
 
@@ -138,12 +138,12 @@ const register = async () => {
 let formData = new FormData();
 formData.append("title", title.value);
 formData.append("content", content.value);
-formData.append("postMemberId", loginUser.id.value);
+formData.append("postMemberId", loginMember.value);
 formData.append("category", category.value);
 formData.append("image", image);
 formData.append("startDate", startDate.value);
 formData.append("endDate", endDate.value);
-formData.append("memberId", loginUser.id.value);
+formData.append("memberId", loginMember.value);
   try {
     const response = await recruitmentApi.register(formData);
     if (response.status === 200) {

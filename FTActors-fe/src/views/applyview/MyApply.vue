@@ -16,11 +16,10 @@
   <script setup>
   import { ref, reactive, onMounted } from 'vue';
   import { useRouter } from 'vue-router';
-  import axios from 'axios';
   import { recruitmentApi } from '@/util/axios';
   import { useMemberStore } from "@/stores/member-store.js";
   
-  const MmeberStore = useMemberStore();
+  const MemberStore = useMemberStore();
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
   const router = useRouter();
@@ -39,7 +38,7 @@ loginMember.value = MemberStore.memberInfo;
   
   // 페이지가 로드될 때 getList 함수 호출
   onMounted(() => {
-    getList(loginMember.id); 
+    getList(loginMember.value); 
   });
   
   const goToApplyDetail = (applyId) => {

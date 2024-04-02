@@ -6,24 +6,27 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 public class MontageDto {
 
-    @RequiredArgsConstructor
     @Builder
     @Getter
     @Setter
-    public static class MontageInfo{
+    @RequiredArgsConstructor
+    public static class Montages{
         private final String title;
         private final String link;
-        private final Integer likeCount;
+        private final LocalDateTime created_at;
+        private final LocalDateTime updated_at;
 
-        public static MontageDto.MontageInfo toDto(Montage montage){
-            return MontageInfo.builder()
+        public static MontageDto.Montages toDto(Montage montage){
+            return Montages.builder()
                     .title(montage.getTitle())
                     .link(montage.getLink())
-                    .likeCount(montage.getLikeCount())
+                    .created_at(montage.getCreatedAt())
+                    .updated_at(montage.getUpdatedAt())
                     .build();
         }
     }
-
 }

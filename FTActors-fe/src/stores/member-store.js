@@ -3,9 +3,9 @@ import { ref } from "vue";
 
 export const useMemberStore = defineStore("member", () => {
   // 로컬 스토리지에서 사용자 정보를 불러오는 함수
-  const loadUserInfo = () => {
+  const loadMemberInfo = () => {
     const storedMemberInfo = localStorage.getItem("memberInfo");
-    return storedMemberInfo ? JSON.parse(storedMemberInfo) : null;
+    return storedMemberInfo ? storedMemberInfo : null;
   };
 
   const memberInfo = ref(loadMemberInfo() || "");
@@ -13,7 +13,7 @@ export const useMemberStore = defineStore("member", () => {
 
   function setUser(member) {
     memberInfo.value = member;
-    localStorage.setItem("memberInfo", JSON.stringify(member));
+    localStorage.setItem("memberInfo", member);
     isAuthenticated.value = !!member;
   }
 
@@ -23,11 +23,15 @@ export const useMemberStore = defineStore("member", () => {
     isAuthenticated.value = false;
   }
 
-  return { userInfo, isAuthenticated, setUser, clearUser };
+  return { memberInfo, isAuthenticated, setUser, clearUser };
 });
 
 export const useJwtStore = defineStore("jwt", () => {
-  const token = ref(localStorage.getItem("jwt-token") || "");
+  const getToken = () => {
+    const storedMemberInfo = localStorage.getItem("token");
+    return storedMemberInfo ? storedMemberInfo : null;
+  };
+  const token = ref(getToken() || "");
 
   function setToken(jwt) {
     token.value = jwt;
