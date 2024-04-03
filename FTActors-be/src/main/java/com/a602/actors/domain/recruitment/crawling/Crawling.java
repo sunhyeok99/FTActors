@@ -28,7 +28,7 @@ public class Crawling {
         int[] urlCode = {63707, 63711, 8295195, 2361256, 63816}; // 장편영화 / 단편영화 / 웹드라마 / 뮤비/CF / 유튜브/기타
         List<Recruitment> recruitmentList = new ArrayList<>();
         try {
-            for(int page=2;page<=5;page++){
+            for(int page=2;page<=2;page++){
             for (int index = 0; index < urlCode.length; index++) {
                 Document document = Jsoup.connect(RECRUITMENT_URL + urlCode[index] + "/page/" + page).get(); // 주소뒤에 100, 101 이런식
                 Elements content1 = document.select("div.content.date"); // 날짜 불러옴
