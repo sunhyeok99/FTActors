@@ -21,7 +21,7 @@
                 </template>
                 <template v-else>
                   <button v-if="recruitment.apply === 1" class="btn btn-secondary">이미 지원하였습니다</button>
-                  <button v-else @click="apply" class="btn btn-primary">지원하기</button>
+                  <button v-else @click="apply" class="btn btn-dark">지원하기</button>
                 </template>
               </div>
             </li>
@@ -152,5 +152,10 @@ h1 {
 }
 #title button{
   margin-left: auto;
+}
+
+.btn-dark{
+position: relative;
+right:0;
 }
 </style>
