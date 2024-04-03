@@ -20,6 +20,7 @@ import com.a602.actors.domain.notification.document.Notify;
 import com.a602.actors.domain.notification.dto.NotifyDto;
 import com.a602.actors.domain.notification.service.NotificationService;
 import com.a602.actors.global.common.dto.ApiResponse;
+import com.a602.actors.global.jwt.util.JWTUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,11 +31,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/notify")
 public class NotificationController {
 	private final NotificationService notificationService;
+	private final JWTUtil jwtUtil;
 
 	// Todo : member 완성 후 로그인한 유저의 id값 가져오기 (uri까지 수정 필요)
 	// id : member의 PK 값
-	@GetMapping(value = "/subscribe/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public SseEmitter subscribe(@PathVariable Long id, @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId){
+	@GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	public SseEmitter subscribe(@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId){
+		// Long id = 12L;
+		Long id = jwtUtil.getLoginMemberId();
 		log.info("subscribe !!! id : {}, Last-Event-ID : {}", id, lastEventId);
 		SseEmitter sseEmitter = notificationService.subscribe(id, lastEventId);
 
@@ -49,9 +53,9 @@ public class NotificationController {
 	}
 
 	@PostMapping("/read")
-	public ApiResponse<String> setUnreadToRead(@RequestBody List<String> stringbjectIdList){
+	public ApiResponse<String> setUnreadToRead(@RequestBody List<String> stringObjectIdList){
 		List<ObjectId> objectIdList = new ArrayList<>();
-		for(String s : stringbjectIdList){
+		for(String s : stringObjectIdList){
 			objectIdList.add(new ObjectId(s));
 		}
 		notificationService.markAsRead(objectIdList);
