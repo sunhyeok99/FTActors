@@ -1,6 +1,9 @@
 package com.a602.actors.global.jwt;
 
+import com.a602.actors.domain.member.Member;
 import com.a602.actors.global.jwt.dto.JwtDto;
+import com.a602.actors.global.jwt.repository.JWTMemberRepository;
+import org.springframework.beans.factory.annotation.Value;
 import com.a602.actors.global.jwt.repository.JWTMemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 @Slf4j

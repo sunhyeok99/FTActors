@@ -41,6 +41,9 @@ public class MontageRepositoryImpl implements MontageRepository {
                         .select(new QMontageDto_Montages(
                                 montage.id,
                                 montage.title,
+                                montage.member.id,
+                                montage.member.name,
+                                montage.member.stageName,
                                 montage.link,
                                 Expressions.as(
                                     JPAExpressions.
