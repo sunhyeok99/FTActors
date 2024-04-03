@@ -44,13 +44,13 @@ public class Profile extends BaseEntity {
         this.imageName = imageName;
     }
 
-    public void updateProfile(Character type , String content, String image, String imageName, String portfolio, Character privatePost){
+    public void updateProfile(Character type , String content, String image, String imageName, String portfolio, Character privateProfile){
         this.type = type;
         this.content = content;
         this.image = image;
         this.imageName = imageName;
         this.portfolio = portfolio;
-        this.privatePost = privatePost;
+        this.privatePost = privateProfile;
 
     }
 
