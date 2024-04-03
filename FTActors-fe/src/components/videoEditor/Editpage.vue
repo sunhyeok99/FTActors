@@ -1,178 +1,147 @@
-<script setup>
-import { ref, watch, onMounted, onBeforeUnmount, provide } from "vue";
-import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
-import VideoSideBar from "./VideoSideBar.vue";
-// import Editor from "./Editor.vue"
-import Editor from "./Editor2.vue"
-
-// import { createFFmpeg, fetchFile } from "npm:@ffmpeg/ffmpeg";
-import { join, dirname } from 'node:path';
-
-
-
-const videoFiles = ref([
-  { src: '/src/assets/montage/콘트라베이스.mp4' },
-//   { src: '/src/assets/montage/핸드크림.mp4' },
-//   { src: '/src/assets/montage/담요.mp4' }
-]);
-
-const selectedVideoIndex = ref(null);
-
-const handleVideoSelected = (index) => {
-  selectedVideoIndex.value = index;
-  console.log("selected video index from Main !! ", selectedVideoIndex.value);
-};
-
-
-// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
-
-// const ffmpeg = new FFmpeg();
-
-// const FFmpegCoreLocation = join(
-//   dirname(import.meta.url).replace(/^file:\/\/\//, ''),
-//   '../../@ffmpeg/core/dist/umd/ffmpeg-core.js'
-// );
-
-// const FFmpegWasmLocation = join(
-//   dirname(import.meta.url).replace(/^file:\/\/\//, ''),
-//   '../../@ffmpeg/core/dist/umd/ffmpeg-core.wasm'
-// );
-
-// const ffmpeg = createFFmpeg({
-//   corePath: FFmpegCoreLocation,
-//   wasmPath: FFmpegWasmLocation,
-// });
-
-const ffmpeg = createFFmpeg({ log: true });
-
-const videoRef = ref(null);
-
-let startTime = ref(0); // 시작 시간을 저장할 변수
-let endTime = ref(0);   // 종료 시간을 저장할 변수
-
-const loadFFmpeg = async () => {
-    console.log("loadFFmpeg ======== ffmpeg.load() 시작");
-  await ffmpeg.load();
-  console.log("loadFFmpeg ======== ffmpeg.load() 완료");
-};
-
-const playSegment = async () => {
-  // FFmpeg 로드
-  await loadFFmpeg();
-  console.log("playSegment ======== ffmpeg.load() 완료");
-  
-  // 시작 시간과 종료 시간을 이용하여 자를 길이 계산
-  const duration = endTime.value - startTime.value;
-
-  // FFmpeg를 사용하여 동영상을 자르고 저장하는 작업 수행
-  const segmentFileName = 'segment.mp4';
-  await ffmpeg.exec([
-    '-i', 'input.mp4',
-    '-ss', `${startTime.value}`, // 시작 시간
-    '-t', `${duration}`,         // 자를 길이
-    '-c', 'copy',
-    segmentFileName
-  ]);
-
-
-  // 자른 동영상을 비디오 태그에 로드하여 재생
-  const video = videoRef.value;
-  video.src = segmentFileName;
-  video.load();
-  video.play();
-};
-
-
-// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
-const currentTime = ref(0);
-
-const updateCurrentTime = () => {
-  if (videoElement.value) {
-    currentTime.value = videoElement.value.currentTime;
-  }
-};
-
-const saveCurrentTime = (type) => {
-  if (type === 'start') {
-    startTime.value = currentTime.value;
-  } else if (type === 'end') {
-    endTime.value = currentTime.value;
-  }
-  console.log("Current Time:", currentTime.value);
-};
-
-// 비디오 요소 참조
-const videoElement = ref(null);
-
-const clearTimes = () => {
-  startTime.value = 0;
-  endTime.value = 0;
-};
-
-onMounted(() => {
-  const video = videoRef.value;
-  video.addEventListener('timeupdate', updateCurrentTime);
-});
-
-onBeforeUnmount(() => {
-  const video = videoRef.value;
-  video.removeEventListener('timeupdate', updateCurrentTime);
-});
-
-// onMounted(() => {
-//   videoElement.value.addEventListener('timeupdate', updateCurrentTime);
-// });
-
-// onBeforeUnmount(() => {
-//   videoElement.value.removeEventListener('timeupdate', updateCurrentTime);
-// });
-
-const handleVideoPlay = () => {
-  currentTime.value = 0;
-  videoElement.value = document.querySelector('.video');
-};
-
-// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
-
-</script>
-
 <template>
   <div class="sch-container">
     <Role></Role>
-    <!-- <VideoSideBar :videoList="videoFiles" class="item" @videoSelected="handleVideoSelected" />
-    <Editor2 :videoList="videoFiles" class="item" :selectedVideoIndex="selectedVideoIndex" /> -->
 
-    <!-- 동영상 태그 및 재생 버튼 추가 -->
-    <div v-for="video in videoFiles" :key="video.id">
-      <video class="video" controls preload @timeupdate="updateCurrentTime" @play="handleVideoPlay">
-        <source :src="video.src" type="video/mp4" />
-      </video>
-      <button @click="saveCurrentTime('start')">시작 시간 저장</button>
-      <button @click="saveCurrentTime('end')">종료 시간 저장</button>
-      <button @click="clearTimes">시간 초기화</button>
+    <!-- 동영상 목록 -->
+    <VideoSideBar :videoList="videoFiles" class="item" @videoSelected="handleVideoSelected" />
+
+    <!-- 두 번째 동영상 목록 -->
+    <VideoSideBar :videoList="videoFiles" class="item" @videoSelected="handleVideoSelected2" />
+
+    <!-- 첫 번째 동영상 플레이어 -->
+    <div class="container-editor2">
+      <video ref="videoRef" controls class="player-video"></video>
+      <button @click="playVideo">재생</button>
+      <button @click="cancelVideo">취소</button> 
     </div>
 
-    <div>
-        <video ref="videoRef" controls></video>
-        <button @click="playSegment">재생</button>
+    <!-- 두 번째 동영상 플레이어 -->
+    <div class="container-editor3">
+      <video ref="videoRef2" controls class="player-video"></video>
+      <button @click="playVideo2">재생</button>
+      <button @click="cancelVideo2">취소</button>
     </div>
   </div>
   <SendButton></SendButton>
 </template>
 
-<style scope>
-body {
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
-}
+<script setup>
+import { ref } from 'vue';
+import VideoSideBar from './VideoSideBar.vue';
 
-html {
-  height: -webkit-fill-available;
-}
+const videoFiles = ref([
+  { src: '/src/assets/montage/콘트라베이스.mp4' },
+  { src: '/src/assets/montage/핸드크림.mp4' },
+  { src: '/src/assets/montage/담요.mp4' }
+]);
 
+// 첫 번째 동영상 플레이어 선택한 비디오의 인덱스
+const selectedVideoIndex = ref(null);
+
+// 첫 번째 동영상 플레이어 비디오 선택 핸들러
+const handleVideoSelected = (index) => {
+  if (selectedVideoIndex.value === index) {
+    selectedVideoIndex.value = null; // 같은 비디오를 다시 클릭했을 때 선택 취소
+  } else {
+    selectedVideoIndex.value = index;
+  }
+};
+
+// 첫 번째 동영상 플레이어 비디오 플레이 핸들러
+const playVideo = () => {
+  console.log(selectedVideoIndex.value)
+  if (selectedVideoIndex.value !== null) {
+    console.log(selectedVideoIndex.value)
+    const videoRef = document.querySelector('.container-editor2 video');
+    console.log(videoRef)
+    console.log(videoRef.classList);
+    if (videoRef) {
+      console.log(selectedVideoIndex.value)
+      const selectedVideo = videoFiles.value[selectedVideoIndex.value];
+      if (videoRef.src !== selectedVideo.src) {
+        videoRef.src = selectedVideo.src;
+        videoRef.load();
+        console.log(videoRef)
+      } else {
+        videoRef.src = ''; // 이미 선택된 비디오를 다시 클릭한 경우 비디오 제거
+        videoRef.load(); // 비디오를 제거한 후에는 로드를 다시 호출해야 합니다.
+      }
+      if (!videoRef.paused) {
+        videoRef.pause(); // 영상이 이미 재생 중인 경우에는 일시 정지
+      } else {
+        videoRef.play(); // 영상 재생
+      }
+    }
+  }
+};
+
+// 첫 번째 동영상 플레이어 비디오 취소 핸들러
+const cancelVideo = () => {
+  const videoRef = document.querySelector('.container-editor2 video');
+  if (videoRef) {
+    videoRef.src = ''; // 플레이어에 업로드된 영상 삭제
+    console.log("zxcv")
+    videoRef.load(); // 비디오를 제거한 후에는 로드를 다시 호출해야 합니다.
+  }
+};
+
+// 두 번째 동영상 플레이어 선택한 비디오의 인덱스
+const selectedVideoIndex2 = ref(null);
+
+// 두 번째 동영상 플레이어 비디오 선택 핸들러
+const handleVideoSelected2 = (index) => {
+  if (selectedVideoIndex2.value === index) {
+    selectedVideoIndex2.value = null; // 같은 비디오를 다시 클릭했을 때 선택 취소
+  } else {
+    console.log("asdf");
+    selectedVideoIndex2.value = index;
+  }
+};
+
+// 두 번째 동영상 플레이어 비디오 플레이 핸들러
+const playVideo2 = () => {
+  try {
+    
+    console.log("playVideo2")
+    console.log(selectedVideoIndex2.value)
+    if (selectedVideoIndex2.value !== null) {
+      console.log(selectedVideoIndex2.value)
+      const videoRef2 = document.querySelector('.container-editor3 video');
+      console.log(videoRef2)
+      console.log(videoRef2.classList);
+      if (videoRef2) {
+        const selectedVideo2 = videoFiles.value[selectedVideoIndex2.value];
+        if (videoRef2.src !== selectedVideo2.src) {
+          videoRef2.src = selectedVideo2.src;
+          videoRef2.load();
+        } else {
+          videoRef2.src = ''; // 이미 선택된 비디오를 다시 클릭한 경우 비디오 제거
+          videoRef2.load(); // 비디오를 제거한 후에는 로드를 다시 호출해야 합니다.
+        }
+        if (!videoRef2.paused) {
+          videoRef2.pause(); // 영상이 이미 재생 중인 경우에는 일시 정지
+        } else {
+          videoRef2.play(); // 영상 재생
+        }
+      }
+    }
+  } catch (error) {
+    console.error('playVideo2 함수에서 오류 발생:', error);
+  }
+};
+
+// 두 번째 동영상 플레이어 비디오 취소 핸들러
+const cancelVideo2 = () => {
+  console.log("qwer");
+  const videoRef2 = document.querySelector('.container-editor3 video');
+  if (videoRef2) {
+    videoRef2.src = ''; // 플레이어에 업로드된 영상 삭제
+    videoRef2.load(); // 비디오를 제거한 후에는 로드를 다시 호출해야 합니다.
+  }
+};
+</script>
+
+<style scoped>
 .sch-container {
   display: flex;
   height: 100vh;
@@ -180,24 +149,17 @@ html {
   flex-direction: row;
 }
 
-.container-sidebar {
-  flex: 1;
-}
-
 .container-editor2 {
   flex: 3;
 }
 
-/* .item:nth-child(1) {
-  flex-grow: 1;
+.container-editor3{
+  flex:3;
 }
 
-.item:nth-child(2) {
-  flex-grow: 4;
-} */
-
-.video {
-  width: 100%;
-  height: 200px;
+.player-video {
+  width: 100%; /* 플레이어의 너비에 맞게 비디오 크기 조정 */
+  height: 60%; /* 비디오의 높이를 비율에 맞게 조정 */
 }
+
 </style>

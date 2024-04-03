@@ -43,12 +43,12 @@ const selectVideo = (index) => {
     </div>
     <div
       class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary"
-      style="width: 20rem"
+      style="width: 10rem"
     >
       <div
         class="list-title d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom mb-2"
       >
-        <svg class="bi pe-none me-2" width="30" height="24">
+        <svg class="bi pe-none me-2" width="12" height="16">
           <use xlink:href="#bootstrap" />
         </svg>
         <span class="mx-auto fs-5 fw-semibold" style="color: white"

@@ -56,7 +56,7 @@ const router = useRouter();
 const MemberStore = useMemberStore();
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
-const recruitmentId = router.currentRoute.value.params.id;
+// const recruitmentId = router.currentRoute.value.params.id;
 
 // import { videoApi } from '@/util/axios';
 // import { useRoute, useRouter } from "vue-router";
@@ -71,8 +71,8 @@ const applys = ref([
 ]);
 const selectedApplyIds = ref([]);
 
-import { recruitmentApi } from '@/util/axios';
-import { useMemberStore } from "@/stores/member-store.js";
+// import { recruitmentApi } from '@/util/axios';
+// import { useMemberStore } from "@/stores/member-store.js";
   
 // const MemberStore = useMemberStore();
 // const loginMember = ref(null);
