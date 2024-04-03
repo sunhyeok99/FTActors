@@ -171,10 +171,10 @@ const recruitmentApi = {
     },
 
     removeProfile: (profileId) => {
-      return axiosInstance.delete("/profile/myprofile", { params: { profile_id: profileId } });
+      return axiosInstance.delete("/profile/myprofile", { params: { profile_id : profileId } });
     },
-    modifyProfile: (profileId, profileRequest) => {
-      return formDataInstance.put("/profile/myprofile", null ,profileId, profileRequest );
+    modifyProfile: (profileRequest) => {
+      return formDataInstance.put("/profile/myprofile",  profileRequest );
     },
     
     getDetailProfile: (profileId) => {
@@ -202,6 +202,11 @@ const recruitmentApi = {
       return axiosInstance.post("/recommend/recruitment");
     },
   };
+  const montageApi = {
+    MyMontageList : () => {
+      return axiosInstance.get("/montage/my-montage");
+    }
+  }
 
-export { memberApi, recruitmentApi, followApi, chatApi, profileApi, recommendApi };
+export { memberApi, recruitmentApi, followApi, chatApi, profileApi, recommendApi, montageApi };
 

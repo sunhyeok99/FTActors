@@ -2,7 +2,7 @@
   <div class="masonry" style="--bs-columns: 4;">
     <div class="masonry-item" v-for="board in boards" :key="board.id">
       <div class="card"  @click="goToBoardDetail(board.id)">
-        <img :src="board.image" @error="setDefaultImage" alt="" class="img-fluid">
+        <img :src="board.image" @error="setDefaultImage" alt="" class="img-fluid" width="300px" height="200px">
               <button class="like-btn" @click.stop="toggleLike(board.id)">
                 <img v-if="board.wishList === 1" src="@/assets/icons/like-filled.png" alt="Liked">
                 <img v-else src="@/assets/icons/like-outline.png" alt="Like">         
