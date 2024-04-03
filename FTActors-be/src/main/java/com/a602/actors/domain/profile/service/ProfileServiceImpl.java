@@ -233,15 +233,15 @@ public class ProfileServiceImpl implements ProfileService{
     }
 
     @Override
-    public Integer getMyProfile(Long memberId) {
-        Integer result = 4; //기본적으로 없다고 본다
-
+    public List<Long> getMyProfile(Long memberId) {
         Long existActor = profileCustomRepository.existActorInMyPage(memberId);
+        if (existActor == null) existActor = -1L;
         Long existPD = profileCustomRepository.existPDInMyPage(memberId);
-        System.out.println(existPD+" "+ existActor);
-        if (existActor>0 && existPD>0) result = 1;
-        else if (existActor>0 && existPD==0) result=2;
-        else if (existActor==0 && existPD>0) result=3;
+        if (existPD == null) existPD = -1L;
+
+        List<Long> result = new ArrayList<>();
+        result.add(existActor);
+        result.add(existPD);
 
         return result;
     }

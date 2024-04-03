@@ -27,5 +27,5 @@ public interface ProfileService {
     List<ProfileSearchResponse> searchProfileByName(String keyword);
     List<ProfileSearchResponse> searchProfileByStageName(String findName);
 
-    Integer getMyProfile(Long memberId);
+    List<Long> getMyProfile(Long memberId);
 }
