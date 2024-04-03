@@ -11,8 +11,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @NoArgsConstructor
 @DynamicUpdate // 수정되는 항만 update되게
-//@AllArgsConstructor
-//@RequiredArgsConstructor
 @ToString
 @EntityListeners(AuditingEntityListener.class) //시간 찍기
 public class Profile extends BaseEntity {
@@ -26,28 +24,34 @@ public class Profile extends BaseEntity {
 
     private String portfolio; //포트폴리오 링크
 
-//    @Column(name = "additional_images")
-//    private ArrayList<String> additionalImages; //추가 이미지
-
     @Column(name = "private_post")
     private Character privatePost; //'T', 'F' (기본으로 F 설정)
 
+    private String image;
+
+    private String imageName;
     @Builder
     public Profile (Member member, String content,
                     Character type,
                     String portfolio,
-//                    ArrayList<String> additionalImages,
-                    Character privatePost) {
-//        Assert.notNull(content, "자기소개 작성 요망!");
-//        Assert.notNull(type, "배우인가요 관계자인가요?");
-
+                    Character privatePost, String image, String imageName) {
         this.member = member;
         this.content = content;
         this.type = type;
         this.portfolio = portfolio;
-//        this.additionalImages = additionalImages;
         this.privatePost = privatePost;
+        this.image = image;
+        this.imageName = imageName;
     }
 
+    public void updateProfile(Character type , String content, String image, String imageName, String portfolio, Character privatePost){
+        this.type = type;
+        this.content = content;
+        this.image = image;
+        this.imageName = imageName;
+        this.portfolio = portfolio;
+        this.privatePost = privatePost;
+
+    }
 
 }

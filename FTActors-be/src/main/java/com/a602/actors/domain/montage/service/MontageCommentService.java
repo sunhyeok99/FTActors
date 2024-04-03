@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import com.a602.actors.domain.montage.dto.MontageReportDto;
 import com.a602.actors.global.common.config.FileUtil;
@@ -11,6 +12,8 @@ import com.a602.actors.global.common.enums.FolderType;
 import com.a602.actors.global.exception.ExceptionCodeSet;
 import com.a602.actors.global.exception.FileException;
 import com.a602.actors.global.exception.MontageException;
+import com.a602.actors.global.jwt.util.JWTUtil;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import com.a602.actors.domain.montage.dto.MontageCommentDto;
@@ -29,11 +32,13 @@ public class MontageCommentService {
 
     private final MontageRepository montageRepository;
     private final NotificationService notificationService;
+    private final JWTUtil jwtUtil;
 
-    public MontageCommentService(MontageRepository montageRepository, NotificationService notificationService){
+    public MontageCommentService(MontageRepository montageRepository, NotificationService notificationService, JWTUtil jwtUtil){
         //this.MontageCommentRepositoryImpl = MontageCommentRepositoryImpl;
         this.montageRepository = montageRepository;
         this.notificationService = notificationService;
+        this.jwtUtil = jwtUtil;
     }
 
     public List<MontageCommentDto.Response> getAllComments(Long montageId){
@@ -75,6 +80,17 @@ public class MontageCommentService {
 
     public String updateComment(MontageCommentDto.UpdateRequest req){
         log.info("UPDATE COMMENT ");
+
+        Long memberId = jwtUtil.getLoginMemberId();
+
+        Comment comment =
+                montageRepository.getComment(req.getMontageId(), req.getCommentId())
+                                .orElseThrow(() -> new MontageException(ExceptionCodeSet.ENTITY_NOT_EXISTS));
+
+        if(comment.getMember().getId().equals(memberId)){
+            throw new MontageException(ExceptionCodeSet.INVALID_AUTHORIZATION);
+        }
+
         montageRepository.updateComment(req);
 
         return "";
@@ -83,6 +99,17 @@ public class MontageCommentService {
     public String deleteComment(Long montageId, Long commentId){
         // 댓글을 지워도 답글은 놔두도록 해야한다..
         log.info("DELETE COMMENT ");
+
+        Long memberId = jwtUtil.getLoginMemberId();
+
+        Comment comment =
+                montageRepository.getComment(montageId, commentId)
+                        .orElseThrow(() -> new MontageException(ExceptionCodeSet.ENTITY_NOT_EXISTS));
+
+        if(comment.getMember().getId().equals(memberId)){
+            throw new MontageException(ExceptionCodeSet.INVALID_AUTHORIZATION);
+        }
+
         montageRepository.deleteComment(montageId, commentId);
 
         return "";
@@ -93,7 +120,7 @@ public class MontageCommentService {
                          Long montageId,
                          Long commentId) throws IOException, MontageException, FileException {
 
-        Long reporterId = 1L;
+        Long reporterId = jwtUtil.getLoginMemberId();
 
         // 파일이 없는 경우
         if(file == null){
@@ -110,12 +137,11 @@ public class MontageCommentService {
         }
 
         //MemberRepository.findByNickname();
-        System.out.println("HELLO");
         String savedName = FileUtil.makeFileName(file.getOriginalFilename());
 
         String url = FileUtil.uploadFile(file, savedName, FolderType.REPORT_PATH);
         log.info("URL : {}", url);
-        montageRepository.addCommentReport(1L, montageId, commentId, req.getReason(), url);
+        montageRepository.addCommentReport(reporterId, montageId, commentId, req.getReason(), url);
 
         return "";
     }

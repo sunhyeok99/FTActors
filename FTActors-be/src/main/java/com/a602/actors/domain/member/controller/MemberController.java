@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.a602.actors.domain.member.dto.MemberDtoForChat;
 import com.a602.actors.domain.member.dto.MemberPlusDTO;
 import com.a602.actors.domain.member.repository.MemberRepository;
 import com.a602.actors.domain.member.service.MemberPlusService;
@@ -37,8 +38,8 @@ public class MemberController {
     }
 
     @GetMapping("/findall/{stageName}")
-    public ApiResponse<List<MemberPlusDTO>> findAllMembersByStageName(@PathVariable String stageName){
-        List<MemberPlusDTO> allMembersByStageName = memberPlusService.findAllMembersByStageName(stageName);
+    public ApiResponse<List<MemberDtoForChat>> findAllMembersByStageName(@PathVariable String stageName){
+        List<MemberDtoForChat> allMembersByStageName = memberPlusService.findAllMembersByStageName(stageName);
         return new ApiResponse<>(HttpStatus.OK.value(), "조회 성공 !!", allMembersByStageName);
     }
 

@@ -1,3 +1,28 @@
+
+# 개발용
+
+server:
+   servlet:
+      encoding:
+          charset: UTF-8
+          enabled: true
+          force: true
+
+flyway:
+  enabled: true
+  baseline-on-migrate: true
+  baseline-version: 0
+
+#elasticsearch:
+#  host: ${ELASTICSEARCH_HOST}
+#  username: ${ELASTICSEARCH_USERNAME}
+#  password: ${ELASTICSEARCH_PASSWORD}
+#logging:
+#  file:
+#    name: ./logs/customer-service.log
+#logstash:
+#  host: localhost
+
 spring:
     datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -43,6 +68,15 @@ spring:
         max-file-size: 50MB
         max-request-size: 50MB
 
+    flyway:
+      enabled: true
+      baseline-on-migrate: true
+      baseline-version: 0
+
+    servlet:
+      multipart:
+        max-file-size: 20MB
+        max-request-size: 25MB
       # 스프링 시큐리티
     security:
       # oauth2 사용

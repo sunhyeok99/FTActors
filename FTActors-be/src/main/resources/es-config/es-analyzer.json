@@ -17,7 +17,7 @@
     },
     "analyzer": {
       "my_nori_analyzer": {
-        "type": "custom",
+        "type": "json",
         "tokenizer": "my_nori_tokenizer",
         "filter": [
           "lowercase",

@@ -2,7 +2,6 @@ package com.a602.actors.global.jwt.dto;
 
 import lombok.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -36,6 +35,7 @@ public class JwtDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class AuthResponse {
+        private Long id;
         private String loginId;
         private String grantType;
         private String accessToken;
@@ -107,7 +107,7 @@ public class JwtDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public class UpdateRequest {
+    public static class UpdateRequest {
         private String loginId;
         private String name;
         private String email;
