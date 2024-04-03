@@ -233,6 +233,7 @@ h1 {
 .btn-dark {
   position: relative;
   right: 0;
+  min-width: 100px;
 }
 
 .list-group-item {
