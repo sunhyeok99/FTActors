@@ -5,7 +5,7 @@ export const useMemberStore = defineStore("member", () => {
   // 로컬 스토리지에서 사용자 정보를 불러오는 함수
   const loadMemberInfo = () => {
     const storedMemberInfo = localStorage.getItem("memberInfo");
-    return storedMemberInfo ? JSON.parse(storedMemberInfo) : null;
+    return storedMemberInfo ? storedMemberInfo : null;
   };
 
   const memberInfo = ref(loadMemberInfo() || "");
@@ -13,7 +13,7 @@ export const useMemberStore = defineStore("member", () => {
 
   function setUser(member) {
     memberInfo.value = member;
-    localStorage.setItem("memberInfo", JSON.stringify(member));
+    localStorage.setItem("memberInfo", member);
     isAuthenticated.value = !!member;
   }
 
@@ -27,7 +27,12 @@ export const useMemberStore = defineStore("member", () => {
 });
 
 export const useJwtStore = defineStore("jwt", () => {
-  const token = ref(localStorage.getItem("jwt-token") || "");
+
+  function getToken(){
+    const storedMemberInfo = localStorage.getItem("jwt-token");
+    return storedMemberInfo ? storedMemberInfo : null;
+  };
+  const token = ref(getToken() || "");
 
   function setToken(jwt) {
     token.value = jwt;
@@ -39,6 +44,6 @@ export const useJwtStore = defineStore("jwt", () => {
     localStorage.removeItem("jwt-token");
   }
 
-  return { token, setToken, deleteToken };
+  return { token, setToken, deleteToken, getToken };
 });
 

@@ -7,8 +7,7 @@
     </div>
     <div class="offcanvas-body">
       <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
-        <div class="list-group list-group-flush border-bottom scrollarea">    
-         
+        <div class="list-group list-group-flush border-bottom scrollarea">
           <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" 
              v-for="(chat, index) in chats" 
              :key="index" 

@@ -1,19 +1,20 @@
 <template>
-    <div class="row">
-      <div class="col-md-3">
-        <div>
-          <div>
+  <div class="container h-100">
+    <div class="row justify-content-center align-items-start" style="min-height: 100vh;">
+      <div class="col-md-6 col-lg-4">
+        <div class="mt-5 pt-5">
+          <div class="text-center mb-4">
             <h1><b>로그아웃 <br>완료</b></h1>
           </div>
         </div>
       </div>
     </div>
-  
-  </template>
-  
-  <script setup>
-  
-  </script>
-  <style>
-  
-  </style>
+  </div>
+
+</template>
+
+<script setup>
+
+
+</script>
+<style></style>

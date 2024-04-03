@@ -18,12 +18,13 @@ import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import axios from 'axios';
 
+const BASE_URL = 'https://j10a602.p.ssafy.io/api/';
 const router = useRouter();
 const myMontages = ref([]);
 
 // 몽타쥬리스트 가져오는 메서드
 const getMyMontages = () => {
-  axios.get(`http://localhost:8080/api/montage/my-montage`)
+  axios.get(`${BASE_URL}/montage/my-montage`)
     .then((response) => {
       console.log(response.data.data);
       myMontages.value = response.data.data;

@@ -10,7 +10,6 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label"  id="title" >제목</label>
                         <input type="email" class="form-control" id="exampleFormControlInput1" v-model="title"
                             placeholder="ex) [배우모집] 고등학생 역할 30세 이하 남배우 구합니다">
                     </div>
@@ -58,9 +57,14 @@
                 <div class="modal-body">
                     <div class="form-floating">
                         <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label"  id="title" >카테고리 입력</label>
-                            <input type="email" class="form-control" id="exampleFormControlInput1" v-model="title"
-                                placeholder="ex) 연극, 웹드라마, 방송...">
+                            <select id="category" v-model="category" class="input-field">
+                                <option value="">카테고리를 선택하세요</option>
+                                <option value="장편영화">장편영화</option>
+                                <option value="단편영화">단편영화</option>
+                                <option value="뮤비/CF">웹드라마</option>
+                                <option value="뮤비/CF">뮤비/CF</option>
+                                <option value="뮤비/CF">유튜브/기타</option>
+                              </select>
                         </div>
                     </div>
                 </div>
@@ -84,10 +88,10 @@
                     <div class="form-floating">
                         <div class="input-group">
                             <input type="file" class="form-control" id="inputGroupFile04"
-                                aria-describedby="inputGroupFileAddon04" aria-label="Upload" @change="onFileChange">
-                                <img :src="selectedImage">
-                            <button class="btn btn-outline-secondary" type="button"
-                                id="inputGroupFileAddon04">업로드</button>
+                                aria-describedby="inputGroupFileAddon04" aria-label="Upload"  @change="onImageChange">
+                                <div v-if="selectedImage">
+                                    <span @click="clearSelectedImage"> X</span></div>
+                                    <img :src="selectedImage" v-if="selectedImage">
                         </div>
                     </div>
                 </div>
@@ -104,33 +108,74 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel5">5단계 <b>마감 날짜</b></h1>
+                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel5">5단계 <b>공고 날짜</b></h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-floating">
-                        <label for="endDate">종료 날짜</label>
-                        <input type="date" id="endDate" v-model="endDate" class="input-field" />
+                        <input
+                          type="date"
+                          id="startDate"
+                          v-model="startDate"
+                          class="input-field"
+                        />
+                        <input
+                          type="date"
+                          id="endDate"
+                          v-model="endDate"
+                          class="input-field"
+                        />
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">공고 생성</button>
+                    <button type="button" class="btn btn-secondary" data-bs-target="#directorModalToggle6"
+                    data-bs-toggle="modal">6단계</button>
                 </div>
             </div>
         </div>
     </div>
-
-
+     <!-- 6단계 -->
+     <div class="modal fade" id="directorModalToggle6" aria-hidden="true" aria-labelledby="exampleModalToggleLabel6"
+     tabindex="-1">
+     <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h1 class="modal-title fs-5" id="exampleModalToggleLabel6">6단계 <b>요구사항 업로드</b></h1>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+             </div>
+             <div class="modal-body">
+                 <div class="form-floating">
+                     <div class="input-group">
+                        <input type="file" id="script"  @change="onScriptChange"  class="input-field"/>
+                        <div v-if="selectedFile">
+                        <!-- <span>{{ selectedFile.name }}</span> -->
+                        <span @click="clearSelectedFile"> X</span>
+                      </div>
+                     </div>
+                 </div>
+             </div>
+             <div class="modal-footer">
+                 <button class="btn btn-primary" data-bs-dismiss="modal" @click="register">공고 작성</button>
+             </div>
+         </div>
+     </div>
+ </div>
     <!-- 토글 버튼 -->
-    <button class="btn btn-primary" data-bs-target="#directorModalToggle" data-bs-toggle="modal" @click="register">공고 작성</button>
+    <button class="btn btn-dark" data-bs-target="#directorModalToggle" data-bs-toggle="modal" @click="register">공고 작성</button>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { recruitmentApi } from "../../util/axios.js";
-const router = useRouter();
+import { useMemberStore } from "@/stores/member-store.js";
 
+  
+  const MemberStore = useMemberStore();
+const loginMember = ref(null);
+loginMember.value = MemberStore.memberInfo;
+
+const router = useRouter();
 const title = ref("");
 const content = ref("");
 const postMemberId = ref("");
@@ -138,35 +183,75 @@ let image = null;
 const category = ref("");
 const startDate = ref("");
 const endDate = ref("");
-const memberId = ref("");
+let script = null;
 
 const selectedImage = ref(null);
+const selectedFile = ref(null);
 
+let fileReader = new FileReader(); // FileReader 변수를 함수 외부에서 정의
+let imageReader = new FileReader();
 
-const onFileChange = (e) => {
+const onImageChange = (e) => {
   const file = e.target.files[0];
-  const reader = new FileReader();
   if(file != null){
-    reader.onload = () => {
-      selectedImage.value = reader.result;
+    imageReader.onload = () => {
+      selectedImage.value = imageReader.result;
     };
-    reader.readAsDataURL(file);
+    imageReader.readAsDataURL(file);
     image = file;
+    console.log(imageReader)
+  }
+  else{
+    image = null;
+    imageReader.onload = null; // reader 초기화
+    imageReader = new FileReader(); // 새로운 FileReader 객체 생성
+    selectedImage.value = null; // 이미지 데이터 초기화
   }
 };
+const clearSelectedImage = () => {
+      selectedImage.value = null
+      const input = document.getElementById('image');
+  input.value = ''; // input 요소의 값을 초기화하여 파일 이름을 지움
+    image = null;
+};
+
+const clearSelectedFile = () => {
+      selectedFile.value = null
+      const input = document.getElementById('script');
+  input.value = '';
+  script = null;
+};
+
+const onScriptChange = (e) => {
+  const file = e.target.files[0];
+  if(file != null){
+    fileReader.onload = () => {
+      selectedFile.value = fileReader.result;
+    };
+    fileReader.readAsDataURL(file);
+  script = file;
+  }
+  else{
+    script = null;
+    fileReader.onload = null; // reader 초기화
+    fileReader = new FileReader(); // 새로운 FileReader 객체 생성
+    selectedFile.value = null; // 이미지 데이터 초기화
+  }
+};
+
+
 
 const register = async () => {
 let formData = new FormData();
 formData.append("title", title.value);
 formData.append("content", content.value);
-formData.append("postMemberId", postMemberId.value);
+formData.append("postMemberId", loginMember.value);
 formData.append("category", category.value);
 formData.append("image", image);
 formData.append("startDate", startDate.value);
 formData.append("endDate", endDate.value);
-formData.append("memberId", postMemberId.value);
+formData.append("memberId", loginMember.value);
   try {
-    console.log(formData)
     const response = await recruitmentApi.register(formData);
     if (response.status === 200) {
     // 등록 성공 시 알림창 표시
@@ -183,6 +268,7 @@ formData.append("memberId", postMemberId.value);
   }
 };
 
+
 </script>
 
 <style>
@@ -194,4 +280,6 @@ formData.append("memberId", postMemberId.value);
       flex-direction: column;
     }
   }
+
+  
 </style>

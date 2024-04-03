@@ -1,16 +1,34 @@
 import axios from "axios";
+import { useJwtStore } from "@/stores/member-store";
 
 const BASE_URL = `http://localhost:8080`;
-const SERVER_URL = 'https://j10a602.p.ssafy.io/api'
+
+const SERVER_URL = 'https://j10a602.p.ssafy.io/api';
+
+axios.interceptors.request.use(
+  config => {
+    // 인증 토큰을 여기에서 설정하거나 수정합니다.
+    
+    const jwtStore = useJwtStore();
+    const token = jwtStore.getToken();
+    
+    config.headers.Authorization = token == undefined ? '' : `Bearer ${token}`;
+    
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
 
 const axiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: SERVER_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 const formDataInstance = axios.create({
-    baseURL: BASE_URL,
+    baseURL: SERVER_URL,
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -20,9 +38,12 @@ const memberApi = {
     return axiosInstance.post("/signin",  memberDto );
   },
   signup: (jwtDto) =>
-    axiosInstance.post("/signup", jwtDto ),
+    formDataInstance.post("/signup", jwtDto),
   updatepassword: (user) =>
     axiosInstance.post("/api/member/updatePassword", null, { params: member }),
+    getById: (id) => {
+    return axiosInstance.get("/loginmember", { params: { id } })
+    },
 };
 
 const recruitmentApi = {
@@ -39,7 +60,7 @@ const recruitmentApi = {
       return formDataInstance.put("/recruitment/update", recruitmentDto);
     },
     updateDate: (recruitmentId, endDate) => {
-      return axiosInstance.put("/recruitment/updateDate", null, {
+      return axiosInstance.put("/recruitment/updateDate", {
         params: { recruitmentId, endDate },
       });
     },
@@ -54,7 +75,7 @@ const recruitmentApi = {
       });
     },
     updateWishlist: (recruitmentId, memberId) => {
-      return axiosInstance.put("/recruitment/wishlist", null, {
+      return axiosInstance.put("/recruitment/wishlist", null,  {
         params: { recruitmentId, memberId },
       });
     },
@@ -137,15 +158,48 @@ const recruitmentApi = {
       });
     },
   };
+  const profileApi = { // 프로필 api
+    getAllProfileList: (sorting = 1) => {  // 소팅 값이 따로 안 들어오면 1로 세팅 (1, 2중 가능)
+      return axiosInstance.get("/profile/list", { params: { sort: sorting } });
+    },
+    getProfileList: () => {  
+      return axiosInstance.get("/profile");
+    },
+    createProfile: (profileRequest) => {
+      return formDataInstance.post("/profile/myprofile", profileRequest);
+    },
 
-  const videoApi = {
-    getAllPerformVideo: (recruitmentId) => {
-      return axiosInstance.get('/recruitment/applyList', {
-        params: { recruitmentId }
+    removeProfile: (profileId) => {
+      return axiosInstance.delete("/profile/myprofile", { params: { profile_id: profileId } });
+    },
+    modifyProfile: (profileId, profileRequest) => {
+      return formDataInstance.put("/profile/myprofile", null ,profileId, profileRequest );
+    },
+    
+    getDetailProfile: (profileId) => {
+      return axiosInstance.get("/profile/detail", {
+        params: { profile_id: profileId },
       });
-    }
+    },
 
-  }
+    searchContent: (keywords) => {
+      return axiosInstance.get("/profile/searchcontent", { params: { keywords: keywords } });
+    },
+    searchByStageName: (findName) => {
+      return axiosInstance.get("/profile/searchstagename", { params: { stage_name: findName } });
+    },
+    searchByName: (findName) => {
+      return axiosInstance.get("/profile/searchname", { params: { name: findName } });
+    },
+    searchById: (memberId) => {
+      return axiosInstance.get("/profile/getmyprofile", { params: { memberId : memberId } });
+    },
+  };
 
-export { memberApi, recruitmentApi, followApi, chatApi, videoApi};
+  const recommendApi = {
+    getRecruitmentList: () => {
+      return axiosInstance.post("/recommend/recruitment");
+    },
+  };
 
+export { memberApi, recruitmentApi, followApi, chatApi, videoApi, profileApi, recommendApi };

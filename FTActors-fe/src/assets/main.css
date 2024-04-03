@@ -10,7 +10,7 @@
 a,
 .anil {
   text-decoration: none;
-  color: rgb(39, 16, 171);
+  color: rgb(33, 37, 41);
   font-weight: bolder;
   transition: 0.4s;
   padding: 3px;
@@ -18,7 +18,7 @@ a,
 
 @media (hover: hover) {
   a:hover {
-    background-color: hsla(236, 100%, 51%, 0.2);
+    background-color: hsla(53, 100%, 50%, 0.428);
   }
 }
 /* @font-face {
