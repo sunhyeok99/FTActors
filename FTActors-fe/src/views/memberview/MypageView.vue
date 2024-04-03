@@ -24,16 +24,16 @@
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <!-- 프로필 -->
           <button class="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
-            type="button" role="tab" aria-controls="nav-profile" aria-selected="true">프로필</button>
+            type="button" role="tab" aria-controls="nav-profile" aria-selected="true" @click="getMyProfile()">프로필</button>
             <!-- 공고 -->
           <button class="nav-link dropdown" id="nav-board-tab" data-bs-toggle="tab" data-bs-target="#nav-board"
             type="button" role="tab" aria-controls="nav-board" aria-selected="false">
             <p class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false"
               id="highest">공고</p>
             <ul class="dropdown-menu">
-              <li><p class="dropdown-item" @click="getWishlist">찜한 공고</p></li>
-              <li><p class="dropdown-item" @click="getApplylist">지원한 공고</p></li>
-              <li><p class="dropdown-item" @click="getPostlist">게시한 공고</p></li>
+              <li><p class="dropdown-item" @click="getWishlist()">찜한 공고</p></li>
+              <li><p class="dropdown-item" @click="getApplylist()">지원한 공고</p></li>
+              <li><p class="dropdown-item" @click="getPostlist()">게시한 공고</p></li>
             </ul>
           </button>
           <!-- 몽타쥬 -->
@@ -59,7 +59,49 @@
 <div class="tab-content" id="nav-tabContent">
     <div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
         tabindex="0">
-        <ProfileTab />
+        
+        <div class="wrapper">
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+      <div class="col-lg-3">
+        <svg class="bd-placeholder-img rounded-circle" width="140" height="140"
+          xmlns="@/assets/icons/DefaultProfile.png" role="img" aria-label="Placeholder: 140x140"
+          preserveAspectRatio="xMidYMid slice" focusable="false">
+          <title>Placeholder</title>
+          <rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
+        </svg>
+
+        <h2>감독</h2>
+        <div v-if="director > 0">
+          <p>보기</p>
+          <p><a class="btn btn-secondary" href="#" @click="goToProfile(director)">보기</a></p>
+        </div>
+        <div v-else>
+          <p>프로필이 존재하지 않습니다</p>
+          <DirectorProfileModal />
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+        <svg class="bd-placeholder-img rounded-circle" width="140" height="140"
+          xmlns="@/assets/icons/DefaultProfile.png" role="img" aria-label="Placeholder: 140x140"
+          preserveAspectRatio="xMidYMid slice" focusable="false">
+          <title>Placeholder</title>
+          <rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
+        </svg>
+
+        <h2>배우</h2>
+        <div v-if="actor > 0">
+          <p> 보기</p>
+          <p><a class="btn btn-secondary" href="#" @click="goToProfile(actor)">보기</a></p>
+        </div>
+        <div v-else>
+          <p>프로필이 존재하지 않습니다</p>
+          <ActorProfileModal />
+        </div>
+      </div>
+    </div>
+  </div>
+
     </div>
     <div class="tab-pane fade show active" id="nav-board" role="tabpanel" aria-labelledby="nav-board-tab" tabindex="1"
         v-show="recruitments.length > 0">
@@ -140,9 +182,13 @@ import ProfileTab from '@/components/tabs/ProfileTab.vue';
 import MontageTab from '@/components/tabs/MontageTab.vue';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { recruitmentApi, memberApi, followApi } from '@/util/axios';
+import { recruitmentApi, memberApi, followApi, profileApi } from '@/util/axios';
 import { useMemberStore } from "@/stores/member-store.js";
   
+
+import ActorProfileModal from '@/components/modals/ActorProfileModal.vue';
+import DirectorProfileModal from '@/components/modals/DirectorProfileModal.vue';
+
 const MemberStore = useMemberStore();
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
@@ -156,14 +202,19 @@ const posts = ref({});
 const followings = ref({});
 const followers = ref({});
 
+
+const isPrivate = ref(false)
 const followingNum = ref(0); // 초기값을 0으로 설정
 const followerNum = ref(0); // 초기값을 0으로 설정
 
+const actor = ref(0);
+const director = ref(0);
 const fetchMember = async () => {
   const id = loginMember.value
       const response = await memberApi.getById(id);
       member.value = response.data.data;
       fetchFollow();
+      getMyProfile();
   };
   const fetchFollow = async () => {
     const id = loginMember.value;
@@ -274,6 +325,33 @@ const changeFollow = async (followingId, followerId, index) => {
       console.error('Error toggling like:', error);
   }
 };
+
+const goToProfile = (profileId) => {
+  console.log(profileId)
+  router.push({ name: 'profileDetail' , params : { id : profileId}});
+};
+
+
+const getMyProfile = async () => {
+  try {
+    const response = await profileApi.searchById(loginMember.value);
+    console.log(response.data.data);
+    // 응답에 필요한 데이터가 포함되어 있다고 가정합니다.
+    const profileStatus = response.data.data;
+    // profileStatus에 따라 actor 및 director 값을 업데이트합니다.
+    if (profileStatus[0] > 0) { // 배우
+      actor.value = profileStatus[0];
+    } 
+    if(profileStatus[1] > 0){
+      director.value = profileStatus[1];
+    }
+
+  } catch (error) {
+    console.error('프로필 상태를 가져오는 중 오류 발생:', error);
+  }
+};
+
+
 
 </script>
 

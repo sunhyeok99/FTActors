@@ -73,7 +73,6 @@
   </div>
 </div>
 
-
 </template>
 
   
@@ -95,15 +94,18 @@ let fileReader = new FileReader(); // FileReader 변수를 함수 외부에서 �
   const router = useRouter();
   const recruitment = ref({});
   const selectedFile = ref(null);
+  const showModal = ref(false);
 
   
   const fetchRecruitmentDetail = async () => {
     const recruitmentId = router.currentRoute.value.params.recruitmentId; // 현재 라우트의 파라미터 사용
     const response = await recruitmentApi.getDetail(recruitmentId, loginMember.value);
-    console.log(response.data.data)
-      recruitment.value = response.data.data
+    recruitment.value = response.data.data
+    setTimeout(() => {
+    showModal.value = true;
+  }, 2000);
 };
-  
+
   onMounted(fetchRecruitmentDetail);
   
   const apply = async () => {

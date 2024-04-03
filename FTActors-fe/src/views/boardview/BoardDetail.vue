@@ -4,10 +4,10 @@
         <h1><b>BOARD</b></h1>
     </div>
     <div class="row contents">
-        <div class="col-md-6 img-container">
+        <div class="col-md-4 img-container">
             <img :src="recruitment.image" alt="" class="img-fit">
         </div>
-        <div class="col-md-6">
+        <div class="col-md-8">
         <div class="profilelist">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
@@ -25,7 +25,7 @@
                   <div class="button-container">
                     <button v-if="recruitment.apply === 1" class="btn btn-secondary">이미 지원하였습니다</button>
                     <ApplyCreate />
-                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#applyModal">
+                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#applyModal" @click="apply">
                       지원하기
                      </button>
                   </div>

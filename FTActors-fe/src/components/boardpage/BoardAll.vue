@@ -37,6 +37,7 @@ const boards = ref([]);
 // getList 함수 정의: 백엔드로부터 공고 리스트를 받아오는 함수
 const getList = async (memberId) => {
   try {
+    console.log(memberId)
     await recruitmentApi.getList(memberId).then((res) => {
       console.log(res.data.data)
       boards.value = res.data.data;
@@ -90,7 +91,7 @@ const calculateDday = (endDate) => {
 
 // 페이지가 로드될 때 getList 함수 호출
 onMounted(() => {
-  if(loginMember.value == "" || loginMember.value == null){
+  if(loginMember.value == "" || loginMember.value == null || loginMember.value == undefined){
     getList(adminId);
   }
   else{

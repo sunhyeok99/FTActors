@@ -13,9 +13,6 @@ axios.interceptors.request.use(
     
     config.headers.Authorization = token == undefined ? '' : `Bearer ${token}`;
     
-    console.log("TOKEN 출력");
-    console.log(token);
-    
     return config;
   },
   error => {
@@ -162,6 +159,49 @@ const recruitmentApi = {
       });
     },
   };
+  const profileApi = { // 프로필 api
+    getAllProfileList: (sorting = 1) => {  // 소팅 값이 따로 안 들어오면 1로 세팅 (1, 2중 가능)
+      return axiosInstance.get("/profile/list", { params: { sort: sorting } });
+    },
+    getProfileList: () => {  
+      return axiosInstance.get("/profile");
+    },
+    createProfile: (profileRequest) => {
+      return formDataInstance.post("/profile/myprofile", profileRequest);
+    },
 
-export { memberApi, recruitmentApi, followApi, chatApi};
+    removeProfile: (profileId) => {
+      return axiosInstance.delete("/profile/myprofile", { params: { profile_id: profileId } });
+    },
+    modifyProfile: (profileId, profileRequest) => {
+      return formDataInstance.put("/profile/myprofile", null ,profileId, profileRequest );
+    },
+    
+    getDetailProfile: (profileId) => {
+      return axiosInstance.get("/profile/detail", {
+        params: { profile_id: profileId },
+      });
+    },
+
+    searchContent: (keywords) => {
+      return axiosInstance.get("/profile/searchcontent", { params: { keywords: keywords } });
+    },
+    searchByStageName: (findName) => {
+      return axiosInstance.get("/profile/searchstagename", { params: { stage_name: findName } });
+    },
+    searchByName: (findName) => {
+      return axiosInstance.get("/profile/searchname", { params: { name: findName } });
+    },
+    searchById: (memberId) => {
+      return axiosInstance.get("/profile/getmyprofile", { params: { memberId : memberId } });
+    },
+  };
+
+  const recommendApi = {
+    getRecruitmentList: () => {
+      return axiosInstance.post("/recommend/recruitment");
+    },
+  };
+
+export { memberApi, recruitmentApi, followApi, chatApi, profileApi, recommendApi };
 
