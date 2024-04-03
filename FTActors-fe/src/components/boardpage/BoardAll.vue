@@ -29,7 +29,7 @@ import { useMemberStore } from "@/stores/member-store.js";
 const MemberStore = useMemberStore();
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
-const adminId = 11;
+const adminId = 1;
 
 const router = useRouter();
 const boards = ref([]);
@@ -38,6 +38,7 @@ const boards = ref([]);
 const getList = async (memberId) => {
   try {
     await recruitmentApi.getList(memberId).then((res) => {
+      console.log(res.data.data)
       boards.value = res.data.data;
     })   
   } catch (error) {
@@ -85,9 +86,7 @@ const calculateDday = (endDate) => {
 
   return dDay;
 };
-const setDefaultImage = (event) => {
-  event.target.src = "@/assets/icons/NoImage.png"; // 경로는 프로젝트 설정에 따라 조정
-};
+
 
 // 페이지가 로드될 때 getList 함수 호출
 onMounted(() => {

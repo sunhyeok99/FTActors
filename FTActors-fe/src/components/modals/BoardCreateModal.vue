@@ -171,7 +171,7 @@ import { recruitmentApi } from "../../util/axios.js";
 import { useMemberStore } from "@/stores/member-store.js";
 
   
-  const MemberStore = useMemberStore();
+const MemberStore = useMemberStore();
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
 
@@ -239,7 +239,15 @@ const onScriptChange = (e) => {
   }
 };
 
-
+const getList = async (memberId) => {
+  try {
+    await recruitmentApi.getList(memberId).then((res) => {
+      boards.value = res.data.data;
+    })   
+  } catch (error) {
+    console.error('Error fetching recruitment list:', error);
+  }
+};
 
 const register = async () => {
 let formData = new FormData();
@@ -261,7 +269,7 @@ formData.append("memberId", loginMember.value);
     alert("등록 실패");    
   }  
   router.push({ name: 'board' });
-
+  
 } catch (error) {
     console.error("Error registering recruitment:", error);
     // 오류 처리

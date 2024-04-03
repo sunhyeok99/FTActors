@@ -16,7 +16,7 @@ import axios from 'axios';
 import { watch, onMounted, ref } from 'vue';
 import CommentReply from '@/components/common/CommentReply.vue'
 
-const BASE_URL = 'https://j10a602.p.ssafy.io/api';
+const SERVER_URL = 'https://j10a602.p.ssafy.io/api';
 const router = useRouter();
 const route = useRoute();
 const thumbnail = ref(null);
@@ -24,7 +24,7 @@ const currentId = ref(parseInt(route.params.id, 10));
 const montageLength = ref();
 
 const getMontage = () => {
-  axios.get(`${BASE_URL}/montage/list`)
+  axios.get(`${SERVER_URL}/montage/list`)
     .then((response) => {
       if (currentId.value >= 0 && currentId.value < response.data.data.length) {
         montage.value = response.data.data.find((m, index) => index === currentId.value);
