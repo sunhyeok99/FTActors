@@ -5,7 +5,7 @@
         <img :src="profile.imageLink" alt="사진 업로드 실패">
         <div class="card-body">
           <h5 class="card-title"><b>{{ getProfileTitle(profile) }}</b></h5>
-          <p class="card-text">나이 : {{ getAge(profile.birth) }}살</p>
+          <p class="card-text">{{ getAge(profile.birth) }}세</p>
         </div>
       </div>
     </div>
@@ -38,7 +38,7 @@ onMounted(() => {
 });
 
 const getProfileTitle = (profile) => {
-  return profile.type === 'A' ? '배우 ' + " : "+ profile.name : '감독 ' + " : "+ profile.name;
+  return profile.type === 'A' ? '배우 ' +  profile.name : '감독 ' + profile.name;
 };
 
 const getAge = (birth) => {
@@ -57,7 +57,6 @@ const getAge = (birth) => {
 
 .card-img-top {
   width: 100%;
-  /* Adjust the size as needed */
   display: block;
 }
 
