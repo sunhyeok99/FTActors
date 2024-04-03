@@ -56,6 +56,15 @@ public class ProfileController {
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", results);
     }
 
+    @GetMapping("") //1.완성 //To do: 멤버 받아서 본인 확인 후, 비공개여부 T인 것도 리스트에 같이 받아오기, 시큐리티 영향x 처리 필요
+    public ApiResponse<List<ProfileSearchResponse>> getProfileList()
+    {
+        log.info("배우,감독 프로필 전체 목록");
+
+        List<ProfileSearchResponse> results = profileService.getProfileList();
+        return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", results);
+    }
+
     @GetMapping("/detail") //db만 사용 -> jwt에서 멤버 가져오는 걸로 바꾸기, 시큐리티 영향x 처리 필요
     public ApiResponse<ProfileDto> getDetailProfile(@RequestParam(name = "profile_id") Long profileId,
                                                         HttpSession session)

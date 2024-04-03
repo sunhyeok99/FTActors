@@ -88,4 +88,36 @@ public class ProfileMapper {
                 .birth(profileDocument.getBirth())
                 .build();
     }
+    public List<ProfileSearchResponse> ProfileToProfileSearchResponseList(List<Profile> profiles) {
+        if ( profiles == null ) {
+            return null;
+        }
+
+        List<ProfileSearchResponse> list = new ArrayList<ProfileSearchResponse>( profiles.size() );
+        for ( Profile profile : profiles ) {
+            list.add( ProfileToProfileSearchResponse( profile) );
+        }
+
+        return list;
+    }
+    public ProfileSearchResponse ProfileToProfileSearchResponse(Profile profile) {
+        if ( profile == null ) {
+            return null;
+        }
+
+        return ProfileSearchResponse.builder()
+                .id(profile.getId())
+                .memberId(profile.getMember().getId())
+                .name(profile.getMember().getName())
+                .stageName(profile.getMember().getStageName())
+                .content(profile.getContent())
+                .type(profile.getType())
+                .privatePost(profile.getPrivatePost())
+                .imageLink(profile.getImage())
+                .createdTime(profile.getCreatedAt().toString())
+                .gender(profile.getMember().getGender())
+                .birth(profile.getMember().getBirth())
+                .build();
+    }
+
 }

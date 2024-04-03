@@ -12,6 +12,9 @@ import java.util.List;
 public interface ProfileService {
     List<ProfileSearchResponse> searchAllProfile(int sorting);
 
+    List<ProfileSearchResponse> getProfileList();
+
+
     ProfileDto getProfile(Long profileId, HttpSession session);
     List<ProfileSearchResponse> search(ProfileSearchRequest profileSearchRequest);
 
