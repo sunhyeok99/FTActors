@@ -2,8 +2,10 @@ package com.a602.actors.domain.profile.dto;
 
 //프로필 생성 시 필요한 dto
 
-import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 //@Builder
@@ -17,20 +19,18 @@ public class ProfileRequest {
     private Character type; // A 또는 P
     private String content; // 자기소개
     private String portfolioLink;
-    private MultipartFile image;
     private Character privateProfile; // T 또는 F
 
     @Builder
     public ProfileRequest(Long memberId,
                           Character type,
-                          String content, MultipartFile image,
+                          String content,
                           String portfolioLink, Character privateProfile)
 
     { //생성할 때
         this.memberId = memberId;
         this.type = type;
         this.content = content;
-        this.image = image;
         this.portfolioLink = portfolioLink;
         this.privateProfile = 'F';
     }

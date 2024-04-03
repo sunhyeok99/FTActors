@@ -2,7 +2,6 @@ package com.a602.actors.domain.profile.service;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
-import com.a602.actors.domain.member.Member;
 import com.a602.actors.domain.member.repository.MemberRepository;
 import com.a602.actors.domain.profile.dto.ProfileDto;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
@@ -26,6 +25,7 @@ import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -103,19 +103,19 @@ public class ProfileServiceImpl implements ProfileService{
 
     //-------------
     @Override //프로필 만들기 -> jwt에서 정보 뽑아서 그 계정으로 만들기 (엘라스틱, db 둘 다 사용)
-    public String createProfile(ProfileRequest profileRequest) throws IOException {
+    public String createProfile(ProfileRequest profileRequest, MultipartFile image) throws IOException {
 //        Member loginMember = tmpMemRepo.findByLoginId(20L);
         //-------jwt 구현 후 삭제
         String imageName = "";
         String imageUrl = "";
-        if (profileRequest.getImage() != null) {
-            imageName = FileUtil.makeFileName(profileRequest.getImage().getOriginalFilename());
-            imageUrl = FileUtil.uploadFile(profileRequest.getImage(), imageName, FolderType.PROFILE_PATH);
+        if (image != null) {
+            imageName = FileUtil.makeFileName(image.getOriginalFilename());
+            imageUrl = FileUtil.uploadFile(image, imageName, FolderType.PROFILE_PATH);
         }
         //저장하기
         log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         log.info(profileRequest.getMemberId() +" "+profileRequest.getContent()+" "+profileRequest.getType());
-        log.info(profileRequest.getPortfolioLink() +" "+profileRequest.getPrivateProfile()+" "+profileRequest.getImage());
+        log.info(profileRequest.getPortfolioLink() +" "+profileRequest.getPrivateProfile());
         log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         Profile creatingProfile = Profile.builder()
                 .member(memberRepository.findById(profileRequest.getMemberId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)))
