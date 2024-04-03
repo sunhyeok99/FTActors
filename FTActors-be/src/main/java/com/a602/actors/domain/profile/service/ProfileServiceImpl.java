@@ -104,7 +104,7 @@ public class ProfileServiceImpl implements ProfileService{
     //-------------
     @Override //프로필 만들기 -> jwt에서 정보 뽑아서 그 계정으로 만들기 (엘라스틱, db 둘 다 사용)
     public String createProfile(ProfileRequest profileRequest) throws IOException {
-        Member loginMember = tmpMemRepo.findByLoginId(20L);
+//        Member loginMember = tmpMemRepo.findByLoginId(20L);
         //-------jwt 구현 후 삭제
         String imageName = "";
         String imageUrl = "";
@@ -113,6 +113,10 @@ public class ProfileServiceImpl implements ProfileService{
             imageUrl = FileUtil.uploadFile(profileRequest.getImage(), imageName, FolderType.PROFILE_PATH);
         }
         //저장하기
+        log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        log.info(profileRequest.getMemberId() +" "+profileRequest.getContent()+" "+profileRequest.getType());
+        log.info(profileRequest.getPortfolioLink() +" "+profileRequest.getPrivateProfile()+" "+profileRequest.getImage());
+        log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         Profile creatingProfile = Profile.builder()
                 .member(memberRepository.findById(profileRequest.getMemberId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)))
                 .content(profileRequest.getContent())

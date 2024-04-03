@@ -11,8 +11,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @NoArgsConstructor
 @DynamicUpdate // 수정되는 항만 update되게
-//@AllArgsConstructor
-//@RequiredArgsConstructor
 @ToString
 @EntityListeners(AuditingEntityListener.class) //시간 찍기
 public class Profile extends BaseEntity {
