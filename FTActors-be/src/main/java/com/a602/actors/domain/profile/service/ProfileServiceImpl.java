@@ -113,6 +113,10 @@ public class ProfileServiceImpl implements ProfileService{
             imageUrl = FileUtil.uploadFile(profileRequest.getImage(), imageName, FolderType.PROFILE_PATH);
         }
         //저장하기
+        log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        log.info(profileRequest.getMemberId() +" "+profileRequest.getContent()+" "+profileRequest.getType());
+        log.info(profileRequest.getPortfolioLink() +" "+profileRequest.getPrivateProfile()+" "+profileRequest.getImage());
+        log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         Profile creatingProfile = Profile.builder()
                 .member(memberRepository.findById(profileRequest.getMemberId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)))
                 .content(profileRequest.getContent())
