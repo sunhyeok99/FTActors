@@ -27,32 +27,43 @@
     </div>
   </div>
  -->
-<!-- Button trigger modal -->
 
 
-<!-- Modal -->
+
+
 <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">지원하기</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><b>배우로 지원하기</b></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearAll()"></button>
       </div>
       <div class="modal-body">
         <div class="form-group mb-3">
           <h1>{{ recruitment.title }}</h1>
         </div>
         <div class="form-group mb-3">
-          <label for="postMemberId">회원 이름</label>
+          <label for="postMemberId"><b>회원 이름</b></label>
           <p>{{ recruitment.loginName }}</p>
         </div>
         <div class="form-group mb-3">
-          <label for="content">지원 내용</label>
+          <label for="content"><b>지원 내용</b></label>
           <textarea id="content" v-model="content" class="form-control" placeholder="지원 내용을 간단하게 적어주세요"></textarea>
         </div>
         <div class="form-group mb-3">
-          <label for="script">첨부 파일</label>
+          <label for="script"><b>지원영상</b></label>
           <input type="file" id="script" class="form-control" @change="onScriptChange">
+        </div>
+
+        <div class="form-group mb-3" v-if="selectedFile">
+          <div class="rowthings">
+          <label for="scriptPreview"><b>미리보기</b></label>
+          <span @click="clearSelectedFile" style="cursor:pointer;"><b>X</b></span>
+        </div>
+          <video id="scriptPreview" controls width="100%">
+            <source :src="selectedFile" type="video/mp4">
+          </video>
+
         </div>
       </div>
       <div class="modal-footer">
@@ -159,5 +170,9 @@ const onScriptChange = (e) => {
   
   .boardlist {
     width: 30rem;
+  }
+  .rowthings{
+    display: flex;
+    justify-content: space-between;
   }
   </style>
