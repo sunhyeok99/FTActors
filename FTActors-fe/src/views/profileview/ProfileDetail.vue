@@ -11,7 +11,6 @@
       </div>
       <div class="col-md-8">
         <div class="profilelist">
-<<<<<<< HEAD
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
 
@@ -41,26 +40,6 @@
             <li class="list-group-item"><label><b>포트폴리오 링크</b></label>{{ profile.portfolio }} </li>
             <li class="list-group-item"><label><b>생성 날짜</b></label>{{ profile.createdTime }} </li>
           </ul>
-=======
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"> 
-          <div class="profiletab">
-            <!-- 프로필 수정 버튼 -->
-            <button type="button" class="btn btn-dark" id="updatebtn" @click="goToProfileUpdate(profile.id)" v-if="isOwnProfile(profile.memberId)">
-              수정하기
-            </button>
-            <!-- 프로필 삭제 버튼 -->
-            <button type="button" class="btn btn-danger" id="deletebtn" @click="confirmDelete" v-if="isOwnProfile(profile.memberId)">
-              삭제하기
-            </button>
-            <!-- 팔로잉 버튼 -->
-            <button type="button" class="btn btn-primary" id="followbtn" @click="changeFollow(profile.memberId)" v-else>
-              <p v-if="following == 1">팔로잉 삭제 </p>
-                        <p v-else>팔로잉</p>
-              팔로잉
-            </button>
-          <ReportModal />
->>>>>>> c4610fa2b1f28f4e40ef46bc5b2b8907da3718f8
         </div>
       </div>
 
@@ -88,16 +67,6 @@ const following = ref(0);
 
 const profileDetail = async () => {
   const profileId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
-<<<<<<< HEAD
-  let response = await profileApi.getDetailProfile(profileId);
-  profile.value = response.data.data;
-  console.log(profile)
-  if (loginMember.value == profile.value.memberId) {
-    return;
-  }
-  response = await followApi.followDetail(loginMember.value, profileId);
-  following.value = response.data.data
-=======
     let response = await profileApi.getDetailProfile(profileId);
     profile.value = response.data.data;
     if(loginMember.value == profile.value.memberId){
@@ -106,7 +75,6 @@ const profileDetail = async () => {
       response = await followApi.followDetail(loginMember.value, profileId);
       following.value = response.data.data
       console.log(following)
->>>>>>> c4610fa2b1f28f4e40ef46bc5b2b8907da3718f8
 };
 
 onMounted(profileDetail);
@@ -145,13 +113,6 @@ const isOwnProfile = (memberId) => {
 
 const changeFollow = async (followerId) => {
   try {
-<<<<<<< HEAD
-    const response = await followApi.following(followingId, followerId);
-    if (response.data.status == 200) {
-      if (response.data.data == 0) {
-        alert('팔로잉을 취소하였습니다.')
-        following.value = 0;
-=======
       const response = await followApi.following(loginMember.value , followerId);
       if(response.data.status == 200){
         console.log(response)
@@ -163,17 +124,15 @@ const changeFollow = async (followerId) => {
           alert('팔로잉을 하였습니다.')
           following.value = 1;
         }
->>>>>>> c4610fa2b1f28f4e40ef46bc5b2b8907da3718f8
       }
       else {
         alert('팔로잉을 하였습니다.')
         following.value = 1;
       }
     }
-
-  } catch (error) {
-    console.error('Error toggling like:', error);
-  }
+    catch (error) {
+      console.error('Error toggling like:', error);
+    }
 };
 
 
