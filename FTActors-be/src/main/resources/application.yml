@@ -46,6 +46,10 @@ spring:
       username: ${MQ_USER_NAME}
       password: ${MQ_PASSWORD}
 
+    servlet:
+      multipart:
+        max-file-size: 20MB
+        max-request-size: 25MB
       # 스프링 시큐리티
     security:
       # oauth2 사용
