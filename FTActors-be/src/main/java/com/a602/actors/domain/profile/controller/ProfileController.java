@@ -139,16 +139,14 @@ public class ProfileController {
     }
 
     @GetMapping("/getmyprofile")
-    public ApiResponse<Integer> getMyProfileList(@RequestParam(name = "memberId") Long memberId)
+    public ApiResponse<List<Long>> getMyProfileList(@RequestParam(name = "memberId") Long memberId)
     {
-        //1. 둘 다 만들어져 있음
-        //2. 배우만 만들어져 있으
-        //3. 감독만 만들어져 있음
-        //4. 둘 다 안 만들어져 있음
-
         log.info("배우,감독 프로필 전체 목록 - 컨트롤러");
-        Integer results = profileService.getMyProfile(memberId);
 
+        List<Long> results = profileService.getMyProfile(memberId);
+
+        // results.get(0) = 배우용 프로필 아이디 / results.get(1) = 감독용 프로필 아이디
+        // ==> 값이 -1이면 없는 거임.
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", results);
     }
 

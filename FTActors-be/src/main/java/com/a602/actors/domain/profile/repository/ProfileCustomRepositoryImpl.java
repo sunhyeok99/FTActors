@@ -10,7 +10,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -87,27 +86,31 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
     }
 
     @Override
-    public Long existActorInMyPage(@RequestParam(name = "memberId") Long memberId) {
+    public Long existActorInMyPage(Long memberId) {
         QProfile profile = QProfile.profile;
 
-        return jpaQueryFactory
-                .select(profile)
+        Long profileId = jpaQueryFactory
+                .select(profile.id)
                 .from(profile)
                 .where(profile.member.id.eq(memberId)
                         .and(profile.type.eq('A')))
-                .fetchCount();
+                .fetchOne();
+
+        return profileId;
     }
 
     @Override
-    public Long existPDInMyPage(@RequestParam(name = "memberId") Long memberId) {
+    public Long existPDInMyPage(Long memberId) {
         QProfile profile = QProfile.profile;
 
-        return jpaQueryFactory
-                .select(profile)
+        Long profileId = jpaQueryFactory
+                .select(profile.id)
                 .from(profile)
                 .where(profile.member.id.eq(memberId)
                         .and(profile.type.eq('P')))
-                .fetchCount();
+                .fetchOne();
+
+        return profileId;
     }
 
 }
