@@ -56,6 +56,12 @@ public class ProfileServiceImpl implements ProfileService{
         return profileMapper.ProfileDocumentListToProfileSearchResponseList(list);
     }
 
+    @Override
+    public List<ProfileSearchResponse> getProfileList() {
+        List<Profile> list = profileRepository.findAll();
+        return profileMapper.ProfileToProfileSearchResponseList(list);
+    }
+
     @Override //To do: jwt에서 사람 정보 뽑아와서 그 계정으로 만들기 (db만, 엘라스틱x)
     public ProfileDto getProfile(Long profileId, HttpSession session) {
 //        Long nowLoginId = (Long) session.getAttribute("memberName");
