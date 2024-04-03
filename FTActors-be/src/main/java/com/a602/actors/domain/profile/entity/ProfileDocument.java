@@ -28,6 +28,9 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     @Field(type = FieldType.Keyword)
     private Long id; //게시글 번호
 
+//    @Field(name = "member_id", type = FieldType.Keyword)
+//    private Long memberId; //
+
     @Field(type = FieldType.Text, analyzer = "name_analyzer", searchAnalyzer = "name_analyzer") // -> (초성 검색 허용), 오타 허용
     private String name;
 
@@ -35,7 +38,7 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     @Field(name = "stage_name", type = FieldType.Text, analyzer = "name_analyzer", searchAnalyzer = "name_analyzer") // -> (초성 검색 허용), 오타 허용
     private String stageName;
 
-//    @Field(type = FieldType.Text, analyzer = "korean_analyzer", searchAnalyzer = "korean_analyzer")
+    //    @Field(type = FieldType.Text, analyzer = "korean_analyzer", searchAnalyzer = "korean_analyzer")
     @Field(type = FieldType.Text, analyzer = "content_and_title_analyzer", searchAnalyzer = "content_and_title_analyzer")
     // -> 오타 허용, 자동 완성 (검색어 우선순위 적용)
 //@Field(type = FieldType.Text,
@@ -61,12 +64,14 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
 //    @Field(name = "created_at", type = FieldType.Date, format = DateFormat.date_hour_minute_second)
     private LocalDateTime createdTime; //생성 일시
 
-//    @Field(name = "updated_at", type = FieldType.Date, format = DateFormat.date_hour_minute_second)
+    //    @Field(name = "updated_at", type = FieldType.Date, format = DateFormat.date_hour_minute_second)
     @Field(name = "updated_at", type = FieldType.Keyword)
     private LocalDateTime updatedTime; //마지막 업데이트 일시
 
-    @Field(name = "image_link", type = FieldType.Keyword)
-    private String imageLink;
+    @Field(name = "image", type = FieldType.Keyword)
+    private String image;
+    @Field(name = "image_name", type = FieldType.Keyword)
+    private String imageName;
 
     public static ProfileDocument from (Profile profile) {
         return ProfileDocument.builder()
@@ -79,7 +84,9 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
                 .updatedTime(profile.getUpdatedAt())
                 .gender(profile.getMember().getGender())
                 .birth(extractBirthYear(profile.getMember().getBirth())) //생년만 저장
-                .imageLink(profile.getImage())
+//                .imageLink(profile.getImage())
+                .image(profile.getImage())
+                .imageName(profile.getImageName())
                 .build();
     }
 
