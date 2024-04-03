@@ -12,35 +12,34 @@ import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "montage")
-@Builder
 @Getter
+@Builder
 public class Montage extends BaseEntity {
 
-//    @OneToMany(mappedBy = "member")
-//    private Member member;
+    @ManyToOne
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
+    private Member member;
     private String title;
     private String link;
-
-    @Column(name="like_count")
-    private Integer likeCount;
 
     public Montage() {
 
     }
 
-    public Montage(String title, String link, Integer likeCount){
+
+    public Montage(Member member, String title, String link){
+        this.member = member;
         this.title = title;
         this.link = link;
-        this.likeCount = likeCount;
     }
 
-    public Montage toEntity(MontageDto.MontageInfo info){
-        return Montage.builder()
-                .title(info.getTitle())
-                .link(info.getLink())
-                .likeCount(info.getLikeCount())
-                .build();
-
-    }
+//    public Montage toEntity(MontageDto.Montages montage){
+//        return Montage.builder()
+//                .member(member)
+//                .title(montage.getTitle())
+//                .link(montage.getLink())
+//                .build();
+//
+//    }
 
 }

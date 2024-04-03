@@ -1,52 +1,111 @@
-<template>
-  <div class="row row-cols-1 row-cols-md-4 g-4">
-    <div class="col" v-for="(board, index) in boards" :key="index">
-      <div class="card" id="board" @click="goToBoardDetail(board.id)">
-        <img src="@/assets/board/b3.jpg" alt="">
-        <button class="like-btn" :class="{ liked: board.isLiked }" @click.stop="toggleLike(index)">
-          <img v-if="board.isLiked" src="@/assets/icons/like-filled.png" alt="Liked">
-          <img v-else src="@/assets/icons/like-outline.png" alt="Like">
-          <!-- <div v-if="board.isLiked"><i class="bi bi-star-fill"></i></div>
-          <div v-else><i class="bi bi-star"></i></div> -->
-         
-        </button>
-        <div class="card-body">
-          <h5 class="card-title"><b>{{ board.title }}</b></h5>
-          <p class="card-text">{{ board.deadline }}</p>
-        </div>
+  <template>
+  <div class="masonry" style="--bs-columns: 4;">
+    <div class="masonry-item" v-for="board in boards" :key="board.id">
+      <div class="card"  @click="goToBoardDetail(board.id)">
+        <img :src="board.image" @error="setDefaultImage" alt="" class="img-fluid">
+              <button class="like-btn" @click.stop="toggleLike(board.id)">
+                <img v-if="board.wishList === 1" src="@/assets/icons/like-filled.png" alt="Liked">
+                <img v-else src="@/assets/icons/like-outline.png" alt="Like">         
+              </button>
+              
+            <div class="col-md-8">
+              <div class="card-body" @click="goToBoardDetail(board.id)">
+                <h5 class="card-title"><b>{{ board.title }}</b></h5>
+                <p class="card-text">{{ board.content }}</p>
+                <p class="card-text">{{ board.endDate }} </p><p class="dday">D-{{ calculateDday(board.endDate) }}</p>
+              </div>
+            </div>
       </div>
     </div>
   </div>
 </template>
 
+
 <script setup>
-import { ref, reactive } from 'vue';
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { recruitmentApi } from '@/util/axios';
+import { useMemberStore } from "@/stores/member-store.js";
+  
+const MemberStore = useMemberStore();
+const loginMember = ref(null);
+loginMember.value = MemberStore.memberInfo;
+const adminId = 11;
 
 const router = useRouter();
-const boards = reactive([
-  { id: 1, title: "웹드라마 '씨타입' 채널에서 배우님을 모십니다", image: "@/assets/board/b1.jpg", deadline: "D-9 / 2024-03-15 마감", isLiked: false },
-  { id: 2, title: "웹드라마 '씨타입' 채널에서 배우님을 모십니다", image: "@/assets/board/b1.jpg", deadline: "D-9 / 2024-03-15 마감", isLiked: false },
-  { id: 3, title: "웹드라마 '씨타입' 채널에서 배우님을 모십니다", image: "@/assets/board/b1.jpg", deadline: "D-9 / 2024-03-15 마감", isLiked: false },
-  { id: 4, title: "웹드라마 '씨타입' 채널에서 배우님을 모십니다", image: "@/assets/board/b1.jpg", deadline: "D-9 / 2024-03-15 마감", isLiked: false },
+const boards = ref([]);
 
-  // 이하 생략
-]);
-
+// getList 함수 정의: 백엔드로부터 공고 리스트를 받아오는 함수
+const getList = async (memberId) => {
+  try {
+    await recruitmentApi.getList(memberId).then((res) => {
+      boards.value = res.data.data;
+    })   
+  } catch (error) {
+    console.error('Error fetching recruitment list:', error);
+  }
+};
 const goToBoardDetail = (boardId) => {
   router.push({ name: 'boardDetail', params: { id: boardId } });
 };
-
-// `toggleLike` 함수 수정: 특정 인덱스의 좋아요 상태를 토글
-const toggleLike = (index) => {
-  boards[index].isLiked = !boards[index].isLiked;
+const toggleLike = async (index) => {
+  try {
+    if(loginMember.value =="" || loginMember.value == null){
+      alert(" 로그인이 필요합니다")
+      router.push({ name: 'login' });
+    }
+    else{
+      const memberId = loginMember.value; 
+      const recruitmentId = index;
+      const response = await recruitmentApi.updateWishlist(recruitmentId, memberId);
+      if(response.data.status == 200){
+        if(response.data.data == 0){
+          alert('찜 목록에서 삭제되었습니다.')
+        }
+        else{
+          alert('찜 등록이 완료되었습니다.')
+        }
+        const tmp = boards.value.find(board => board.id === index);
+        tmp.wishList = response.data.data;
+        console.log(tmp.wishList)
+      }
+    }
+    } catch (error) {
+      console.error('Error toggling like:', error);
+  }
 };
+
+// D-day 계산 함수
+const calculateDday = (endDate) => {
+  const today = new Date();
+  const end = new Date(endDate);
+
+  // 시간 차이를 밀리초로 계산한 후 일(day) 단위로 변환
+  const difference = end - today;
+  const dDay = Math.ceil(difference / (1000 * 60 * 60 * 24));
+
+  return dDay;
+};
+const setDefaultImage = (event) => {
+  event.target.src = "@/assets/icons/NoImage.png"; // 경로는 프로젝트 설정에 따라 조정
+};
+
+// 페이지가 로드될 때 getList 함수 호출
+onMounted(() => {
+  if(loginMember.value == "" || loginMember.value == null){
+    getList(adminId);
+  }
+  else{
+    getList(loginMember.value);
+  }
+});
+
+
+
 </script>
 
 <style scoped>
-#board {
-  border: none;
-}
+
 
 .image-container {
   position: relative;
@@ -55,7 +114,6 @@ const toggleLike = (index) => {
 
 .card-img-top {
   width: 100%;
-  /* Adjust the size as needed */
   display: block;
 }
 
@@ -75,5 +133,31 @@ const toggleLike = (index) => {
 .like-btn img {
   width: 20px;
   height: 20px;
+}
+.masonry {
+  column-count: var(--bs-columns);
+  column-gap: 1.5rem;
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1.5rem;
+}
+@media (max-width: 992px) {
+  .masonry {
+    --bs-columns: 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .masonry {
+    --bs-columns: 2;
+  }
+}
+
+@media (max-width: 576px) {
+  .masonry {
+    --bs-columns: 1;
+  }
 }
 </style>

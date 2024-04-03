@@ -3,15 +3,16 @@ package com.a602.actors.domain.montage.service;
 
 import com.a602.actors.domain.montage.dto.MontageDto;
 import com.a602.actors.domain.montage.entity.Montage;
-import com.a602.actors.domain.montage.repository.MontageResourceRepository;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.a602.actors.domain.montage.repository.MontageRepository;
+
+import com.a602.actors.global.common.config.FileUtil;
+import com.a602.actors.global.common.enums.FolderType;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 // S3 연결
@@ -19,43 +20,37 @@ import java.util.List;
 @Slf4j
 public class MontageFileService {
 
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
-    private final AmazonS3 amazonS3;
-    private final MontageResourceRepository montageRepository;
+    private final MontageRepository montageRepository;
 
-    public MontageFileService(AmazonS3 amazonS3, MontageResourceRepository montageRepository) {
-        this.amazonS3 = amazonS3;
+    public MontageFileService(MontageRepository montageRepository) {
         this.montageRepository = montageRepository;
     }
-    public List<MontageDto.MontageInfo> getAllMontageList(){
-        return montageRepository.findAll().stream().map(MontageDto.MontageInfo::toDto).toList();
+    public List<MontageDto.Montages> getAllMontageList(){
+        return montageRepository.getAllMontages().stream().map(MontageDto.Montages::toDto).toList();
     }
 
-//    public List<MontageDto.MontageInfo> getMyMontage(Integer memberId){
-//        //return montageRepository.findByMemberId(memberId).stream().map(MontageDto.MontageInfo::toDto).toList();
-//        return null;
-//    }
+    public List<MontageDto.Montages> getMyMontage(Long memberId){
+        return montageRepository.getMyMontages(memberId).stream().map(MontageDto.Montages::toDto).toList();
+    }
 
 
     public String uploadFile(MultipartFile multipartFile) throws IOException {
-        String originalFilename = "montages/" + multipartFile.getOriginalFilename();
+        String originalFilename = multipartFile.getOriginalFilename();
 
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentLength(multipartFile.getSize());
-        metadata.setContentType(multipartFile.getContentType());
+        String url = FileUtil.uploadFile(multipartFile, FolderType.MONTAGE_PATH);
+        System.out.println("URL : " + url);
 
-        amazonS3.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
-        String url = amazonS3.getUrl(bucket, originalFilename).toString();
-
-        Montage data = Montage.builder()
-                .title(originalFilename)
-                .link(url)
-                .likeCount(0)
-                .build();
-
-        montageRepository.save(data);
-        return amazonS3.getUrl(bucket, originalFilename).toString();
+        montageRepository.saveMontage(originalFilename, url);
+        return "";
     }
 
+    public String deleteFile(Long montageId) throws IOException {
+
+        Montage montage = montageRepository.getMontage(montageId);
+        FileUtil.deleteFile(montage.getTitle(), FolderType.MONTAGE_PATH);
+
+        montageRepository.deleteMontage(montageId);
+
+        return "";
+    }
 }

@@ -1,10 +1,13 @@
 <template>
+
   <div>
     <BoardSearchBar />
   </div>
+  <div class="spacer"></div>
   <div>
     <BoardAll />
   </div>
+
   <div>
     <Pagenation />
   </div>
@@ -13,9 +16,17 @@
 import BoardAll from '@/components/boardpage/BoardAll.vue';
 import BoardSearchBar from '@/components/boardpage/BoardSearchBar.vue';
 import Pagenation from '@/components/common/Pagenation.vue';
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
 </script>
 
   <style>
-
+.btn-create {
+  margin-top: 20px;
+}
+.spacer{
+  height: 1rem;
+}
   </style>
-  ../components/BoardSearchBar.vue../components/searchbars/BoardSearchBar.vue../components/boardpage/BoardSearchBar.vue../components/common/Pagenation.vue

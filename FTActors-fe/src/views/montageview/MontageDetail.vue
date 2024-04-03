@@ -1,79 +1,114 @@
 <template>
-  <div class="montagepage">
-    <div class="montagethumbnail">
+  <div class="montagedetail">
+    <div class="montage" ref="thumbnail">
       <img src="@/assets/icons/Next.png" alt="" id="previous" @click="goToPreviousMontage">
-      <iframe width="1120" height="530" src="https://www.youtube.com/embed/lJXaNYTVjrQ?si=jZHMoe0Tu1yo4tPb"
-        title="YouTube video player" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen></iframe>
-      <img src="@/assets/icons/Next.png" alt=""id="next" @click="goToNextMontage">
+      <video :src="montage.link" muted autoplay playsinline></video>
+      <img src="@/assets/icons/Next.png" alt="" id="next" @click="goToNextMontage">
     </div>
-    <div class="montagedetail">
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"><label><b>출연배우</b></label>한재혁</li>
-        <li class="list-group-item"><label><b>작품명</b></label>연극<달동네>
-        </li>
-      </ul>
+    <div class="commentreply">
+      <CommentReply :current-id="currentId" />
     </div>
   </div>
 </template>
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router';
+import axios from 'axios';
+import { watch, onMounted, ref } from 'vue';
+import CommentReply from '@/components/common/CommentReply.vue'
 
+const BASE_URL = 'https://j10a602.p.ssafy.io/api';
 const router = useRouter();
 const route = useRoute();
+const thumbnail = ref(null);
+const currentId = ref(parseInt(route.params.id, 10));
+const montageLength = ref();
+
+const getMontage = () => {
+  axios.get(`${BASE_URL}/montage/list`)
+    .then((response) => {
+      if (currentId.value >= 0 && currentId.value < response.data.data.length) {
+        montage.value = response.data.data.find((m, index) => index === currentId.value);
+        montageLength.value = response.data.data.length
+      } else {
+        console.error('Invalid montage ID:', currentId.value);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
 
 const goToPreviousMontage = () => {
-  // 현재 몽타쥬의 ID를 숫자로 변환하고 1을 빼기
-  const currentId = parseInt(route.params.id, 10);
-  const previousId = currentId - 1;
-
-  // 이전 몽타쥬로 이동
-  router.push({ name: 'montage', params: { id: previousId } });
+  if (currentId.value > 0) {
+    const previousId = currentId.value - 1;
+    router.push({ name: 'montageDetail', params: { id: previousId } });
+    getMontage();
+  } else {
+    alert('이전 컨텐츠가 없습니다.');
+  };
 };
-
 const goToNextMontage = () => {
-  // 현재 몽타쥬의 ID를 숫자로 변환하고 1을 더하기
-  const currentId = parseInt(route.params.id, 10);
-  const nextId = currentId + 1;
+  if (currentId.value < montageLength.value -1) {
+    const nextId = currentId.value + 1;
+  router.push({ name: 'montageDetail', params: { id: nextId } });
+  getMontage();
+  } else {
+    alert('다음 컨텐츠가 없습니다.');
+  };
 
-  // 다음 몽타쥬로 이동
-  router.push({ name: 'montage', params: { id: nextId } });
 };
+
+const montage = ref([]);
+watch(() => route.params.id, (newId) => {
+  currentId.value = parseInt(newId, 10);
+  getMontage();
+}, { immediate: true });
+
+
+
+onMounted(() => {
+  getMontage();
+
+});
+
 
 </script>
-<style>
-.montagepage {
+<style scoped>
+.montagedetail {
   display: flex;
-  flex-direction: column;
+  width: 100%;
+}
+
+.montage {
+  align-items: center;
+  display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 2rem;
 }
 
-.montagethumbnail {
-  display: flex;
-  align-items: center;
-  margin-bottom: 4rem;
+.montage video {
+  height: auto;
+  width: 50vw;
+  z-index: 2;
+  flex: 1;
 }
 
-.montagethumbnail img {
+.montage img {
   width: 25px;
   height: 25px;
   margin: 2rem;
 }
 
-.montagedetail {
-  width: 30rem;
+.commentreply {
+  flex: 2;
 }
 
 #previous {
   transform: rotate(180deg);
-  color-interpolation-filters : white;
-  cursor: pointer;
-}
-#next {
+  color-interpolation-filters: white;
   cursor: pointer;
 }
 
+#next {
+  cursor: pointer;
+}
 </style>

@@ -19,6 +19,13 @@ import ProfileCreate from "@/views/profileview/ProfileCreate.vue";
 import ProfileUpdate from "@/views/profileview/ProfileUpdate.vue";
 import BlacklistView from "@/views/adminview/BlacklistView.vue";
 import ReportView from "@/views/adminview/ReportView.vue";
+import ChatDetail from "@/components/chatpage/chatdetail.vue";
+import ChatList from "@/components/chatpage/chatlist.vue";
+import ChatRoomView from "@/views/chatview/ChatRoomView.vue";
+import ApplyCreate from "../views/applyview/ApplyCreate.vue";
+import ApplyDetail from "../views/applyview/ApplyDetail.vue";
+import MyApply from "../views/applyview/MyApply.vue";
+import ApplyList from "../views/applyview/ApplyList.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,7 +43,7 @@ const router = createRouter({
     {
       path: "/board",
       name: "board",
-      component: BoardView,
+      component: BoardView, 
     },
     {
       path: "/montagelist",
@@ -53,6 +60,7 @@ const router = createRouter({
       name: "login",
       component: LoginView,
     },
+
     {
       path: "/logout",
       name: "logout",
@@ -67,6 +75,7 @@ const router = createRouter({
       path: "/mypage",
       name: "mypage",
       component: MypageView,
+      props: true,
     },
     {
       path: "/boarddetail/:id",
@@ -83,6 +92,7 @@ const router = createRouter({
       path: "/boardupdate",
       name: "boardUpdate",
       component: BoardUpdate,
+      props: true,
     },
 
     {
@@ -107,7 +117,6 @@ const router = createRouter({
       component: ProfileDetail,
       props: true,
     },
-
     {
       path: "/profilecreate",
       name: "profileCreate",
@@ -127,6 +136,47 @@ const router = createRouter({
       path: "/report",
       name: "report",
       component: ReportView,
+    },
+    {
+      path: '/chat',
+      name: 'chatlist',
+      component: ChatList,
+    },
+    {
+      path: '/chat/:id',
+      name: 'chatdetail',
+      component: ChatDetail,
+      props: true,
+    },
+    {
+      path: '/chatroomview/:roomId',
+      name: 'ChatRoomView',
+      component: ChatRoomView,
+      props: true
+    },
+     {
+      path: '/applyCreate/:recruitmentId/:memberId',
+      name: 'applyCreate',
+      component: ApplyCreate,
+      props : true,
+    },
+    {
+      path: '/applyDetail/:id',
+      name: 'applyDetail',
+      component: ApplyDetail,
+      props: true,
+    },
+    {
+      path: '/myApply',
+      name: 'myApply',
+      component: MyApply,
+      props: true,
+    },
+    {
+      path : '/applyList',
+      name : 'applyList',
+      component : ApplyList,
+      props : true,
     },
   ],
 });

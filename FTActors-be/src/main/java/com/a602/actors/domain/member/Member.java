@@ -12,7 +12,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
 
-    @Column(name = "member_id")
+    @Column(name = "login_id")
     private String memberId;
 
     private String password;
