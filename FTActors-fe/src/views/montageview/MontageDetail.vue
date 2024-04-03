@@ -90,6 +90,7 @@ onMounted(() => {
   width: 50vw;
   z-index: 2;
   flex: 1;
+  max-height: 75vh;
 }
 
 .montage img {
