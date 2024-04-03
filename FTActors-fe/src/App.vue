@@ -31,7 +31,7 @@
     <!-- 메시지 버튼 -->
     <button :class="{ 'btn': true, 'floating-map-button': isMontagePage }" id="floating-map-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
     aria-controls="offcanvasWithBothOptions"> <img width="40" src="@/assets/icons/Message.png" alt="message icon"></button>
-    <SideBars />
+    <!-- <SideBars /> -->
     <ChatList />
   </div>
 

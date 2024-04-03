@@ -37,26 +37,25 @@
 </template>
   
 <script setup>
-import { ref, onMounted } from 'vue';
-import { RouterLink, RouterView, useRouter } from 'vue-router';
-import axios from 'axios';
-import ChatDetail from '@/components/chatpage/chatdetail.vue';
-import ChatRoomView from '@/views/chatview/ChatRoomView.vue';
 
-const router = useRouter();
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
+import { RouterLink, RouterView, useRouter } from 'vue-router'
+import { recruitmentApi, memberApi, followApi } from '@/util/axios';
+import { useMemberStore } from "@/stores/member-store.js";
 
 const chats = ref([]);
-
-// const chats = [
-//   { roomId: 1, name: '배사람1', day: '토', message: '잘 부탁드립니다.' },
-//   { roomId: 2, name: '배사람2', day: '토', message: '잘 부탁드립니다.' },
-//   { roomId: 3, name: '배사람3', day: '토', message: '잘 부탁드립니다.' },
-//   { roomId: 4, name: '배사람4', day: '토', message: '잘 부탁드립니다.' },
-//   { roomId: 5, name: '배사람5', day: '토', message: '잘 부탁드립니다.' },
-// ];
-
+const MemberStore = useMemberStore();
+const router = useRouter();
+const member = ref({});
 const selectedChat = ref(null);
-
+const loginMember = ref(null);
+loginMember.value = MemberStore.memberInfo;
+const fetchMember = async () => {
+  const id = loginMember.value
+      const response = await memberApi.getById(id);
+      member.value = response.data.data;
+  };
 function selectChat(chat) {
   selectedChat.value = chat;
 }
@@ -74,6 +73,7 @@ onMounted(async () => {
     console.error('Error fetching chat rooms:', error);
   }
 });
+onMounted(fetchMember);
 </script>
 
 <style scoped>

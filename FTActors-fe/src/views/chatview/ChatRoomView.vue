@@ -3,6 +3,12 @@
     <div>
       <h2>{{ room.title }}</h2>
     </div>
+
+    <ul class="list-group chatbox">
+      <li class="list-group-item" v-for="message in messages" :key="message.id">
+        {{ message.sender }} - {{ message.message }}
+      </li>
+    </ul>
     <div class="input-group">
       <div class="input-group-prepend">
         <label class="input-group-text">내용</label>
@@ -12,12 +18,7 @@
         <button class="btn btn-primary" type="button" @click="sendMessage">보내기</button>
       </div>
     </div>
-    <ul class="list-group">
-      <li class="list-group-item" v-for="message in messages" :key="message.id">
-        {{ message.sender }} - {{ message.message }}
-      </li>
-    </ul>
-    <div></div>
+
   </div>
 </template>
 
@@ -102,5 +103,10 @@ export default {
 <style>
 [v-cloak] {
   display: none;
+}
+
+.chatbox {
+  border: 1px gray solid;
+  border-radius: 10px;
 }
 </style>
