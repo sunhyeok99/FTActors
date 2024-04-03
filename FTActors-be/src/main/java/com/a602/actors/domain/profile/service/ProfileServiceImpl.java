@@ -49,8 +49,7 @@ public class ProfileServiceImpl implements ProfileService{
         //To do: 1. 지금은 비공개여부=T면 다 안 뽑음. jwt들어오면, 로그인 유저의 경우 T라도 같이 뽑아오게 바꾸기
 
         //Reop가서 List<도큐먼트>로 뽑아오고
-        List<ProfileDocument> list = new ArrayList<>();
-        list = profileDocumentCustomRepository.findAllByOrderByUpdatedTime(sorting);
+        List<ProfileDocument> list = profileDocumentCustomRepository.findAllByOrderByUpdatedTime(sorting);
 
         //리턴에서 mapper사용해서 변환 후 돌려주기
         if (list == null) new ProfileException(ExceptionCodeSet.PROFILE_NOT_FOUND); // -> 프론트에서 null이면 "조건에 맞는 프로필이 없습니다" 반환
@@ -106,7 +105,7 @@ public class ProfileServiceImpl implements ProfileService{
 //            throw new ProfileException(ExceptionCodeSet.PROFILE_ALREADY_EXIST);
 //        }
 
-        Member loginMember = tmpMemRepo.findByLoginId(20L);
+        Member loginMember = tmpMemRepo.findByLoginId(profileRequest.getMemberId());
         //-------jwt 구현 후 삭제
 
         //저장하기
@@ -184,7 +183,7 @@ public class ProfileServiceImpl implements ProfileService{
 //            return searchAllProfile(1);
 //        }
 
-        queryBuilderInterface.createQuery(keywords);
+        queryBuilderInterface.createContentQuery(keywords);
         NativeQuery nativeQuery = queryBuilderInterface.getSearch();
         System.out.println(nativeQuery.getQuery().toString());
 

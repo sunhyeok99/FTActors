@@ -19,20 +19,20 @@ public class QueryBuilder implements QueryBuilderInterface{
     }
 
     @Override
-    public void createQuery(List<String> keywords) {
+    public void createContentQuery(List<String> keywords) {
         this.setFilter(keywords);
     }
 
-    @Override
-    public void createQuery(String keyword) {
-        this.setMonoFilter(keyword);
-    }
+//    @Override
+//    public void createNameQuery(String keyword) {
+//        this.setMonoFilter(keyword);
+//    }
 
-    private void setMonoFilter(String keyword) {
-        Query query = QueryBuilders.match(queryBuilder -> queryBuilder.field("stage_name").query(keyword));
-//        NativeQuery nativeQuery = NativeQuery.builder().withQuery(query).build();
-        this.nativeQueryBuilder.withQuery(query);
-    }
+//    private void setMonoFilter(String keyword) {
+//        Query query = QueryBuilders.match(queryBuilder -> queryBuilder.field("stage_name").query(keyword));
+////        NativeQuery nativeQuery = NativeQuery.builder().withQuery(query).build();
+//        this.nativeQueryBuilder.withQuery(query);
+//    }
 
     private void setFilter(List<String> keywords) {
         BoolQuery.Builder boolQueryBuilder = QueryBuilders.bool();

@@ -58,11 +58,13 @@ public class JWTMemberServiceImpl {
         String savedName = "";
         String url = "";
         try{
-            //        if(jwtDto.getProfileImage() != null){
-            savedName = FileUtil.makeFileName(profileImage.getOriginalFilename());
-            url = FileUtil.uploadFile(profileImage, savedName, FolderType.PROFILE_PATH);
-//        }
-
+            if(profileImage != null){
+                savedName = FileUtil.makeFileName(profileImage.getOriginalFilename());
+                url = FileUtil.uploadFile(profileImage, savedName, FolderType.PROFILE_PATH);
+            }
+            else{
+                url = "";
+            }
             Member member = Member.builder()
                     .loginId(jwtDto.getLoginId())
                     .password(jwtDto.getPassword())

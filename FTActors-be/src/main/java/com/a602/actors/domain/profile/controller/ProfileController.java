@@ -34,19 +34,19 @@ public class ProfileController {
     private final MemberService memberService;
 
     //어케 쓸 수 있겠찌
-    public Long findMemberLoginedMemberId(HttpServletRequest request) {
-        Long loginedId = jwtUtil.getLoginMemberId();
-        log.info("loginedId: " + loginedId);
-        if (loginedId == null) {
-            Cookie cookie = cookieUtil.resolveToken(request);
-            Map<String, String> attributes = cookie.getAttributes();
-            String loginedKakaoId = attributes.get("kakaoId");
-            Member loginedMemeber = memberService.getUserByKakaoId(loginedKakaoId);
-            loginedId = loginedMemeber.getId();
-        }
-
-        return loginedId;
-    }
+//    public Long findMemberLoginedMemberId(HttpServletRequest request) {
+//        Long loginedId = jwtUtil.getLoginMemberId();
+//        log.info("loginedId: " + loginedId);
+//        if (loginedId == null) {
+//            Cookie cookie = cookieUtil.resolveToken(request);
+//            Map<String, String> attributes = cookie.getAttributes();
+//            String loginedKakaoId = attributes.get("kakaoId");
+//            Member loginedMemeber = memberService.getUserByKakaoId(loginedKakaoId);
+//            loginedId = loginedMemeber.getId();
+//        }
+//
+//        return loginedId;
+//    }
 
     @GetMapping("/list") //1.완성 //To do: 멤버 받아서 본인 확인 후, 비공개여부 T인 것도 리스트에 같이 받아오기, 시큐리티 영향x 처리 필요
     public ApiResponse<List<ProfileSearchResponse>> getAllProfileList(@RequestParam(name = "sort") int sorting)

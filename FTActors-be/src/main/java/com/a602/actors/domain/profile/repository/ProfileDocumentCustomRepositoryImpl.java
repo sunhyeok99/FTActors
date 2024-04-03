@@ -35,7 +35,7 @@ public class ProfileDocumentCustomRepositoryImpl implements ProfileDocumentCusto
         NativeQuery nativeQuery = queryBuilder.withQuery(q -> q
                         .term(termQueryBuilder.build()))
                 .build();
-//        System.out.println(nativeQuery);
+        System.out.println("네이티브 쿼리ㅣ: "+ nativeQuery.getQuery().toString());
 
         Sort sort;
         if (sorting == 1) { // 최신
@@ -48,6 +48,7 @@ public class ProfileDocumentCustomRepositoryImpl implements ProfileDocumentCusto
 //        Iterable<ProfileDocument> profileDocuments = profileDocumentRepository.findAll(sort);
         // 정렬 조건과 쿼리를 사용하여 프로필 문서 조회
         List<ProfileDocument> profileDocuments = customElasticsearchOperations.queryForList(nativeQuery, sort);
+        System.out.println("리포지토리 프로필뱉으라독: "+ profileDocuments);
 
         // Iterable을 List로 변환하여 반환
         return StreamSupport.stream(profileDocuments.spliterator(), false)
