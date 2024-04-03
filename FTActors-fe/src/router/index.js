@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import ProfileView from "../views/profileview/ProfileView.vue";
 import BoardView from "../views/boardview/BoardView.vue";
-import MontageListView from "../views/montageview/MontageView.vue";
 import MontageMainView from "../views/montageview/MontageMain.vue";
 import LoginView from "../views/memberview/LoginView.vue";
 import LogoutView from "../views/memberview/LogoutView.vue";
@@ -45,11 +44,7 @@ const router = createRouter({
       name: "board",
       component: BoardView, 
     },
-    {
-      path: "/montagelist",
-      name: "montagelist",
-      component: MontageListView,
-    },
+
     {
       path: "/montagemain",
       name: "montagemain",

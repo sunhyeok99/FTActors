@@ -7,22 +7,19 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <!-- 통신하여 가져온 안 읽은 알림 목록을 반복하여 표시 -->
           <div v-show="isAlarmUnReadListAvailable">
-            <div v-for="(alarm, index) in alarmUnReadList" :key="index" @click="toggleAlarmSelection(alarm)"
-              class="rowthings">
-              <!-- 여기서 알람 내용을 표시하거나 필요한 작업을 수행 -->
-              <img src="@/assets/icons/like-filled.png" alt="" id="likebtn">
-           <p :class="{ 'selected': isSelected(alarm.id) }"><strong>{{ alarm.content }}</strong></p>
-            </div>
+            <div v-for="(alarm, index) in alarmUnReadList" :key="index" class="rowthings">
+              <img src="@/assets/icons/like-filled.png" alt="" class="icon-like">
+              <p :class="{ 'selected': isSelected(alarm.id) }"><strong>{{ alarm.content }}</strong></p>
+              <!-- 각 알람 옆에 확인 버튼 추가 -->
+              <button class="btn btn-secondary btn-sm" @click.stop="markIndividualAsRead(alarm.id)">확인</button>
+            </div>            
           </div>
           <div v-show="!isAlarmUnReadListAvailable">
             <p>알람이 없습니다.</p>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-dark" @click="markAsRead">확인</button>
-        </div>
+
       </div>
     </div>
   </div>
@@ -40,10 +37,10 @@ const isAlarmUnReadListAvailable = ref(false);
 
 const selectedAlarms = ref([]);
 const loginId = 1;
-
+const SERVER_URL = 'https://j10a602.p.ssafy.io/api';
 onMounted(async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/notify/list`, { params: { loginId } });
+    const response = await axios.get(`${SERVER_URL}/notify/list`, { params: { loginId } });
     alarmUnReadList.value = response.data.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     isAlarmUnReadListAvailable.value = alarmUnReadList.value.length > 0;
     console.log("alarmUnReadList.value : ", alarmUnReadList.value);
@@ -64,6 +61,22 @@ const toggleAlarmSelection = (alarm) => {
   }
 };
 
+const markIndividualAsRead = async (alarmId) => {
+  try {
+    // 서버에 단일 알람 읽음 상태로 업데이트 요청
+    const response = await axios.post(`${SERVER_URL}/notify/read`, [alarmId]);
+    console.log('Alarm marked as read:', response.data);
+
+    // 읽음 처리된 알람을 목록에서 제거
+    const index = alarmUnReadList.value.findIndex(alarm => alarm.id === alarmId);
+    if (index !== -1) {
+      alarmUnReadList.value.splice(index, 1);
+    }
+  } catch (error) {
+    console.error('Error marking alarm as read:', error);
+  }
+};
+
 const isSelected = (alarmId) => {
   return selectedAlarms.value.includes(alarmId);
 };
@@ -72,7 +85,7 @@ const markAsRead = async () => {
   try {
     console.log("selectedAlarms : ", selectedAlarms.value);
     // 선택된 알람들의 ID를 서버에 전송하여 읽음 상태로 변경
-    const response = await axios.post('http://localhost:8080/notify/read', selectedAlarms.value);
+    const response = await axios.post(`${SERVER_URL}/notify/read`, selectedAlarms.value);
     console.log('Selected alarms marked as read:', response.data);
 
     // 선택된 알람들을 알람 목록에서 제거

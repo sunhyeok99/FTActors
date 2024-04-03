@@ -69,9 +69,9 @@ const recvMessage = (recv) => {
     "message": recv.message
   });
 };
-
+const SERVER_URL = '//j10a602.p.ssafy.io/api';
 const connect = () => {
-  const socket = new WebSocket('ws://localhost:8080/ws-stomp');
+  const socket = new WebSocket(`ws:${SERVER_URL}/ws-stomp`);
   stompClient.value = Stomp.over(socket);
 
   stompClient.value.connect({}, frame => {

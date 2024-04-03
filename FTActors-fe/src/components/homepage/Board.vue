@@ -2,7 +2,6 @@
     <div class="title"><h3><b>진행중인 공고 10개</b></h3>
     <button type="button" class="btn btn-primary" id="orderbtn">인기순</button>
     <button type="button" class="btn">내 맞춤 공고 보러가기✔</button>
-
     <button type="button" class="btn pageright" @click="goToBoardPage">▶️더보기</button>
   </div>
     <div class="row row-cols-1 row-cols-md-4 g-4">

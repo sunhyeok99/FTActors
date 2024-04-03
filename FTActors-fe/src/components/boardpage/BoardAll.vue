@@ -154,4 +154,6 @@ onMounted(() => {
     --bs-columns: 1;
   }
 }
+
+
 </style>

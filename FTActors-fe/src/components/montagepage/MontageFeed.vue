@@ -20,7 +20,7 @@ const montages = ref([]);
 
 // 몽타쥬리스트 가져오는 메서드
 const getMontages = () => {
-  axios.get(`http://localhost:8080/montage/list`)
+  axios.get(`${SERVER_URL}/montage/list`)
     .then((response) => {
       console.log(response.data.data);
       montages.value = response.data.data;

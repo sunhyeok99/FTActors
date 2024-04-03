@@ -161,7 +161,7 @@
      </div>
  </div>
     <!-- 토글 버튼 -->
-    <button class="btn btn-dark" data-bs-target="#directorModalToggle" data-bs-toggle="modal" @click="register">공고 작성</button>
+    <button class="btn btn-dark" data-bs-target="#directorModalToggle" data-bs-toggle="modal" @click="register" id="btn-dark">공고 작성</button>
 </template>
 
 <script setup>
@@ -289,5 +289,8 @@ formData.append("memberId", loginMember.value);
     }
   }
 
-  
+#btn-dark {
+    width: auto;
+    margin-bottom: 2rem;
+}
 </style>

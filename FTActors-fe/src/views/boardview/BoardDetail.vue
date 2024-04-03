@@ -17,14 +17,17 @@
                 </label>
                 <div v-if="checkPermission()">
                   <div class="button-container">
-                    <button type="button" class="btn btn-outline-dark" @click="boardUpdate">공고 변경</button>
-                    <button type="button" class="btn btn-danger" @click="confirmDelete">공고 삭제</button>
+                    <button type="button" class="btn btn-dark-outlined" @click="boardUpdate">공고 변경</button>
+                    <button type="button" class="btn btn-dark" @click="confirmDelete">공고 삭제</button>
                   </div>
                 </div>
                 <div v-else>
                   <div class="button-container">
                     <button v-if="recruitment.apply === 1" class="btn btn-secondary">이미 지원하였습니다</button>
-                    <button v-else @click="apply" class="btn btn-dark">지원하기</button>
+                    <ApplyCreate />
+                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#applyModal">
+                      지원하기
+                     </button>
                   </div>
                 </div>
               </div>
@@ -54,7 +57,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { recruitmentApi } from '@/util/axios';
 import { useMemberStore } from "@/stores/member-store.js";
-
+import ApplyCreate from '../applyview/ApplyCreate.vue';
 const MemberStore = useMemberStore();
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
@@ -122,7 +125,10 @@ const deleteRecruitment = async () => {
 h1 {
   font-size: 4rem;
 }
-
+.container {
+  display: flex;
+  flex-direction: column;
+}
 
 .profileheader {
   display: flex;
@@ -201,6 +207,7 @@ h1 {
   display: flex;
   flex-direction: column;
   width: 100vw;
+  
 }
 .img-container {
   height: 80vh; /* 이미지 컨테이너의 높이 설정 */
