@@ -1,12 +1,8 @@
 <template>
   <div class="row row-cols-1 row-cols-md-4 g-4">
-    <div class="col" v-for="(profile, index) in profiles" :key="index">
+    <div class="col" v-for="profile in profiles" :key="profile.id">
       <div class="card" id="profile" @click="goToProfileDetail(profile.id)">
-        <img src="@/assets/actors/소희.jpg" alt="사진 업로드 실패">
-        <button class="like-btn" :class="{ liked: profile.isLiked }" @click.stop="toggleLike(index)">
-          <img v-if="profile.isLiked" src="@/assets/icons/like-filled.png" alt="Liked">
-          <img v-else src="@/assets/icons/like-outline.png" alt="Like">
-        </button>
+        <img :src="profile.imageLink" alt="사진 업로드 실패">
         <div class="card-body">
           <h5 class="card-title"><b>{{ profile.name }}</b></h5>
           <p class="card-text">{{ profile.age }}</p>
@@ -17,25 +13,33 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { profileApi } from '@/util/axios';
+import { ref, reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router'
 
 const router = useRouter();
-const profiles = reactive([
-  { id: 1, name: "김지원", image: "../assets/actors/김지원.jpg", age: "25세" },
-  { id: 2, name: "김지원", image: "../assets/actors/김지원.jpg", age: "25세" },
-  { id: 3, name: "김지원", image: "../assets/actors/김지원.jpg", age: "25세" },
-  { id: 4, name: "김지원", image: "../assets/actors/김지원.jpg", age: "25세" },
-  { id: 5, name: "김지원", image: "../assets/actors/김지원.jpg", age: "25세" },
-]);
+const profiles = ref({});
 
 const goToProfileDetail = (profileId) => {
   router.push({ name: 'profileDetail', params: { id: profileId } });
 };
 
-const toggleLike = (index) => {
-  profiles[index].isLiked = !profiles[index].isLiked;
+const getList = async (sort) => {
+  try {
+    await profileApi.getAllProfileList(sort).then((res) => {
+      profiles.value = res.data.data;
+    })   
+  } catch (error) {
+    console.error('Error fetching recruitment list:', error);
+  }
 };
+
+onMounted(() => {
+    getList(1);
+});
+
+
+
 </script>
 
 <style scoped>

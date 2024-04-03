@@ -68,7 +68,6 @@ const isMontagePage = ref(false);
 // 현재 라우트가 변경될 때마다 실행되는 watch 함수
 watch(() => route.path, (newPath) => {
   isMontagePage.value = newPath === '/montagemain'; // Montage 페이지인지 확인
-  console.log('몽타쥬페이지 라우팅')
 });
 
 </script>

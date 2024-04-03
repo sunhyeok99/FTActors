@@ -125,9 +125,10 @@ const router = createRouter({
       component: ProfileCreate,
     },
     {
-      path: "/profileupdate",
+      path: "/profileupdate/:id",
       name: "profileUpdate",
       component: ProfileUpdate,
+      props: true,
     },
     {
       path: "/blacklist",

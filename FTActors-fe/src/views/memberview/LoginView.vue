@@ -39,8 +39,24 @@ const memberStore = useMemberStore();
 const jwtStore = useJwtStore();
 
 const login = async () => {
-  // Login functionality
-};
+  try {
+    const response = await memberApi.login({ loginId: id.value,
+      password: password.value});
+    if(response.status === 200 || response.data.member != null){
+      const responseData = response.data.data;
+      // 로그인 성공 시 사용자 정보와 JWT 토큰을 저장
+      console.log(responseData)
+      const responseId = responseData.id;
+      const responseJWT = responseData.accessToken;
+      memberStore.setUser(responseId);
+      jwtStore.setToken(responseJWT);
+    }
+    alert('로그인에 성공하였습니다')
+        router.push("/");
+    } catch (error) {
+      alert('로그인에 실패하였습니다')
+      router.push("/");
+    }};
 
 const goToJoin = () => {
   router.push({ name: 'join' });

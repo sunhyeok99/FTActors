@@ -109,6 +109,7 @@ const isEmailValid = (email) => {
 
 const isFormValid = computed(() => {
   // 폼 유효성 검사 로직
+  console.log(form.gender)
   return (
     form.id &&
     form.password &&
@@ -169,9 +170,6 @@ const signup = async () => {
     gender: form.gender,
   };
   const formData = new FormData();
-  // for (const key in newMember) {
-  //     formData.append(key, JSON.stringify(newMember[key]));
-  // }
   formData.append("dto", new Blob([JSON.stringify(newMember)], {
       type: "application/json"
   }));

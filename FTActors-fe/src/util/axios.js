@@ -13,9 +13,6 @@ axios.interceptors.request.use(
     
     config.headers.Authorization = token == undefined ? '' : `Bearer ${token}`;
     
-    console.log("TOKEN 출력");
-    console.log(token);
-    
     return config;
   },
   error => {
@@ -168,30 +165,21 @@ const recruitmentApi = {
     },
 
     createProfile: (profileRequest) => {
-      return axiosInstance.post("/profile", profileRequest);
+      return formDataInstance.post("/profile/myprofile", profileRequest);
     },
     removeProfile: (profileId) => {
-      return axiosInstance.delete("/myprofile", { params: { profile_id: profileId } });
+      return axiosInstance.delete("/profile/myprofile", { params: { profile_id: profileId } });
     },
     modifyProfile: (profileId, profileRequest) => {
-      return axiosInstance.put("/myprofile", profileRequest, { params: { profile_id: profileId } });
+      return formDataInstance.put("/profile/myprofile", profileRequest, { params: { profile_id: profileId } });
     },
     
-    // updateDate: (recruitmentId, endDate) => {
-    //   return axiosInstance.put("/api/recruitment/updateDate", null, {
-    //     params: { recruitmentId, endDate },
-    //   });
-    // },
     getDetailProfile: (profileId) => {
       return axiosInstance.get("/profile/detail", {
         params: { profile_id: profileId },
       });
     },
-    // getPostList: (postMemberId) => {
-    //   return axiosInstance.get("/api/recruitment/postList", {
-    //     params: { postMemberId },
-    //   });
-    // },
+
     searchContent: (keywords) => {
       return axiosInstance.get("/profile/searchcontent", { params: { keywords: keywords } });
     },
@@ -201,8 +189,16 @@ const recruitmentApi = {
     searchByName: (findName) => {
       return axiosInstance.get("/profile/searchname", { params: { name: findName } });
     },
-    
+    searchById: (memberId) => {
+      return axiosInstance.get("/profile/getmyprofile", { params: { memberId : memberId } });
+    },
   };
 
-export { memberApi, recruitmentApi, followApi, chatApi, profileApi };
+  const recommendApi = {
+    getRecruitmentList: () => {
+      return axiosInstance.post("/recommend/recruitment");
+    },
+  };
+
+export { memberApi, recruitmentApi, followApi, chatApi, profileApi, recommendApi };
 
