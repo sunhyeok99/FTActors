@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -25,7 +26,7 @@ public class JWTController {
 
     @PostMapping("/signup")
     public ApiResponse<String> regist(@RequestPart(value = "dto") JwtDto.Simple jwtDto,
-                                      @RequestPart(value = "profileImage") MultipartFile profileImage) throws IOException {
+                                      @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) throws IOException {
         log.info("Success register login_id : {}", jwtDto.getLoginId());
         return new ApiResponse<>(HttpStatus.OK.value(), "sign up success", jwtMemberService.signup(jwtDto, profileImage));
     }
@@ -46,6 +47,13 @@ public class JWTController {
     public ApiResponse<JwtDto.getPkId> getById(@RequestParam(name = "id") Long id){
         JwtDto.getPkId dto= jwtMemberService.getIdByLoginId(id);
         return new ApiResponse<>(HttpStatus.OK.value(), "get Id by login id success", dto);
+    }
+
+    @PostMapping("/getInfoMember")
+    public ApiResponse<JwtDto.getPkId> getInfoById(@RequestBody Map<String, Long> request) {
+        Long id = request.get("id");
+        JwtDto.getPkId dto = jwtMemberService.getInfoById(id);
+        return new ApiResponse<>(HttpStatus.OK.value(), "get Member Info by id", dto);
     }
 
     @PostMapping("/check-id")
@@ -78,10 +86,10 @@ public class JWTController {
 //        memberService.deleteMember();
 //        return ApiResponse.success(SuccessCode.DELETE_SUCCESS, "회원탈퇴 성공");
 //    }
-@PutMapping("/update")
-public ApiResponse<String> updateUser(@RequestBody JwtDto.UpdateRequest updateRequest) {
-    log.info("사용자 정보 수정 시도: {}", updateRequest.getLoginId());
-    jwtMemberService.updateUser(updateRequest);
-    return new ApiResponse<>(HttpStatus.OK.value(), "User information updated successfully", "");
-}
+    @PutMapping("/update")
+    public ApiResponse<String> updateUser(@RequestBody JwtDto.UpdateRequest updateRequest) {
+        log.info("사용자 정보 수정 시도: {}", updateRequest.getLoginId());
+        jwtMemberService.updateUser(updateRequest);
+        return new ApiResponse<>(HttpStatus.OK.value(), "User information updated successfully", "");
+    }
 }

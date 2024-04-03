@@ -107,7 +107,7 @@ public class JwtDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public class UpdateRequest {
+    public static class UpdateRequest {
         private String loginId;
         private String name;
         private String email;

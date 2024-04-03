@@ -66,7 +66,7 @@ services:
       - "5672:5672"
       - "61613:61613"
       - "15672:15672"
-#
+  #
   mongo:
     image: mongo
     networks:
