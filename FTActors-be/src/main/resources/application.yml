@@ -46,6 +46,11 @@ spring:
       username: ${MQ_USER_NAME}
       password: ${MQ_PASSWORD}
 
+    flyway:
+      enabled: true
+      baseline-on-migrate: true
+      baseline-version: 0
+
     servlet:
       multipart:
         max-file-size: 20MB
