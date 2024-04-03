@@ -38,7 +38,7 @@
           </button>
           <!-- 몽타쥬 -->
           <button class="nav-link" id="nav-companion-tab" data-bs-toggle="tab" data-bs-target="#nav-montage" type="button"
-            role="tab" aria-controls="nav-companion" aria-selected="false">몽타쥬</button>
+            role="tab" aria-controls="nav-companion" aria-selected="false" @click="getMyMontage()">몽타쥬</button>
             <!-- 동료 -->
             <button class="nav-link dropdown" id="nav-board-tab" data-bs-toggle="tab" data-bs-target="#nav-companion"
             type="button" role="tab" aria-controls="nav-board" aria-selected="false">
@@ -107,7 +107,7 @@
         v-show="recruitments.length > 0">
         <div class="col" v-for="recruitment in recruitments" :key="recruitment.id">
             <div class="card" id="board">
-                <img :src="recruitment.image" alt="" @click="goToBoardDetail(recruitment.id)">
+                <img :src="recruitment.image" alt="" @click="goToBoardDetail(recruitment.id)" width="300px" height="200px">
                 <div class="card-body" @click="goToBoardDetail(recruitment.id)">
                     <h5 class="card-title"><b>{{ recruitment.title }}</b></h5>
                     <p class="card-text">종료일자: {{ recruitment.endDate }}</p>
@@ -134,7 +134,7 @@
         v-show="posts.length > 0">
         <div class="col" v-for="post in posts" :key="post.id">
             <div class="card" id="posts">
-                <img :src="post.image" alt="" @click="goToApplyList(post.id)">
+                <img :src="post.image" alt="" @click="goToApplyList(post.id)" width="300px" height="200px">
                 <div class="card-body" @click="goToApplyList(post.id)">
                     <h5 class="card-title"><b>{{ post.title }}</b></h5>
                     <p class="card-text">종료일자: {{ post.endDate }}</p>
@@ -143,7 +143,19 @@
         </div>
     </div>
     <div class="tab-pane fade" id="nav-montage" role="tabpanel" aria-labelledby="nav-montage-tab" tabindex="2">
-        <MontageTab />
+   
+   
+      <div class="tab-pane fade show active" id="nav-montageList" role="tabpanel" aria-labelledby="nav-follow-tab" tabindex="1"
+            v-if="montages.length > 0">
+            <div class="col" v-for="montage in montages" :key="montage.id">
+                <div class="card-body" @click="goToMontageDetail(montage.id)">
+                    <h5 class="card-title"><b>{{ montage.title }}</b></h5>
+                    <video controls style="width: 100%;">
+                <source :src="montage.link" type="video/mp4" width="300px" height="200px">
+                </video>
+                </div>
+            </div>
+          </div>
     </div>
     <div class="tab-pane fade" id="nav-companion" role="tabpanel" aria-labelledby="nav-companion-tab"
         tabindex="3">
@@ -182,14 +194,16 @@ import ProfileTab from '@/components/tabs/ProfileTab.vue';
 import MontageTab from '@/components/tabs/MontageTab.vue';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { recruitmentApi, memberApi, followApi, profileApi } from '@/util/axios';
-import { useMemberStore } from "@/stores/member-store.js";
+import { recruitmentApi, memberApi, followApi, profileApi, montageApi } from '@/util/axios';
+import { useMemberStore, useJwtStore } from "@/stores/member-store.js";
   
 
 import ActorProfileModal from '@/components/modals/ActorProfileModal.vue';
 import DirectorProfileModal from '@/components/modals/DirectorProfileModal.vue';
 
 const MemberStore = useMemberStore();
+const JWTStore = useJwtStore();
+
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
 const router = useRouter();
@@ -198,6 +212,7 @@ const member = ref({});
 const recruitments = ref({});
 const applys = ref({});
 const posts = ref({});
+const montages = ref({});
 
 const followings = ref({});
 const followers = ref({});
@@ -268,11 +283,28 @@ const getPostlist = async () => {
   }
 };
 
+const getMyMontage = async () => {
+  try {
+    const response = await montageApi.MyMontageList();
+    console.log(response.data.data);
+    montages.value = response.data.data;
+    posts.value = [];
+    recruitments.value = [];
+    applys.value = [];
+  } catch (error) {
+    console.error( error);
+  }
+}
+
+
 const getFollowingList = async () => {
   try {
     const response = await followApi.followingList(loginMember.value);
     console.log(response.data);
     followings.value = response.data.data;
+    posts.value = [];
+    recruitments.value = [];
+    applys.value = [];
     followers.value = [];
   } catch (error) {
     console.error("Error fetching wishlist:", error);
@@ -284,6 +316,9 @@ const getFollowerList = async () => {
     const response = await followApi.followerList(loginMember.value);
     console.log(response.data);
     followers.value = response.data.data;
+    posts.value = [];
+    recruitments.value = [];
+    applys.value = [];
     followings.value = [];
   } catch (error) {
     console.error("Error fetching wishlist:", error);
@@ -301,8 +336,11 @@ const goToApplyDetail = (applyId) => {
 const goToApplyList = (postId) => {
   router.push({ name: 'applyList', params: { id : postId } });
 };
+const goToMontageDetail = (montageId) => {
+  router.push({ name: 'montagedetail', params: { id : montageId } });
+};
 
-const changeFollow = async (followingId, followerId, index) => {
+const changeFollow = async (followingId, followerId) => {
   try {
       const response = await followApi.following(followingId, followerId);
       if(response.data.status == 200){
@@ -312,13 +350,7 @@ const changeFollow = async (followingId, followerId, index) => {
         else{
           alert('팔로잉을 하였습니다.')
         } 
-        const tmp = followings.value.find(following => following.id === index);
-        if(tmp == 0 || tmp == null){
-          tmp.follow = response.data.data;   
-          // 여기 다시 해야함
-        }
-        tmp.follow = response.data.data;
-        console.log(tmp.follow)
+        console.log(response.data)
       }
     
     } catch (error) {
@@ -327,10 +359,52 @@ const changeFollow = async (followingId, followerId, index) => {
 };
 
 const goToProfile = (profileId) => {
-  console.log(profileId)
-  router.push({ name: 'profileDetail' , params : { id : profileId}});
+     router.push({ name : 'profileDetail' , params : { id : profileId}})
 };
 
+const goToProfileDetail = async (memberId) => {
+  try {
+    const response = await profileApi.searchById(memberId);
+    console.log(response.data.data);
+    // 응답에 필요한 데이터가 포함되어 있다고 가정합니다.
+    const profileStatus = response.data.data;
+    // profileStatus에 따라 actor 및 director 값을 업데이트합니다.
+    const a = 0;
+    const b = 0;
+    if (profileStatus[0] > 0) { // 배우
+      a = 1;
+    } 
+    if(profileStatus[1] > 0){
+      b= 1;
+    }
+    if(a ==1 && b==1){
+      const choice = confirm('해당 멤버는 감독과 배우 프로필 모두 존재합니다.\n\n"확인"을 클릭하면 배우 프로필 페이지로 이동합니다.\n\n"취소"를 클릭하면 감독 프로필 페이지로 이동합니다.');
+
+    // 선택에 따라 이동할 프로필 페이지 결정
+      if (choice) {
+          // 배우 프로필 페이지로 이동
+          router.push({ name: 'profileDetail', params: { id: profileStatus[0] }});
+      } else {
+          // 감독 프로필 페이지로 이동
+          router.push({ name: 'profileDetail', params: { id: profileStatus[1] }});
+      }
+    }
+    else if(a==1){
+      alert('해당 멤버의 배우 페이지로 이동합니다.');
+    router.push({ name : 'profileDetail' , params : { id : profileStatus[0]}})
+    }
+    else if(b ==1){
+      alert('해당 멤버의 감독 페이지로 이동합니다.');
+     router.push({ name : 'profileDetail' , params : { id : profileStatus[1]}})
+    }
+    else{
+      alert('해당 멤버는 프로필이 없습니다.');
+    }
+
+  } catch (error) {
+    console.error('프로필 상태를 가져오는 중 오류 발생:', error);
+  }
+};
 
 const getMyProfile = async () => {
   try {
@@ -345,6 +419,9 @@ const getMyProfile = async () => {
     if(profileStatus[1] > 0){
       director.value = profileStatus[1];
     }
+    posts.value = [];
+    recruitments.value = [];
+    applys.value = [];
 
   } catch (error) {
     console.error('프로필 상태를 가져오는 중 오류 발생:', error);
