@@ -3,6 +3,7 @@ package com.a602.actors.domain.profile.service;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
 import com.a602.actors.domain.member.Member;
+import com.a602.actors.domain.member.repository.MemberRepository;
 import com.a602.actors.domain.profile.dto.ProfileDto;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.dto.ProfileSearchRequest;
@@ -15,6 +16,7 @@ import com.a602.actors.global.common.config.FileUtil;
 import com.a602.actors.global.common.enums.FolderType;
 import com.a602.actors.global.elasticsearch.filter.QueryBuilderInterface;
 import com.a602.actors.global.exception.ExceptionCodeSet;
+import com.a602.actors.global.exception.MemberException;
 import com.a602.actors.global.exception.ProfileException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
@@ -42,6 +44,7 @@ public class ProfileServiceImpl implements ProfileService{
     private final ProfileDocumentCustomRepository profileDocumentCustomRepository;
 //    private final ElasticsearchOperations elasticsearchOperations;
     private final QueryBuilderInterface queryBuilderInterface;
+    private final MemberRepository memberRepository;
 
     @Override //검색 목록 (엘라스틱만 , db사용x)
     public List<ProfileSearchResponse> searchAllProfile(int sorting) {
@@ -111,7 +114,7 @@ public class ProfileServiceImpl implements ProfileService{
         }
         //저장하기
         Profile creatingProfile = Profile.builder()
-                .member(loginMember)
+                .member(memberRepository.findById(profileRequest.getMemberId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)))
                 .content(profileRequest.getContent())
                 .type(profileRequest.getType())
                 .portfolio(profileRequest.getPortfolioLink())
