@@ -3,12 +3,14 @@ package com.a602.actors.domain.member.service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.a602.actors.domain.member.Member;
+import com.a602.actors.domain.member.dto.MemberDtoForChat;
 import com.a602.actors.domain.member.dto.MemberPlusDTO;
 import com.a602.actors.domain.member.mapper.MemberPlusMapper;
 import com.a602.actors.domain.member.repository.MemberRepository;
@@ -70,9 +72,12 @@ public class MemberPlusServiceImpl implements MemberPlusService {
         }
     }
 
-    public List<MemberPlusDTO> findAllMembersByStageName(String stageName){
+    public List<MemberDtoForChat> findAllMembersByStageName(String stageName){
         List<Member> memberList = memberPlusRepository.findAllByStageName(stageName);
         log.info("MemberPlusServiceImpl ========= memberList size() : {}", memberList.size());
-        return memberPlusMapper.MemberListToMemberPlusDtoList(memberList);
+
+        return memberList.stream()
+            .map(MemberDtoForChat::from)
+            .collect(Collectors.toList());
     }
 }
