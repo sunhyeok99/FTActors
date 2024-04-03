@@ -202,4 +202,4 @@ const recruitmentApi = {
     },
   };
 
-export { memberApi, recruitmentApi, followApi, chatApi, videoApi, profileApi, recommendApi };
+export { memberApi, recruitmentApi, followApi, chatApi, profileApi, recommendApi };

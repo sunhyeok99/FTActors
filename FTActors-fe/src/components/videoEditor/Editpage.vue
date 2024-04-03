@@ -11,15 +11,15 @@
     <!-- 첫 번째 동영상 플레이어 -->
     <div class="container-editor2">
       <video ref="videoRef" controls class="player-video"></video>
-      <button @click="playVideo">재생</button>
-      <button @click="cancelVideo">취소</button> 
+      <button @click="playVideo" class="btn btn-secondary">재생</button>
+      <button @click="cancelVideo" class="btn btn-dark" >내리기</button>
     </div>
 
     <!-- 두 번째 동영상 플레이어 -->
     <div class="container-editor3">
       <video ref="videoRef2" controls class="player-video"></video>
-      <button @click="playVideo2">재생</button>
-      <button @click="cancelVideo2">취소</button>
+      <button @click="playVideo2" class="btn btn-secondary">재생</button>
+      <button @click="cancelVideo2" class="btn btn-dark">내리기</button>
     </div>
   </div>
   <SendButton></SendButton>
@@ -142,6 +142,7 @@ const cancelVideo2 = () => {
 </script>
 
 <style scoped>
+
 .sch-container {
   display: flex;
   height: 100vh;
@@ -150,6 +151,7 @@ const cancelVideo2 = () => {
 }
 
 .container-editor2 {
+  margin-left: 30px;
   flex: 3;
 }
 
@@ -159,7 +161,7 @@ const cancelVideo2 = () => {
 
 .player-video {
   width: 100%; /* 플레이어의 너비에 맞게 비디오 크기 조정 */
-  height: 60%; /* 비디오의 높이를 비율에 맞게 조정 */
+  height: 70%; /* 비디오의 높이를 비율에 맞게 조정 */
 }
 
 </style>

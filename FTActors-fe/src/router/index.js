@@ -176,6 +176,7 @@ const router = createRouter({
       path: '/edit',
       name: 'edit',
       component: Editpage,
+    },{
       path : '/applyList/:id',
       name : 'applyList',
       component : ApplyList,

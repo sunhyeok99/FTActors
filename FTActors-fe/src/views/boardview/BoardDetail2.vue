@@ -19,6 +19,7 @@
                   <div class="button-container">
                     <button type="button" class="btn btn-dark-outlined" @click="boardUpdate">공고 변경</button>
                     <button type="button" class="btn btn-dark" @click="confirmDelete">공고 삭제</button>
+
                   </div>
                 </div>
                 <div v-else>
@@ -76,7 +77,9 @@ const fetchRecruitmentDetail = async () => {
     recruitment.value = response.data.data;
   }
 };
-
+const goToEdit = () => {
+  router.push({ name: 'edit' });
+};
 onMounted(fetchRecruitmentDetail);
 
 const checkPermission = () => {
