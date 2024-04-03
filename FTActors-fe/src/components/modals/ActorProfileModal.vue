@@ -102,7 +102,7 @@
                   </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">프로필 생성</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">프로필 생성</button>
               </div>
           </div>
       </div>
@@ -110,7 +110,7 @@
 
 
   <!-- 토글 버튼 -->
-  <button class="btn btn-primary" data-bs-target="#actorModalToggle" data-bs-toggle="modal">감독 프로필 만들기</button>
+  <button class="btn btn-dark" data-bs-target="#actorModalToggle" data-bs-toggle="modal">배우 프로필 만들기</button>
 </template>
 
 <script setup>

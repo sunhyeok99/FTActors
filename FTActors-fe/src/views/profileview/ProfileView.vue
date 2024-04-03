@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ProfileSearchBar />
+    <ProfileBar />
   </div>
   <div>
     <ProfileListAll />
@@ -13,7 +13,7 @@
 <script setup>
 import Pagenation from '@/components/common/Pagenation.vue';
 import ProfileListAll from '@/components/profilepage/ProfileListAll.vue';
-import ProfileSearchBar from '@/components/profilepage/ProfileSearchBar.vue';
+import ProfileBar from '@/components/profilepage/ProfileBar.vue';
 
 </script>
 

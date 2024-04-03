@@ -7,8 +7,7 @@
       <div class="profilephoto">  <img :src="member.image" alt=""></div>
       <div class="profilelist">
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"><label><b>이름</b></label> 배사람
-
+          <li class="list-group-item"><label><b>이름</b></label> {{member.name}}
           </li>
           <li class="list-group-item"><label><b>닉네임</b></label>{{ member.stageName }} </li>
           <li class="list-group-item"><label><b>이메일</b></label>{{ member.email }} </li>
@@ -112,7 +111,7 @@
                 <div class="card-body" @click="goToProfileDetail(following.id)">
                     <h5 class="card-title"><b>{{ following.memberName }}</b></h5>
                     <button class="like-btn" @click="changeFollow(following.followingId, following.followerId)">
-                        <p v-if="following.follow === 1">삭제</p>
+                        <p v-if="following.follow === 1">팔로잉 삭제</p>
                         <p v-else>팔로잉</p>
                     </button>
                 </div>
@@ -124,7 +123,7 @@
                 <div class="card-body" @click="goToProfileDetail(follower.id)">
                     <h5 class="card-title"><b>{{ follower.memberName }}</b></h5>
                     <button class="like-btn" @click="changeFollow(follower.followingId, follower.followerId)">
-                        <p v-if="follower.follow === 1">삭제</p>
+                        <p v-if="follower.follow === 1">팔로잉 삭제</p>
                         <p v-else>팔로잉</p>
                     </button>
                 </div>
@@ -144,7 +143,7 @@ import { useRouter } from 'vue-router';
 import { recruitmentApi, memberApi, followApi } from '@/util/axios';
 import { useMemberStore } from "@/stores/member-store.js";
   
-  const MemberStore = useMemberStore();
+const MemberStore = useMemberStore();
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
 const router = useRouter();
@@ -157,8 +156,6 @@ const posts = ref({});
 const followings = ref({});
 const followers = ref({});
 
-
-const isPrivate = ref(false)
 const followingNum = ref(0); // 초기값을 0으로 설정
 const followerNum = ref(0); // 초기값을 0으로 설정
 
@@ -263,7 +260,7 @@ const changeFollow = async (followingId, followerId, index) => {
         }
         else{
           alert('팔로잉을 하였습니다.')
-        }
+        } 
         const tmp = followings.value.find(following => following.id === index);
         if(tmp == 0 || tmp == null){
           tmp.follow = response.data.data;   

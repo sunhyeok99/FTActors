@@ -7,7 +7,6 @@
                 <img v-if="board.wishList === 1" src="@/assets/icons/like-filled.png" alt="Liked">
                 <img v-else src="@/assets/icons/like-outline.png" alt="Like">         
               </button>
-              
             <div class="col-md-8">
               <div class="card-body" @click="goToBoardDetail(board.id)">
                 <h5 class="card-title"><b>{{ board.title }}</b></h5>
@@ -126,13 +125,9 @@ onMounted(() => {
   cursor: pointer;
 }
 
-.liked img {
-  filter: invert(36%) sepia(94%) saturate(3013%) hue-rotate(346deg) brightness(100%) contrast(97%);
-}
-
 .like-btn img {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
 }
 .masonry {
   column-count: var(--bs-columns);
