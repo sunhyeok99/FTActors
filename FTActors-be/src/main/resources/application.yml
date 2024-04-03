@@ -7,6 +7,12 @@ server:
           charset: UTF-8
           enabled: true
           force: true
+
+flyway:
+  enabled: true
+  baseline-on-migrate: true
+  baseline-version: 0
+
 #elasticsearch:
 #  host: ${ELASTICSEARCH_HOST}
 #  username: ${ELASTICSEARCH_USERNAME}
