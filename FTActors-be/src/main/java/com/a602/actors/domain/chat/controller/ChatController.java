@@ -5,13 +5,17 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.a602.actors.domain.chat.dto.ChatRoomDto;
+import com.a602.actors.domain.chat.dto.ParticipantsDto;
 import com.a602.actors.domain.chat.service.ChatService;
+import com.a602.actors.domain.member.dto.MemberDtoForChat;
 import com.a602.actors.global.common.dto.ApiResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -23,9 +27,8 @@ public class ChatController {
 	private final ChatService chatService;
 
 	@PostMapping
-	public ApiResponse<String> createChatRoom(@RequestParam String title){
-		chatService.createChatRoom(title);
-		return new ApiResponse<>(HttpStatus.OK.value(), "채팅방 생성 완료", "");
+	public ApiResponse<Long> createChatRoom(@RequestParam String title){
+		return new ApiResponse<>(HttpStatus.OK.value(), "채팅방 생성 완료", chatService.createChatRoom(title));
 	}
 
 	@GetMapping("/room/all")
@@ -56,6 +59,17 @@ public class ChatController {
 		// Todo : 사용자의 id는 security 만들어지면 SecurityContextHolder에서 가져오는 것으로 변경
 		chatService.quitChat(roomId, memberId);
 		return new ApiResponse<>(HttpStatus.OK.value(), "채팅방 퇴장 성공", "");
+	}
+
+	@PostMapping("/invite")
+	public ApiResponse<String> inviteMemberToChat(@RequestBody ParticipantsDto.Request inviteRequest){
+		chatService.invite(inviteRequest);
+		return new ApiResponse<>(HttpStatus.OK.value(), "초대 성공", "");
+	}
+
+	@GetMapping("/participants/{chatRoomId}")
+	public ApiResponse<List<MemberDtoForChat>> getAllParticipants(@PathVariable Long chatRoomId){
+		return new ApiResponse<>(HttpStatus.OK.value(), "채팅 참여자 리스트 가져오기 성공", chatService.getAllParticipants(chatRoomId));
 	}
 
 	// Todo : 채팅 메시지 암호화 및 메시지큐 활용한 저장

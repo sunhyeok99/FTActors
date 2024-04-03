@@ -35,10 +35,15 @@ public class ProfileMapper {
 
         profileDto.id( profile.getId() );
         profileDto.memberId( profile.getMember().getId());
+        profileDto.name(profile.getMember().getName());
         profileDto.content( profile.getContent() );
         profileDto.type( profile.getType() );
+        profileDto.gender(profile.getMember().getGender());
         profileDto.portfolio( profile.getPortfolio() );
+        profileDto.birth(profile.getMember().getBirth());
         profileDto.privatePost( profile.getPrivatePost() );
+        profileDto.imageLink(profile.getImage());
+        profileDto.createdTime(profile.getCreatedAt().toString());
 
         return profileDto.build();
     }
@@ -76,11 +81,8 @@ public class ProfileMapper {
                 .stageName(profileDocument.getStageName())
                 .content(profileDocument.getContent())
                 .type(profileDocument.getType())
-//                .portfolio(profileDocument.ge)
                 .privatePost(profileDocument.getPrivatePost())
-//                .createdTime(profileDocument.getCreatedTime())
                 .createdTime(createdTimeString)
-//                .updatedTime(profileDocument.getUpdatedTime())
                 .updatedTime(updatedTimeString)
                 .gender(profileDocument.getGender())
                 .birth(profileDocument.getBirth())

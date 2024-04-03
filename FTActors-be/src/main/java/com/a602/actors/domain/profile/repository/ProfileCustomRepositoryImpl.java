@@ -85,4 +85,32 @@ public class ProfileCustomRepositoryImpl implements ProfileCustomRepository {
         updateClause.where(profile.id.eq(profileId)).execute();
     }
 
+    @Override
+    public Long existActorInMyPage(Long memberId) {
+        QProfile profile = QProfile.profile;
+
+        Long profileId = jpaQueryFactory
+                .select(profile.id)
+                .from(profile)
+                .where(profile.member.id.eq(memberId)
+                        .and(profile.type.eq('A')))
+                .fetchOne();
+
+        return profileId;
+    }
+
+    @Override
+    public Long existPDInMyPage(Long memberId) {
+        QProfile profile = QProfile.profile;
+
+        Long profileId = jpaQueryFactory
+                .select(profile.id)
+                .from(profile)
+                .where(profile.member.id.eq(memberId)
+                        .and(profile.type.eq('P')))
+                .fetchOne();
+
+        return profileId;
+    }
+
 }

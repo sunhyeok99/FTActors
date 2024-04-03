@@ -4,10 +4,9 @@ import com.a602.actors.domain.profile.dto.ProfileDto;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.dto.ProfileSearchRequest;
 import com.a602.actors.domain.profile.dto.ProfileSearchResponse;
-import com.a602.actors.domain.profile.entity.ProfileDocument;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ProfileService {
@@ -18,13 +17,15 @@ public interface ProfileService {
 
     ///------------------------read
 
-    String deleteProfile(Long profileId);
+    String deleteProfile(Long profileId) throws IOException ;
 
-    String createProfile(ProfileRequest profileRequest);
+    String createProfile(ProfileRequest profileRequest)  throws IOException;
 
-    String updateProfile(Long profileId, ProfileRequest profileRequest);
+    String updateProfile (Long profileId, ProfileRequest profileRequest) throws IOException ;
 
     List<ProfileSearchResponse> searchProfileByContent(List<String> keywords);
     List<ProfileSearchResponse> searchProfileByName(String keyword);
     List<ProfileSearchResponse> searchProfileByStageName(String findName);
+
+    List<Long> getMyProfile(Long memberId);
 }
