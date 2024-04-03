@@ -3,7 +3,7 @@
     <!-- 몽타쥬 사이드바로 가는 네비게이션 바 -->
     <MontageNav />
     <div class="wrapper">
-      <img src="@/assets/icons/Light.png" alt="" id="light">
+      <img src="@/assets/icons/Light.png" alt="" :class="{ 'off': isMontagePage }" id="light">
       <header>
         <div>
           <!-- 네비게이션 바 -->
@@ -11,7 +11,7 @@
             <RouterLink to="/board">진행중인 공고</RouterLink>
             <RouterLink to="/profile">배우 프로필</RouterLink>
             <RouterLink to="/montagemain" id="fontapply">Montage</RouterLink>
-            <div v-if="loginMember === 1">
+            <div v-if="loginMember === 6">
               <RouterLink to="/report">신고 목록</RouterLink>
               <RouterLink to="/blacklist">블랙리스트</RouterLink>
             </div>
@@ -128,10 +128,13 @@ header {
   margin-left: 0;
 }
 
+
 #fontapply {
   font-family: 'tuesday_nightregular', impact;
 }
-
+#light.off::after {
+  background: rgba(0, 0, 0, 0.4); /* A darker shade for when 'off' class is applied */
+}
 
 /* 네비게이션 바 폰트 색상을 밝게 만드는 스타일 */
 .light-font a {
@@ -141,7 +144,6 @@ header {
 
 .montage-page {
   background-color: #000;
-  /* 전체 배경을 검은색으로 설정 */
   padding: 0;
   margin: 0;
   transition: background-color 1s ease;

@@ -3,65 +3,56 @@
     <div class="accordion-header">
       <div class="columnthings">
         <div class="rowthings">
-          <!-- 좋아요 버튼 -->
+     
           <button class="like-btn" :class="{ liked: isLiked }" @click.stop="toggleLike(), addLike()">
             <img v-if="isLiked" src="@/assets/icons/like-filled.png" alt="Liked">
             <img v-else src="@/assets/icons/like-outline.png" alt="Unliked">
             <p>{{ montageInfo.likeCount }}</p>
           </button>
-          <!-- 신고 버튼 -->
+ 
           <button type="button" class="report-btn" data-bs-toggle="modal" data-bs-target="#reportModal">
             <img src="@/assets/icons/Scissors.png" alt="cut">
           </button>
           <ReportModal :current-id="currentId" />
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="댓글 쓰기" aria-label="Recipient's username"
-              aria-describedby="button-addon2" v-model="addComment">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon2"
-              @click.prevent="uploadComment">작성</button>
-          </div>
+   
+          <span id="comment-count">댓글 {{ comments.length }}개</span>
         </div>
 
-        <!-- 댓글 작성 인풋 -->
-
-                  <!-- 댓글 개수 표시 -->
-                  <span id="comment-count">댓글 {{ totalCommentCount }}개</span>
-      
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="댓글 쓰기" aria-label="Recipient's username"
+            aria-describedby="button-addon2" v-model="addComment">
+          <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+            @click.prevent="uploadComment">작성</button>
+        </div>
       </div>
     </div>
     <div class="accordion-body">
       <div class="list-group list-group-flush border-bottom scrollarea">
         <!-- 댓글 리스트 -->
-        <div v-for="(comment, index) in comments" :key="index" @click.prevent="selectComment(comment)">
-          <div class="list-group-item list-group-item-action py-3 lh-tight">
-            <div class="d-flex flex-column">
-              <div class="d-flex align-items-center justify-content-between reply-block">
-                <strong class="mb-1" id="reply-member">{{ comment.memberId }}</strong>
-                <div class="col-10 mb-1 small comment-text">{{ comment.content }}</div>
-                <!-- 삭제 버튼 -->
-                <!-- <div class="remove">
-                  <img src="@/assets/icons/Remove.png" alt=""
-                    @click.stop="deleteComment(comment.commentId)">
-                </div> -->
-              </div>
-              <!-- 대댓글 작성 인풋 -->
-              <div v-if="selectedComment === comment" class="mt-4 d-flex align-items-center">
-                <input type="text" class="form-control reply-input" placeholder="대댓글 작성"
-                  aria-label="Recipient's username" aria-describedby="reply-button" v-model="addReply" @click.stop>
-                <button class="btn btn-outline-secondary reply-btn" type="button" id="reply-button"
-                  @click.stop="uploadReply()">작성</button>
-              </div>
-              <!-- 대댓글 리스트 -->
-              <div v-for="(reply, rIndex) in comment.reply" :key="`reply-${rIndex}`" class="mt-2 d-flex align-items-center">
-                <p class="m-0">ㄴ <b id="reply-member">{{ reply.memberId }}</b> {{ reply.content }}</p>
-                <!-- 삭제 버튼 -->
-                <!-- <div class="remove">
-                  <img src="@/assets/icons/Remove.png" alt="" @click.stop="deleteReply(reply.commentId)">
-                </div> -->
-              </div>
-            </div>
+        <button class="list-group-item list-group-item-action py-3 lh-tight"
+          v-for="(comment, index) in comments" :key="index" @click.prevent="selectComment(comment)">
+          <div class="d-flex w-100 align-items-center justify-content-between reply-block">
+            <strong class="mb-1" id="reply-member">{{ comment.memberId }}</strong>
+            <div class="col-10 mb-1 small comment-text">{{ comment.content }}</div>
+            <!-- 삭제 버튼 -->
+            <div class="remove"><img src="@/assets/icons/Remove.png" alt=""
+                @click.stop="deleteComment(comment.commentId)"></div>
           </div>
-        </div>
+          <!-- 대댓글 작성 인풋 -->
+          <div v-if="selectedComment === comment" class="mt-4 reply-container">
+            <input type="text" class="form-control reply-input" placeholder="대댓글 작성"
+              aria-label="Recipient's username" aria-describedby="reply-button" v-model="addReply" @click.stop>
+            <button class="btn btn-outline-secondary reply-btn" type="button" id="reply-button"
+              @click.stop="uploadReply()">작성</button>
+          </div>
+          <!-- 대댓글 리스트 -->
+          <div v-for="(reply, rIndex) in comment.reply" :key="`reply-${rIndex}`" class="mt-2" id="reply">
+            <p>ㄴ <b id="reply-member">{{ reply.memberId }}</b> {{ reply.content }}</p>
+            <!-- 삭제 버튼 -->
+            <div class="remove"><img src="@/assets/icons/Remove.png" alt=""
+              @click.stop="deleteReply(reply.commentId)"></div>
+          </div>
+        </button>
       </div>
     </div>
   </div>
@@ -71,7 +62,7 @@
 
 <script setup>
 
-import { onMounted, ref, watch, computed } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import axios from 'axios';
 import ReportModal from '@/components/modals/ReportModal.vue';
 
@@ -157,7 +148,7 @@ const addComment = ref("");
 const uploadComment = () => {
   if (addComment.value.trim().length > 0) {
     const content = {
-      "montageId": props.currentId,
+      "montageId": 1,
       "content": addComment.value,
       "isDeleted": false
     };
@@ -212,7 +203,7 @@ const uploadReply = () => {
   }
   if (addReply.value.trim().length > 0) {
     const content = {
-      "montageId": props.currentId,
+      "montageId": 1,
       "parentId": selectedComment.value.commentId,
       "content": addReply.value,
       "isDeleted": false
@@ -247,15 +238,6 @@ const deleteReply = (id) => {
     });
 };
 
-// 총 댓글 개수 구하기
-const totalCommentCount = computed(() => {
-  let count = comments.value.length;
-  for (const comment of comments.value) {
-    count += comment.reply.length;
-  }
-  return count;
-});
-
 </script>
 
 <style scoped>
@@ -284,7 +266,6 @@ const totalCommentCount = computed(() => {
 .columnthings {
   display: flex;
   flex-direction: column;
-  width: 100%;
 }
 
 .rowthings {
@@ -327,8 +308,11 @@ p {
 }
 
 #reply {
-  margin-top: 10px; 
-  margin-left: 50px; 
+  margin-left: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
 }
 #reply img{
   margin-left: 20px;
@@ -370,12 +354,11 @@ p {
 
 .comment-text {
   font-size: 1em;
+
 }
 
 #comment-count {
   min-width: 150px;
-  display: flex; 
-  align-items: center; 
 }
 
 .slide-enter-active,

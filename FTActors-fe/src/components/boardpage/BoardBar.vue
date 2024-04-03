@@ -21,7 +21,7 @@ import BoardCreateModal from '@/components/modals/BoardCreateModal.vue';
 <style scoped>
 .search-bar {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 }
 .dropdown-menu {
