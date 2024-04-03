@@ -133,6 +133,7 @@ public class RecommendService {
             //http post 요청 보내기
             ResponseEntity<String> responseEntity = restTemplate.exchange("http://flask:5000/recommend", HttpMethod.POST, entity, String.class);
 
+
             // 요청 후 응답 확인
             System.out.println(responseEntity.getStatusCode());
             System.out.println(responseEntity.getBody());
