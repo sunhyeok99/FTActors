@@ -27,9 +27,8 @@ public class ChatController {
 	private final ChatService chatService;
 
 	@PostMapping
-	public ApiResponse<String> createChatRoom(@RequestParam String title){
-		chatService.createChatRoom(title);
-		return new ApiResponse<>(HttpStatus.OK.value(), "채팅방 생성 완료", "");
+	public ApiResponse<Long> createChatRoom(@RequestParam String title){
+		return new ApiResponse<>(HttpStatus.OK.value(), "채팅방 생성 완료", chatService.createChatRoom(title));
 	}
 
 	@GetMapping("/room/all")

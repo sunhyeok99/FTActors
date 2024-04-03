@@ -36,8 +36,8 @@ public class ChatService {
 	// private final AmqpAdmin amqpAdmin;
 	// private final RabbitTemplate rabbitTemplate;
 
-	public void createChatRoom(String title) {
-		chatRoomRepository.save(new ChatRoom(title)).getId();
+	public Long createChatRoom(String title) {
+		return chatRoomRepository.save(new ChatRoom(title)).getId();
 	}
 
 	public List<ChatRoomDto> findAllChatRooms() {
