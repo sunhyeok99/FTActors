@@ -1,3 +1,23 @@
+
+# 개발용
+
+server:
+   servlet:
+      encoding:
+          charset: UTF-8
+          enabled: true
+          force: true
+
+#elasticsearch:
+#  host: ${ELASTICSEARCH_HOST}
+#  username: ${ELASTICSEARCH_USERNAME}
+#  password: ${ELASTICSEARCH_PASSWORD}
+#logging:
+#  file:
+#    name: ./logs/customer-service.log
+#logstash:
+#  host: localhost
+
 spring:
     datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -64,6 +84,7 @@ elasticsearch:
     host: ${ELASTICSEARCH_HOST}
     username: ${ELASTICSEARCH_USERNAME}
     password: ${ELASTICSEARCH_PASSWORD}
+    port: 9200
 logging:
     file:
       name: ./logs/customer-service.log

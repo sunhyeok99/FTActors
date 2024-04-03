@@ -205,6 +205,23 @@ public class ProfileServiceImpl implements ProfileService{
         if (keyword == null || keyword.trim().isEmpty()) {
             return searchAllProfile(1);
         }
+        Query query = QueryBuilders.match(queryBuilder -> queryBuilder.field("name").query(keyword));
+        NativeQuery nativeQuery = NativeQuery.builder().withQuery(query).build(); //쿼리가 너무 복잡해질 때를 대비해서 네이티브 쿼리로 한 번 돌려서 사용
+        SearchHits<ProfileDocument> result = profileDocumentCustomRepository.search(nativeQuery);
+
+        List<ProfileDocument> profileDocuments = new ArrayList<>();
+        for (SearchHit<ProfileDocument> hit : result) {
+            profileDocuments.add(hit.getContent());
+        }
+
+        return profileMapper.ProfileDocumentListToProfileSearchResponseList(profileDocuments);
+    }
+
+    @Override
+    public List<ProfileSearchResponse> searchProfileByStageName(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return searchAllProfile(1);
+        }
         Query query = QueryBuilders.match(queryBuilder -> queryBuilder.field("stage_name").query(keyword));
         NativeQuery nativeQuery = NativeQuery.builder().withQuery(query).build(); //쿼리가 너무 복잡해질 때를 대비해서 네이티브 쿼리로 한 번 돌려서 사용
         SearchHits<ProfileDocument> result = profileDocumentCustomRepository.search(nativeQuery);

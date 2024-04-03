@@ -26,5 +26,5 @@ public interface ProfileService {
 
     List<ProfileSearchResponse> searchProfileByContent(List<String> keywords);
     List<ProfileSearchResponse> searchProfileByName(String keyword);
-
+    List<ProfileSearchResponse> searchProfileByStageName(String findName);
 }
