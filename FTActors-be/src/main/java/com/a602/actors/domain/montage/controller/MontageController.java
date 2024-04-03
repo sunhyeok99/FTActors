@@ -9,7 +9,6 @@ import com.a602.actors.global.common.dto.ApiResponse;
 import com.a602.actors.global.exception.FileException;
 import com.a602.actors.global.exception.MontageException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,8 +56,7 @@ public class MontageController {
     }
     @GetMapping("/my-montage")
     public ApiResponse<List<MontageDto.Montages>> getMyMontage(){
-        Long memberId = 1L;
-        return new ApiResponse<>(HttpStatus.OK.value(), "성공적으로 반환했습니다", montageFileService.getMyMontage(memberId));
+        return new ApiResponse<>(HttpStatus.OK.value(), "성공적으로 반환했습니다", montageFileService.getMyMontage());
     }
     @GetMapping("/{montageId}/comment")
     public ApiResponse<List<MontageCommentDto.Response>> getAllComments(@PathVariable("montageId") Long montageId){
