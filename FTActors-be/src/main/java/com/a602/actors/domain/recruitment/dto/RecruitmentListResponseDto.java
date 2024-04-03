@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 public class RecruitmentListResponseDto {
     private Long id;
     private String title;
+    private String content;
     private String image;
     private String endDate;
     private int wishList;
@@ -18,6 +19,7 @@ public class RecruitmentListResponseDto {
     public RecruitmentListResponseDto(
             Long id,
             String title,
+            String content,
             String image,
             String endDate,
             int wishlist,
@@ -25,10 +27,16 @@ public class RecruitmentListResponseDto {
     ) {
         this.id = id;
         this.title = title;
+        this.content = content;
         this.image = image;
         this.endDate = endDate;
         this.wishList = wishlist;
         this.privateRecruitment = privateRecruitment;
+    }
+
+    @Override
+    public String toString(){
+        return "[" + title + " || " + content + "]";
     }
 
 }

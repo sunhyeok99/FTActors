@@ -6,6 +6,7 @@ server:
       encoding:
           charset: UTF-8
           enabled: true
+          force: true
 
 #elasticsearch:
 #  host: ${ELASTICSEARCH_HOST}
@@ -65,7 +66,7 @@ spring:
         port: ${MQ_PORT}
         username: ${MQ_USER_NAME}
         password: ${MQ_PASSWORD}
-#    config:
+      #    config:
 #        activate:
 #            on-profile: oauth
 

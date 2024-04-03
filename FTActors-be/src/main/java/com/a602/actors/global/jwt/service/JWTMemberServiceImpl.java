@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import com.a602.actors.domain.member.Member;
+import com.a602.actors.domain.member.repository.MemberRepository;
 import com.a602.actors.global.common.config.FileUtil;
 import com.a602.actors.global.common.enums.FolderType;
 import com.a602.actors.global.exception.CustomException;
@@ -37,12 +38,12 @@ import static com.a602.actors.global.exception.ExceptionCodeSet.MEMBER_DUPLICATE
 @Slf4j
 public class JWTMemberServiceImpl {
     private final JWTMemberRepository jwtMemberRepository;
-    //private final MemberMapper memberMapper;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final TokenUtil tokenUtil;
     private final JWTUtil jwtUtil;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public String signup(JwtDto.Simple jwtDto, MultipartFile profileImage) throws IOException {
@@ -124,7 +125,28 @@ public class JWTMemberServiceImpl {
                     .gender(member.getGender())
                     .profileImage(member.getProfileImage())
                     .stageName(member.getStageName())
-                    .createdAt(member.getCreatedAt()) // createdAt 그대로 넣기
+                    .createdAt(member.getCreatedAt())
+                    .build();
+        } else {
+            return null;
+        }
+    }
+
+    public JwtDto.getPkId getInfoById(Long id) {
+        Optional<Member> optionalMember = memberRepository.findById(id);
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            return JwtDto.getPkId.builder()
+                    .id(member.getId())
+                    .loginId(member.getLoginId())
+                    .name(member.getName())
+                    .email(member.getEmail())
+                    .phone(member.getPhone())
+                    .birth(member.getBirth())
+                    .gender(member.getGender())
+                    .profileImage(member.getProfileImage())
+                    .stageName(member.getStageName())
+                    .createdAt(member.getCreatedAt())
                     .build();
         } else {
             return null;

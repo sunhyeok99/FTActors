@@ -25,4 +25,8 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, Long> 
     @Query("SELECT r, w.id FROM Recruitment r inner join Wishlist w on r.id = w.recruitment.id And :memberId = w.member.id WHERE r.privateRecruitment = 'F'")
     List<Recruitment> findWishlistOnly(Long memberId);
 
+    // 시작일을 기준으로 내림차순으로 정렬된 모든 공고를 반환
+    List<Recruitment> findAllByOrderByStartDateDesc();
+
+
 }

@@ -2,11 +2,13 @@ package com.a602.actors.domain.recruitment.entity;
 
 import com.a602.actors.domain.member.Member;
 import com.a602.actors.global.common.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.DynamicUpdate;
 
 
@@ -21,6 +23,7 @@ public class Recruitment extends BaseEntity {
 
     private String content;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id", name = "member_id")
     private Member member;
