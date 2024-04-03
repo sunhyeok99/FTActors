@@ -127,6 +127,9 @@ const adminId = 11;
 const router = useRouter();
 const recruitment = ref({});
 
+const goToEdit = () => {
+  router.push({ name: 'edit' });
+};
 const fetchRecruitmentDetail = async () => {
   const recruitmentId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
   if (loginMember.value == "" || loginMember.value == null || loginMember.value == undefined) {

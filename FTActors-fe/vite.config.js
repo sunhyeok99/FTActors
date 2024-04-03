@@ -13,7 +13,16 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  // server: {
+  optimizeDeps: {
+    exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util', '@ffmpeg/core']
+  },
+  server: {
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Embedder-Policy': 'require-corp'
+    }
+  },
+   // server: {
   //   proxy: {
   //     '/api': {
   //       target: 'http://localhost:8080', // 백엔드 서버 주소
@@ -24,4 +33,5 @@ export default defineConfig({
   // },
   
 })
+
 
