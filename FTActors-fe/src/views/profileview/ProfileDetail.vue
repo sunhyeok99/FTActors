@@ -86,15 +86,15 @@ const confirmDelete = () => {
 };
 
 const deleteProfile = async () => {
-  const recruitmentId = profile.value.id;
+  const profileId = profile.value.id;
   try {
-    const response = await recruitmentApi.remove(recruitmentId);
+    const response = await profileApi.removeProfile(profileId);
     if (response.status === 200) {
       alert("삭제되었습니다.");
     } else {
       alert("삭제 실패했습니다.");
     }
-    router.push({ name: 'board' });
+    router.push({ name: 'profile' });
   } catch (error) {
     console.error("Error deleting recruitment:", error);
   }
