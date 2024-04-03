@@ -9,10 +9,10 @@
         <div class="modal-body">
           <div v-show="isAlarmUnReadListAvailable">
             <div v-for="(alarm, index) in alarmUnReadList" :key="index" class="rowthings">
-              <img src="@/assets/icons/like-filled.png" alt="" class="icon-like">
+              <img src="@/assets/icons/like-filled.png" alt="" class="alarm">
               <p :class="{ 'selected': isSelected(alarm.id) }"><strong>{{ alarm.content }}</strong></p>
               <!-- 각 알람 옆에 확인 버튼 추가 -->
-              <button class="btn btn-secondary btn-sm" @click.stop="markIndividualAsRead(alarm.id)">확인</button>
+              <button class="btn btn-sm" @click.stop="markIndividualAsRead(alarm.id)">✔</button>
             </div>            
           </div>
           <div v-show="!isAlarmUnReadListAvailable">

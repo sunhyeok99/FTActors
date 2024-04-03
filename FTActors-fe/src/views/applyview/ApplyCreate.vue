@@ -35,29 +35,29 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel"><b>배우로 지원하기</b></h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearAll()"></button>
+        <h3 class="modal-title fs-5" id="exampleModalLabel"><b>배우로 지원하기</b></h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearAll"></button>
       </div>
       <div class="modal-body">
-        <div class="form-group mb-3">
+       <!--  <div class="form-group mb-3">
           <h1>{{ recruitment.title }}</h1>
         </div>
         <div class="form-group mb-3">
           <label for="postMemberId"><b>회원 이름</b></label>
           <p>{{ recruitment.loginName }}</p>
-        </div>
+        </div> -->
         <div class="form-group mb-3">
-          <label for="content"><b>지원 내용</b></label>
+          <label for="content"><h6><b>지원 내용</b></h6></label>
           <textarea id="content" v-model="content" class="form-control" placeholder="지원 내용을 간단하게 적어주세요"></textarea>
         </div>
         <div class="form-group mb-3">
-          <label for="script"><b>지원영상</b></label>
+          <label for="script"><h6><b>지원 영상</b></h6></label>
           <input type="file" id="script" class="form-control" @change="onScriptChange">
         </div>
 
         <div class="form-group mb-3" v-if="selectedFile">
           <div class="rowthings">
-          <label for="scriptPreview"><b>미리보기</b></label>
+          <label for="scriptPreview"><h6><b>미리보기</b></h6></label>
           <span @click="clearSelectedFile" style="cursor:pointer;"><b>X</b></span>
         </div>
           <video id="scriptPreview" controls width="100%">
@@ -129,7 +129,9 @@ let fileReader = new FileReader(); // FileReader 변수를 함수 외부에서 �
       // 오류 처리
     }
 };
+const clearAll = ()=>{
 
+}
   const clearSelectedFile = () => {
       selectedFile.value = null
       const input = document.getElementById('script');
