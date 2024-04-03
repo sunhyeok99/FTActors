@@ -1,49 +1,49 @@
 <template>
   <div class="container my-5">
-    <div class="profileheader text-center mb-5">
+    <div class="profileheader text-center mb-4">
         <h1><b>BOARD</b></h1>
     </div>
-    <div class="row contents">
-        <div class="col-md-4 img-container">
+    <div class="contents d-flex flex-row justify-content-evenly">
+        <div class="col-md-8 img-container">
             <img :src="recruitment.image" alt="" class="img-fit">
         </div>
         <div class="col-md-8">
-        <div class="profilelist">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <div class="d-flex justify-content-between align-items-center">
-                <label>
-                  <h1><b>{{ recruitment.title }}</b></h1>
-                </label>
-                <!-- <div v-if="checkPermission()"> -->
-                  <div class="button-container">
-                    <button type="button" class="btn btn-dark-outlined" @click="boardUpdate">공고 변경</button>
-                    <button type="button" class="btn btn-dark" @click="confirmDelete">공고 삭제</button>
-                    <button type="button" class="btn btn-danger" @click="goToEdit">영상 편집</button>
+          <div class="profilelist">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item flex-shrink">
+                <div class="d-flex flex-col justify-content-center">
+                  <label>
+                    <h1><b>{{ recruitment.title }}</b></h1>
+                  </label>
+                  <div v-if="checkPermission()">
+                    <div class="button-container ps-5">
+                      <button type="button" class="btn btn-dark-outlined" @click="boardUpdate">공고 변경</button>
+                      <button type="button" class="btn btn-dark" @click="confirmDelete">공고 삭제</button>
+                    </div>
                   </div>
-                <!-- </div> -->
-                <!-- <div v-else> -->
-                  <div class="button-container">
-                    <button v-if="recruitment.apply === 1" class="btn btn-secondary">이미 지원하였습니다</button>
-                    <ApplyCreate />
-                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#applyModal" @click="apply">
-                      지원하기
-                     </button>
-                  <!-- </div> -->
+                  <div v-else>
+                    <div class="button-container flex-column flex-sm-row flex-fill ">
+                      <button v-if="recruitment.apply === 1" class="btn btn-secondary">이미 지원하였습니다</button>
+                      <ApplyCreate />
+                      <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#applyModal" @click="apply">
+                        지원하기
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </li>
-            <li class="list-group-item"><b>담당자:</b> {{ recruitment.postMember }}</li>
-            <li class="list-group-item"><b>공고분류:</b> {{ recruitment.category }}</li>
-            <li class="list-group-item"><b>지원시작일자:</b> {{ recruitment.startDate }}</li>
-            <li class="list-group-item"><b>지원마감일자:</b> {{ recruitment.endDate }}</li>
-          </ul>
-          <div class="detailboardpage mt-4">
-            <h4><b>공고 내용</b></h4>
-            <p>{{ recruitment.content }}</p>
-            <h5><b>첨부파일</b></h5>
-            <a :href="recruitment.file" download="recruitment_file">파일 다운로드</a>
-            <p class="mt-2"> 영상을 올릴 때 꼭 [이름]배역이름으로 파일 명을 지정해주세요.<br>ex) [배역이름]실제이름</p>
+              </li>
+                <li class="list-group-item p-3 fs-4"><b>담당자:</b> {{ recruitment.postMember }}</li>
+                <li class="list-group-item p-3 fs-4"><b>공고분류:</b> {{ recruitment.category }}</li>
+                <li class="list-group-item p-3 fs-4"><b>지원시작일자:</b> {{ recruitment.startDate }}</li>
+                <li class="list-group-item p-3 fs-4"><b>지원마감일자:</b> {{ recruitment.endDate }}</li>
+              
+              </ul>
+          <div class="detailboardpage mt-5 ml-">
+            <h3 class="mb-2"><b>공고 내용</b></h3>
+            <h4 class=""><p>{{ recruitment.content }}</p></h4>
+            <h3 class="mt-5"><b>첨부파일</b></h3>
+            <a :href="recruitment.file" download="recruitment_file" class="fs-5">대사 스크립트 다운로드</a>
+            <p class="mt-4"> 영상을 올릴 때 꼭 [이름] 배역이름으로 파일명을 지정해주세요.<br>ex) [배역이름]실제이름</p>
           </div>
         </div>
       </div>
@@ -132,13 +132,14 @@ const goToEdit = () => {
 };
 const fetchRecruitmentDetail = async () => {
   const recruitmentId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
-  if (loginMember.value == "" || loginMember.value == null) {
+  if (loginMember.value == "" || loginMember.value == null || loginMember.value == undefined) {
     const response = await recruitmentApi.getDetail(recruitmentId, adminId);
     recruitment.value = response.data.data;
   } else {
     const memberId = loginMember.value;
     const response = await recruitmentApi.getDetail(recruitmentId, memberId);
     recruitment.value = response.data.data;
+    console.log(recruitment)
   }
 };
 
@@ -236,6 +237,7 @@ h1 {
 .btn-dark {
   position: relative;
   right: 0;
+  min-width: 100px;
 }
 
 .list-group-item {
@@ -249,6 +251,7 @@ h1 {
 /* 버튼 컨테이너 스타일링 */
 .button-container {
   display: flex;
+  padding-top: 2rem;
   justify-content: end;
   /* 버튼들을 오른쪽 끝으로 정렬 */
 }
@@ -285,5 +288,7 @@ h1 {
   object-fit: cover;
   object-position: center;
 }
+
+/* 사용자 정의 CSS */
 
 </style>

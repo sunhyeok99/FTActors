@@ -1,15 +1,16 @@
 <template>
+
   <div class="row row-cols-1 row-cols-md-4 g-4">
     <div class="col" v-for="profile in profiles" :key="profile.id">
       <div class="card" id="profile" @click="goToProfileDetail(profile.id)">
-        <img :src="profile.imageLink" alt="사진 업로드 실패">
+        <img :src="profile.imageLink" alt="" style="height: 20rem;">
         <div class="card-body">
           <h5 class="card-title"><b>{{ getProfileTitle(profile) }}</b></h5>
           <p class="card-text">{{ getAge(profile.birth) }}세</p>
         </div>
       </div>
     </div>
-  </div>
+</div>
 </template>
 
 <script setup>

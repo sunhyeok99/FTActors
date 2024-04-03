@@ -20,11 +20,11 @@
 <script setup>
 </script>
 
-<style>
+<style scoped>
 .search-bar{
     display: flex;
+    align-items: flex-start;
     justify-content: space-between;
-    align-items: center;
 }
 #search{
     width: auto;

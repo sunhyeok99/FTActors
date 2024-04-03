@@ -27,10 +27,6 @@
     </div>
   </div>
  -->
-
-
-
-
 <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -67,7 +63,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-dark" @click="apply">지원하기</button>
+        <button type="button" class="btn btn-dark" @click="apply()">지원하기</button>
       </div>
     </div>
   </div>
@@ -101,16 +97,14 @@ let fileReader = new FileReader(); // FileReader 변수를 함수 외부에서 �
     const recruitmentId = router.currentRoute.value.params.recruitmentId; // 현재 라우트의 파라미터 사용
     const response = await recruitmentApi.getDetail(recruitmentId, loginMember.value);
     recruitment.value = response.data.data
-    setTimeout(() => {
-    showModal.value = true;
-  }, 2000);
-};
 
+  };
+  
   onMounted(fetchRecruitmentDetail);
   
   const apply = async () => {
   let formData = new FormData();
-  formData.append("recruitmentId", recruitment.value.id);
+  formData.append("recruitmentId", router.currentRoute.value.params.recruitmentId);
   formData.append("memberId", loginMember.value);
   formData.append("videoFile", script);
   formData.append("content", content.value);
