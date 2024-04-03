@@ -59,12 +59,13 @@ const fetchMember = async () => {
 function selectChat(chat) {
   selectedChat.value = chat;
 }
+const SERVER_URL = 'https://j10a602.p.ssafy.io/api';
 
 onMounted(async () => {
   try {
     // Todo : memberId 1 고정 -> 추후 변경
     let memberId = 1;
-    const response = await axios.get("http://localhost:8080/chat/room/mylist", {
+    const response = await axios.get(`${SERVER_URL}/chat/room/mylist`, {
         params: { memberId },
       });
     chats.value = response.data.data; // 서버로부터 받은 데이터를 chats에 할당

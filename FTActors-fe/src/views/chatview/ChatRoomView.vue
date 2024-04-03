@@ -4,8 +4,7 @@
       <h2>{{ room.title }}</h2>
     </div>
     <ul class="list-group chatbox">
-      <li class="list-group-item" v-for="message in messages" :key="message.id" :class="{ 'text-end': message.sender === loginMemberId, 'text-start': message.sender !== loginMemberId }">
-       
+      <li class="list-group-item" v-for="message in messages" :key="message.id" :class="{ 'text-end': message.sender == loginMember.value, 'text-start': message.sender !== loginMember.value }">
         {{ message.sender }} - {{ message.message }}
       </li>
     </ul>
@@ -32,13 +31,14 @@ import { useMemberStore } from "@/stores/member-store.js";
 const route = useRoute();
 const roomId = ref(route.params.roomId);
 const room = ref({});
-const sender = ref('12');
+const sender = ref('12'); // 여기서 '12'는 예시입니다. 실제 애플리케이션에서는 동적으로 설정해야 합니다.
 const message = ref('');
 const messages = ref([]);
 const stompClient = ref(null);
 
 const MemberStore = useMemberStore();
-const loginMember = ref(MemberStore.MemberInfo);
+const loginMember = ref(null)
+loginMember.value = MemberStore.memberInfo;
 console.log(loginMember.value);
 
 const findRoom = async () => {
@@ -69,9 +69,9 @@ const recvMessage = (recv) => {
     "message": recv.message
   });
 };
-
+const SERVER_URL = '//j10a602.p.ssafy.io/api';
 const connect = () => {
-  const socket = new WebSocket('ws://localhost:8080/ws-stomp');
+  const socket = new WebSocket(`ws:${SERVER_URL}/ws-stomp`);
   stompClient.value = Stomp.over(socket);
 
   stompClient.value.connect({}, frame => {

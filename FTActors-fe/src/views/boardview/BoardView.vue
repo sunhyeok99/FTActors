@@ -8,9 +8,6 @@
     <BoardAll />
   </div>
 
-  <div>
-    <Pagenation />
-  </div>
   </template>
   <script setup>
 import BoardAll from '@/components/boardpage/BoardAll.vue';
