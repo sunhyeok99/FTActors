@@ -42,11 +42,6 @@ public class NotificationController {
 		return sseEmitter;
 	}
 
-	// @PostMapping("/read")
-	// public ApiResponse<String> markAsRead(){
-	//
-	// }
-
 	@GetMapping("/list")
 	public ApiResponse<List<NotifyDto.Response>> getUnreadNotifyList(@RequestParam Long loginId){
 		log.info("NotificationController ========== getNotReadNoteList() start ..");
