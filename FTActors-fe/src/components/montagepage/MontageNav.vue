@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-      <a class="navbar-brand" id="toHome" @click="goToHomeview">배우는 사람 , {{ member.name }} </a>
+      <a class="navbar-brand" id="toHome" @click="goToHomeview">배우는 사람 </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
         aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
         <img src="@/assets/icons/Slate.png" alt="" id="slateicon">
