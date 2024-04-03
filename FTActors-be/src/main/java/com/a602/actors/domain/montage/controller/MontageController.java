@@ -55,8 +55,8 @@ public class MontageController {
         return new ApiResponse<>(HttpStatus.OK.value(), "파일 삭제를 성공적으로 수행했습니다.", montageFileService.deleteFile(montageId));
     }
     @GetMapping("/my-montage")
-    public ApiResponse<List<MontageDto.Montages>> getMyMontage(@RequestParam(name = "memberId") Long memberId){
-        return new ApiResponse<>(HttpStatus.OK.value(), "성공적으로 반환했습니다", montageFileService.getMyMontage(memberId));
+    public ApiResponse<List<MontageDto.Montages>> getMyMontage(){
+        return new ApiResponse<>(HttpStatus.OK.value(), "성공적으로 반환했습니다", montageFileService.getMyMontage());
     }
     @GetMapping("/{montageId}/comment")
     public ApiResponse<List<MontageCommentDto.Response>> getAllComments(@PathVariable("montageId") Long montageId){

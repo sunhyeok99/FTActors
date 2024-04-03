@@ -1,13 +1,10 @@
 package com.a602.actors.domain.montage.service;
 
 
-import com.a602.actors.domain.member.repository.MemberRepository;
 import com.a602.actors.domain.montage.dto.MontageDto;
 import com.a602.actors.domain.montage.dto.MontageReportDto;
 import com.a602.actors.domain.montage.entity.Montage;
-import com.a602.actors.domain.montage.entity.Report;
 import com.a602.actors.domain.montage.repository.MontageRepository;
-
 import com.a602.actors.global.common.config.FileUtil;
 import com.a602.actors.global.common.enums.FolderType;
 import com.a602.actors.global.exception.ExceptionCodeSet;
@@ -15,16 +12,12 @@ import com.a602.actors.global.exception.FileException;
 import com.a602.actors.global.exception.MontageException;
 import com.a602.actors.global.jwt.util.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.MemberUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 // S3 연결
 @Service
@@ -42,7 +35,8 @@ public class MontageFileService {
         return montageRepository.getAllMontages();
     }
 
-    public List<MontageDto.Montages> getMyMontage(Long memberId){
+    public List<MontageDto.Montages> getMyMontage(){
+        Long memberId = jwtUtil.getLoginMemberId();
         return montageRepository.getMyMontages(memberId).stream().map(MontageDto.Montages::toDto).toList();
     }
 
