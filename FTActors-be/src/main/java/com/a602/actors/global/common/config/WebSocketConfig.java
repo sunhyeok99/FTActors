@@ -47,8 +47,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry){
 		registry.addEndpoint("/ws-stomp")
-				.setAllowedOrigins("*")
-				.withSockJS();
+				.setAllowedOrigins("*");
+				//.withSockJS();
 			// .withSockJS();	// 이거 있으면 ws://localhost:8080/api/ws-stomp 접속 안됨.. 왜지?
 	}
 
