@@ -110,7 +110,7 @@
 
 
   <!-- 토글 버튼 -->
-  <button class="btn btn-dark" data-bs-target="#actorModalToggle" data-bs-toggle="modal">감독 프로필 만들기</button>
+  <button class="btn btn-dark" data-bs-target="#actorModalToggle" data-bs-toggle="modal">배우 프로필 만들기</button>
 </template>
 
 <script setup>

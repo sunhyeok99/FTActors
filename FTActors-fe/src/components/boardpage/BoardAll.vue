@@ -125,13 +125,9 @@ onMounted(() => {
   cursor: pointer;
 }
 
-.liked img {
-  filter: invert(36%) sepia(94%) saturate(3013%) hue-rotate(346deg) brightness(100%) contrast(97%);
-}
-
 .like-btn img {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
 }
 .masonry {
   column-count: var(--bs-columns);

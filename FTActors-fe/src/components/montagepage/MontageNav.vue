@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-      <a class="navbar-brand" id="toHome" @click="goToHomeview">배우는 사람</a>
+      <a class="navbar-brand" id="toHome" @click="goToHomeview">배우는 사람 , {{ member.name }} </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
         aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
         <img src="@/assets/icons/Slate.png" alt="" id="slateicon">
@@ -49,8 +49,14 @@
 <script setup>
 
 import MontageFeed from '@/components/montagepage/MontageFeed.vue'
+import { ref, onMounted } from 'vue';
 import { RouterLink, RouterView, useRouter } from 'vue-router'
+import { recruitmentApi, memberApi, followApi } from '@/util/axios';
+import { useMemberStore } from "@/stores/member-store.js";
+
+const MemberStore = useMemberStore();
 const router = useRouter();
+const member = ref({});
 const goToHomeview = () => {
   router.push({ name: 'home' }).then(() => {
     window.scrollTo({
@@ -69,6 +75,14 @@ const formatDate = () => {
       return `${year} - ${month} - ${day}`;
 }
 
+const loginMember = ref(null);
+loginMember.value = MemberStore.memberInfo;
+const fetchMember = async () => {
+  const id = loginMember.value
+      const response = await memberApi.getById(id);
+      member.value = response.data.data;
+  };
+  onMounted(fetchMember);
 </script>
 
 <style scoped>
@@ -87,6 +101,7 @@ const formatDate = () => {
 
 #toHome {
   cursor: pointer;
+  position: relative;
 }
 
 #slateicon{
@@ -110,6 +125,5 @@ const formatDate = () => {
 #today{
   color: white;
 }
-
 
 </style>

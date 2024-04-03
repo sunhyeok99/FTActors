@@ -8,7 +8,7 @@
               <video :src="montage.link" muted autoplay playsinline></video>
             </div>
           </div>
-          <div class="montage-title"><strong> {{ montage.title }}   </strong> {{ formatDate(montage.created_at) }}  </div>
+          <div class="montage-title"><strong> {{ montage.title }}   </strong> {{ formatDate(montage.stageName) }}  </div>
         </div>
       </div>
     </div>

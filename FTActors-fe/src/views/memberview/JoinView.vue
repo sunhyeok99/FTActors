@@ -36,6 +36,10 @@
               <input type="text" id="name" v-model="form.name" class="form-control" placeholder="이름을 입력해주세요">
             </div>
             <div class="form-group mb-3">
+              <label for="name" class="form-label">예명</label>
+              <input type="text" id="name" v-model="form.stageName" class="form-control" placeholder="예명을 입력해주세요">
+            </div>
+            <div class="form-group mb-3">
               <label for="email" class="form-label">이메일</label>
               <input type="email" id="email" v-model="form.email" class="form-control" placeholder="example@email.com">
             </div>
@@ -103,6 +107,7 @@ const form = reactive({
   showConfirmPassword: false,
   gender: "",
 });
+
 let image = null;
 const selectedImage = ref(null);
 
@@ -172,10 +177,8 @@ const signup = async () => {
     phone: form.phone,
     gender: form.gender,
   };
+
   const formData = new FormData();
-  // for (const key in newMember) {
-  //     formData.append(key, JSON.stringify(newMember[key]));
-  // }
   formData.append("dto", new Blob([JSON.stringify(newMember)], {
       type: "application/json"
   }));

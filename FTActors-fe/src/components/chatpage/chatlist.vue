@@ -76,11 +76,15 @@ onMounted(async () => {
 });
 </script>
 
-<style>
+<style scoped>
 .list-group-item{
   flex-direction: column;
   cursor: pointer;
 }
+
+.list-group-item-action {
+  color: hsla(53, 100%, 50%, 0.428);
+}    
 
 </style>
   

@@ -15,10 +15,7 @@
             <RouterLink to="/blacklist">블랙리스트</RouterLink>
             <div class="pageright">
               <!-- 알람 -->
-              <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                <img src="@/assets/icons/Alarm.png" alt="">
-              </button>
-              <AlarmModal />
+              <AlarmModal @unreadCountUpdated="handleUnreadCountUpdated" />
               <!-- 로그인 -->
               <button type="button" class="btn btn-secondary" id="loginbtn" @click="goToLogin">로그인</button>
               <!-- 회원가입 -->
@@ -35,6 +32,7 @@
     <button :class="{ 'btn': true, 'floating-map-button': isMontagePage }" id="floating-map-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
     aria-controls="offcanvasWithBothOptions"> <img width="40" src="@/assets/icons/Message.png" alt="message icon"></button>
     <SideBars />
+    <ChatList />
   </div>
 
 </div>
@@ -81,10 +79,15 @@ const scrollToPosition = () => {
     behavior: 'smooth' 
   });
 };
+const alarmCount = ref();
 
+const handleUnreadCountUpdated = (count) => {
+  alarmCount.value = count 
+};
 onMounted(() => {
   if (isMontagePage.value) {
     scrollToPosition();
+
   }
 });
 </script>
