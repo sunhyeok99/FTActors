@@ -58,24 +58,24 @@ services:
     ports:
       - "6379:6379"
   #
-#  rabbitmq:
-#    image: rabbitmq
-#    networks:
-#      - backend
-#    volumes:
-#      - /home/ubuntu/volume/mq:/var/lib/rabbitmq
-#    ports:
-#      - "5672:5672"
-#
-#  mongo:
-#    image: mongo
-#    networks:
-#      - backend
-#    volumes:
-#      - /home/ubuntu/volume/data:/data
-#    env_file: ".env"
-#    ports:
-#      - "27017:27017"
+  rabbitmq:
+    image: rabbitmq
+    networks:
+      - backend
+    volumes:
+      - /home/ubuntu/volume/mq:/var/lib/rabbitmq
+    ports:
+      - "5672:5672"
+
+  mongo:
+    image: mongo
+    networks:
+      - backend
+    volumes:
+      - /home/ubuntu/volume/data:/data
+    env_file: ".env"
+    ports:
+      - "27017:27017"
 
 # 브리지 네트워크는 도커가 제공하는 네트워크 드라이버 중 하나로, 가상
 # 인터페이스를 통해 컨테이너들을 연결한다.
