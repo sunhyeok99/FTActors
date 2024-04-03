@@ -7,7 +7,7 @@
   <div class="row row-cols-1 row-cols-md-4 g-4">
     <div class="col" v-for="board in recruitments" :key="board.id">
       <div class="card h-100" id="board" @click="goToRecruitmentDetail(board.id)">
-        <img :src="board.image || 'https://fs.joycity.com/index.asp'" class="img-fluid" style="">
+        <img :src="board.image || 'https://fs.joycity.com/index.asp'" class="img-fluid" style="height: 10rem;">
         <div class="card-body">
           <h5 class="card-title"><b>{{ board.title }}</b></h5>
           <p class="card-text">{{ board.endDate }} / <b>D-{{ calculateDday(board.endDate) }}</b></p>
@@ -82,5 +82,7 @@ const goToBoardPage = () => {
   display: flex;
   margin-left: auto;
 }
-
+.img-fluid{
+  object-fit:cover;
+}
 </style>

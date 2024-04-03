@@ -64,7 +64,7 @@ const following = ref('');
 
 const profileDetail = async () => {
   const profileId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
-    const response = await profileApi.getDetailProfile(profileId);
+    let response = await profileApi.getDetailProfile(profileId);
     profile.value = response.data.data;
     console.log(profile)
     if(loginMember.value == profile.value.memberId){

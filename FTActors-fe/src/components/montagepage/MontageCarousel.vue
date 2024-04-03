@@ -6,10 +6,10 @@
           <div class="col">
             <div class="card montage" @click="goToMontageDetail(index)">
               <video :src="montage.link" muted autoplay playsinline></video>
-              <div class="montage-title">
-                <strong> {{ montage.title }} {{ formatDate(montage.created_at) }} </strong> </div>
             </div>
             </div>
+            <div class="montage-title">
+              <strong> {{ montage.title }} {{ formatDate(montage.created_at) }} </strong> </div>
           </div>
          
         </div>
@@ -64,6 +64,21 @@ const formatDate = (dateStr) => {
 }
 
 .carousel-inner {
+  width: 100%;
+  height: 100%;
+}
+.montage-title {
+  position: absolute;
+  bottom: 0%; /* Adjust this value to position the title inside the carousel item */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: xx-large;
+  color: #fff; /* Ensure the text is visible against the video background */
+  text-shadow: 0 0 10px rgba(0,0,0,0.7); /* Optional: Adds a shadow to the text to improve readability */
+}
+
+/* Ensure the carousel and its content take up the full width and height as intended */
+.carousel-inner, .carousel, .carousel-item {
   width: 100%;
   height: 100%;
 }
