@@ -5,6 +5,7 @@ import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.dto.ProfileSearchRequest;
 import com.a602.actors.domain.profile.dto.ProfileSearchResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +23,7 @@ public interface ProfileService {
 
     String deleteProfile(Long profileId) throws IOException ;
 
-    String createProfile(ProfileRequest profileRequest)  throws IOException;
+    String createProfile(ProfileRequest profileRequest, MultipartFile image)  throws IOException;
 
     String updateProfile (Long profileId, ProfileRequest profileRequest) throws IOException ;
 
