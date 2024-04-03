@@ -87,11 +87,6 @@ public class JWTMemberServiceImpl {
         log.info("로그인 시도한 멤버 :::::::::: {}, {}", member.getId(), member.getPassword());
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(member.getLoginId(), member.getPassword(), new ArrayList<GrantedAuthority>());
-//        authentication.setAuthenticated(true);
-//        Authentication authentication = authenticationManagerBuilder.getObject()
-//                .authenticate(memberDto.toAuthentication());
-//                authenticationManagerBuilder.getObject()
-//                .authenticate(memberDto.toAuthentication());
         // SecurityContextHolder에 로그인 한 유저 정보 저장
         SecurityContextHolder.getContext().setAuthentication(authentication);
         log.info("로그인 후 SecurityContextHolder에 저장된 사용자 :::::: {}",
