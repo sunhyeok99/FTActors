@@ -3,17 +3,18 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">{{alarmUnReadList.length}}개의 알람</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">{{ alarmUnReadList.length }}개의 알람</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div v-show="isAlarmUnReadListAvailable">
             <div v-for="(alarm, index) in alarmUnReadList" :key="index" class="rowthings">
-              <img src="@/assets/icons/like-filled.png" alt="" class="alarm">
+
               <p :class="{ 'selected': isSelected(alarm.id) }"><strong>{{ alarm.content }}</strong></p>
-              <!-- 각 알람 옆에 확인 버튼 추가 -->
-              <button class="btn btn-sm" @click.stop="markIndividualAsRead(alarm.id)">✔</button>
-            </div>            
+
+              <button class="btn btn-sm" @click.stop="markIndividualAsRead(alarm.id)"> <img
+                  src="@/assets/icons/like-filled.png" alt="" class="alarm"></button>
+            </div>
           </div>
           <div v-show="!isAlarmUnReadListAvailable">
             <p>알람이 없습니다.</p>
@@ -25,7 +26,7 @@
   </div>
   <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
     <img src="@/assets/icons/like-filled.png" alt="" class="alarm">
-    <p class="alarmCount">{{alarmUnReadList.length}}</p>
+    <p class="alarmCount">{{ alarmUnReadList.length }}</p>
   </button>
 </template>
 
@@ -109,7 +110,8 @@ const markAsRead = async () => {
 <style scoped>
 .selected {
   background-color: hsla(53, 100%, 50%, 0.428);
-  transition: background-color 0.3s ease-in-out; /* 부드러운 배경 색상 전환 추가 */
+  transition: background-color 0.3s ease-in-out;
+  /* 부드러운 배경 색상 전환 추가 */
 }
 
 #likebtn {
@@ -119,23 +121,31 @@ const markAsRead = async () => {
 
 .rowthings {
   display: flex;
-  align-items: center; /* 항목들이 세로 중앙에 위치하도록 함 */
-  padding: 15px; /* 내부 여백을 늘림 */
+  align-items: center;
+  /* 항목들이 세로 중앙에 위치하도록 함 */
+  padding: 15px;
+  /* 내부 여백을 늘림 */
   border: 1px lightgray solid;
-  margin: 15px; /* 마진 조정으로 간격 증가 */
+  margin: 15px;
+  /* 마진 조정으로 간격 증가 */
   border-radius: 15px;
-  transition: transform 0.3s ease-in-out; /* 클릭 시 약간 확대되는 효과 추가 */
-  cursor: pointer; /* 마우스 오버 시 포인터로 변경 */
+  transition: transform 0.3s ease-in-out;
+  /* 클릭 시 약간 확대되는 효과 추가 */
+  cursor: pointer;
+  /* 마우스 오버 시 포인터로 변경 */
 }
 
 .rowthings:hover {
-  transform: scale(1.03); /* 마우스 오버 시 항목 확대 */
+  transform: scale(1.03);
+  /* 마우스 오버 시 항목 확대 */
 }
 
 /* 추가: 각 알람 항목의 크기를 약간 늘림 */
 .rowthings p {
-  margin: 0 10px; /* 텍스트와 아이콘 사이의 여백 추가 */
-  font-size: 1.1rem; /* 텍스트 크기 증가 */
+  margin: 0 10px;
+  /* 텍스트와 아이콘 사이의 여백 추가 */
+  font-size: 1.1rem;
+  /* 텍스트 크기 증가 */
 }
 
 .alarm {
@@ -151,5 +161,4 @@ const markAsRead = async () => {
   border-radius: 1000px;
   margin: 5px;
 }
-
 </style>

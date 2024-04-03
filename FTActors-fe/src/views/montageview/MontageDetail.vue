@@ -112,4 +112,44 @@ onMounted(() => {
 #next {
   cursor: pointer;
 }
+.form-control {
+  width: 100%; /* 너비 최대로 */
+  min-height: 40px; /* 댓글 인풋의 최소 높이 */
+  margin-bottom: 1rem; /* 여백 추가 */
+}
+
+/* 댓글 및 대댓글 텍스트 영역 */
+textarea.form-control {
+  min-height: 100px; /* 텍스트 영역 높이 */
+}
+/* 댓글 및 대댓글의 글씨 크기 */
+.comment-text, #reply-member, .comment-count {
+  font-size: 16px; /* 적절한 글씨 크기로 조정 */
+}
+
+/* 댓글 쓰기 인풋 텍스트 크기 */
+.input-group .form-control {
+  font-size: 14px; /* 입력란의 텍스트 크기 */
+}
+.commentreplycomponent {
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* 컴포넌트의 너비 최대로 조정 */
+}
+
+.accordion-header, .accordion-body {
+  padding: 1rem; /* 패딩 추가로 내용과 경계 간 여백 조정 */
+}
+
+/* 작성 버튼 스타일 조정 */
+.btn-outline-secondary {
+  width: auto;
+  padding: 0.375rem 0.75rem;
+}
+
+/* 모달 타이틀 스타일 조정 */
+.modal-title {
+  font-size: 20px; /* 모달 타이틀 글씨 크기 */
+  margin-bottom: 1rem;
+}
 </style>
