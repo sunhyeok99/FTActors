@@ -1,9 +1,11 @@
 # build stage
 FROM node:lts-alpine as build-stage
 WORKDIR /app
-COPY package*.json ./
+
+COPY ./FTActors-fe .
 RUN npm install --production
-COPY . .
+# COPY . .
+
 RUN npm run build
 
 # production stage
