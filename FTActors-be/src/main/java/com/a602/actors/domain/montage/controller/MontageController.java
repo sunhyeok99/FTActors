@@ -9,7 +9,6 @@ import com.a602.actors.global.common.dto.ApiResponse;
 import com.a602.actors.global.exception.FileException;
 import com.a602.actors.global.exception.MontageException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,8 +55,7 @@ public class MontageController {
         return new ApiResponse<>(HttpStatus.OK.value(), "파일 삭제를 성공적으로 수행했습니다.", montageFileService.deleteFile(montageId));
     }
     @GetMapping("/my-montage")
-    public ApiResponse<List<MontageDto.Montages>> getMyMontage(){
-        Long memberId = 1L;
+    public ApiResponse<List<MontageDto.Montages>> getMyMontage(@RequestParam(name = "memberId") Long memberId){
         return new ApiResponse<>(HttpStatus.OK.value(), "성공적으로 반환했습니다", montageFileService.getMyMontage(memberId));
     }
     @GetMapping("/{montageId}/comment")
