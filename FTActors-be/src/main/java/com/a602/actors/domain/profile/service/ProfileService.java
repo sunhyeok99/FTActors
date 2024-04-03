@@ -25,7 +25,7 @@ public interface ProfileService {
 
     String createProfile(ProfileRequest profileRequest, MultipartFile image)  throws IOException;
 
-    String updateProfile (Long profileId, ProfileRequest profileRequest) throws IOException ;
+    String updateProfile (Long profileId, ProfileRequest profileRequest, MultipartFile image) throws IOException ;
 
     List<ProfileSearchResponse> searchProfileByContent(List<String> keywords);
     List<ProfileSearchResponse> searchProfileByName(String keyword);

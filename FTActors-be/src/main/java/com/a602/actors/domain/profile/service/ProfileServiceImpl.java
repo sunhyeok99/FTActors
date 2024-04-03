@@ -161,7 +161,7 @@ public class ProfileServiceImpl implements ProfileService{
     }
 
     @Override // (엘라스틱, db 둘 다 사용) //To do: 어떠한 설정을 이유로, logstash는 현재 자기가 보고 있는 pk값보다 작은 애는 안 본다. 고로 update가 일어나도 어차피 자기가 보고 있는 애보다 작을 것이기 때문에, 이것을 해결해줘야 한다.
-    public String updateProfile(Long profileId, ProfileRequest profileRequest) throws IOException {
+    public String updateProfile(Long profileId, ProfileRequest profileRequest, MultipartFile image) throws IOException {
         //To do: 1 jwt에서 로그인한 loginedMember 정보 뽑기
         //To do: 2 loginedMember에서 id(고유 번호) 뽑기
         //To do: 3 파라미터로 들어온 profileId로 updatingProfile 정보 뽑기
@@ -175,10 +175,10 @@ public class ProfileServiceImpl implements ProfileService{
 
         String imageurl = profile.getImage();
         String imageName = profile.getImageName();
-        if (profileRequest.getImage() != null) {
+        if (image != null) {
             FileUtil.deleteFile(profile.getImageName(), FolderType.RECRUIT_PATH);
-            imageName = FileUtil.makeFileName(profileRequest.getImage().getOriginalFilename());
-            imageurl = FileUtil.uploadFile(profileRequest.getImage(), imageName, FolderType.RECRUIT_PATH);
+            imageName = FileUtil.makeFileName(image.getOriginalFilename());
+            imageurl = FileUtil.uploadFile(image, imageName, FolderType.RECRUIT_PATH);
         }
 
         // db 수정 성공
