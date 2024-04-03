@@ -63,10 +63,7 @@
                                 <div v-if="selectedImage">
                                     <span @click="clearSelectedImage"> X</span></div>
                                     <img :src="selectedImage" v-if="selectedImage">
-                                    <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-target="#directorModalToggle4"
-                        data-bs-toggle="modal">4단계</button>
-                </div>
+                                    
                         </div>
                     </div>
                 </div>
@@ -83,16 +80,15 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel5">4단계 <b>비밀계정으로 하시겠습니까</b></h1>
+                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel5">4단계 <b>비밀계정 여부</b></h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-floating">
                            <input type="radio" id="yes" value="T" v-model="privated">
-                            <label for="yes">예</label>
-                            
+                            <label for="yes">비밀 계정</label>
                             <input type="radio" id="no" value="F" v-model="privated">
-                            <label for="no">아니요</label>
+                            <label for="no">공개 계정</label>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -102,7 +98,7 @@
         </div>
     </div>
     <!-- 토글 버튼 -->
-    <button class="btn btn-primary" data-bs-target="#directorModalToggle" data-bs-toggle="modal">배우 프로필 만들기</button>
+    <button class="btn btn-dark" data-bs-target="#directorModalToggle" data-bs-toggle="modal">배우 프로필 만들기</button>
   </template>
   
   <script setup>

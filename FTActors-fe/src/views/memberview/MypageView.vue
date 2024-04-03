@@ -425,60 +425,45 @@ const getMyProfile = async () => {
 
 <style>
 .mypage {
-  padding: 2rem;
+  padding: 1rem; /* 패딩을 조금 줄임 */
 }
 
 .mypage-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  margin-bottom: 1rem; /* 제목 아래의 마진을 줄임 */
 }
 
 .profile {
   display: flex;
-  height: 32rem;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  justify-content: space-around;
+  height: auto; /* 고정 높이를 auto로 변경하여 내용에 맞게 조절 */
+  margin-top: 1rem; /* 마진 줄임 */
+  margin-bottom: 1rem; /* 마진 줄임 */
+  justify-content: center; /* 가운데 정렬로 변경 */
+  gap: 20px; /* 프로필 사진과 리스트 사이의 간격 설정 */
 }
 
-.profilelist {
-  width: 30rem;
+.profilelist, .profilephoto {
+  flex: 1; /* 두 컨테이너가 공간을 동일하게 차지하도록 설정 */
+  margin: 0 20px; /* 좌우 마진 설정 */
 }
 
 .profilephoto img {
-  height: 30rem;
-  margin-left: 2rem;
-  margin-right: 2rem;
+  height: auto; /* 이미지 높이를 자동으로 조절 */
+  width: 100%; /* 이미지 너비를 부모 컨테이너에 맞게 조절 */
+  max-height: 300px; /* 이미지 최대 높이 설정 */
+  object-fit: cover; /* 이미지가 컨테이너를 꽉 채우면서 비율 유지 */
 }
 
 .list-group-item {
-  display: flex;
-  justify-content: space-between;
-}
-
-.nav-link.dropdown {
-  position: relative;
-  /* z-index가 적용되도록 position 속성 추가 */
-}
-.dropdown-menu {
-  position: absolute;
-  top: 100%; /* 드롭다운 메뉴를 항상 네비게이션 링크 아래에 배치합니다 */
-  z-index: 9999;
-}
-
-#nav-board-tab {
-  border: none;
-  background: none;
-  padding: 0;
-}
-
-#highest {
-  z-index: 1050;
+  padding: 10px 15px; /* 항목 내부 패딩 줄임 */
 }
 
 .tabs {
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
+
+.nav-link.dropdown, .dropdown-menu {
+  margin-top: 0; /* 드롭다운 메뉴의 상단 마진을 제거 */
+}
+
 </style>

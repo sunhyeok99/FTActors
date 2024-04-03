@@ -5,9 +5,7 @@
   <div>
     <ProfileListAll />
   </div>
-  <div>
-    <Pagenation />
-  </div>
+
 </template>
 
 <script setup>

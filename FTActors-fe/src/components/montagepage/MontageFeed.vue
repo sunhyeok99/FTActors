@@ -3,7 +3,8 @@
     <div class="col" v-for="(montage, index) in montages" :key="index" @click="goToMontageDetail(index)">
       <div class="card montage">
         <video :src="montage.link" muted autoplay playsinline></video>
-        <div class="montage-title"><strong> {{ montage.title }}   </strong> {{ formatDate(montage.created_at) }}  </div>
+        <div class="montage-title">
+          <strong> {{ montage.title }} {{ formatDate(montage.created_at) }} </strong> </div>
       </div>
     </div>
   </div>
@@ -20,7 +21,7 @@ const montages = ref([]);
 
 // 몽타쥬리스트 가져오는 메서드
 const getMontages = () => {
-  axios.get(`http://localhost:8080/montage/list`)
+  axios.get(`${SERVER_URL}/montage/list`)
     .then((response) => {
       console.log(response.data.data);
       montages.value = response.data.data;
@@ -70,11 +71,9 @@ const goToMontageDetail = (montageId) => {
 
 .montage-title {
   position: absolute;
-  top: 0; /* 상단 정렬에서의 위치 조정 */
-  right: 0; /* 오른쪽 정렬을 위해 변경 */
-  transform: translate(-50%, 0); /* 필요에 따라 조정 */
+  bottom: 0; /* 상단 정렬에서의 위치 조정 */
+  left: 0; /* 오른쪽 정렬을 위해 변경 */
   color: rgb(194, 194, 194); /* 필요한 색상으로 설정 */
-  text-align: right; /* 텍스트를 오른쪽으로 정렬 */
   padding-right: 20px; /* 오른쪽 패딩 추가 */
 }
 </style>
