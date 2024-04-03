@@ -197,7 +197,7 @@ public class ProfileServiceImpl implements ProfileService{
 //            return searchAllProfile(1);
 //        }
 
-        queryBuilderInterface.createQuery(keywords);
+        queryBuilderInterface.createContentQuery(keywords);
         NativeQuery nativeQuery = queryBuilderInterface.getSearch();
         System.out.println(nativeQuery.getQuery().toString());
 

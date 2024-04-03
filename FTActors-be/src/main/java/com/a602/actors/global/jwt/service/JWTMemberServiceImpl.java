@@ -60,10 +60,9 @@ public class JWTMemberServiceImpl {
                 savedName = FileUtil.makeFileName(profileImage.getOriginalFilename());
                 url = FileUtil.uploadFile(profileImage, savedName, FolderType.PROFILE_PATH);
             }
-            else {
+            else{
                 url = "";
             }
-
             Member member = Member.builder()
                     .loginId(jwtDto.getLoginId())
                     .password(jwtDto.getPassword())

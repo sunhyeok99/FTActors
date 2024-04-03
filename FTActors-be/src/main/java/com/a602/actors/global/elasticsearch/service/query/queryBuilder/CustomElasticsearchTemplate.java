@@ -24,7 +24,8 @@ public class CustomElasticsearchTemplate implements CustomElasticsearchOperation
 
         List<ProfileDocument> profileDocuments = new ArrayList<>();
         searchHits.forEach(hit -> profileDocuments.add(hit.getContent()));
-
+        System.out.println("왜 안되죠? " + profileDocuments);
+        
         return profileDocuments;
     }
 }
