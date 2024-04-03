@@ -126,9 +126,6 @@ public class ProfileServiceImpl implements ProfileService{
                 .imageName(imageName)
                 .build();
 
-        log.info(creatingProfile.getMember().getId() +" "+creatingProfile.getContent()+" "+creatingProfile.getType());
-        log.info(creatingProfile.getPortfolio() +" "+creatingProfile.getPrivatePost()+" "+creatingProfile.getImage());
-        log.info(creatingProfile.getImageName());
         profileRepository.save(creatingProfile);
 
 //        아래는 WAS 기반 엘라스틱 서치 -> db에는 저장이 실패했는데, 엘라스틱서치에는 저장이 되는 말도 안 되는 경우가 생길 수 있어 좋지 않다.
