@@ -9,16 +9,12 @@
         </div>
       </div>
     </div>
-    </div>
-    
-  </template>
-  
-  <script setup>
-    import { useMemberStore } from "@/stores/member-store.js";
-  
-  const MemberStore = useMemberStore();
-MemberStore.clearUser();
-  </script>
-  <style>
-  
-  </style>
+  </div>
+
+</template>
+
+<script setup>
+
+
+</script>
+<style></style>
