@@ -14,7 +14,7 @@ import lombok.ToString;
 public class ProfileRequest {
 
     //    private Member member; //로그인된 회원, 회원 정보 받아오기 (추후 보안을 위해 dto로 변경하든가)
-
+    private Long id;
     private Long memberId;
     private Character type; // A 또는 P
     private String content; // 자기소개
@@ -22,12 +22,13 @@ public class ProfileRequest {
     private Character privateProfile; // T 또는 F
 
     @Builder
-    public ProfileRequest(Long memberId,
+    public ProfileRequest(Long id, Long memberId,
                           Character type,
                           String content,
                           String portfolioLink, Character privateProfile)
 
     { //생성할 때
+        this.id = id;
         this.memberId = memberId;
         this.type = type;
         this.content = content;
