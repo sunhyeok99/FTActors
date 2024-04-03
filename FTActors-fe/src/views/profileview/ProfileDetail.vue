@@ -17,10 +17,9 @@
               삭제하기
             </button>
             <!-- 팔로잉 버튼 -->
-            <button type="button" class="btn btn-primary" id="followbtn" @click="changeFollow(loginMember.value , profile.memberId)" v-else>
+            <button type="button" class="btn btn-primary" id="followbtn" @click="changeFollow(loginMember.value , profile.memberId)">
               <p v-if="following.follow === 1">팔로잉 삭제</p>
-                        <p v-else>팔로잉</p>
-              팔로잉
+              <p v-else>팔로잉</p>
             </button>
           <ReportModal />
         </div>
@@ -137,7 +136,7 @@ h1 {
 }
 
  .profiletab {
-  height: 1rem;
+  height: auto;
   margin-left: auto;
 } 
 
