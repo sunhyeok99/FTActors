@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -117,10 +118,11 @@ public class ProfileController {
 
     //프로필 생성
     @PostMapping("/myprofile") // -> 추후에 stageName대신 jwt
-    public ApiResponse<String> createProfile( ProfileRequest profileRequest)  throws IOException { //파라미터 추후에 변경
+    public ApiResponse<String> createProfile(@RequestPart(value = "dto") ProfileRequest profileRequest,
+                                             @RequestPart(value = "image", required = false) MultipartFile image)  throws IOException { //파라미터 추후에 변경
         log.info("프로필 만들기~! ");
 
-        String result = profileService.createProfile(profileRequest);
+        String result = profileService.createProfile(profileRequest, image);
 
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 생성했습니다.", result);
     }
