@@ -36,6 +36,7 @@ public class ProfileMapper {
         profileDto.id( profile.getId() );
         profileDto.memberId( profile.getMember().getId());
         profileDto.name(profile.getMember().getName());
+        profileDto.stageName(profile.getMember().getStageName());
         profileDto.content( profile.getContent() );
         profileDto.type( profile.getType() );
         profileDto.gender(profile.getMember().getGender());

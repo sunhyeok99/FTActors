@@ -67,7 +67,6 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override //To do: jwt에서 사람 정보 뽑아와서 그 계정으로 만들기 (db만, 엘라스틱x)
     public ProfileDto getProfile(Long profileId, HttpSession session) {
-//        Long nowLoginId = (Long) session.getAttribute("memberName");
         Long loginnedId = (long) 10;
 
         Profile profile = profileRepository.findById(profileId)
