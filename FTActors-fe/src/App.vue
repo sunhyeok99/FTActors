@@ -11,38 +11,45 @@
             <RouterLink to="/board">진행중인 공고</RouterLink>
             <RouterLink to="/profile">배우 프로필</RouterLink>
             <RouterLink to="/montagemain" id="fontapply">Montage</RouterLink>
-            <RouterLink to="/report">신고 목록</RouterLink>
-            <RouterLink to="/blacklist">블랙리스트</RouterLink>
+            <div v-if="loginMember === 1">
+              <RouterLink to="/report">신고 목록</RouterLink>
+              <RouterLink to="/blacklist">블랙리스트</RouterLink>
+            </div>
             <div class="pageright">
               <!-- 알람 -->
               <AlarmModal @unreadCountUpdated="handleUnreadCountUpdated" />
-              <!-- 로그인 -->
-              <button type="button" class="btn btn-secondary" id="loginbtn" @click="goToLogin">로그인</button>
-              <!-- 회원가입 -->
-              <button type="button" class="btn btn-secondary" id="joinbtn" @click="goToJoin">회원가입</button>
-              <!-- 마이페이지 -->
-              <MypageDropdown/>
+              <div v-if="loginMember === null">
+                <!-- 로그인 -->
+                <button type="button" class="btn btn-secondary" id="loginbtn" @click="goToLogin">로그인</button>
+                <!-- 회원가입 -->
+                <button type="button" class="btn btn-secondary" id="joinbtn" @click="goToJoin">회원가입</button>
+              </div>
+              <div v-else>
+                <!-- 마이페이지 -->
+                <MypageDropdown />
+              </div>
             </div>
-            </nav>
-      </div>
-    </header>
-    <!-- 라우팅된 화면 -->
-    <RouterView />
-    <!-- 메시지 버튼 -->
-    <button :class="{ 'btn': true, 'floating-map-button': isMontagePage }" id="floating-map-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
-    aria-controls="offcanvasWithBothOptions"> <img width="40" src="@/assets/icons/Message.png" alt="message icon"></button>
-    <!-- <SideBars /> -->
-    <ChatList />
-  </div>
+          </nav>
+        </div>
+      </header>
+      <!-- 라우팅된 화면 -->
+      <RouterView />
+      <!-- 메시지 버튼 -->
+      <button :class="{ 'btn': true, 'floating-map-button': isMontagePage }" id="floating-map-button" type="button"
+        data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+        <img width="40" src="@/assets/icons/Message.png" alt="message icon"></button>
+      <!-- <SideBars /> -->
+      <ChatList />
+    </div>
 
-</div>
-<footer>
-  <FooterBox />
-</footer>
+  </div>
+  <footer>
+    <FooterBox />
+  </footer>
 </template>
 
 <script setup>
-import { ref, watch,onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
 import MontageNav from '@/components/montagepage/MontageNav.vue'
 import MypageDropdown from './components/common/MypageDropdown.vue';
@@ -51,7 +58,13 @@ import AlarmModal from './components/modals/AlarmModal.vue';
 import SideBars from './components/common/SideBars.vue';
 import ChatList from './components/chatpage/chatlist.vue';
 
+import { useMemberStore } from "@/stores/member-store.js";
 
+const MemberStore = useMemberStore();
+const loginMember = ref(null);
+loginMember.value = MemberStore.memberInfo;
+
+console.log("앱뷰", loginMember.value)
 const route = useRoute();
 const router = useRouter();
 const goToLogin = () => {
@@ -64,8 +77,8 @@ const goToJoin = () => {
 
 const isMontagePage = ref(false);
 watch(() => route.path, (newPath) => {
-  isMontagePage.value = newPath === '/montagemain'; 
- 
+  isMontagePage.value = newPath === '/montagemain';
+
   if (isMontagePage.value) {
     console.log('몽타쥬페이지 라우팅')
     scrollToPosition();
@@ -76,13 +89,13 @@ const scrollToPosition = () => {
   const scrollDistance = 12 * 16;
   window.scrollTo({
     top: scrollDistance,
-    behavior: 'smooth' 
+    behavior: 'smooth'
   });
 };
 const alarmCount = ref();
 
 const handleUnreadCountUpdated = (count) => {
-  alarmCount.value = count 
+  alarmCount.value = count
 };
 onMounted(() => {
   if (isMontagePage.value) {
@@ -95,7 +108,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
 html,
 body {
   margin: 0;
@@ -110,7 +122,7 @@ header {
 }
 
 
-#light{
+#light {
   width: 100px;
   height: 100px;
   margin-left: 0;
@@ -207,6 +219,7 @@ header {
   /* 내용이 화면을 초과할 경우 스크롤바를 숨깁니다 */
 
 }
+
 .floating-map-button {
   background: black;
 }

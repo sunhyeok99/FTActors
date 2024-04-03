@@ -7,10 +7,6 @@
     <Board />
   </div>
   <hr>
-    <div>
-      <Montage />
-    </div>
-  <hr>
   <div>
     <ProfileList />
   </div>

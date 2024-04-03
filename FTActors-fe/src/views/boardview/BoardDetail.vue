@@ -17,8 +17,8 @@
                 </label>
                 <div v-if="checkPermission()">
                   <div class="button-container">
-                    <button type="button" class="btn btn-outline-dark" @click="boardUpdate">공고 변경</button>
-                    <button type="button" class="btn btn-danger" @click="confirmDelete">공고 삭제</button>
+                    <button type="button" class="btn btn-dark-outlined" @click="boardUpdate">공고 변경</button>
+                    <button type="button" class="btn btn-dark" @click="confirmDelete">공고 삭제</button>
                   </div>
                 </div>
                 <div v-else>
@@ -32,7 +32,7 @@
                 </div>
               </div>
             </li>
-            <li class="list-group-item"><b>담당자:</b> {{ recruitment.postMember }}</li>
+            <li class="list-group-item"><b>담당자:</b> {{ recruitment.postMemberName }}</li>
             <li class="list-group-item"><b>공고분류:</b> {{ recruitment.category }}</li>
             <li class="list-group-item"><b>지원시작일자:</b> {{ recruitment.startDate }}</li>
             <li class="list-group-item"><b>지원마감일자:</b> {{ recruitment.endDate }}</li>
@@ -50,7 +50,68 @@
     </div>
   </div>
 </template>
-
+<!-- 
+<template>
+  <div class="profileheader">
+    <h1> <b>PROFILE</b></h1>
+    </div>
+    <div class="profilepage">
+      <img :src="recruitment.image" alt="" class="img-fit">
+      <div class="profilelist">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><label><b>이름</b></label> 
+            <div class="profiletab">
+            <button type="button" class="btn btn-dark" id="updatebtn" @click="goToProfileUpdate">수정하기</button>
+            신고 버튼
+            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#reportModal">
+              <img src="@/assets/icons/Siren.png" alt="">
+            </button>
+            <ReportModal />
+          </div>
+          배사람 </li>
+          <li class="list-group-item"><label><b>닉네임</b></label>춤추는 산양 </li>
+          <li class="list-group-item"><label><b>이메일</b></label> bausa@gmail.com </li>
+          <li class="list-group-item"><label><b>전화번호</b></label> 010-5454-5454 </li>
+          <li class="list-group-item"><label><b>이름</b></label> 배사람 </li>
+          <li class="list-group-item"><label><b>닉네임</b></label>춤추는 산양 </li>
+          <li class="list-group-item"><label><b>이메일</b></label> bausa@gmail.com </li>
+          <li class="list-group-item"><label><b>전화번호</b></label> 010-5454-5454 </li>
+          <li class="list-group-item"><label><b>이름</b></label> 배사람 </li>
+          <li class="list-group-item"><label><b>닉네임</b></label>춤추는 산양 </li>
+          <li class="list-group-item"><label><b>이메일</b></label> bausa@gmail.com </li>
+          <li class="list-group-item"><label><b>전화번호</b></label> 010-5454-5454 </li>
+        </ul>
+      </div>
+    </div>
+    <div class="detailprofilepage">
+      <h4><b>자기소개</b></h4>
+      <p>안녕하세요 배우 안기영입니다 :)
+        항상 맡은 바 책임을 다하는 배우가 되겠습니다.
+  
+        이름 : 안기영
+        나이 : 27세 (1996.12.08)
+        신장 : 180cm / 65kg
+        학력 : 서울예대 연기전공 졸업
+        특기 : 액션, 춤, 악기연주(기타/플룻), 노래
+        연락처 : 01076777064 / gi0miso@naver.com /
+        https://www.instagram.com/hug.0a/
+  
+        연기영상 : https://youtu.be/R0tEXCYsBt4
+        https://youtu.be/R0tEXCYsBt4</p>
+  
+      <h4><b>학력</b></h4>
+      <p>서울예술대학교 연기전공</p>
+      <h4><b>경력</b></h4>
+      <p></p>
+      <h4><b>추가 이미지</b></h4>
+      <p></p>
+      <h4><b>연기영상</b></h4>
+      <p></p>
+    </div>
+  
+  
+  </template> -->
+  
 
 <script setup>
 import { ref, onMounted } from 'vue';
@@ -67,13 +128,14 @@ const recruitment = ref({});
 
 const fetchRecruitmentDetail = async () => {
   const recruitmentId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
-  if (loginMember.value == "" || loginMember.value == null) {
+  if (loginMember.value == "" || loginMember.value == null || loginMember.value == undefined) {
     const response = await recruitmentApi.getDetail(recruitmentId, adminId);
     recruitment.value = response.data.data;
   } else {
     const memberId = loginMember.value;
     const response = await recruitmentApi.getDetail(recruitmentId, memberId);
     recruitment.value = response.data.data;
+    console.log(recruitment)
   }
 };
 

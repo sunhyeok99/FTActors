@@ -74,36 +74,39 @@ const profileDetail = async () => {
     const response = await profileApi.getDetailProfile(profileId);
     profile.value = response.data.data;
     console.log(profile)
-    selectedImage.value = profile.value.imageLink
-};
+    if (response.data.data.imageLink != null) {
+      selectedImage.value = response.data.data.imageLink;
+    }};
 
 onMounted(profileDetail);
 
 
 const updateProfile = async () => {
   const newProfile = {
+    id: profile.value.id,
     memberId: loginMember.value,
     type: profile.value.type,
     content: profile.value.content,
-    portfolioLink: profile.value.portfolioLink,
-    privateProfile:  profile.value.privated,
+    portfolioLink: profile.value.portfolio,
+    privateProfile:  profile.value.privatePost,
   };
     const profileRequest = new FormData();
     profileRequest.append("dto", new Blob([JSON.stringify(newProfile)], {
       type: "application/json"
   }));
-  profileRequest.append("image", image)
+  if(image != null){
+    profileRequest.append("image", image)
+  }
 
-  console.log(profileRequest.get("dto"))
   try {
-    const response = await profileApi.modifyProfile(profile.value.id ,profileRequest);
+    const response = await profileApi.modifyProfile(profileRequest);
     if (response.status === 200) {
       alert("변경 성공");
     } else {
       // 등록 실패 시 처리
       alert("변경 실패");
     }
-    router.push({ name: 'profiledetail' , params : {id: profile.value.id} });
+    router.push({ name: 'profileDetail' , params : {id: profile.value.id} });
   } catch (error) {
     console.error("Error registering recruitment:", error);
     // 오류 처리

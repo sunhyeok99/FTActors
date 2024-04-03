@@ -27,37 +27,43 @@
     </div>
   </div>
  -->
-<!-- Button trigger modal -->
-
-<!-- Modal -->
-<div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="showModal">
+<div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">지원하기</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h3 class="modal-title fs-5" id="exampleModalLabel"><b>배우로 지원하기</b></h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearAll"></button>
       </div>
       <div class="modal-body">
-        <div class="form-group mb-3">
-          <div>
-            <h1>{{ recruitment.title }}</h1>
-          </div>
+       <!--  <div class="form-group mb-3">
+          <h1>{{ recruitment.title }}</h1>
         </div>
-        <div class="form-group mb-3" >
-          <label for="postMemberId">회원 이름</label>
+        <div class="form-group mb-3">
+          <label for="postMemberId"><b>회원 이름</b></label>
           <p>{{ recruitment.loginName }}</p>
-        </div>
+        </div> -->
         <div class="form-group mb-3">
-          <label for="content">지원 내용</label>
+          <label for="content"><h6><b>지원 내용</b></h6></label>
           <textarea id="content" v-model="content" class="form-control" placeholder="지원 내용을 간단하게 적어주세요"></textarea>
         </div>
         <div class="form-group mb-3">
-          <label for="script">첨부 파일</label>
+          <label for="script"><h6><b>지원 영상</b></h6></label>
           <input type="file" id="script" class="form-control" @change="onScriptChange">
+        </div>
+
+        <div class="form-group mb-3" v-if="selectedFile">
+          <div class="rowthings">
+          <label for="scriptPreview"><h6><b>미리보기</b></h6></label>
+          <span @click="clearSelectedFile" style="cursor:pointer;"><b>X</b></span>
+        </div>
+          <video id="scriptPreview" controls width="100%">
+            <source :src="selectedFile" type="video/mp4">
+          </video>
+
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" @click="apply">지원하기</button>
+        <button type="button" class="btn btn-dark" @click="apply()">지원하기</button>
       </div>
     </div>
   </div>
@@ -91,16 +97,14 @@ let fileReader = new FileReader(); // FileReader 변수를 함수 외부에서 �
     const recruitmentId = router.currentRoute.value.params.recruitmentId; // 현재 라우트의 파라미터 사용
     const response = await recruitmentApi.getDetail(recruitmentId, loginMember.value);
     recruitment.value = response.data.data
-    setTimeout(() => {
-    showModal.value = true;
-  }, 2000);
-};
 
+  };
+  
   onMounted(fetchRecruitmentDetail);
   
   const apply = async () => {
   let formData = new FormData();
-  formData.append("recruitmentId", recruitment.value.id);
+  formData.append("recruitmentId", router.currentRoute.value.params.recruitmentId);
   formData.append("memberId", loginMember.value);
   formData.append("videoFile", script);
   formData.append("content", content.value);
@@ -121,7 +125,9 @@ let fileReader = new FileReader(); // FileReader 변수를 함수 외부에서 �
       // 오류 처리
     }
 };
+const clearAll = ()=>{
 
+}
   const clearSelectedFile = () => {
       selectedFile.value = null
       const input = document.getElementById('script');
@@ -162,5 +168,9 @@ const onScriptChange = (e) => {
   
   .boardlist {
     width: 30rem;
+  }
+  .rowthings{
+    display: flex;
+    justify-content: space-between;
   }
   </style>

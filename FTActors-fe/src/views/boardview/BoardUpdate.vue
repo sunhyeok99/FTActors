@@ -23,8 +23,7 @@
           </select>
         </li>
         <li class="list-group-item" id="update-form">
-          <label><b>담당자</b></label>
-          {{ loginMember.name }}
+          <label><b>담당자  :     {{editedRecruitment.postMemberName }}</b></label>
         </li>
         <li class="list-group-item" id="update-form">
           <label><b>지원시작일자</b></label>
@@ -43,7 +42,10 @@
           </div>
         </li>
         <li class="list-group-item" id="update-form">
-          <img :src="selectedImage" v-if="selectedImage">
+          <img :src="selectedImage" v-if="selectedImage" width="300px" height="200px">
+        </li>
+        <li class="list-group-item" id="update-form">
+          <label for="file">파일</label>
           <input type="file" id="script" class="form-control" @change="onScriptChange">
           <div v-if="selectedFile">
             <span @click="clearSelectedFile"> X</span>

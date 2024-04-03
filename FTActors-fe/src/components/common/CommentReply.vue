@@ -394,4 +394,7 @@ p {
   height: 0;
   opacity: 0;
 }
+.list-group-item{
+  flex-direction: column;
+}
 </style>

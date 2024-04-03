@@ -41,6 +41,10 @@
 
 
 </template>
+
+
+
+
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router'
@@ -55,18 +59,18 @@ loginMember.value = MemberStore.memberInfo;
 
 const router = useRouter();
 const profile = ref({});
-const following = ref('');
+const following = ref(0);
 
 const profileDetail = async () => {
   const profileId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
-    const response = await profileApi.getDetailProfile(profileId);
+    let response = await profileApi.getDetailProfile(profileId);
     profile.value = response.data.data;
-    console.log(profile)
     if(loginMember.value == profile.value.memberId){
       return; 
     }
       response = await followApi.followDetail(loginMember.value, profileId);
       following.value = response.data.data
+      console.log(following)
 };
 
 onMounted(profileDetail);
@@ -85,15 +89,15 @@ const confirmDelete = () => {
 };
 
 const deleteProfile = async () => {
-  const recruitmentId = profile.value.id;
+  const profileId = profile.value.id;
   try {
-    const response = await recruitmentApi.remove(recruitmentId);
+    const response = await profileApi.removeProfile(profileId);
     if (response.status === 200) {
       alert("삭제되었습니다.");
     } else {
       alert("삭제 실패했습니다.");
     }
-    router.push({ name: 'board' });
+    router.push({ name: 'profile' });
   } catch (error) {
     console.error("Error deleting recruitment:", error);
   }
@@ -103,11 +107,12 @@ const isOwnProfile = (memberId) => {
   return memberId == loginMember.value;
 };
 
-const changeFollow = async (followingId, followerId) => {
+const changeFollow = async (followerId) => {
   try {
-      const response = await followApi.following(followingId, followerId);
+      const response = await followApi.following(loginMember.value , followerId);
       if(response.data.status == 200){
-        if(response.data.data == 0){
+        console.log(response)
+        if(response.data.data == '팔로우 삭제 성공'){
           alert('팔로잉을 취소하였습니다.')
           following.value = 0;
         }
