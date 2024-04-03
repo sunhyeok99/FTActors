@@ -3,6 +3,7 @@
     <!-- 몽타쥬 사이드바로 가는 네비게이션 바 -->
     <MontageNav />
     <div class="wrapper">
+      <img src="@/assets/icons/Light.png" alt="" id="light">
       <header>
         <div>
           <!-- 네비게이션 바 -->
@@ -10,39 +11,45 @@
             <RouterLink to="/board">진행중인 공고</RouterLink>
             <RouterLink to="/profile">배우 프로필</RouterLink>
             <RouterLink to="/montagemain" id="fontapply">Montage</RouterLink>
-            <RouterLink to="/report">신고 목록</RouterLink>
-            <RouterLink to="/blacklist">블랙리스트</RouterLink>
+            <div v-if="loginMember === 1">
+              <RouterLink to="/report">신고 목록</RouterLink>
+              <RouterLink to="/blacklist">블랙리스트</RouterLink>
+            </div>
             <div class="pageright">
               <!-- 알람 -->
-              <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                <img src="@/assets/icons/Alarm.png" alt="">
-              </button>
-              <AlarmModal />
-              <!-- 로그인 -->
-              <button type="button" class="btn btn-dark" id="loginbtn" @click="goToLogin">로그인</button>
-              <!-- 회원가입 -->
-              <button type="button" class="btn btn-dark" id="joinbtn" @click="goToJoin">회원가입</button>
-              <!-- 마이페이지 -->
-              <MypageDropdown/>
+              <AlarmModal @unreadCountUpdated="handleUnreadCountUpdated" />
+              <div v-if="loginMember === null">
+                <!-- 로그인 -->
+                <button type="button" class="btn btn-secondary" id="loginbtn" @click="goToLogin">로그인</button>
+                <!-- 회원가입 -->
+                <button type="button" class="btn btn-secondary" id="joinbtn" @click="goToJoin">회원가입</button>
+              </div>
+              <div v-else>
+                <!-- 마이페이지 -->
+                <MypageDropdown />
+              </div>
             </div>
-            </nav>
-      </div>
-    </header>
-    <!-- 라우팅된 화면 -->
-    <RouterView />
-    <!-- 메시지 버튼 -->
-    <button class="btn btn-primary" id="floating-map-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
-    aria-controls="offcanvasWithBothOptions"> <img width="40" src="@/assets/icons/Message.png" alt="message icon"></button>
-    <SideBars />
+          </nav>
+        </div>
+      </header>
+      <!-- 라우팅된 화면 -->
+      <RouterView />
+      <!-- 메시지 버튼 -->
+      <button :class="{ 'btn': true, 'floating-map-button': isMontagePage }" id="floating-map-button" type="button"
+        data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+        <img width="40" src="@/assets/icons/Message.png" alt="message icon"></button>
+      <!-- <SideBars /> -->
+      <ChatList />
+    </div>
+
   </div>
   <footer>
     <FooterBox />
   </footer>
-</div>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
 import MontageNav from '@/components/montagepage/MontageNav.vue'
 import MypageDropdown from './components/common/MypageDropdown.vue';
@@ -51,7 +58,13 @@ import AlarmModal from './components/modals/AlarmModal.vue';
 import SideBars from './components/common/SideBars.vue';
 import ChatList from './components/chatpage/chatlist.vue';
 
+import { useMemberStore } from "@/stores/member-store.js";
 
+const MemberStore = useMemberStore();
+const loginMember = ref(null);
+loginMember.value = MemberStore.memberInfo;
+
+console.log("앱뷰", loginMember.value)
 const route = useRoute();
 const router = useRouter();
 const goToLogin = () => {
@@ -62,14 +75,35 @@ const goToJoin = () => {
   router.push({ name: 'join' });
 };
 
-
 const isMontagePage = ref(false);
-
-// 현재 라우트가 변경될 때마다 실행되는 watch 함수
 watch(() => route.path, (newPath) => {
-  isMontagePage.value = newPath === '/montagemain'; // Montage 페이지인지 확인
-  console.log('몽타쥬페이지 라우팅')
+  isMontagePage.value = newPath === '/montagemain';
+
+  if (isMontagePage.value) {
+    console.log('몽타쥬페이지 라우팅')
+    scrollToPosition();
+  }
 });
+
+const scrollToPosition = () => {
+  const scrollDistance = 12 * 16;
+  window.scrollTo({
+    top: scrollDistance,
+    behavior: 'smooth'
+  });
+};
+const alarmCount = ref();
+
+const handleUnreadCountUpdated = (count) => {
+  alarmCount.value = count
+};
+onMounted(() => {
+  if (isMontagePage.value) {
+    scrollToPosition();
+
+  }
+});
+
 
 </script>
 
@@ -88,18 +122,10 @@ header {
 }
 
 
-#loginbtn {
-  border-radius: 25px;
-  background-image: linear-gradient(to right, rgb(58, 123, 213), rgb(39, 16, 171));
-  border: none;
-  min-width: 75px;
-}
-
-#joinbtn {
-  min-width: 100px;
-  border-radius: 25px;
-  background-image: linear-gradient(to right, rgb(39, 16, 171), rgb(84, 84, 84) );
-  border: none;
+#light {
+  width: 100px;
+  height: 100px;
+  margin-left: 0;
 }
 
 #fontapply {
@@ -194,6 +220,10 @@ header {
 
 }
 
+.floating-map-button {
+  background: black;
+}
+
 #floating-map-button {
   position: fixed;
   display: flex;
@@ -210,5 +240,13 @@ header {
   cursor: pointer;
   z-index: 10;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#loginbtn {
+  min-width: 80px;
+}
+
+#joinbtn {
+  min-width: 100px;
 }
 </style>

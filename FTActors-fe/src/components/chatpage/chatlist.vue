@@ -37,35 +37,35 @@
 </template>
   
 <script setup>
-import { ref, onMounted } from 'vue';
-import { RouterLink, RouterView, useRouter } from 'vue-router';
-import axios from 'axios';
-import ChatDetail from '@/components/chatpage/chatdetail.vue';
-import ChatRoomView from '@/views/chatview/ChatRoomView.vue';
 
-const router = useRouter();
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
+import { RouterLink, RouterView, useRouter } from 'vue-router'
+import { recruitmentApi, memberApi, followApi } from '@/util/axios';
+import { useMemberStore } from "@/stores/member-store.js";
 
 const chats = ref([]);
-
-// const chats = [
-//   { roomId: 1, name: '배사람1', day: '토', message: '잘 부탁드립니다.' },
-//   { roomId: 2, name: '배사람2', day: '토', message: '잘 부탁드립니다.' },
-//   { roomId: 3, name: '배사람3', day: '토', message: '잘 부탁드립니다.' },
-//   { roomId: 4, name: '배사람4', day: '토', message: '잘 부탁드립니다.' },
-//   { roomId: 5, name: '배사람5', day: '토', message: '잘 부탁드립니다.' },
-// ];
-
+const MemberStore = useMemberStore();
+const router = useRouter();
+const member = ref({});
 const selectedChat = ref(null);
-
+const loginMember = ref(null);
+loginMember.value = MemberStore.memberInfo;
+const fetchMember = async () => {
+  const id = loginMember.value
+      const response = await memberApi.getById(id);
+      member.value = response.data.data;
+  };
 function selectChat(chat) {
   selectedChat.value = chat;
 }
+const SERVER_URL = 'https://j10a602.p.ssafy.io/api';
 
 onMounted(async () => {
   try {
     // Todo : memberId 1 고정 -> 추후 변경
     let memberId = 1;
-    const response = await axios.get("http://localhost:8080/chat/room/mylist", {
+    const response = await axios.get(`${SERVER_URL}/chat/room/mylist`, {
         params: { memberId },
       });
     chats.value = response.data.data; // 서버로부터 받은 데이터를 chats에 할당
@@ -74,13 +74,18 @@ onMounted(async () => {
     console.error('Error fetching chat rooms:', error);
   }
 });
+onMounted(fetchMember);
 </script>
 
-<style>
+<style scoped>
 .list-group-item{
   flex-direction: column;
   cursor: pointer;
 }
+
+.list-group-item-action {
+  color: hsla(53, 100%, 50%, 0.428);
+}    
 
 </style>
   

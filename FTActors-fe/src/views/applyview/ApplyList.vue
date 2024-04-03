@@ -9,6 +9,7 @@
           </div>
         </div>
       </div>
+      <button @click="goToEditPage()">영상 편집</button>
     </div>
   </template>
   
@@ -29,7 +30,7 @@
   // getList 함수 정의: 백엔드로부터 공고 리스트를 받아오는 함수
   const getList = async (recruitmentId) => {
     try {
-      await recruitmentApi.getList(recruitmentId).then((res) => {
+      await recruitmentApi.getApplyList(recruitmentId).then((res) => {
         applys.value = res.data.data;
       })   
     } catch (error) {
@@ -43,10 +44,12 @@
   
   // 페이지가 로드될 때 getList 함수 호출
   onMounted(() => {
-    console.log(recruitmentId)
       getList(recruitmentId);
   });
-  
+  const goToEditPage = () => {
+  router.push({ name: 'mainVideo', params: { id : recruitmentId } });
+};
+
   
   
   </script>

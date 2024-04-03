@@ -7,7 +7,6 @@
                 <img v-if="board.wishList === 1" src="@/assets/icons/like-filled.png" alt="Liked">
                 <img v-else src="@/assets/icons/like-outline.png" alt="Like">         
               </button>
-              
             <div class="col-md-8">
               <div class="card-body" @click="goToBoardDetail(board.id)">
                 <h5 class="card-title"><b>{{ board.title }}</b></h5>
@@ -30,7 +29,7 @@ import { useMemberStore } from "@/stores/member-store.js";
 const MemberStore = useMemberStore();
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
-const adminId = 11;
+const adminId = 1;
 
 const router = useRouter();
 const boards = ref([]);
@@ -38,7 +37,9 @@ const boards = ref([]);
 // getList 함수 정의: 백엔드로부터 공고 리스트를 받아오는 함수
 const getList = async (memberId) => {
   try {
+    console.log(memberId)
     await recruitmentApi.getList(memberId).then((res) => {
+      console.log(res.data.data)
       boards.value = res.data.data;
     })   
   } catch (error) {
@@ -86,13 +87,11 @@ const calculateDday = (endDate) => {
 
   return dDay;
 };
-const setDefaultImage = (event) => {
-  event.target.src = "@/assets/icons/NoImage.png"; // 경로는 프로젝트 설정에 따라 조정
-};
+
 
 // 페이지가 로드될 때 getList 함수 호출
 onMounted(() => {
-  if(loginMember.value == "" || loginMember.value == null){
+  if(loginMember.value == "" || loginMember.value == null || loginMember.value == undefined){
     getList(adminId);
   }
   else{
@@ -126,13 +125,9 @@ onMounted(() => {
   cursor: pointer;
 }
 
-.liked img {
-  filter: invert(36%) sepia(94%) saturate(3013%) hue-rotate(346deg) brightness(100%) contrast(97%);
-}
-
 .like-btn img {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
 }
 .masonry {
   column-count: var(--bs-columns);
@@ -160,4 +155,6 @@ onMounted(() => {
     --bs-columns: 1;
   }
 }
+
+
 </style>
