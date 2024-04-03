@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.a602.actors.domain.chat.dto.ChatRoomDto;
+import com.a602.actors.domain.chat.dto.ParticipantsDto;
 import com.a602.actors.domain.chat.service.ChatService;
+import com.a602.actors.domain.member.dto.MemberDtoForChat;
 import com.a602.actors.global.common.dto.ApiResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -60,9 +63,14 @@ public class ChatController {
 	}
 
 	@PostMapping("/invite")
-	public ApiResponse<String> inviteMemberToChat(@RequestBody Long chatRoomId, @RequestBody List<Long> memberIdList){
-		chatService.invite(chatRoomId, memberIdList);
+	public ApiResponse<String> inviteMemberToChat(@RequestBody ParticipantsDto.Request inviteRequest){
+		chatService.invite(inviteRequest);
 		return new ApiResponse<>(HttpStatus.OK.value(), "초대 성공", "");
+	}
+
+	@GetMapping("/participants/{chatRoomId}")
+	public ApiResponse<List<MemberDtoForChat>> getAllParticipants(@PathVariable Long chatRoomId){
+		return new ApiResponse<>(HttpStatus.OK.value(), "채팅 참여자 리스트 가져오기 성공", chatService.getAllParticipants(chatRoomId));
 	}
 
 	// Todo : 채팅 메시지 암호화 및 메시지큐 활용한 저장

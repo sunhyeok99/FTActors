@@ -1,9 +1,5 @@
 package com.a602.actors.global.jwt.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Optional;
-
 import com.a602.actors.domain.member.Member;
 import com.a602.actors.global.common.config.FileUtil;
 import com.a602.actors.global.common.enums.FolderType;
@@ -12,10 +8,12 @@ import com.a602.actors.global.exception.MemberException;
 import com.a602.actors.global.exception.TokenException;
 import com.a602.actors.global.jwt.JwtTokenProvider;
 import com.a602.actors.global.jwt.dto.JwtDto;
-//import com.a602.actors.global.jwt.mapper.MemberMapper;
 import com.a602.actors.global.jwt.repository.JWTMemberRepository;
 import com.a602.actors.global.jwt.util.JWTUtil;
 import com.a602.actors.global.jwt.util.TokenUtil;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -23,12 +21,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
 
 import static com.a602.actors.global.exception.ExceptionCodeSet.MEMBER_DUPLICATED;
 
@@ -58,10 +55,13 @@ public class JWTMemberServiceImpl {
         String savedName = "";
         String url = "";
         try{
-            //        if(jwtDto.getProfileImage() != null){
-            savedName = FileUtil.makeFileName(profileImage.getOriginalFilename());
-            url = FileUtil.uploadFile(profileImage, savedName, FolderType.PROFILE_PATH);
-//        }
+            if(profileImage != null){
+                savedName = FileUtil.makeFileName(profileImage.getOriginalFilename());
+                url = FileUtil.uploadFile(profileImage, savedName, FolderType.PROFILE_PATH);
+            }
+            else {
+                url = "";
+            }
 
             Member member = Member.builder()
                     .loginId(jwtDto.getLoginId())
@@ -75,6 +75,7 @@ public class JWTMemberServiceImpl {
                     .build();
 
             jwtMemberRepository.save(member);
+
         }catch (IOException e){
             // 프로필 이미지 업로드 실패 시 예외 처리
             log.error("Failed to upload profile image to S3", e);
@@ -109,8 +110,8 @@ public class JWTMemberServiceImpl {
 //        String loginId = jwtUtil.getLoginMemberId();
         return authResponse;
     }
-    public JwtDto.getPkId getIdByLoginId(String userId) {
-        Optional<Member> optionalMember = jwtMemberRepository.findByLoginId(userId);
+    public JwtDto.getPkId getIdByLoginId(Long id) {
+        Optional<Member> optionalMember = jwtMemberRepository.findById(id);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
             return JwtDto.getPkId.builder()

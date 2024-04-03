@@ -17,6 +17,7 @@ import com.a602.actors.domain.chat.repository.ChatRoomRepository;
 import com.a602.actors.domain.chat.repository.ChatRoomRepositoryCustomImpl;
 import com.a602.actors.domain.chat.repository.ParticipantsRepository;
 import com.a602.actors.domain.chat.repository.ParticipantsRepositoryCustomImpl;
+import com.a602.actors.domain.member.dto.MemberDtoForChat;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -82,8 +83,12 @@ public class ChatService {
 		return list;
 	}
 
-	public void invite(Long chatRoomId, List<Long> memberIdList){
-		participantsRepositoryCustom.saveAllInvitedMembers(chatRoomId, memberIdList);
+	public void invite(ParticipantsDto.Request inviteRequest){
+		participantsRepositoryCustom.saveAllInvitedMembers(inviteRequest);
+	}
+
+	public List<MemberDtoForChat> getAllParticipants(Long chatRoomId){
+		return participantsRepositoryCustom.getAllParticipants(chatRoomId);
 	}
 
 	private void validateJoinChat(Optional<Participants> participants) {

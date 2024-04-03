@@ -35,19 +35,25 @@
         "type": "lowercase"
       }
     },
-      "analyzer": {
-        "name_analyzer": {
-          "type": "json",
-          "tokenizer": ["korean_edge_3gram_tokenizer", "standard"],
-          "char_filter": ["remove_emoji"],
-          "filter": ["korean_edge_3gram_filter", "english_lowercase_filter"]
-        },
-        "content_and_title_analyzer": {
-          "type": "json",
-          "tokenizer": ["korean_edge_3gram_tokenizer", "standard"],
-          "char_filter": ["remove_emoji"],
-          "filter": ["korean_edge_3gram_filter", "english_lowercase_filter", "korean_stop_filter"]
-        }
+    "analyzer": {
+      "name_analyzer": {
+        "type": "custom",
+        "char_filter": ["remove_emoji"],
+        "tokenizer": "korean_edge_3gram_tokenizer",
+        "filter": ["korean_edge_3gram_filter"]
+      },
+      "content_and_title_analyzer": {
+        "type": "custom",
+        "char_filter": ["remove_emoji"],
+        "tokenizer": "korean_edge_3gram_tokenizer",
+        "filter": ["korean_edge_3gram_filter", "korean_stop_filter", "english_lowercase_filter"]
+      },
+      "english_analyzer": {
+        "type": "custom",
+        "char_filter": ["remove_emoji"],
+        "tokenizer": "standard",
+        "filter": ["english_lowercase_filter"]
+      }
     }
   }
 }

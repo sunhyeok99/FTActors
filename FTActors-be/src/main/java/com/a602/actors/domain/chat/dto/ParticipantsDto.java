@@ -1,5 +1,7 @@
 package com.a602.actors.domain.chat.dto;
 
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,6 +16,13 @@ public class ParticipantsDto {
 			.chatRoomId(chatRoomId)
 			.memberId(memberId)
 			.build();
+	}
+
+	@Getter
+	@Builder
+	public static class Request{
+		private Long chatRoomId;
+		private List<Long> memberIdList;
 	}
 
 	// public static List<ParticipantsDto> of(final Long chatRoomId, final List<Long> memberIdList){

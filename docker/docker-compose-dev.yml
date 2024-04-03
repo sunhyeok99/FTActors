@@ -15,41 +15,39 @@ services:
 #    networks:
 #      - backend
 
-  mysql:
-    container_name: mysql
-    hostname: mysql
-    build:
-      context: ../
-      dockerfile: "./docker/dockerfile/mysql.dockerfile"
-    networks:
-      - backend
-    volumes:
-      - /home/ubuntu/volume/mysql:/var/lib/mysql
-    env_file: ".env"
-    ports:
-      - "3307:3306"
-
-  flask:
-    container_name: flask
-    hostname: flask
-    build:
-      context: ../
-      dockerfile: "./docker/dockerfile/flask.dockerfile"
-    networks:
-      - backend
-    volumes:
-      - /home/ubuntu/volume/flask:/usr/local/app/
-    ports:
-      - "5000:5000"
-
-#  elastic:
+#  mysql:
+#    container_name: mysql
+#    hostname: mysql
 #    build:
 #      context: ../
-#      dockerfile: "./docker/dockerfile/elastic-search.dockerfile"
+#      dockerfile: "./docker/dockerfile/mysql.dockerfile"
 #    networks:
 #      - backend
+#    volumes:
+#      - /home/ubuntu/volume/mysql:/var/lib/mysql
+#    env_file: ".env"
 #    ports:
-#      - "9200:9200"
+#      - "3307:3306"
+#
+#  flask:
+#    container_name: flask
+#    hostname: flask
+#    build:
+#      context: ../
+#      dockerfile: "./docker/dockerfile/flask.dockerfile"
+#    networks:
+#      - backend
+#    volumes:
+#      - /home/ubuntu/volume/flask:/usr/local/app/
+#    ports:
+#      - "5000:5000"
+
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.4.3
+    networks:
+      - backend
+    ports:
+      - "9200:9200"
 
   redis:
     image: redis
@@ -66,7 +64,9 @@ services:
       - /home/ubuntu/volume/mq:/var/lib/rabbitmq
     ports:
       - "5672:5672"
-
+      - "61613:61613"
+      - "15672:15672"
+  #
   mongo:
     image: mongo
     networks:

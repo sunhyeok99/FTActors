@@ -1,11 +1,12 @@
 package com.a602.actors.global.jwt;
 
 import com.a602.actors.global.jwt.dto.JwtDto;
-import org.springframework.beans.factory.annotation.Value;
+import com.a602.actors.global.jwt.repository.JWTMemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -24,14 +25,27 @@ public class JwtTokenProvider {
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 10; // * 60;
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 7;
     private final Key key;
+    private final JWTMemberRepository jwtMemberRepository;
 
-    public JwtTokenProvider(@Value("${jwtKey}") String secretKey){
+//    public JwtTokenProvider(JWTMemberRepository jwtMemberRepository){
+//        this.jwtMemberRepository = jwtMemberRepository;
+//        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+//    }
+
+    public JwtTokenProvider(@Value("${jwtKey}") String secretKey, JWTMemberRepository jwtMemberRepository){
+        this.jwtMemberRepository = jwtMemberRepository;
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
-    public JwtTokenProvider() {
-        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    }
+////    public JwtTokenProvider(JWTMemberRepository jwtMemberRepository) {
+////        this.jwtMemberRepository = jwtMemberRepository;
+////        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+////    }
+//public JwtTokenProvider(JWTMemberRepository jwtMemberRepository) {
+//    this.jwtMemberRepository = jwtMemberRepository;
+//    this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+//}
+
 
     //JWT 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
     public JwtDto.AuthResponse generateToken(Authentication authentication){
@@ -48,8 +62,10 @@ public class JwtTokenProvider {
                 .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
-
+//        Optional<Member> member  = jwtMemberRepository.findByLoginId(authentication.getName());
+//        Long temp = member.get().getId();
         return JwtDto.AuthResponse.builder()
+                .id(jwtMemberRepository.findByLoginId(authentication.getName()).get().getId())
                 .loginId(authentication.getName())
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
