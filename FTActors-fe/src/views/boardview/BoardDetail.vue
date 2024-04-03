@@ -129,13 +129,14 @@ const recruitment = ref({});
 
 const fetchRecruitmentDetail = async () => {
   const recruitmentId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
-  if (loginMember.value == "" || loginMember.value == null) {
+  if (loginMember.value == "" || loginMember.value == null || loginMember.value == undefined) {
     const response = await recruitmentApi.getDetail(recruitmentId, adminId);
     recruitment.value = response.data.data;
   } else {
     const memberId = loginMember.value;
     const response = await recruitmentApi.getDetail(recruitmentId, memberId);
     recruitment.value = response.data.data;
+    console.log(recruitment)
   }
 };
 
