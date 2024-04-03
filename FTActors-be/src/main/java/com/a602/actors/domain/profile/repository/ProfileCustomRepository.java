@@ -2,8 +2,8 @@ package com.a602.actors.domain.profile.repository;
 
 import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.entity.Profile;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ProfileCustomRepository {
@@ -15,5 +15,7 @@ public interface ProfileCustomRepository {
     Profile findProfileById(Long profileId);
 
     void updateProfile(Long profileId, ProfileRequest profileRequest);
+    Long existActorInMyPage(@RequestParam(name = "memberId") Long memberId);
 
+    Long existPDInMyPage(@RequestParam(name = "memberId") Long memberId);
 }

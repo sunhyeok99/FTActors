@@ -4,7 +4,6 @@ import com.a602.actors.domain.member.Member;
 import com.a602.actors.domain.profile.dto.ProfileDto;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.dto.ProfileSearchResponse;
-import com.a602.actors.domain.profile.entity.ProfileDocument;
 import com.a602.actors.domain.profile.service.ProfileService;
 import com.a602.actors.global.auth.service.member.MemberService;
 import com.a602.actors.global.auth.util.CookieUtil;
@@ -18,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +95,7 @@ public class ProfileController {
     }
 
     @GetMapping("/searchname") //->삭제까지 구현하고 다시, 시큐리티 영향x 처리 필요
-    public ApiResponse<?> searchByName( @RequestParam(value = "name") String findName) {
+    public ApiResponse<?> searchByName(@RequestParam(value = "name") String findName) {
         // 배열이 아닌 리스트로 검색어를 보내는 이유
         List<ProfileSearchResponse> profileSearchResponses = profileService.searchProfileByName(findName);
 
@@ -109,7 +108,7 @@ public class ProfileController {
 
     //프로필 생성
     @PostMapping("/myprofile") // -> 추후에 stageName대신 jwt
-    public ApiResponse<String> createProfile(@RequestBody ProfileRequest profileRequest) { //파라미터 추후에 변경
+    public ApiResponse<String> createProfile( ProfileRequest profileRequest)  throws IOException { //파라미터 추후에 변경
         log.info("프로필 만들기~! ");
 
         String result = profileService.createProfile(profileRequest);
@@ -119,7 +118,7 @@ public class ProfileController {
 
     //프로필 삭제
     @DeleteMapping("/myprofile") // -> jwt에서 로그인 정보 뽑아오기
-    public ApiResponse<String> removeProfile(@RequestParam(name = "profile_id") Long profileId) {
+    public ApiResponse<String> removeProfile(@RequestParam(name = "profile_id") Long profileId) throws IOException  {
         log.info("프로필 삭제하기!");
 
         String result = "";
@@ -132,11 +131,25 @@ public class ProfileController {
     //프로필 수정
     @PutMapping("/myprofile") // -> jwt에서 로그인 정보 뽑아오기
     public ApiResponse<String> modifyProfile(@RequestParam(name = "profile_id") Long profileId,
-                                              @RequestBody ProfileRequest profileRequest)
+                                              @RequestBody ProfileRequest profileRequest) throws IOException
     {
         log.info("프로필 수정하기~! ");
         
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 수정했습니다.", profileService.updateProfile(profileId, profileRequest));
+    }
+
+    @GetMapping("/getmyprofile")
+    public ApiResponse<Integer> getMyProfileList(@RequestParam(name = "memberId") Long memberId)
+    {
+        //1. 둘 다 만들어져 있음
+        //2. 배우만 만들어져 있으
+        //3. 감독만 만들어져 있음
+        //4. 둘 다 안 만들어져 있음
+
+        log.info("배우,감독 프로필 전체 목록 - 컨트롤러");
+        Integer results = profileService.getMyProfile(memberId);
+
+        return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", results);
     }
 
 }
