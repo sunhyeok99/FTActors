@@ -4,8 +4,8 @@
       <div class="card" id="profile" @click="goToProfileDetail(profile.id)">
         <img :src="profile.imageLink" alt="사진 업로드 실패">
         <div class="card-body">
-          <h5 class="card-title"><b>{{ profile.name }}</b></h5>
-          <p class="card-text">{{ profile.age }}</p>
+          <h5 class="card-title"><b>{{ getProfileTitle(profile) }}</b></h5>
+          <p class="card-text">나이 : {{ getAge(profile.birth) }}살</p>
         </div>
       </div>
     </div>
@@ -14,11 +14,11 @@
 
 <script setup>
 import { profileApi } from '@/util/axios';
-import { ref, reactive, onMounted } from 'vue';
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const profiles = ref({});
+const profiles = ref([]);
 
 const goToProfileDetail = (profileId) => {
   router.push({ name: 'profileDetail', params: { id: profileId } });
@@ -26,25 +26,30 @@ const goToProfileDetail = (profileId) => {
 
 const getList = async (sort) => {
   try {
-    await profileApi.getAllProfileList(sort).then((res) => {
-      profiles.value = res.data.data;
-    })   
+    const res = await profileApi.getProfileList();
+    profiles.value = res.data.data;
   } catch (error) {
     console.error('Error fetching recruitment list:', error);
   }
 };
 
 onMounted(() => {
-    getList(1);
+  getList();
 });
 
+const getProfileTitle = (profile) => {
+  return profile.type === 'A' ? '배우 ' + " : "+ profile.name : '감독 ' + " : "+ profile.name;
+};
 
-
+const getAge = (birth) => {
+  const birthDate = new Date(birth);
+  const currentDate = new Date();
+  const age = currentDate.getFullYear() - birthDate.getFullYear();
+  return age;
+};
 </script>
 
 <style scoped>
-
-
 .image-container {
   position: relative;
   display: inline-block;
@@ -64,8 +69,6 @@ onMounted(() => {
   border: none;
   cursor: pointer;
 }
-
-
 
 .like-btn img {
   width: 30px;

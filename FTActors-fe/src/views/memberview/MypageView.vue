@@ -71,9 +71,9 @@
         </svg>
 
         <h2>감독</h2>
-        <div v-if="director.value == 1">
+        <div v-if="director > 0">
           <p>보기</p>
-          <p><a class="btn btn-secondary" href="#" @click="goToDirectorProfile">보기</a></p>
+          <p><a class="btn btn-secondary" href="#" @click="goToProfile(director)">보기</a></p>
         </div>
         <div v-else>
           <p>프로필이 존재하지 않습니다</p>
@@ -90,9 +90,9 @@
         </svg>
 
         <h2>배우</h2>
-        <div v-if="director.value == 1">
+        <div v-if="actor > 0">
           <p> 보기</p>
-          <p><a class="btn btn-secondary" href="#" @click="goToActorProfile">보기</a></p>
+          <p><a class="btn btn-secondary" href="#" @click="goToProfile(actor)">보기</a></p>
         </div>
         <div v-else>
           <p>프로필이 존재하지 않습니다</p>
@@ -325,33 +325,27 @@ const changeFollow = async (followingId, followerId, index) => {
       console.error('Error toggling like:', error);
   }
 };
-const goToActorProfile = () => {
-  router.push({ name: 'actorprofile', params });
-};
 
-const goToDirectorProfile = () => {
-  router.push({ name: 'directorprofile' });
+const goToProfile = (profileId) => {
+  console.log(profileId)
+  router.push({ name: 'profileDetail' , params : { id : profileId}});
 };
 
 
 const getMyProfile = async () => {
   try {
     const response = await profileApi.searchById(loginMember.value);
-    console.log(response.data);
+    console.log(response.data.data);
     // 응답에 필요한 데이터가 포함되어 있다고 가정합니다.
     const profileStatus = response.data.data;
     // profileStatus에 따라 actor 및 director 값을 업데이트합니다.
-    if (profileStatus === 1) {
-      actor.value = 1;
-      director.value = 1;
-    } else if (profileStatus === 2) {
-      actor.value = 1;
-    } else if (profileStatus === 3) {
-      director.value = 1;
-    } else {
-      actor.value = 0;
-      director.value = 0;
+    if (profileStatus[0] > 0) { // 배우
+      actor.value = profileStatus[0];
+    } 
+    if(profileStatus[1] > 0){
+      director.value = profileStatus[1];
     }
+
   } catch (error) {
     console.error('프로필 상태를 가져오는 중 오류 발생:', error);
   }

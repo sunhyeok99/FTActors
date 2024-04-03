@@ -149,18 +149,21 @@ const clearSelectedImage = () => {
 
 const register = async () => {
     const newProfile = {
+    memberId: loginMember.value,
     type: 'P',
     content: content.value,
     portfolioLink: portfolioLink.value,
     privateProfile:  privated.value,
   };
-    const formData = new FormData();
-  formData.append("dto", new Blob([JSON.stringify(newProfile)], {
+    const profileRequest = new FormData();
+    profileRequest.append("dto", new Blob([JSON.stringify(newProfile)], {
       type: "application/json"
   }));
-  formData.append("image", image)
+  profileRequest.append("image", image)
+
+  console.log(profileRequest.get("dto"))
     try {
-        const response = await profileApi.createProfile(formData); 
+        const response = await profileApi.createProfile(profileRequest); 
         console.log(response)
         if (response.status === 200) {
             // 등록 성공 시 알림창 표시
@@ -169,7 +172,7 @@ const register = async () => {
             // 등록 실패 시 처리
             alert("등록 실패");    
         }  
-        router.push({ name: 'profile' });
+        router.push({ name: 'myPage'});
 
     } catch (error) {
         console.error("Error registering recruitment:", error);

@@ -8,41 +8,14 @@
   <div class="row row-cols-1 row-cols-md-4 g-4">
     <div class="col" v-for="board in recruitments" :key="board.id">
       <div class="card" id="board" @click="goToRecruitmentDetail(board.id)">
-        <img :src="board.image || 'https://fs.joycity.com/index.asp'" class="img-fluid" style="width: 100%; height: auto;">
+        <img :src="board.image || 'https://fs.joycity.com/index.asp'" class="img-fluid" style="width: 400px; height: 200px;">
         <div class="card-body">
           <h5 class="card-title"><b>{{ board.title }}</b></h5>
-          <p class="card-text">{{ board.endDate }} </p>
-          <p class="dday">D-{{ calculateDday(board.endDate) }}</p>
+          <p class="card-text">{{ board.endDate }} / D-{{ calculateDday(board.endDate) }} </p>
         </div>
       </div>
     </div>
-    <div class="col">
-      <div class="card" id="board">
-        <img src="@/assets/board/b2.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title"><b>OTT 드라마 <탁류>에서 액션잘하는 여자배우님을 캐스팅 합니다</b></h5>
-          <p class="card-text">D-9 / 2024-03-15 마감</p>
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="card" id="board">
-        <img src="@/assets/board/b3.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title"><b>유튜브 '이해인'채널 섹시코미디 배우 모집</b></h5>
-          <p class="card-text">D-9 / 2024-03-15 마감</p>
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="card" id="board">
-        <img src="@/assets/board/b4.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title"><b>[부산] 연극 <달동네> 전배역 오디션</b></h5>
-          <p class="card-text">D-9 / 2024-03-15 마감</p>
-        </div>
-      </div>
-    </div>
+ 
   </div>
 </template>
 

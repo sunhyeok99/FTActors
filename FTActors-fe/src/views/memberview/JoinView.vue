@@ -185,7 +185,6 @@ const signup = async () => {
   }));
   formData.append("profileImage", image)
   try {
-    console.log(image)
     const response = await memberApi.signup(formData);
     console.log(response)
     if (response.status === 200) {

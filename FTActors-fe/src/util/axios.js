@@ -163,15 +163,18 @@ const recruitmentApi = {
     getAllProfileList: (sorting = 1) => {  // 소팅 값이 따로 안 들어오면 1로 세팅 (1, 2중 가능)
       return axiosInstance.get("/profile/list", { params: { sort: sorting } });
     },
-
+    getProfileList: () => {  
+      return axiosInstance.get("/profile");
+    },
     createProfile: (profileRequest) => {
       return formDataInstance.post("/profile/myprofile", profileRequest);
     },
+
     removeProfile: (profileId) => {
       return axiosInstance.delete("/profile/myprofile", { params: { profile_id: profileId } });
     },
     modifyProfile: (profileId, profileRequest) => {
-      return formDataInstance.put("/profile/myprofile", profileRequest, { params: { profile_id: profileId } });
+      return formDataInstance.put("/profile/myprofile", null ,profileId, profileRequest );
     },
     
     getDetailProfile: (profileId) => {
