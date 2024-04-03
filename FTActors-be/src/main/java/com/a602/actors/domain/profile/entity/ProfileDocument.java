@@ -1,9 +1,11 @@
 package com.a602.actors.domain.profile.entity;
 
-import com.a602.actors.global.elasticsearch.TimeChanger;
 import jakarta.persistence.Id;
 import lombok.*;
-import org.springframework.data.elasticsearch.annotations.*;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 import java.time.LocalDateTime;
 
@@ -63,6 +65,9 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
     @Field(name = "updated_at", type = FieldType.Keyword)
     private LocalDateTime updatedTime; //마지막 업데이트 일시
 
+    @Field(name = "image_link", type = FieldType.Keyword)
+    private String imageLink;
+
     public static ProfileDocument from (Profile profile) {
         return ProfileDocument.builder()
                 .id(profile.getId())
@@ -74,6 +79,7 @@ public class ProfileDocument { //엘라스틱 서치 디비 내부에 저장할 
                 .updatedTime(profile.getUpdatedAt())
                 .gender(profile.getMember().getGender())
                 .birth(extractBirthYear(profile.getMember().getBirth())) //생년만 저장
+                .imageLink(profile.getImage())
                 .build();
     }
 

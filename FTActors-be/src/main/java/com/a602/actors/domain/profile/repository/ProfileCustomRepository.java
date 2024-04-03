@@ -3,7 +3,6 @@ package com.a602.actors.domain.profile.repository;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.entity.Profile;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ProfileCustomRepository {
@@ -16,4 +15,6 @@ public interface ProfileCustomRepository {
 
     void updateProfile(Long profileId, ProfileRequest profileRequest);
 
+    Long existActorInMyPage(Long memberId);
+    Long existPDInMyPage(Long memberId);
 }
