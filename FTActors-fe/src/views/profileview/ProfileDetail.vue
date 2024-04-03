@@ -17,8 +17,8 @@
               삭제하기
             </button>
             <!-- 팔로잉 버튼 -->
-            <button type="button" class="btn btn-primary" id="followbtn" @click="changeFollow(loginMember.value , profile.memberId)" v-else>
-              <p v-if="following.follow === 1">팔로잉 삭제</p>
+            <button type="button" class="btn btn-primary" id="followbtn" @click="changeFollow(profile.memberId)" v-else>
+              <p v-if="following == 1">팔로잉 삭제 </p>
                         <p v-else>팔로잉</p>
               팔로잉
             </button>
@@ -60,18 +60,18 @@ loginMember.value = MemberStore.memberInfo;
 
 const router = useRouter();
 const profile = ref({});
-const following = ref('');
+const following = ref(0);
 
 const profileDetail = async () => {
   const profileId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
-    const response = await profileApi.getDetailProfile(profileId);
+    let response = await profileApi.getDetailProfile(profileId);
     profile.value = response.data.data;
-    console.log(profile)
     if(loginMember.value == profile.value.memberId){
       return; 
     }
       response = await followApi.followDetail(loginMember.value, profileId);
       following.value = response.data.data
+      console.log(following)
 };
 
 onMounted(profileDetail);
@@ -108,11 +108,12 @@ const isOwnProfile = (memberId) => {
   return memberId == loginMember.value;
 };
 
-const changeFollow = async (followingId, followerId) => {
+const changeFollow = async (followerId) => {
   try {
-      const response = await followApi.following(followingId, followerId);
+      const response = await followApi.following(loginMember.value , followerId);
       if(response.data.status == 200){
-        if(response.data.data == 0){
+        console.log(response)
+        if(response.data.data == '팔로우 삭제 성공'){
           alert('팔로잉을 취소하였습니다.')
           following.value = 0;
         }

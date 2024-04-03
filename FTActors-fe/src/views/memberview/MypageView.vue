@@ -107,7 +107,7 @@
         v-show="recruitments.length > 0">
         <div class="col" v-for="recruitment in recruitments" :key="recruitment.id">
             <div class="card" id="board">
-                <img :src="recruitment.image" alt="" @click="goToBoardDetail(recruitment.id)">
+                <img :src="recruitment.image" alt="" @click="goToBoardDetail(recruitment.id)" width="300px" height="200px">
                 <div class="card-body" @click="goToBoardDetail(recruitment.id)">
                     <h5 class="card-title"><b>{{ recruitment.title }}</b></h5>
                     <p class="card-text">종료일자: {{ recruitment.endDate }}</p>
@@ -134,7 +134,7 @@
         v-show="posts.length > 0">
         <div class="col" v-for="post in posts" :key="post.id">
             <div class="card" id="posts">
-                <img :src="post.image" alt="" @click="goToApplyList(post.id)">
+                <img :src="post.image" alt="" @click="goToApplyList(post.id)" width="300px" height="200px">
                 <div class="card-body" @click="goToApplyList(post.id)">
                     <h5 class="card-title"><b>{{ post.title }}</b></h5>
                     <p class="card-text">종료일자: {{ post.endDate }}</p>
@@ -302,6 +302,9 @@ const getFollowingList = async () => {
     const response = await followApi.followingList(loginMember.value);
     console.log(response.data);
     followings.value = response.data.data;
+    posts.value = [];
+    recruitments.value = [];
+    applys.value = [];
     followers.value = [];
   } catch (error) {
     console.error("Error fetching wishlist:", error);
@@ -313,6 +316,9 @@ const getFollowerList = async () => {
     const response = await followApi.followerList(loginMember.value);
     console.log(response.data);
     followers.value = response.data.data;
+    posts.value = [];
+    recruitments.value = [];
+    applys.value = [];
     followings.value = [];
   } catch (error) {
     console.error("Error fetching wishlist:", error);
@@ -413,6 +419,9 @@ const getMyProfile = async () => {
     if(profileStatus[1] > 0){
       director.value = profileStatus[1];
     }
+    posts.value = [];
+    recruitments.value = [];
+    applys.value = [];
 
   } catch (error) {
     console.error('프로필 상태를 가져오는 중 오류 발생:', error);

@@ -32,7 +32,7 @@
                 </div>
               </div>
             </li>
-            <li class="list-group-item"><b>담당자:</b> {{ recruitment.postMember }}</li>
+            <li class="list-group-item"><b>담당자:</b> {{ recruitment.postMemberName }}</li>
             <li class="list-group-item"><b>공고분류:</b> {{ recruitment.category }}</li>
             <li class="list-group-item"><b>지원시작일자:</b> {{ recruitment.startDate }}</li>
             <li class="list-group-item"><b>지원마감일자:</b> {{ recruitment.endDate }}</li>
@@ -128,13 +128,14 @@ const recruitment = ref({});
 
 const fetchRecruitmentDetail = async () => {
   const recruitmentId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
-  if (loginMember.value == "" || loginMember.value == null) {
+  if (loginMember.value == "" || loginMember.value == null || loginMember.value == undefined) {
     const response = await recruitmentApi.getDetail(recruitmentId, adminId);
     recruitment.value = response.data.data;
   } else {
     const memberId = loginMember.value;
     const response = await recruitmentApi.getDetail(recruitmentId, memberId);
     recruitment.value = response.data.data;
+    console.log(recruitment)
   }
 };
 
