@@ -1,27 +1,70 @@
 <template>
-    <div class="boardheader">
-      <h1> <b>Apply</b></h1>
+  <!-- <div class="container h-100">
+    <div class="row justify-content-center align-items-start" style="min-height: 100vh;">
+      <div class="col-md-6 col-lg-4">
+        <div class="mt-5 pt-5">
+          <div class="text-center mb-4">
+            <h1><b>Apply</b></h1>
+          </div>
+          <div class="form-group mb-3">
+            <h1>{{ recruitment.title }}</h1>
+          </div>
+          <div class="form-group mb-3">
+            <label for="postMemberId">회원 이름</label>
+            <p>{{ recruitment.loginName }}</p>
+          </div>
+          <div class="form-group mb-3">
+            <label for="content">지원 내용</label>
+            <textarea id="content" v-model="content" class="form-control" placeholder="지원 내용을 간단하게 적어주세요"></textarea>
+          </div>
+          <div class="form-group mb-3">
+            <label for="script">첨부 파일</label>
+            <input type="file" id="script" class="form-control" @change="onScriptChange">
+          </div>
+          <button @click="apply" class="btn btn-dark w-100 mb-2">지원하기</button>
+        </div>
+      </div>
     </div>
-    <div class="applypage">
-       <label for="title">공고 제목</label>
-        <p>{{ recruitment.title }}</p>
-  
-        <label for="postMemberId">회원 이름</label>
-        <p>{{ recruitment.loginName }}</p>
-  
-        <label for="content">지원 내용</label>
-        <textarea  type="text"  id="content"  v-model="content"  placeholder="지원 내용을 간단하게 적어주세요"  class="input-field" width="400px" height="400px"></textarea>  
-        <p></p>
-  
-        <label for="script">첨부 파일</label>
-        <input type="file" id="script" class="form-control" @change="onScriptChange">
-        <div v-if="selectedFile">
-      <span @click="clearSelectedFile"> X</span>
-    </div>
+  </div>
+ -->
+<!-- Button trigger modal -->
 
+<!-- Modal -->
+<div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" v-if="showModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">지원하기</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group mb-3">
+          <div>
+            <h1>{{ recruitment.title }}</h1>
+          </div>
+        </div>
+        <div class="form-group mb-3" >
+          <label for="postMemberId">회원 이름</label>
+          <p>{{ recruitment.loginName }}</p>
+        </div>
+        <div class="form-group mb-3">
+          <label for="content">지원 내용</label>
+          <textarea id="content" v-model="content" class="form-control" placeholder="지원 내용을 간단하게 적어주세요"></textarea>
+        </div>
+        <div class="form-group mb-3">
+          <label for="script">첨부 파일</label>
+          <input type="file" id="script" class="form-control" @change="onScriptChange">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" @click="apply">지원하기</button>
+      </div>
     </div>
-    <button @click="apply" class="btn-create">지원하기</button>
-  </template>
+  </div>
+</div>
+
+</template>
+
   
   <script setup>
   import { ref, onMounted } from 'vue';
@@ -41,15 +84,18 @@ let fileReader = new FileReader(); // FileReader 변수를 함수 외부에서 �
   const router = useRouter();
   const recruitment = ref({});
   const selectedFile = ref(null);
+  const showModal = ref(false);
 
   
   const fetchRecruitmentDetail = async () => {
     const recruitmentId = router.currentRoute.value.params.recruitmentId; // 현재 라우트의 파라미터 사용
     const response = await recruitmentApi.getDetail(recruitmentId, loginMember.value);
-    console.log(response.data.data)
-      recruitment.value = response.data.data
+    recruitment.value = response.data.data
+    setTimeout(() => {
+    showModal.value = true;
+  }, 2000);
 };
-  
+
   onMounted(fetchRecruitmentDetail);
   
   const apply = async () => {

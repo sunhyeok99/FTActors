@@ -118,6 +118,7 @@ const isEmailValid = (email) => {
 
 const isFormValid = computed(() => {
   // 폼 유효성 검사 로직
+  console.log(form.gender)
   return (
     form.id &&
     form.password &&
@@ -184,7 +185,6 @@ const signup = async () => {
   }));
   formData.append("profileImage", image)
   try {
-    console.log(image)
     const response = await memberApi.signup(formData);
     console.log(response)
     if (response.status === 200) {
