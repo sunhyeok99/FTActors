@@ -148,7 +148,7 @@ const addComment = ref("");
 const uploadComment = () => {
   if (addComment.value.trim().length > 0) {
     const content = {
-      "montageId": 1,
+      "montageId": props.currentId,
       "content": addComment.value,
       "isDeleted": false
     };
@@ -203,7 +203,7 @@ const uploadReply = () => {
   }
   if (addReply.value.trim().length > 0) {
     const content = {
-      "montageId": 1,
+      "montageId": props.currentId,
       "parentId": selectedComment.value.commentId,
       "content": addReply.value,
       "isDeleted": false
