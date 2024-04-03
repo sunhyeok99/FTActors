@@ -141,13 +141,12 @@ public class ProfileController {
 
     //프로필 수정
     @PutMapping("/myprofile") // -> jwt에서 로그인 정보 뽑아오기
-    public ApiResponse<String> modifyProfile(@RequestParam(name = "profile_id") Long profileId,
-                                             @RequestPart(value = "dto") ProfileRequest profileRequest,
+    public ApiResponse<String> modifyProfile(@RequestPart(value = "dto") ProfileRequest profileRequest,
                                              @RequestPart(value = "image", required = false) MultipartFile image) throws IOException
     {
         log.info("프로필 수정하기~! ");
         
-        return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 수정했습니다.", profileService.updateProfile(profileId, profileRequest, image));
+        return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 수정했습니다.", profileService.updateProfile(profileRequest, image));
     }
 
     @GetMapping("/getmyprofile")
