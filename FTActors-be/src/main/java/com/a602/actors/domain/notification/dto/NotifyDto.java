@@ -2,8 +2,8 @@ package com.a602.actors.domain.notification.dto;
 
 import java.time.LocalDateTime;
 
-import com.a602.actors.domain.notification.document.Notify;
 
+import com.a602.actors.domain.notification.document.Notify;
 import lombok.Builder;
 import lombok.Getter;
 

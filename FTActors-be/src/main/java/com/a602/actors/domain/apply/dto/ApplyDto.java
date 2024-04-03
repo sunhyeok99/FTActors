@@ -12,25 +12,31 @@ import org.springframework.web.multipart.MultipartFile;
 public class ApplyDto {
     private Long id;
     private Long recruitmentId;
+    private String recruitmentTitle;
     private Long memberId;
     private String memberName;
     private MultipartFile videoFile;
     private String videoLink;
+    private String videoName;
     private String content;
     private String createdAt;
     @Builder
     public ApplyDto(
             Long id,
             Long recruitmentId,
+            String recruitmentTitle,
             String memberName,
             String videoLink,
+            String videoName,
             String content,
             String createdAt
     ) {
         this.id = id;
         this.recruitmentId = recruitmentId;
+        this.recruitmentTitle = recruitmentTitle;
         this.memberName = memberName;
         this.videoLink = videoLink;
+        this.videoName = videoName;
         this.content = content;
         this.createdAt = createdAt;
     }

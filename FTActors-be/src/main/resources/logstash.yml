@@ -1,0 +1,5 @@
+http.host: "0.0.0.0"
+xpack.monitoring.enabled: true #DB의 변경을 감지하는 것은 아니며, Logstash의 실행 상태와 성능을 모니터링하는 역할
+path.config: /usr/share/logstash/config/logstash.conf #이 구성 파일은 Logstash가 실행될 때 읽혀져야 합
+path.logs: /usr/share/logstash/logs #Logstash가 실행 중에 발생하는 로그는 이 경로에 저장됩니다
+#수행이랑 아무 관련 없이 그냥 logstash 성능 확인용 아니냐...

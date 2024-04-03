@@ -1,7 +1,5 @@
 package com.a602.actors.global.jwt.mapper;
 
-import com.a602.actors.domain.member.Member;
-import com.a602.actors.global.jwt.dto.JwtDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

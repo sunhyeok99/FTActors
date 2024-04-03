@@ -1,0 +1,59 @@
+{
+  "analysis": {
+    "tokenizer": {
+      "standard": {
+        "type": "standard"
+      },
+      "korean_nori_tokenizer": {
+        "type": "nori_tokenizer"
+      },
+      "korean_edge_3gram_tokenizer": {
+        "type": "edge_ngram",
+        "min_gram": 1,
+        "max_gram": 3,
+        "token_chars": ["letter", "digit"]
+      }
+    },
+    "char_filter": {
+      "remove_emoji": {
+        "type": "pattern_replace",
+        "pattern": "[\\uD800-\\uDBFF][\\uDC00-\\uDFFF]",
+        "replacement": ""
+      }
+    },
+    "filter": {
+      "korean_stop_filter": {
+        "type": "stop",
+        "stopwords": ["은", "는", "이", "가"]
+      },
+      "korean_edge_3gram_filter": {
+        "type": "edge_ngram",
+        "min_gram": 1,
+        "max_gram": 3
+      },
+      "english_lowercase_filter": {
+        "type": "lowercase"
+      }
+    },
+    "analyzer": {
+      "name_analyzer": {
+        "type": "custom",
+        "char_filter": ["remove_emoji"],
+        "tokenizer": "korean_edge_3gram_tokenizer",
+        "filter": ["korean_edge_3gram_filter"]
+      },
+      "content_and_title_analyzer": {
+        "type": "custom",
+        "char_filter": ["remove_emoji"],
+        "tokenizer": "korean_edge_3gram_tokenizer",
+        "filter": ["korean_edge_3gram_filter", "korean_stop_filter", "english_lowercase_filter"]
+      },
+      "english_analyzer": {
+        "type": "custom",
+        "char_filter": ["remove_emoji"],
+        "tokenizer": "standard",
+        "filter": ["english_lowercase_filter"]
+      }
+    }
+  }
+}

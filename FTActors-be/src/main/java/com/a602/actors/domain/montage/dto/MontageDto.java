@@ -15,6 +15,7 @@ public class MontageDto {
     @Getter
     @Setter
     public static class Montages{
+        private final Long montageId;
         private final String title;
         private final String link;
         private final Long likeCount;
@@ -22,7 +23,8 @@ public class MontageDto {
         private final LocalDateTime updated_at;
 
         @QueryProjection
-        public Montages(String title, String link, Long likeCount, LocalDateTime created_at, LocalDateTime updated_at){
+        public Montages(Long montageId, String title, String link, Long likeCount, LocalDateTime created_at, LocalDateTime updated_at){
+            this.montageId = montageId;
             this.title = title;
             this.link = link;
             this.likeCount = likeCount;
@@ -33,6 +35,7 @@ public class MontageDto {
 
         public static MontageDto.Montages toDto(Montage montage){
             return Montages.builder()
+                    .montageId(montage.getId())
                     .title(montage.getTitle())
                     .link(montage.getLink())
                     .created_at(montage.getCreatedAt())

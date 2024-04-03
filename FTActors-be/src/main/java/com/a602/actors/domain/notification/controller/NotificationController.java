@@ -1,5 +1,6 @@
 package com.a602.actors.domain.notification.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -53,7 +54,11 @@ public class NotificationController {
 	}
 
 	@PostMapping("/read")
-	public ApiResponse<String> setUnreadToRead(@RequestBody List<ObjectId> objectIdList){
+	public ApiResponse<String> setUnreadToRead(@RequestBody List<String> stringbjectIdList){
+		List<ObjectId> objectIdList = new ArrayList<>();
+		for(String s : stringbjectIdList){
+			objectIdList.add(new ObjectId(s));
+		}
 		notificationService.markAsRead(objectIdList);
 		return new ApiResponse<>(HttpStatus.OK.value(), "알림 읽음 완료 !!!");
 	}

@@ -20,98 +20,78 @@ server:
 
 spring:
     datasource:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
-        username: ${DB_USERNAME}
-        password: ${DB_PASSWORD}
-
-    jpa:
-        hibernate:
-            ddl-auto: none
-        properties:
-            hibernate:
-              format_sql: true
-              jdbc: time_zone:Asia/Seoul
-        show-sql: true
-
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
     hikari:
-        maximum-pool-size:180
-        minimum-idle:10
-    devtools:
-        livereload:
-            enabled: true
-
-    servlet:
-        multipart:
-          max-file-size: 50MB
-          max-request-size: 50MB
-
-    flyway:
-        enabled: true
-        baseline-on-migrate: true
-        baseline-version: 0
-
+      maximum-pool-size:180
+      minimum-idle:10
     data:
-        redis:
-            host: ${REDIS_HOST} # Redis 서버 호스트 주소
-            port: 6379      # Redis 서버 포트
-            database: 0
-
-        mongodb:
-            uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/?retryWrites=true&w=majority&appName=${MONGO_APPNAME}
-            database: ${MONGO_DBNAME}
-
+      redis:
+        host: ${REDIS_HOST} # Redis 서버 호스트 주소
+        port: 6379      # Redis 서버 포트
+        database: 0
+      mongodb:
+        uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/?retryWrites=true&w=majority&appName=${MONGO_APPNAME}
+        database: ${MONGO_DBNAME}
     rabbitmq:
-        host: ${MQ_HOST}
-        port: ${MQ_PORT}
-        username: ${MQ_USER_NAME}
-        password: ${MQ_PASSWORD}
-      #    config:
-#        activate:
-#            on-profile: oauth
+      host: ${MQ_HOST}
+      port: ${MQ_PORT}
+      username: ${MQ_USER_NAME}
+      password: ${MQ_PASSWORD}
 
-        # 스프링 시큐리티
+      # 스프링 시큐리티
     security:
-        # oauth2 사용
-        oauth2:
-            # client
-            client:
-                # 등록 부분 설정
-                registration:
-                    kakao:
-                        client-id: ${CLIENT_ID}
-                        client-secret: ${CLIENT_SECRET}
-                        client-name: Kakao
-                        authorization-grant-type: authorization_code
-                        redirect-uri: ${REDIRECT_URI}
-                        client-authentication-method: client_secret_post
-                        scope: profile_nickname
-                provider:
-                    kakao:
-                        authorization-uri: https://kauth.kakao.com/oauth/authorize
-                        token-uri: https://kauth.kakao.com/oauth/token
-                        user-info-uri: https://kapi.kakao.com/v2/user/me
-                        user-name-attribute: id
-
+      # oauth2 사용
+      oauth2:
+        # client
+        client:
+          # 등록 부분 설정
+          registration:
+            kakao:
+              client-id: ${CLIENT_ID}
+              client-secret: ${CLIENT_SECRET}
+              client-name: Kakao
+              authorization-grant-type: authorization_code
+              redirect-uri: ${REDIRECT_URI}
+              client-authentication-method: client_secret_post
+              scope: profile_nickname
+          provider:
+            kakao:
+              authorization-uri: https://kauth.kakao.com/oauth/authorize
+              token-uri: https://kauth.kakao.com/oauth/token
+              user-info-uri: https://kapi.kakao.com/v2/user/me
+              user-name-attribute: id
 auth-redirect-url: ${AUTH_REDIRECT_URL}
 
+  # S3 설정 추가
 cloud:
-  aws:
-    s3:
-      bucket: ${S3_BUCKET_NAME}
-    credentials:
-      access-key: ${S3_ACCESS_KEY}
-      secret-key: ${S3_SECRET_KEY}
-    region:
-      static: ap-northeast-2
-      auto: false
-    stack:
-      auto: false
+    aws:
+      s3:
+        bucket: ${S3_BUCKET_NAME}
+      credentials:
+        access-key: ${S3_ACCESS_KEY}
+        secret-key: ${S3_SECRET_KEY}
+      region:
+        static: ap-northeast-2
+        auto: false
+      stack:
+        auto: false
 
-#server:
-#    servlet:
-#        context-path: /api
+  # 엘라스틱 서치 설정 추가
+elasticsearch:
+    host: ${ELASTICSEARCH_HOST}
+    username: ${ELASTICSEARCH_USERNAME}
+    password: ${ELASTICSEARCH_PASSWORD}
+    port: 9200
+logging:
+    file:
+      name: ./logs/customer-service.log
+logstash:
+    host: localhost
 
+  # RabbitMQ
 rabbit:
     queue-name: ${MQ_QUEUE_NAME}
     exchange-name: ${MQ_EXCHANGE_NAME}

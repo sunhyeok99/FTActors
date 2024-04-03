@@ -2,7 +2,6 @@ package com.a602.actors.global.jwt.dto;
 
 import lombok.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 

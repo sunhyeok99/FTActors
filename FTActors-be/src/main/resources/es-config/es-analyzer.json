@@ -4,7 +4,7 @@
       "my_nori_tokenizer": {
         "type": "nori_tokenizer",
         "decompound_mode": "mixed",
-        "discard_punctuation": "false"
+        "di scard_punctuation": "false"
       }
     },
     "filter": {
@@ -17,7 +17,7 @@
     },
     "analyzer": {
       "my_nori_analyzer": {
-        "type": "custom",
+        "type": "json",
         "tokenizer": "my_nori_tokenizer",
         "filter": [
           "lowercase",

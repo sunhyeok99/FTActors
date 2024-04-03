@@ -51,6 +51,7 @@ public class Recruitment extends BaseEntity {
             String imageName,
             String startDate,
             String endDate,
+            String privateRecruitment,
             String file,
             String fileName
     ) {
@@ -62,6 +63,7 @@ public class Recruitment extends BaseEntity {
         this.imageName = imageName;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.privateRecruitment = privateRecruitment;
         this.file = file;
         this.fileName = fileName;
     }
