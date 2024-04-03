@@ -14,6 +14,9 @@
 import Pagenation from '@/components/common/Pagenation.vue';
 import ProfileListAll from '@/components/profilepage/ProfileListAll.vue';
 import ProfileSearchBar from '@/components/profilepage/ProfileSearchBar.vue';
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 </script>
 

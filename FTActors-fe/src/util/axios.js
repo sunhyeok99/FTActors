@@ -5,14 +5,14 @@ const SERVER_URL = 'https://j10a602.p.ssafy.io/api'
 
 const axiosInstance = axios.create({
   // baseURL: BASE_URL,
-  baseURL: SERVER_URL,
+  baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 const formDataInstance = axios.create({
     // baseURL: BASE_URL,
-    baseURL: SERVER_URL,
+    baseURL: BASE_URL,
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -173,8 +173,11 @@ const recruitmentApi = {
     searchContent: (keywords) => {
       return axiosInstance.get("/profile/searchcontent", { params: { keywords: keywords } });
     },
-    searchByName: (stageName) => {
-      return axiosInstance.get("/profile/searchname", { params: { stage_name: stageName } });
+    searchByStageName: (keywords) => {
+      return axiosInstance.get("/profile/searchstagename", { params: { stage_name: keywords } });
+    },
+    searchByName: (keywords) => {
+      return axiosInstance.get("/profile/searchname", { params: { name: keywords } });
     },
     
   };
