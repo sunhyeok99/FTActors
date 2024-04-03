@@ -15,7 +15,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script setup>
@@ -62,7 +61,7 @@ const goToBoardPage = () => {
 };
 </script>
 
-<style>
+<style scoped>
 #board {
   border: none;
 }
@@ -70,13 +69,13 @@ const goToBoardPage = () => {
 .title {
   display: flex;
 }
-
+.btn-dark{
+  margin-left: 50px;
+}
 #orderbtn {
   border-radius: 25px;
-  /* 그라데이션 적용 */
   background-image: linear-gradient(to right, rgb(58, 123, 213), rgb(39, 16, 171));
   border: none;
-  /* 기존 border 설정을 수정 */
 }
 
 .pageright {

@@ -25,7 +25,7 @@ import ApplyCreate from "../views/applyview/ApplyCreate.vue";
 import ApplyDetail from "../views/applyview/ApplyDetail.vue";
 import MyApply from "../views/applyview/MyApply.vue";
 import ApplyList from "../views/applyview/ApplyList.vue";
-import MainVideo from "@/components/videoEditor/MainVideo.vue"
+
 
 
 const router = createRouter({
@@ -176,12 +176,7 @@ const router = createRouter({
       component : ApplyList,
       props : true,
     },
-    {
-      path : '/mainVideo/:id',
-      name : 'mainVideo',
-      component : MainVideo,
-      props : true,
-    },
+
   ],
 });
 

@@ -23,13 +23,13 @@ axios.interceptors.request.use(
 
 
 const axiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: SERVER_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 const formDataInstance = axios.create({
-    baseURL: BASE_URL,
+    baseURL: SERVER_URL,
     headers: {
       'Content-Type': 'multipart/form-data',
     },
