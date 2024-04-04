@@ -1,7 +1,7 @@
 <template>
   <div class="row row-cols-1 row-cols-md-1">
     <div class="col" v-for="(montage, index) in montages" :key="index" @click="goToMontageDetail(index)">
-      <div class="card montage">
+      <div v-if="index > 3" class="card montage">
         <video :src="montage.link" muted autoplay playsinline></video>
         <div class="montage-title">
           <strong> {{ montage.title }} {{ formatDate(montage.created_at) }} </strong> </div>
