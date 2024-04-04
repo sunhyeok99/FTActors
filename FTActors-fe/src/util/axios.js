@@ -2,6 +2,7 @@ import axios from "axios";
 import { useJwtStore } from "@/stores/member-store";
 
 const BASE_URL = `http://localhost:8080`;
+
 const SERVER_URL = 'https://j10a602.p.ssafy.io/api';
 
 axios.interceptors.request.use(
@@ -19,8 +20,6 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
-
 
 const axiosInstance = axios.create({
   baseURL: SERVER_URL,

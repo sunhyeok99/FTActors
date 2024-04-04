@@ -11,9 +11,9 @@
           <div class="profilelist">
             <ul class="list-group list-group-flush">
               <li class="list-group-item flex-shrink">
-                <div class="d-flex flex-col justify-content-center">
+                <div class="d-flex flex-col justify-content-center columnthings">
                   <label>
-                    <h1><b>{{ recruitment.title }}</b></h1>
+                    <h2><b>{{ recruitment.title }}</b></h2>
                   </label>
                   <div v-if="checkPermission()">
                     <div class="button-container ps-5">
@@ -127,6 +127,9 @@ const adminId = 11;
 const router = useRouter();
 const recruitment = ref({});
 
+const goToEdit = () => {
+  router.push({ name: 'edit' });
+};
 const fetchRecruitmentDetail = async () => {
   const recruitmentId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
   if (loginMember.value == "" || loginMember.value == null || loginMember.value == undefined) {
@@ -184,7 +187,7 @@ const deleteRecruitment = async () => {
 
 </script>
 
-<style>
+<style scoped>
 h1 {
   font-size: 4rem;
 }
@@ -199,13 +202,23 @@ h1 {
   font-size: 4rem;
 }
 
+.profileheader {
+  display: flex;
+  justify-content: center;
+}
 
+.columnthings{
+  display: flex;
+  flex-direction: column;
+}
 .profiletab img {
   width: 24px;
   height: 24px;
 
 }
-
+.btn{
+  min-width: 100px;
+}
 .profilepage {
   display: flex;
 }

@@ -1,5 +1,6 @@
 package com.a602.actors.global.common.dto;
 
+import org.springframework.http.HttpStatus;
 import lombok.Getter;
 
 @Getter
@@ -14,10 +15,18 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
-    public ApiResponse(Integer status, String message) {
+    private ApiResponse(Integer status, String message) {
         this.status = status;
         this.message = message;
     }
+
+//    public static <T> ApiResponse<T> success(SuccessCode code, T data) {
+//        return new ApiResponse<>(code.getStatus().value(), code.getMessage(), data);
+//    }
+//
+//    public static <T> ApiResponse<T> error(ErrorCode code) {
+//        return new ApiResponse<>(code.getStatus().value(), code.getMessage());
+//    }
 
     public static ApiResponse<String> error(Integer status, String message) {
         return new ApiResponse<>(status, message, "");

@@ -45,6 +45,7 @@
 
     </div>
   </div>
+  
 </template>
 
 
@@ -165,6 +166,7 @@ h1 {
 
 .profilepage {
   display: flex;
+  justify-content: center;
 }
 
 p{

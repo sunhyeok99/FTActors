@@ -3,8 +3,6 @@
     <h1><b>BOARD Update</b></h1>
   </div>
   <div class="boardpage">
-
-
     <div class="boardlist">
       <ul class="list-group list-group-flush">
         <li class="list-group-item" id="update-form">
@@ -52,7 +50,7 @@
           </div>
         </li>
       </ul>
-      <button @click="updateRecruitment" class="btn btn-primary">수정</button>
+      <button @click="updateRecruitment" class="btn btn-dark">수정</button>
     </div>
 
 
@@ -186,15 +184,17 @@ const updateRecruitment = async () => {
 <style>
 .boardheader {
   display: flex;
-  align-items: center;
+  justify-content: center;
 }
 
 h1 {
   font-size: 4rem;
+
 }
 
 .boardpage {
   display: flex;
+  justify-content: center;
 }
 
 .boardlist {

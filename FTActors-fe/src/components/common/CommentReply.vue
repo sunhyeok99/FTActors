@@ -74,13 +74,22 @@
 import { onMounted, ref, watch, computed } from 'vue';
 import axios from 'axios';
 import ReportModal from '@/components/modals/ReportModal.vue';
-
+import { useMemberStore, useJwtStore } from '@/stores/member-store';
+import { useRouter } from 'vue-router'
 const props = defineProps({
   currentId: Number
 });
 
 const BASE_URL = 'https://j10a602.p.ssafy.io/api';
 
+
+const id = ref('');
+const password = ref('');
+const showPassword = ref(false);
+
+const router = useRouter();
+const memberStore = useMemberStore();
+const jwtStore = useJwtStore();
 // 몽타쥬 좋아요
 const isLiked = ref(false);
 const toggleLike = () => {
@@ -266,7 +275,7 @@ const totalCommentCount = computed(() => {
 }
 
 .accordion-body {
-  max-height: 38vh;
+  max-height: 63vh;
   overflow-y: auto;
 }
 
@@ -279,7 +288,10 @@ const totalCommentCount = computed(() => {
   flex-direction: row;
 }
 
-
+.py-3{
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 
 .columnthings {
   display: flex;

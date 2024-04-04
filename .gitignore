@@ -57,3 +57,6 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/gradle,java
 
 .idea
+
+FTActors-be/*
+*/FTActors-be/*
