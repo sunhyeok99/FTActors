@@ -9,4 +9,7 @@ import java.util.Optional;
 @Repository
 public interface JWTMemberRepository extends JpaRepository<Member, String> {
     Optional<Member> findByLoginId(String loginId);
+
+    Optional<Member> findById(Long id);
+
 }

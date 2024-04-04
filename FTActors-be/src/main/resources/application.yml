@@ -1,3 +1,28 @@
+
+# 개발용
+
+server:
+   servlet:
+      encoding:
+          charset: UTF-8
+          enabled: true
+          force: true
+
+flyway:
+  enabled: true
+  baseline-on-migrate: true
+  baseline-version: 0
+
+#elasticsearch:
+#  host: ${ELASTICSEARCH_HOST}
+#  username: ${ELASTICSEARCH_USERNAME}
+#  password: ${ELASTICSEARCH_PASSWORD}
+#logging:
+#  file:
+#    name: ./logs/customer-service.log
+#logstash:
+#  host: localhost
+
 spring:
     datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -20,7 +45,28 @@ spring:
       port: ${MQ_PORT}
       username: ${MQ_USER_NAME}
       password: ${MQ_PASSWORD}
+    flyway:
+      enabled: true
+      baseline-on-migrate: true
+      baseline-version: 0
+    jpa:
+      hibernate:
+        ddl-auto: none
+      properties:
+        hibernate:
+          format_sql: true
+          jdbc:
+            time_zone:Asia/Seoul
+      show-sql: true
 
+    devtools:
+      livereload:
+        enabled: true
+
+    servlet:
+      multipart:
+        max-file-size: 20MB
+        max-request-size: 25MB
       # 스프링 시큐리티
     security:
       # oauth2 사용
@@ -68,6 +114,8 @@ elasticsearch:
 logging:
     file:
       name: ./logs/customer-service.log
+    level: #뭔지 모르겠는데 있다
+      org.springframework.data.elasticsearch.client.WIRE: DEBUG
 logstash:
     host: localhost
 

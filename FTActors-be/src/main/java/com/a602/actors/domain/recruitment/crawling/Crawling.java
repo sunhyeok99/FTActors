@@ -28,17 +28,18 @@ public class Crawling {
         int[] urlCode = {63707, 63711, 8295195, 2361256, 63816}; // 장편영화 / 단편영화 / 웹드라마 / 뮤비/CF / 유튜브/기타
         List<Recruitment> recruitmentList = new ArrayList<>();
         try {
+            for(int page=3;page<=3;page++){
             for (int index = 0; index < urlCode.length; index++) {
-                Document document = Jsoup.connect(RECRUITMENT_URL + urlCode[index]).get(); // 주소뒤에 100, 101 이런식
+                Document document = Jsoup.connect(RECRUITMENT_URL + urlCode[index] + "/page/" + page).get(); // 주소뒤에 100, 101 이런식
                 Elements content1 = document.select("div.content.date"); // 날짜 불러옴
                 Elements content2 = document.select("table.ui.table a.block"); // 주소 불러옴
                 for (int i = 0; i < content1.size(); i++) {
                     String date = content1.get(i).text(); // 날짜는 text만 추출
                     String url = content2.get(i).absUrl("href"); // url은 a태그 추출
                     // 날짜비교해서 전날에 올라온 공고만 크롤링
-                    if (!date.substring(0, 10).equals(yesterday)) {
-                        break;
-                    }
+//                    if (!date.substring(0, 10).equals(yesterday)) {
+//                        break;
+//                    }
                     // url로 이동해서 크롤링
                     document = Jsoup.connect(url).get();
                     String title = document.select("th[colspan=2] h2").text();
@@ -60,7 +61,7 @@ public class Crawling {
                         }
                     }
                     // endDate가 상시모집일 경우 start도 상시모집으로
-                    if(endDate.equals("상시 모집")){
+                    if (endDate.equals("상시 모집")) {
                         startDate = "상시 모집";
                     }
                     Recruitment recruitment = Recruitment.builder()
@@ -70,10 +71,12 @@ public class Crawling {
                             .category(category)
                             .startDate(startDate)
                             .endDate(endDate)
+                            .privateRecruitment("F")
                             .build();
                     recruitmentList.add(recruitment);
                 }
             }
+        }
         } catch (IOException e) {
             // 크롤링 중에 예외가 발생할 경우
             e.printStackTrace();

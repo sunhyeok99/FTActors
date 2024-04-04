@@ -4,7 +4,6 @@ import com.a602.actors.domain.member.Member;
 import com.a602.actors.domain.profile.dto.ProfileDto;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.dto.ProfileSearchResponse;
-import com.a602.actors.domain.profile.entity.ProfileDocument;
 import com.a602.actors.domain.profile.service.ProfileService;
 import com.a602.actors.global.auth.service.member.MemberService;
 import com.a602.actors.global.auth.util.CookieUtil;
@@ -17,8 +16,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +54,15 @@ public class ProfileController {
         log.info("배우,감독 프로필 전체 목록 - 컨트롤러");
 
         List<ProfileSearchResponse> results = profileService.searchAllProfile(sorting);
+        return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", results);
+    }
+
+    @GetMapping("") //1.완성 //To do: 멤버 받아서 본인 확인 후, 비공개여부 T인 것도 리스트에 같이 받아오기, 시큐리티 영향x 처리 필요
+    public ApiResponse<List<ProfileSearchResponse>> getProfileList()
+    {
+        log.info("배우,감독 프로필 전체 목록");
+
+        List<ProfileSearchResponse> results = profileService.getProfileList();
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", results);
     }
 
@@ -96,7 +105,7 @@ public class ProfileController {
     }
 
     @GetMapping("/searchname") //->삭제까지 구현하고 다시, 시큐리티 영향x 처리 필요
-    public ApiResponse<?> searchByName( @RequestParam(value = "name") String findName) {
+    public ApiResponse<?> searchByName(@RequestParam(value = "name") String findName) {
         // 배열이 아닌 리스트로 검색어를 보내는 이유
         List<ProfileSearchResponse> profileSearchResponses = profileService.searchProfileByName(findName);
 
@@ -109,17 +118,18 @@ public class ProfileController {
 
     //프로필 생성
     @PostMapping("/myprofile") // -> 추후에 stageName대신 jwt
-    public ApiResponse<String> createProfile(@RequestBody ProfileRequest profileRequest) { //파라미터 추후에 변경
+    public ApiResponse<String> createProfile(@RequestPart(value = "dto") ProfileRequest profileRequest,
+                                             @RequestPart(value = "image", required = false) MultipartFile image)  throws IOException { //파라미터 추후에 변경
         log.info("프로필 만들기~! ");
 
-        String result = profileService.createProfile(profileRequest);
+        String result = profileService.createProfile(profileRequest, image);
 
         return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 생성했습니다.", result);
     }
 
     //프로필 삭제
     @DeleteMapping("/myprofile") // -> jwt에서 로그인 정보 뽑아오기
-    public ApiResponse<String> removeProfile(@RequestParam(name = "profile_id") Long profileId) {
+    public ApiResponse<String> removeProfile(@RequestParam(name = "profile_id") Long profileId) throws IOException  {
         log.info("프로필 삭제하기!");
 
         String result = "";
@@ -131,12 +141,24 @@ public class ProfileController {
 
     //프로필 수정
     @PutMapping("/myprofile") // -> jwt에서 로그인 정보 뽑아오기
-    public ApiResponse<String> modifyProfile(@RequestParam(name = "profile_id") Long profileId,
-                                              @RequestBody ProfileRequest profileRequest)
+    public ApiResponse<String> modifyProfile(@RequestPart(value = "dto") ProfileRequest profileRequest,
+                                             @RequestPart(value = "image", required = false) MultipartFile image) throws IOException
     {
         log.info("프로필 수정하기~! ");
         
-        return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 수정했습니다.", profileService.updateProfile(profileId, profileRequest));
+        return new ApiResponse<>(HttpStatus.OK.value(), "프로필을 성공적으로 수정했습니다.", profileService.updateProfile(profileRequest, image));
+    }
+
+    @GetMapping("/getmyprofile")
+    public ApiResponse<List<Long>> getMyProfileList(@RequestParam(name = "memberId") Long memberId)
+    {
+        log.info("배우,감독 프로필 전체 목록 - 컨트롤러");
+
+        List<Long> results = profileService.getMyProfile(memberId);
+
+        // results.get(0) = 배우용 프로필 아이디 / results.get(1) = 감독용 프로필 아이디
+        // ==> 값이 -1이면 없는 거임.
+        return new ApiResponse<>(HttpStatus.OK.value(), "프로필 전체 목록을 불러왔습니다.", results);
     }
 
 }

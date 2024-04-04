@@ -1,7 +1,8 @@
 package com.a602.actors.domain.profile.service;
 
-import co.elastic.clients.elasticsearch._types.query_dsl.*;
-import com.a602.actors.domain.member.Member;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
+import com.a602.actors.domain.member.repository.MemberRepository;
 import com.a602.actors.domain.profile.dto.ProfileDto;
 import com.a602.actors.domain.profile.dto.ProfileRequest;
 import com.a602.actors.domain.profile.dto.ProfileSearchRequest;
@@ -10,25 +11,25 @@ import com.a602.actors.domain.profile.entity.Profile;
 import com.a602.actors.domain.profile.entity.ProfileDocument;
 import com.a602.actors.domain.profile.mapper.ProfileMapper;
 import com.a602.actors.domain.profile.repository.*;
-import com.a602.actors.global.elasticsearch.TimeChanger;
-import com.a602.actors.global.elasticsearch.filter.ContentFilter;
+import com.a602.actors.global.common.config.FileUtil;
+import com.a602.actors.global.common.enums.FolderType;
 import com.a602.actors.global.elasticsearch.filter.QueryBuilderInterface;
 import com.a602.actors.global.exception.ExceptionCodeSet;
+import com.a602.actors.global.exception.MemberException;
 import com.a602.actors.global.exception.ProfileException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
-import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
-import org.springframework.data.elasticsearch.core.*;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -43,6 +44,7 @@ public class ProfileServiceImpl implements ProfileService{
     private final ProfileDocumentCustomRepository profileDocumentCustomRepository;
 //    private final ElasticsearchOperations elasticsearchOperations;
     private final QueryBuilderInterface queryBuilderInterface;
+    private final MemberRepository memberRepository;
 
     @Override //검색 목록 (엘라스틱만 , db사용x)
     public List<ProfileSearchResponse> searchAllProfile(int sorting) {
@@ -57,9 +59,14 @@ public class ProfileServiceImpl implements ProfileService{
         return profileMapper.ProfileDocumentListToProfileSearchResponseList(list);
     }
 
+    @Override
+    public List<ProfileSearchResponse> getProfileList() {
+        List<Profile> list = profileRepository.findAll();
+        return profileMapper.ProfileToProfileSearchResponseList(list);
+    }
+
     @Override //To do: jwt에서 사람 정보 뽑아와서 그 계정으로 만들기 (db만, 엘라스틱x)
     public ProfileDto getProfile(Long profileId, HttpSession session) {
-//        Long nowLoginId = (Long) session.getAttribute("memberName");
         Long loginnedId = (long) 10;
 
         Profile profile = profileRepository.findById(profileId)
@@ -95,28 +102,28 @@ public class ProfileServiceImpl implements ProfileService{
 
     //-------------
     @Override //프로필 만들기 -> jwt에서 정보 뽑아서 그 계정으로 만들기 (엘라스틱, db 둘 다 사용)
-    public String createProfile(ProfileRequest profileRequest) {
-        //To do: 1 jwt에서 로그인한 loginedMember 정보 뽑기
-        //To do: 2 loginedMember에서 id(고유 번호) 뽑기
-        //To do: 3 loginedMember의 id + profileRequest.getType() 기반으로 이미 있는 프로필인지 확인
-
-        //이미 프로필이 생성되어 있으면x
-//        if( profileCustomRepository.existProfile(profileRequest.getType(), profileRequest.getMemberId()) ) {
-//            log.info("생성불가 - 이미 있는 거면 불가!");
-//            throw new ProfileException(ExceptionCodeSet.PROFILE_ALREADY_EXIST);
-//        }
-
-        Member loginMember = tmpMemRepo.findByLoginId(20L);
+    public String createProfile(ProfileRequest profileRequest, MultipartFile image) throws IOException {
+//        Member loginMember = tmpMemRepo.findByLoginId(20L);
         //-------jwt 구현 후 삭제
-
+        String imageName = "";
+        String imageUrl = "";
+        if (image != null) {
+            imageName = FileUtil.makeFileName(image.getOriginalFilename());
+            imageUrl = FileUtil.uploadFile(image, imageName, FolderType.PROFILE_PATH);
+        }
         //저장하기
+        log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        log.info(profileRequest.getMemberId() +" "+profileRequest.getContent()+" "+profileRequest.getType());
+        log.info(profileRequest.getPortfolioLink() +" "+profileRequest.getPrivateProfile());
+        log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         Profile creatingProfile = Profile.builder()
-                .member(loginMember)
+                .member(memberRepository.findById(profileRequest.getMemberId()).orElseThrow(() -> new MemberException(ExceptionCodeSet.MEMBER_NOT_FOUND)))
                 .content(profileRequest.getContent())
                 .type(profileRequest.getType())
                 .portfolio(profileRequest.getPortfolioLink())
                 .privatePost('F') //처음 생성할 땐 무조건 공개
-
+                .image(imageUrl)
+                .imageName(imageName)
                 .build();
 
         profileRepository.save(creatingProfile);
@@ -130,7 +137,7 @@ public class ProfileServiceImpl implements ProfileService{
     }
 
     @Override // (엘라스틱, db 둘 다 사용) //esOperation으로 was로 만듦..
-    public String deleteProfile(Long profileId) {
+    public String deleteProfile(Long profileId)  throws IOException {
         //To do: 1 jwt에서 로그인한 loginedMember 정보 뽑기
         //To do: 2 loginedMember에서 id(고유 번호) 뽑기
         //To do: 3 파라미터로 들어온 profileId로 updatingProfile 정보 뽑기
@@ -141,13 +148,8 @@ public class ProfileServiceImpl implements ProfileService{
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(() -> new ProfileException(ExceptionCodeSet.PROFILE_NOT_FOUND)); // "삭제 불가 - 없는 프로필입니다."
 
-        //로그인 멤버와 지금 멤버가 다르면x
-//        if( !profile.getMember().getMemberId().equals(nowLoginId) ) {
-//            log.info("삭제불가 - 다른 사람이다!!");
-//        }
-        //DB에 관련된 사진 S3에서 지우기
-//        if(!barter.getImages().get(0).getImgCode().equals("icon.PNG"))
-//            deleteS3(barter.getImages());
+        String imageName = profile.getImageName();
+        if (imageName != null) FileUtil.deleteFile(imageName, FolderType.PROFILE_PATH);
 
         profileRepository.deleteById(profileId); //DB에서 삭제
         profileDocumentRepository.deleteById(profileId); //elasticsearch에서 삭제
@@ -155,7 +157,7 @@ public class ProfileServiceImpl implements ProfileService{
     }
 
     @Override // (엘라스틱, db 둘 다 사용) //To do: 어떠한 설정을 이유로, logstash는 현재 자기가 보고 있는 pk값보다 작은 애는 안 본다. 고로 update가 일어나도 어차피 자기가 보고 있는 애보다 작을 것이기 때문에, 이것을 해결해줘야 한다.
-    public String updateProfile(Long profileId, ProfileRequest profileRequest) {
+    public String updateProfile(ProfileRequest profileRequest, MultipartFile image) throws IOException {
         //To do: 1 jwt에서 로그인한 loginedMember 정보 뽑기
         //To do: 2 loginedMember에서 id(고유 번호) 뽑기
         //To do: 3 파라미터로 들어온 profileId로 updatingProfile 정보 뽑기
@@ -164,11 +166,19 @@ public class ProfileServiceImpl implements ProfileService{
         //To do: 5-1 false라면 로그인불일치 ===> 프론트에서 처리할 듯(버튼 생성 유무)
 
         //profile찾기
-        Profile profile = profileRepository.findById(profileId)
+        Profile profile = profileRepository.findById(profileRequest.getId())
                 .orElseThrow(() -> new ProfileException(ExceptionCodeSet.PROFILE_NOT_FOUND)); // "수정 불가 - 없는 프로필입니다."
 
+        String imageurl = profile.getImage();
+        String imageName = profile.getImageName();
+        if (image != null) {
+            FileUtil.deleteFile(profile.getImageName(), FolderType.RECRUIT_PATH);
+            imageName = FileUtil.makeFileName(image.getOriginalFilename());
+            imageurl = FileUtil.uploadFile(image, imageName, FolderType.RECRUIT_PATH);
+        }
+
         // db 수정 성공
-        profileCustomRepository.updateProfile(profileId, profileRequest);
+        profile.updateProfile(profileRequest.getType(), profileRequest.getContent(), imageurl, imageName, profileRequest.getPortfolioLink(), profileRequest.getPrivateProfile());
         //엘라스틱 서치 업데이트 -> WAS 기반이기 때문에 쓰지 말자. logstash를 어떻게 할지 찾자
 //        profileDocumentCustomRepository.updateProfileByProfileId(profileId, profileRequest);
         return "";
@@ -181,10 +191,10 @@ public class ProfileServiceImpl implements ProfileService{
         System.out.println("keywords.size() = " + keywords.size());
         System.out.println("keywords.isEmpty() = " + keywords.isEmpty());
 //        if (!keywords.isEmpty()) {
-//            return searchAllProfile(1);
+//            return searchAllProfile(1);`
 //        }
 
-        queryBuilderInterface.createQuery(keywords);
+        queryBuilderInterface.createContentQuery(keywords);
         NativeQuery nativeQuery = queryBuilderInterface.getSearch();
         System.out.println(nativeQuery.getQuery().toString());
 
@@ -232,6 +242,20 @@ public class ProfileServiceImpl implements ProfileService{
         }
 
         return profileMapper.ProfileDocumentListToProfileSearchResponseList(profileDocuments);
+    }
+
+    @Override
+    public List<Long> getMyProfile(Long memberId) {
+        Long existActor = profileCustomRepository.existActorInMyPage(memberId);
+        if (existActor == null) existActor = -1L;
+        Long existPD = profileCustomRepository.existPDInMyPage(memberId);
+        if (existPD == null) existPD = -1L;
+
+        List<Long> result = new ArrayList<>();
+        result.add(existActor);
+        result.add(existPD);
+
+        return result;
     }
 
 }

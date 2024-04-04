@@ -35,10 +35,16 @@ public class ProfileMapper {
 
         profileDto.id( profile.getId() );
         profileDto.memberId( profile.getMember().getId());
+        profileDto.name(profile.getMember().getName());
+        profileDto.stageName(profile.getMember().getStageName());
         profileDto.content( profile.getContent() );
         profileDto.type( profile.getType() );
+        profileDto.gender(profile.getMember().getGender());
         profileDto.portfolio( profile.getPortfolio() );
+        profileDto.birth(profile.getMember().getBirth());
         profileDto.privatePost( profile.getPrivatePost() );
+        profileDto.imageLink(profile.getImage());
+        profileDto.createdTime(profile.getCreatedAt().toString());
 
         return profileDto.build();
     }
@@ -76,14 +82,43 @@ public class ProfileMapper {
                 .stageName(profileDocument.getStageName())
                 .content(profileDocument.getContent())
                 .type(profileDocument.getType())
-//                .portfolio(profileDocument.ge)
                 .privatePost(profileDocument.getPrivatePost())
-//                .createdTime(profileDocument.getCreatedTime())
                 .createdTime(createdTimeString)
-//                .updatedTime(profileDocument.getUpdatedTime())
                 .updatedTime(updatedTimeString)
                 .gender(profileDocument.getGender())
                 .birth(profileDocument.getBirth())
                 .build();
     }
+    public List<ProfileSearchResponse> ProfileToProfileSearchResponseList(List<Profile> profiles) {
+        if ( profiles == null ) {
+            return null;
+        }
+
+        List<ProfileSearchResponse> list = new ArrayList<ProfileSearchResponse>( profiles.size() );
+        for ( Profile profile : profiles ) {
+            list.add( ProfileToProfileSearchResponse( profile) );
+        }
+
+        return list;
+    }
+    public ProfileSearchResponse ProfileToProfileSearchResponse(Profile profile) {
+        if ( profile == null ) {
+            return null;
+        }
+
+        return ProfileSearchResponse.builder()
+                .id(profile.getId())
+                .memberId(profile.getMember().getId())
+                .name(profile.getMember().getName())
+                .stageName(profile.getMember().getStageName())
+                .content(profile.getContent())
+                .type(profile.getType())
+                .privatePost(profile.getPrivatePost())
+                .imageLink(profile.getImage())
+                .createdTime(profile.getCreatedAt().toString())
+                .gender(profile.getMember().getGender())
+                .birth(profile.getMember().getBirth())
+                .build();
+    }
+
 }
