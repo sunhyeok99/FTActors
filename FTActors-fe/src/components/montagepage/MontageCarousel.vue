@@ -2,14 +2,13 @@
  <div>
     <div id="carouselExampleAutoplaying" class="carousel slide w-75 m-auto" data-bs-ride="carousel">
       <div class="carousel-inner">
-        <div class="carousel-item" v-for="(montage, index) in montages" :key="index" :class="{ active: index === 0 }">
+        <div class="carousel-item" v-for="(montage, index) in montages" :key="index" :class="{ active: index === 16 }">
           <div class="col">
-            <div class="card montage" @click="goToMontageDetail(index)">
+            <div v-if="index>5" class="card montage" @click="goToMontageDetail(index)">
               <video :src="montage.link" muted autoplay playsinline></video>
             </div>
             </div>
-            <div class="montage-title">
-              <strong> {{ montage.title }} {{ formatDate(montage.created_at) }} </strong> </div>
+           
           </div>
          
         </div>
@@ -67,6 +66,11 @@ const formatDate = (dateStr) => {
   width: 100%;
   height: 100%;
 }
+.montage video {
+
+  max-height: 75vh;
+}
+
 .montage-title {
   position: absolute;
   bottom: 0%; /* Adjust this value to position the title inside the carousel item */
