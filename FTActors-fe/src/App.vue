@@ -15,20 +15,20 @@
               <RouterLink to="/report">신고 목록</RouterLink>
               <RouterLink to="/blacklist">블랙리스트</RouterLink>
             </div>
-            <div class="pageright">
-              <!-- 알람 -->
-              <AlarmModal @unreadCountUpdated="handleUnreadCountUpdated" />
-              <div v-if="!loginMember">
+
+              <div class="pageright" v-if="!loginMember">
                 <!-- 로그인 -->
                 <button type="button" class="btn btn-secondary" id="loginbtn" @click="goToLogin">로그인</button>
                 <!-- 회원가입 -->
                 <button type="button" class="btn btn-secondary" id="joinbtn" @click="goToJoin">회원가입</button>
               </div>
-              <div v-else>
+              <div class="pageright" v-else>
+                <!-- 알람 -->
+                <AlarmModal @unreadCountUpdated="handleUnreadCountUpdated" />
                 <!-- 마이페이지 -->
                 <MypageDropdown />
               </div>
-            </div>
+           
           </nav>
         </div>
       </header>
@@ -135,8 +135,10 @@ header {
 #fontapply {
   font-family: 'tuesday_nightregular', impact;
 }
+
 #light.off::after {
-  background: rgba(0, 0, 0, 0.4); /* A darker shade for when 'off' class is applied */
+  background: rgba(0, 0, 0, 0.4);
+  /* A darker shade for when 'off' class is applied */
 }
 
 /* 네비게이션 바 폰트 색상을 밝게 만드는 스타일 */
@@ -202,6 +204,7 @@ header {
   display: flex;
   margin-left: auto;
   align-items: center;
+  flex-direction: row;
 }
 
 .pageright button img {
@@ -213,7 +216,6 @@ header {
   width: 24px;
   height: 24px;
 }
-
 
 .full-screen {
   width: 100%;
