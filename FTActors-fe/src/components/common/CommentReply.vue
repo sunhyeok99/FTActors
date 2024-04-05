@@ -14,6 +14,7 @@
             <img src="@/assets/icons/Scissors.png" alt="cut">
           </button>
           <ReportModal :current-id="currentId" />
+          <!-- 댓글 작성 인풋 -->
           <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="댓글 쓰기" aria-label="Recipient's username"
               aria-describedby="button-addon2" v-model="addComment">
@@ -21,12 +22,8 @@
               @click.prevent="uploadComment">작성</button>
           </div>
         </div>
-
-        <!-- 댓글 작성 인풋 -->
-
-                  <!-- 댓글 개수 표시 -->
-                  <span id="comment-count">댓글 {{ totalCommentCount }}개</span>
-      
+        <!-- 댓글 개수 표시 -->
+        <span id="comment-count">댓글 {{ totalCommentCount }}개</span>
       </div>
     </div>
     <div class="accordion-body">
@@ -39,10 +36,9 @@
                 <strong class="mb-1" id="reply-member">{{ comment.memberId }}</strong>
                 <div class="col-10 mb-1 small comment-text">{{ comment.content }}</div>
                 <!-- 삭제 버튼 -->
-                <!-- <div class="remove">
-                  <img src="@/assets/icons/Remove.png" alt=""
-                    @click.stop="deleteComment(comment.commentId)">
-                </div> -->
+                <div class="remove">
+                  <img src="@/assets/icons/Remove.png" alt="" @click.stop="deleteComment(comment.commentId)">
+                </div>
               </div>
               <!-- 대댓글 작성 인풋 -->
               <div v-if="selectedComment === comment" class="mt-4 d-flex align-items-center">
@@ -52,12 +48,13 @@
                   @click.stop="uploadReply()">작성</button>
               </div>
               <!-- 대댓글 리스트 -->
-              <div v-for="(reply, rIndex) in comment.reply" :key="`reply-${rIndex}`" class="mt-2 d-flex align-items-center">
+              <div v-for="(reply, rIndex) in comment.reply" :key="`reply-${rIndex}`"
+                class="mt-2 d-flex align-items-center replylist">
                 <p class="m-0">ㄴ <b id="reply-member">{{ reply.memberId }}</b> {{ reply.content }}</p>
                 <!-- 삭제 버튼 -->
-                <!-- <div class="remove">
+                <div class="remove">
                   <img src="@/assets/icons/Remove.png" alt="" @click.stop="deleteReply(reply.commentId)">
-                </div> -->
+                </div>
               </div>
             </div>
           </div>
@@ -112,10 +109,10 @@ const getMontageInfo = () => {
   axios.get(`${BASE_URL}/montage/list`)
     .then((response) => {
       const found = response.data.data
-        montageInfo.value = found[props.currentId];
-        console.log('몽타쥬아이디:', props.currentId);
-        console.log('좋아요개수:', montageInfo.value.likeCount);
-        console.log('링크:', montageInfo.value.link);
+      montageInfo.value = found[props.currentId];
+      console.log('몽타쥬아이디:', props.currentId);
+      console.log('좋아요개수:', montageInfo.value.likeCount);
+      console.log('링크:', montageInfo.value.link);
 
     })
     .catch((error) => {
@@ -143,15 +140,15 @@ onMounted(() => {
 
 // 좋아요 추가하기
 const addLike = () => {
-    axios
-      .post(`${BASE_URL}/montage/${props.currentId}/like`)
-      .then((response) => {
-        console.log(response.data.data);
-        isLiked.value = response.data.data;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  axios
+    .post(`${BASE_URL}/montage/${props.currentId}/like`)
+    .then((response) => {
+      console.log(response.data.data);
+      isLiked.value = response.data.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 // currentId 변화 감지시 getCommentReply 함수 실행
@@ -159,7 +156,7 @@ watch(() => props.currentId, (newId, oldId) => {
   getCommentReply();
   getMontageInfo();
   addLike();
-}, { immediate: true }); 
+}, { immediate: true });
 
 // 댓글 추가하기
 const addComment = ref("");
@@ -176,7 +173,7 @@ const uploadComment = () => {
         console.log(response.data);
         getCommentReply();
         addComment.value = "";
-        
+
       })
       .catch((error) => {
         console.error(error);
@@ -232,7 +229,7 @@ const uploadReply = () => {
         console.log(response.data);
         getCommentReply();
         addReply.value = "";
- 
+
       })
       .catch((error) => {
         console.error(error);
@@ -288,7 +285,7 @@ const totalCommentCount = computed(() => {
   flex-direction: row;
 }
 
-.py-3{
+.py-3 {
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -305,6 +302,9 @@ const totalCommentCount = computed(() => {
   height: auto;
 }
 
+.replylist {
+  justify-content: space-between;
+}
 
 .like-btn {
   background-color: white;
@@ -339,12 +339,14 @@ p {
 }
 
 #reply {
-  margin-top: 10px; 
-  margin-left: 50px; 
+  margin-top: 10px;
+  margin-left: 50px;
 }
-#reply img{
+
+#reply img {
   margin-left: 20px;
 }
+
 #addreply {
   margin-left: 20px;
   width: auto;
@@ -386,8 +388,8 @@ p {
 
 #comment-count {
   min-width: 150px;
-  display: flex; 
-  align-items: center; 
+  display: flex;
+  align-items: center;
 }
 
 .slide-enter-active,
@@ -396,14 +398,12 @@ p {
 }
 
 .slide-enter,
-.slide-leave-to
-
-
-  {
+.slide-leave-to {
   height: 0;
   opacity: 0;
 }
-.list-group-item{
+
+.list-group-item {
   flex-direction: column;
 }
 </style>
