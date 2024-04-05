@@ -21,7 +21,7 @@
           </select>
         </li>
         <li class="list-group-item" id="update-form">
-          <label><b>담당자  :     {{editedRecruitment.postMemberName }}</b></label>
+          <label><b>담당자  {{editedRecruitment.postMemberName }}</b></label>
         </li>
         <li class="list-group-item" id="update-form">
           <label><b>지원시작일자</b></label>
@@ -33,18 +33,17 @@
         </li>
 
         <li class="list-group-item" id="update-form">
-          <label for="image">이미지</label>
+          <label for="image"><b>이미지</b></label>
           <input type="file" id="image" @change="onImageChange" class="input-field" />
           <div v-if="selectedImage">
             <span @click="clearSelectedImage"> X</span>
           </div>
-        </li>
-        <li class="list-group-item" id="update-form">
           <img :src="selectedImage" v-if="selectedImage" width="300px" height="200px">
         </li>
+
         <li class="list-group-item" id="update-form">
-          <label for="file">파일</label>
-          <input type="file" id="script" class="form-control" @change="onScriptChange">
+          <label for="file"><b>파일</b></label>
+          <input type="file" id="script" class="input-field" @change="onScriptChange">
           <div v-if="selectedFile">
             <span @click="clearSelectedFile"> X</span>
           </div>
@@ -205,7 +204,10 @@ h1 {
   display: flex;
   flex-direction: column;
 }
+label {
+  width: 500px;
 
+}
 #update-form {
   display: flex;
   flex-direction: row;
