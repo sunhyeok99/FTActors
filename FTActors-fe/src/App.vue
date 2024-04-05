@@ -18,7 +18,7 @@
             <div class="pageright">
               <!-- 알람 -->
               <AlarmModal @unreadCountUpdated="handleUnreadCountUpdated" />
-              <div v-if="loginMember === null">
+              <div v-if="!loginMember">
                 <!-- 로그인 -->
                 <button type="button" class="btn btn-secondary" id="loginbtn" @click="goToLogin">로그인</button>
                 <!-- 회원가입 -->
@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, watchEffect } from 'vue'
 import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
 import MontageNav from '@/components/montagepage/MontageNav.vue'
 import MypageDropdown from './components/common/MypageDropdown.vue';
@@ -104,6 +104,9 @@ onMounted(() => {
   }
 });
 
+watchEffect(() => {
+  loginMember.value = MemberStore.memberInfo;
+});
 
 </script>
 
