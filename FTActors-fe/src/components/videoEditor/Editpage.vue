@@ -23,11 +23,20 @@
     </div>
   </div>
   <SendButton></SendButton>
+  <button type="button" class="btn btn-danger" @click="goToBoard">공고 페이지로 돌아가기</button>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import VideoSideBar from './VideoSideBar.vue';
+
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const goToBoard = () => {
+  router.push({ name: 'boardDetail' , params : {id: router.currentRoute.value.params.id}});
+};
 
 const videoFiles = ref([
   { src: '/src/assets/montage/콘트라베이스.mp4' },

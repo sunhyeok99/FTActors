@@ -173,9 +173,10 @@ const router = createRouter({
       props: true,
     },
     {
-      path: '/edit',
+      path: '/edit/:id',
       name: 'edit',
       component: Editpage,
+      props: true,
     },{
       path : '/applyList/:id',
       name : 'applyList',
