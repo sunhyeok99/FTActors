@@ -16,7 +16,7 @@
           <ReportModal :current-id="currentId" />
           <!-- 댓글 작성 인풋 -->
           <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="댓글 쓰기" aria-label="Recipient's username"
+            <input type="text" class="form-control" placeholder="댓글 쓰기" aria-label=""
               aria-describedby="button-addon2" v-model="addComment">
             <button class="btn btn-outline-secondary" type="button" id="button-addon2"
               @click.prevent="uploadComment">작성</button>

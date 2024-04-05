@@ -1,12 +1,13 @@
 <template>
+  <div class="profileheader text-center mb-4">
+    <h1><b>simple editor</b></h1>
+  </div>
   <div class="sch-container">
-    <Role></Role>
-
     <!-- 동영상 목록 -->
+    <div class="applicant">
+    <h4><b>A배역</b></h4>
     <VideoSideBar :videoList="videoFiles" class="item" @videoSelected="handleVideoSelected" />
-
-    <!-- 두 번째 동영상 목록 -->
-    <VideoSideBar :videoList="videoFiles" class="item" @videoSelected="handleVideoSelected2" />
+  </div>
 
     <!-- 첫 번째 동영상 플레이어 -->
     <div class="container-editor2">
@@ -21,9 +22,16 @@
       <button @click="playVideo2" class="btn btn-secondary">재생</button>
       <button @click="cancelVideo2" class="btn btn-dark">내리기</button>
     </div>
+
+        <!-- 두 번째 동영상 목록 -->
+        <div class="applicant">
+          <h4><b>B배역</b></h4>
+        <VideoSideBar :videoList="videoFiles" class="item" @videoSelected="handleVideoSelected2" />
+      </div>
   </div>
-  <SendButton></SendButton>
+  <div>
   <button type="button" class="btn btn-danger" @click="goToBoard">공고 페이지로 돌아가기</button>
+</div>
 </template>
 
 <script setup>
@@ -160,7 +168,7 @@ const cancelVideo2 = () => {
 }
 
 .container-editor2 {
-  margin-left: 30px;
+
   flex: 3;
 }
 
@@ -171,6 +179,12 @@ const cancelVideo2 = () => {
 .player-video {
   width: 100%; /* 플레이어의 너비에 맞게 비디오 크기 조정 */
   height: 70%; /* 비디오의 높이를 비율에 맞게 조정 */
+}
+
+.applicant {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 </style>
