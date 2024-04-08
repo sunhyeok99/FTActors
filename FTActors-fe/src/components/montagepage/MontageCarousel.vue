@@ -5,7 +5,7 @@
         <div class="carousel-item" v-for="(montage, index) in montages" :key="index" :class="{ active: index === 16 }">
           <div class="col">
             <div v-if="index>5" class="card montage" @click="goToMontageDetail(index)">
-              <video :src="montage.link" muted autoplay playsinline></video>
+              <video crossorigin="anonymous" :src="montage.link" muted autoplay playsinline></video>
             </div>
             </div>
            

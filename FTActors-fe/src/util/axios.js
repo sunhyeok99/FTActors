@@ -2,7 +2,6 @@ import axios from "axios";
 import { useJwtStore } from "@/stores/member-store";
 
 const BASE_URL = `http://localhost:8080`;
-
 const SERVER_URL = 'https://j10a602.p.ssafy.io/api';
 
 axios.interceptors.request.use(
@@ -158,8 +157,8 @@ const recruitmentApi = {
       });
     },
   };
-  const profileApi = { // 프로필 api
-    getAllProfileList: (sorting = 1) => {  // 소팅 값이 따로 안 들어오면 1로 세팅 (1, 2중 가능)
+  const profileApi = { 
+    getAllProfileList: (sorting = 1) => { 
       return axiosInstance.get("/profile/list", { params: { sort: sorting } });
     },
     getProfileList: () => {  

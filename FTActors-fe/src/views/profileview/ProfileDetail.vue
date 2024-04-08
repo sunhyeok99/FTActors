@@ -6,14 +6,13 @@
       <h1><b>PROFILE</b></h1>
     </div>
     <div class="contents d-flex flex-row justify-content-evenly">
-      <div class="col-md-8 img-container">
+      <div class="col-md-6 img-container">
         <img :src="profile.imageLink" alt="" class="img-fluid">
       </div>
-      <div class="col-md-8">
+      <div class="col-md-6">
         <div class="profilelist">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
-
                 <button type="button" class="btn btn-dark" id="updatebtn" @click="goToProfileUpdate(profile.id)"
                   v-if="isOwnProfile(profile.memberId)">
                   수정하기
@@ -27,7 +26,6 @@
                   <p v-if="following.follow === 1">팔로잉 삭제</p>
                   <p v-else>팔로잉</p>
                 </button>
-
             </li>
             <li class="list-group-item"><label><b>이름</b></label> {{ profile.name }}
             </li>
@@ -38,7 +36,7 @@
             <li class="list-group-item"><label><b>생일</b></label>{{ profile.birth }} </li>
             <li class="list-group-item"><label><b>자기소개</b></label> {{ profile.content }} </li>
             <li class="list-group-item"><label><b>포트폴리오 링크</b></label>{{ profile.portfolio }} </li>
-            <li class="list-group-item"><label><b>생성 날짜</b></label>{{ profile.createdTime }} </li>
+            <li class="list-group-item"><label><b>생성 날짜</b></label>{{ formatDate(profile.createdTime) }} </li>
           </ul>
         </div>
       </div>
@@ -66,6 +64,14 @@ const router = useRouter();
 const profile = ref({});
 const following = ref(0);
 
+
+const formatDate = (dateStr) => {
+      const date = new Date(dateStr);
+      const year = date.getFullYear().toString().substr(-2); 
+      const month = ('0' + (date.getMonth() + 1)).slice(-2); 
+      const day = ('0' + date.getDate()).slice(-2); 
+      return `${year} / ${month} / ${day}`;
+}
 const profileDetail = async () => {
   const profileId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용
     let response = await profileApi.getDetailProfile(profileId);

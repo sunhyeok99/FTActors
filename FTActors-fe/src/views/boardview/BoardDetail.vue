@@ -15,13 +15,14 @@
                   <label>
                     <h2><b>{{ recruitment.title }}</b></h2>
                   </label>
-                  <div v-if="checkPermission()">
+                  <!-- <div v-if="checkPermission()"> -->
                     <div class="button-container ps-5">
                       <button type="button" class="btn btn-dark-outlined" @click="boardUpdate">공고 변경</button>
                       <button type="button" class="btn btn-dark" @click="confirmDelete">공고 삭제</button>
+                      <button type="button" class="btn btn-danger" @click="goToEdit">지원영상 편집</button>
                     </div>
-                  </div>
-                  <div v-else>
+                  <!-- </div> -->
+                  <!-- <div v-else> -->
                     <div class="button-container flex-column flex-sm-row flex-fill ">
                       <button v-if="recruitment.apply === 1" class="btn btn-secondary">이미 지원하였습니다</button>
                       <ApplyCreate />
@@ -29,7 +30,7 @@
                         지원하기
                       </button>
                     </div>
-                  </div>
+                  <!-- </div> -->
                 </div>
               </li>
                 <li class="list-group-item p-3 fs-4"><b>담당자:</b> {{ recruitment.postMember }}</li>
@@ -128,7 +129,7 @@ const router = useRouter();
 const recruitment = ref({});
 
 const goToEdit = () => {
-  router.push({ name: 'edit' });
+  router.push({ name: 'edit', params : {id: router.currentRoute.value.params.id} });
 };
 const fetchRecruitmentDetail = async () => {
   const recruitmentId = router.currentRoute.value.params.id; // 현재 라우트의 파라미터 사용

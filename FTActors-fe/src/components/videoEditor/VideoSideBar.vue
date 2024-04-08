@@ -45,16 +45,6 @@ const selectVideo = (index) => {
       class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary"
       style="width: 10rem"
     >
-      <div
-        class="list-title d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom mb-2"
-      >
-        <svg class="bi pe-none me-2" width="12" height="16">
-          <use xlink:href="#bootstrap" />
-        </svg>
-        <span class="mx-auto fs-5 fw-semibold" style="color: white"
-          >지원 목록</span
-        >
-      </div>
       <div class="list-group list-group-flush border-bottom scrollarea">
         <li v-for="(item, index) in videoList" :key="index" @click="selectVideo(index)">
             <video class="video-list" controls="controls" autoplay="autoplay" preload="auto" >

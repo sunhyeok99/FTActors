@@ -10,7 +10,7 @@
         </svg>
 
         <h2>감독</h2>
-        <div v-if="director.value == 1">
+        <div v-if="director == 1">
           <p>보기</p>
           <p><a class="btn btn-secondary" href="#" @click="goToDirectorProfile">보기</a></p>
         </div>
@@ -29,7 +29,7 @@
         </svg>
 
         <h2>배우</h2>
-        <div v-if="director.value == 1">
+        <div v-if="director == 1">
           <p> 보기</p>
           <p><a class="btn btn-secondary" href="#" @click="goToActorProfile">보기</a></p>
         </div>
@@ -57,7 +57,7 @@ loginMember.value = MemberStore.memberInfo;
 const router = useRouter();
 
 const goToActorProfile = () => {
-  router.push({ name: 'actorprofile', params });
+  router.push({ name: 'actorprofile' });
 };
 
 const goToDirectorProfile = () => {

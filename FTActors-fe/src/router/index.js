@@ -14,13 +14,12 @@ import MontageDetail from "@/views/montageview/MontageDetail.vue";
 import MontageCreate from "@/views/montageview/MontageCreate.vue";
 import MontageUpdate from "@/views/montageview/MontageUpdate.vue";
 import ProfileDetail from "@/views/profileview/ProfileDetail.vue";
-import ProfileCreate from "@/views/profileview/ProfileCreate.vue";
+
 import ProfileUpdate from "@/views/profileview/ProfileUpdate.vue";
 import BlacklistView from "@/views/adminview/BlacklistView.vue";
 import ReportView from "@/views/adminview/ReportView.vue";
 import ChatDetail from "@/components/chatpage/chatdetail.vue";
 import ChatList from "@/components/chatpage/chatlist.vue";
-import MainVideo from "@/components/videoEditor/MainVideo.vue";
 import Editpage from "@/components/videoEditor/Editpage.vue";
 import ChatRoomView from "@/views/chatview/ChatRoomView.vue";
 import ApplyCreate from "../views/applyview/ApplyCreate.vue";
@@ -116,11 +115,7 @@ const router = createRouter({
       component: ProfileDetail,
       props: true,
     },
-    {
-      path: "/profilecreate",
-      name: "profileCreate",
-      component: ProfileCreate,
-    },
+
     {
       path: "/profileupdate/:id",
       name: "profileUpdate",
@@ -173,9 +168,10 @@ const router = createRouter({
       props: true,
     },
     {
-      path: '/edit',
+      path: '/edit/:id',
       name: 'edit',
       component: Editpage,
+      props: true,
     },{
       path : '/applyList/:id',
       name : 'applyList',
