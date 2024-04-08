@@ -14,7 +14,7 @@ import MontageDetail from "@/views/montageview/MontageDetail.vue";
 import MontageCreate from "@/views/montageview/MontageCreate.vue";
 import MontageUpdate from "@/views/montageview/MontageUpdate.vue";
 import ProfileDetail from "@/views/profileview/ProfileDetail.vue";
-import ProfileCreate from "@/views/profileview/ProfileCreate.vue";
+
 import ProfileUpdate from "@/views/profileview/ProfileUpdate.vue";
 import BlacklistView from "@/views/adminview/BlacklistView.vue";
 import ReportView from "@/views/adminview/ReportView.vue";
@@ -115,11 +115,7 @@ const router = createRouter({
       component: ProfileDetail,
       props: true,
     },
-    {
-      path: "/profilecreate",
-      name: "profileCreate",
-      component: ProfileCreate,
-    },
+
     {
       path: "/profileupdate/:id",
       name: "profileUpdate",
