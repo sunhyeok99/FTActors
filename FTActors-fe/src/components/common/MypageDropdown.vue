@@ -29,13 +29,9 @@ const goToLogout = () => {
 
 const logout = async () => {
   try {
-    // 사용자 상태와 JWT 토큰을 초기화 또는 제거
     memberStore.clearUser();
     jwtStore.deleteToken();
-    
     alert('로그아웃 되었습니다.');
-    
-    // 로그아웃 후 홈 페이지 또는 로그인 페이지로 리다이렉트
     router.push('/login');
   } catch (error) {
     console.error('로그아웃 중 오류 발생', error);

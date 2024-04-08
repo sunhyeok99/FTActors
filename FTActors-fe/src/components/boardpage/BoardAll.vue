@@ -18,19 +18,15 @@
     </div>
   </div>
 </template>
-
-
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { recruitmentApi } from '@/util/axios';
 import { useMemberStore } from "@/stores/member-store.js";
-  
 const MemberStore = useMemberStore();
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
 const adminId = 1;
-
 const router = useRouter();
 const boards = ref([]);
 

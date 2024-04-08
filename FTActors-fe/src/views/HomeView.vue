@@ -2,7 +2,7 @@
   <div>
     <Notification />
   </div>
-  <hr>
+<hr>
   <div>
     <Board />
   </div>
@@ -16,7 +16,6 @@
 import Notification from '../components/homepage/Notification.vue';
 import ProfileListAll from '../components/profilepage/ProfileListAll.vue';
 import Board from '../components/homepage/Board.vue';
-import Montage from '../components/homepage/Montage.vue';
 </script>
 
 <style></style>

@@ -12,7 +12,6 @@
   <script setup>
 import BoardAll from '@/components/boardpage/BoardAll.vue';
 import BoardBar from '@/components/boardpage/BoardBar.vue';
-import Pagenation from '@/components/common/Pagenation.vue';
 import { useRouter } from "vue-router";
 
 const router = useRouter();
