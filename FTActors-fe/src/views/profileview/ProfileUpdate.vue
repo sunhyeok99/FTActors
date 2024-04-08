@@ -12,7 +12,6 @@
         </li>>
           <div class="profilelist">
         <ul class="list-group list-group-flush">
-  
           <li class="list-group-item"><label><b>자기소개</b></label>
           <input v-model="profile.content" type="text" class="form-control">   </li>
           <li class="list-group-item"><label><b>포트폴리오 링크</b></label>
@@ -22,16 +21,13 @@
       <button @click="updateProfile" class="btn btn-primary">수정</button>
     </div>
     <div class="detailprofilepage">
-    
     </div>
-  
-  
   </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { profileApi, recruitmentApi } from '@/util/axios';
+import { profileApi } from '@/util/axios';
 import { useMemberStore } from "@/stores/member-store.js";
 
 const MemberStore = useMemberStore();

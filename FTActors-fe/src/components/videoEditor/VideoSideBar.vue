@@ -45,7 +45,6 @@ const selectVideo = (index) => {
       class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary"
       style="width: 10rem"
     >
-
       <div class="list-group list-group-flush border-bottom scrollarea">
         <li v-for="(item, index) in videoList" :key="index" @click="selectVideo(index)">
             <video class="video-list" controls="controls" autoplay="autoplay" preload="auto" >

@@ -13,7 +13,6 @@
         <div class="profilelist">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
-
                 <button type="button" class="btn btn-dark" id="updatebtn" @click="goToProfileUpdate(profile.id)"
                   v-if="isOwnProfile(profile.memberId)">
                   수정하기
@@ -27,7 +26,6 @@
                   <p v-if="following.follow === 1">팔로잉 삭제</p>
                   <p v-else>팔로잉</p>
                 </button>
-
             </li>
             <li class="list-group-item"><label><b>이름</b></label> {{ profile.name }}
             </li>

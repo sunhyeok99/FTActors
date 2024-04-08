@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-  
+
     <!-- 2단계 -->
     <div class="modal fade" id="directorModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
         tabindex="-1">
@@ -34,7 +34,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-floating">
-                      <textarea class="form-control" placeholder="Leave a link here" id="floatingTextarea2"
+                        <textarea class="form-control" placeholder="Leave a link here" id="floatingTextarea2"
                             style="height: 100px" v-model="portfolioLink"></textarea>
                         <label for="floatingTextarea2">포트폴리오 링크를 작성해주세요</label>
                     </div>
@@ -59,11 +59,12 @@
                     <div class="form-floating">
                         <div class="input-group">
                             <input type="file" class="form-control" id="inputGroupFile04"
-                                aria-describedby="inputGroupFileAddon04" aria-label="Upload"  @change="onImageChange">
-                                <div v-if="selectedImage">
-                                    <span @click="clearSelectedImage"> X</span></div>
-                                    <img :src="selectedImage" v-if="selectedImage">
-                                 
+                                aria-describedby="inputGroupFileAddon04" aria-label="Upload" @change="onImageChange">
+                            <div v-if="selectedImage">
+                                <span @click="clearSelectedImage"> X</span>
+                            </div>
+                            <img :src="selectedImage" v-if="selectedImage" class="selected-image">
+
                         </div>
                     </div>
                 </div>
@@ -85,10 +86,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-floating">
-                           <input type="radio" id="yes" value="T" v-model="privated">
-                            <label for="yes">비밀 계정</label>
-                            <input type="radio" id="no" value="F" v-model="privated">
-                            <label for="no">공개 계정</label>
+                        <input type="radio" id="yes" value="T" v-model="privated">
+                        <label for="yes">비밀 계정</label>
+                        <input type="radio" id="no" value="F" v-model="privated">
+                        <label for="no">공개 계정</label>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -99,9 +100,9 @@
     </div>
     <!-- 토글 버튼 -->
     <button class="btn btn-dark" data-bs-target="#directorModalToggle" data-bs-toggle="modal">감독 프로필 만들기</button>
-  </template>
-  
-  <script setup>
+</template>
+
+<script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { profileApi, recruitmentApi } from "../../util/axios.js";
@@ -115,7 +116,7 @@ const router = useRouter();
 const content = ref("");
 const portfolioLink = ref("");
 let image = null;
-const privated= ref("");
+const privated = ref("");
 
 const selectedImage = ref(null);
 let imageReader = new FileReader();
@@ -145,30 +146,30 @@ const clearSelectedImage = () => {
 
 const register = async () => {
     const newProfile = {
-    memberId: loginMember.value,
-    type: 'P',
-    content: content.value,
-    portfolioLink: portfolioLink.value,
-    privateProfile:  privated.value,
-  };
+        memberId: loginMember.value,
+        type: 'P',
+        content: content.value,
+        portfolioLink: portfolioLink.value,
+        privateProfile: privated.value,
+    };
     const profileRequest = new FormData();
     profileRequest.append("dto", new Blob([JSON.stringify(newProfile)], {
-      type: "application/json"
-  }));
-  profileRequest.append("image", image)
+        type: "application/json"
+    }));
+    profileRequest.append("image", image)
 
-  console.log(profileRequest.get("dto"))
+    console.log(profileRequest.get("dto"))
     try {
-        const response = await profileApi.createProfile(profileRequest); 
+        const response = await profileApi.createProfile(profileRequest);
         console.log(response)
         if (response.status === 200) {
             // 등록 성공 시 알림창 표시
-            alert("등록 성공");    
+            alert("등록 성공");
         } else {
             // 등록 실패 시 처리
-            alert("등록 실패");    
-        }  
-        router.push({ name: 'myPage'});
+            alert("등록 실패");
+        }
+        router.push({ name: 'myPage' });
 
     } catch (error) {
         console.error("Error registering recruitment:", error);
@@ -185,5 +186,21 @@ const register = async () => {
         align-items: center;
         flex-direction: column;
     }
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.selected-image {
+    width: 450px;
+    height: auto;
+    margin-left: 10px;
+}
+
+#inputGroupFile04 {
+    width: auto;
 }
 </style>

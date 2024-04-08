@@ -1,8 +1,8 @@
 <template>
   <div class="row row-cols-1 row-cols-md-1">
     <div class="col" v-for="(montage, index) in montages" :key="index" @click="goToMontageDetail(index)">
-      <div v-if="index > 3" class="card montage">
-        <video :src="montage.link" muted autoplay playsinline></video>
+      <div v-if="index > 3" class="montage">
+        <video crossorigin="anonymous" :src="montage.link" muted autoplay playsinline></video>
         <div class="montage-title">
           <strong> {{ montage.title }} {{ formatDate(montage.created_at) }} </strong> </div>
       </div>
@@ -16,12 +16,13 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios';
 
 const SERVER_URL = 'https://j10a602.p.ssafy.io/api';
+const ERVER_URL = 'https://localhost:8080';
 const router = useRouter();
 const montages = ref([]);
 
 // 몽타쥬리스트 가져오는 메서드
 const getMontages = () => {
-  axios.get(`${SERVER_URL}/montage/list`)
+  axios.get(`${ERVER_URL}/montage/list`)
     .then((response) => {
       console.log(response.data.data);
       montages.value = response.data.data;

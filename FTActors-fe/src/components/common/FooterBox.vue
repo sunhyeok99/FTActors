@@ -1,6 +1,7 @@
 <template>
-  <hr>
+ 
     <div class="footer">
+      <hr>
       <h3><b>배우는사람</b></h3>
       <p>(주)배우는사람 | 대표자 : 김싸피 
         <br>
@@ -17,5 +18,6 @@
   .footer {
     position: relative;
     right:0;
+    padding-top: 150px;
   }
 </style>

@@ -20,7 +20,6 @@ import BlacklistView from "@/views/adminview/BlacklistView.vue";
 import ReportView from "@/views/adminview/ReportView.vue";
 import ChatDetail from "@/components/chatpage/chatdetail.vue";
 import ChatList from "@/components/chatpage/chatlist.vue";
-import MainVideo from "@/components/videoEditor/MainVideo.vue";
 import Editpage from "@/components/videoEditor/Editpage.vue";
 import ChatRoomView from "@/views/chatview/ChatRoomView.vue";
 import ApplyCreate from "../views/applyview/ApplyCreate.vue";

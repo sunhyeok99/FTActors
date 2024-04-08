@@ -11,11 +11,11 @@
             <RouterLink to="/board">진행중인 공고</RouterLink>
             <RouterLink to="/profile">배우 프로필</RouterLink>
             <RouterLink to="/montagemain" id="fontapply">Montage</RouterLink>
+            <!-- 어드민 계정 -->
             <div v-if="loginMember === 6">
               <RouterLink to="/report">신고 목록</RouterLink>
               <RouterLink to="/blacklist">블랙리스트</RouterLink>
             </div>
-
               <div class="pageright" v-if="!loginMember">
                 <!-- 로그인 -->
                 <button type="button" class="btn btn-secondary" id="loginbtn" @click="goToLogin">로그인</button>
@@ -24,11 +24,10 @@
               </div>
               <div class="pageright" v-else>
                 <!-- 알람 -->
-                <AlarmModal @unreadCountUpdated="handleUnreadCountUpdated" />
+                <!-- <AlarmModal @unreadCountUpdated="handleUnreadCountUpdated" /> -->
                 <!-- 마이페이지 -->
                 <MypageDropdown />
               </div>
-           
           </nav>
         </div>
       </header>
@@ -38,7 +37,6 @@
       <button :class="{ 'btn': true, 'floating-map-button': isMontagePage }" id="floating-map-button" type="button"
         data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
         <img width="40" src="@/assets/icons/Message.png" alt="message icon"></button>
-      <!-- <SideBars /> -->
       <ChatList />
     </div>
 
@@ -55,7 +53,6 @@ import MontageNav from '@/components/montagepage/MontageNav.vue'
 import MypageDropdown from './components/common/MypageDropdown.vue';
 import FooterBox from './components/common/FooterBox.vue';
 import AlarmModal from './components/modals/AlarmModal.vue';
-import SideBars from './components/common/SideBars.vue';
 import ChatList from './components/chatpage/chatlist.vue';
 
 import { useMemberStore } from "@/stores/member-store.js";
@@ -63,8 +60,6 @@ import { useMemberStore } from "@/stores/member-store.js";
 const MemberStore = useMemberStore();
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
-
-
 
 const route = useRoute();
 const router = useRouter();
@@ -110,7 +105,6 @@ const handleUnreadCountUpdated = (count) => {
 
 watchEffect(() => {
   loginMember.value = MemberStore.memberInfo;
-  handleUnreadCountUpdated;
 });
 
 </script>

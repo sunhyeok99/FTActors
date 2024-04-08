@@ -9,9 +9,7 @@
         <div class="modal-body">
           <div v-show="isAlarmUnReadListAvailable">
             <div v-for="(alarm, index) in alarmUnReadList" :key="index" class="rowthings">
-
               <p :class="{ 'selected': isSelected(alarm.id) }"><strong>{{ alarm.content }}</strong></p>
-
               <button class="btn btn-sm" @click.stop="markIndividualAsRead(alarm.id)"> <img
                   src="@/assets/icons/like-filled.png" alt="" class="alarm"></button>
             </div>
@@ -46,7 +44,8 @@ const SERVER_URL = 'https://j10a602.p.ssafy.io/api';
 const MemberStore = useMemberStore();
 const loginMember = ref(null);
 loginMember.value = MemberStore.memberInfo;
-loginId.value = MemberStore.memberInfo;
+loginId.value = 1;
+
 
 onMounted(async () => {
   try {
