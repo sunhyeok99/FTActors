@@ -3,8 +3,6 @@
     <h1><b>BOARD Update</b></h1>
   </div>
   <div class="boardpage">
-
-
     <div class="boardlist">
       <ul class="list-group list-group-flush">
         <li class="list-group-item" id="update-form">
@@ -23,8 +21,7 @@
           </select>
         </li>
         <li class="list-group-item" id="update-form">
-          <label><b>담당자</b></label>
-          {{ loginMember.name }}
+          <label><b>담당자  {{editedRecruitment.postMemberName }}</b></label>
         </li>
         <li class="list-group-item" id="update-form">
           <label><b>지원시작일자</b></label>
@@ -36,21 +33,23 @@
         </li>
 
         <li class="list-group-item" id="update-form">
-          <label for="image">이미지</label>
+          <label for="image"><b>이미지</b></label>
           <input type="file" id="image" @change="onImageChange" class="input-field" />
           <div v-if="selectedImage">
             <span @click="clearSelectedImage"> X</span>
           </div>
+          <img :src="selectedImage" v-if="selectedImage" width="300px" height="200px">
         </li>
+
         <li class="list-group-item" id="update-form">
-          <img :src="selectedImage" v-if="selectedImage">
-          <input type="file" id="script" class="form-control" @change="onScriptChange">
+          <label for="file"><b>파일</b></label>
+          <input type="file" id="script" class="input-field" @change="onScriptChange">
           <div v-if="selectedFile">
             <span @click="clearSelectedFile"> X</span>
           </div>
         </li>
       </ul>
-      <button @click="updateRecruitment" class="btn btn-primary">수정</button>
+      <button @click="updateRecruitment" class="btn btn-dark">수정</button>
     </div>
 
 
@@ -184,15 +183,17 @@ const updateRecruitment = async () => {
 <style>
 .boardheader {
   display: flex;
-  align-items: center;
+  justify-content: center;
 }
 
 h1 {
   font-size: 4rem;
+
 }
 
 .boardpage {
   display: flex;
+  justify-content: center;
 }
 
 .boardlist {
@@ -203,7 +204,10 @@ h1 {
   display: flex;
   flex-direction: column;
 }
+label {
+  width: 500px;
 
+}
 #update-form {
   display: flex;
   flex-direction: row;

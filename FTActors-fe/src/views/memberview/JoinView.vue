@@ -36,6 +36,10 @@
               <input type="text" id="name" v-model="form.name" class="form-control" placeholder="이름을 입력해주세요">
             </div>
             <div class="form-group mb-3">
+              <label for="name" class="form-label">예명</label>
+              <input type="text" id="name" v-model="form.stageName" class="form-control" placeholder="예명을 입력해주세요">
+            </div>
+            <div class="form-group mb-3">
               <label for="email" class="form-label">이메일</label>
               <input type="email" id="email" v-model="form.email" class="form-control" placeholder="example@email.com">
             </div>
@@ -70,7 +74,11 @@
                 </label>
               </div>
             </div>
-            <button :disabled="!isFormValid" class="btn btn-primary w-100 mb-2" @click.prevent="signup">회원가입</button>
+            <button :disabled="!isFormValid" class="btn btn-dark w-100 mb-2" type="button" disabled @click.prevent="signup">
+              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+              <span role="status">&nbsp;&nbsp;&nbsp;&nbsp;회원가입</span>
+            </button>
+            <button type="button" class="btn w-100" @click="goToLogin">이미 회원이라면?</button>
           </form>
         </div>
       </div>
@@ -99,6 +107,7 @@ const form = reactive({
   showConfirmPassword: false,
   gender: "",
 });
+
 let image = null;
 const selectedImage = ref(null);
 
@@ -109,6 +118,7 @@ const isEmailValid = (email) => {
 
 const isFormValid = computed(() => {
   // 폼 유효성 검사 로직
+  console.log(form.gender)
   return (
     form.id &&
     form.password &&
@@ -168,16 +178,13 @@ const signup = async () => {
     phone: form.phone,
     gender: form.gender,
   };
+
   const formData = new FormData();
-  // for (const key in newMember) {
-  //     formData.append(key, JSON.stringify(newMember[key]));
-  // }
   formData.append("dto", new Blob([JSON.stringify(newMember)], {
       type: "application/json"
   }));
   formData.append("profileImage", image)
   try {
-    console.log(image)
     const response = await memberApi.signup(formData);
     console.log(response)
     if (response.status === 200) {
@@ -189,6 +196,10 @@ const signup = async () => {
     alert("회원가입 실패");
     router.push("/");
   }
+};
+
+const goToLogin = () => {
+  router.push({ name: 'login' });
 };
 
 </script>

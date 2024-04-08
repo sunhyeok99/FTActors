@@ -1,28 +1,24 @@
 <template>
 
   <div>
-    <BoardSearchBar />
+    <BoardBar />
   </div>
   <div class="spacer"></div>
   <div>
     <BoardAll />
   </div>
 
-  <div>
-    <Pagenation />
-  </div>
   </template>
   <script setup>
 import BoardAll from '@/components/boardpage/BoardAll.vue';
-import BoardSearchBar from '@/components/boardpage/BoardSearchBar.vue';
-import Pagenation from '@/components/common/Pagenation.vue';
+import BoardBar from '@/components/boardpage/BoardBar.vue';
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 
 </script>
 
-  <style>
+  <style scoped>
 .btn-create {
   margin-top: 20px;
 }

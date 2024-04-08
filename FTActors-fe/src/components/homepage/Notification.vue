@@ -7,10 +7,10 @@
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="@/assets/notification/공지1.avif" class="d-block w-100" alt="...">
+          <img src="@/assets/notification/공지3.avif" class="d-block w-100" alt="...">
         </div>
         <div class="carousel-item">
-          <img src="@/assets/notification/공지2.avif" class="d-block w-100" alt="...">
+          <img src="@/assets/notification/공지3.avif" class="d-block w-100" alt="...">
         </div>
         <div class="carousel-item">
           <img src="@/assets/notification/공지3.avif" class="d-block w-100" alt="...">

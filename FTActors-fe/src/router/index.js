@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import ProfileView from "../views/profileview/ProfileView.vue";
 import BoardView from "../views/boardview/BoardView.vue";
-import MontageListView from "../views/montageview/MontageView.vue";
 import MontageMainView from "../views/montageview/MontageMain.vue";
 import LoginView from "../views/memberview/LoginView.vue";
 import LogoutView from "../views/memberview/LogoutView.vue";
@@ -15,17 +14,20 @@ import MontageDetail from "@/views/montageview/MontageDetail.vue";
 import MontageCreate from "@/views/montageview/MontageCreate.vue";
 import MontageUpdate from "@/views/montageview/MontageUpdate.vue";
 import ProfileDetail from "@/views/profileview/ProfileDetail.vue";
-import ProfileCreate from "@/views/profileview/ProfileCreate.vue";
+
 import ProfileUpdate from "@/views/profileview/ProfileUpdate.vue";
 import BlacklistView from "@/views/adminview/BlacklistView.vue";
 import ReportView from "@/views/adminview/ReportView.vue";
 import ChatDetail from "@/components/chatpage/chatdetail.vue";
 import ChatList from "@/components/chatpage/chatlist.vue";
+import Editpage from "@/components/videoEditor/Editpage.vue";
 import ChatRoomView from "@/views/chatview/ChatRoomView.vue";
 import ApplyCreate from "../views/applyview/ApplyCreate.vue";
 import ApplyDetail from "../views/applyview/ApplyDetail.vue";
 import MyApply from "../views/applyview/MyApply.vue";
 import ApplyList from "../views/applyview/ApplyList.vue";
+
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,11 +47,7 @@ const router = createRouter({
       name: "board",
       component: BoardView, 
     },
-    {
-      path: "/montagelist",
-      name: "montagelist",
-      component: MontageListView,
-    },
+
     {
       path: "/montagemain",
       name: "montagemain",
@@ -117,15 +115,12 @@ const router = createRouter({
       component: ProfileDetail,
       props: true,
     },
+
     {
-      path: "/profilecreate",
-      name: "profileCreate",
-      component: ProfileCreate,
-    },
-    {
-      path: "/profileupdate",
+      path: "/profileupdate/:id",
       name: "profileUpdate",
       component: ProfileUpdate,
+      props: true,
     },
     {
       path: "/blacklist",
@@ -167,17 +162,23 @@ const router = createRouter({
       props: true,
     },
     {
-      path: '/myApply',
+      path: '/myApply/:id',
       name: 'myApply',
       component: MyApply,
       props: true,
     },
     {
-      path : '/applyList',
+      path: '/edit/:id',
+      name: 'edit',
+      component: Editpage,
+      props: true,
+    },{
+      path : '/applyList/:id',
       name : 'applyList',
       component : ApplyList,
       props : true,
     },
+
   ],
 });
 

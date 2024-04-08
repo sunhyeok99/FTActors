@@ -13,9 +13,6 @@ axios.interceptors.request.use(
     
     config.headers.Authorization = token == undefined ? '' : `Bearer ${token}`;
     
-    console.log("TOKEN 출력");
-    console.log(token);
-    
     return config;
   },
   error => {
@@ -23,16 +20,14 @@ axios.interceptors.request.use(
   }
 );
 
-
-
 const axiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: SERVER_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 const formDataInstance = axios.create({
-    baseURL: BASE_URL,
+    baseURL: SERVER_URL,
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -162,6 +157,54 @@ const recruitmentApi = {
       });
     },
   };
+  const profileApi = { 
+    getAllProfileList: (sorting = 1) => { 
+      return axiosInstance.get("/profile/list", { params: { sort: sorting } });
+    },
+    getProfileList: () => {  
+      return axiosInstance.get("/profile");
+    },
+    createProfile: (profileRequest) => {
+      return formDataInstance.post("/profile/myprofile", profileRequest);
+    },
 
-export { memberApi, recruitmentApi, followApi, chatApi};
+    removeProfile: (profileId) => {
+      return axiosInstance.delete("/profile/myprofile", { params: { profile_id : profileId } });
+    },
+    modifyProfile: (profileRequest) => {
+      return formDataInstance.put("/profile/myprofile",  profileRequest );
+    },
+    
+    getDetailProfile: (profileId) => {
+      return axiosInstance.get("/profile/detail", {
+        params: { profile_id: profileId },
+      });
+    },
+
+    searchContent: (keywords) => {
+      return axiosInstance.get("/profile/searchcontent", { params: { keywords: keywords } });
+    },
+    searchByStageName: (findName) => {
+      return axiosInstance.get("/profile/searchstagename", { params: { stage_name: findName } });
+    },
+    searchByName: (findName) => {
+      return axiosInstance.get("/profile/searchname", { params: { name: findName } });
+    },
+    searchById: (memberId) => {
+      return axiosInstance.get("/profile/getmyprofile", { params: { memberId : memberId } });
+    },
+  };
+
+  const recommendApi = {
+    getRecruitmentList: () => {
+      return axiosInstance.post("/recommend/recruitment");
+    },
+  };
+  const montageApi = {
+    MyMontageList : () => {
+      return axiosInstance.get("/montage/my-montage");
+    }
+  }
+
+export { memberApi, recruitmentApi, followApi, chatApi, profileApi, recommendApi, montageApi };
 

@@ -14,45 +14,51 @@
             <img src="@/assets/icons/Scissors.png" alt="cut">
           </button>
           <ReportModal :current-id="currentId" />
-          <!-- 댓글 개수 표시 -->
-          <span id="comment-count">댓글 {{ comments.length }}개</span>
+          <!-- 댓글 작성 인풋 -->
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="댓글 쓰기" aria-label=""
+              aria-describedby="button-addon2" v-model="addComment">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+              @click.prevent="uploadComment">작성</button>
+          </div>
         </div>
-        <!-- 댓글 작성 인풋 -->
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="댓글 쓰기" aria-label="Recipient's username"
-            aria-describedby="button-addon2" v-model="addComment">
-          <button class="btn btn-outline-secondary" type="button" id="button-addon2"
-            @click.prevent="uploadComment">작성</button>
-        </div>
+        <!-- 댓글 개수 표시 -->
+        <span id="comment-count">댓글 {{ totalCommentCount }}개</span>
       </div>
     </div>
     <div class="accordion-body">
       <div class="list-group list-group-flush border-bottom scrollarea">
         <!-- 댓글 리스트 -->
-        <button class="list-group-item list-group-item-action py-3 lh-tight"
-          v-for="(comment, index) in comments" :key="index" @click.prevent="selectComment(comment)">
-          <div class="d-flex w-100 align-items-center justify-content-between reply-block">
-            <strong class="mb-1" id="reply-member">{{ comment.memberId }}</strong>
-            <div class="col-10 mb-1 small comment-text">{{ comment.content }}</div>
-            <!-- 삭제 버튼 -->
-            <div class="remove"><img src="@/assets/icons/Remove.png" alt=""
-                @click.stop="deleteComment(comment.commentId)"></div>
+        <div v-for="(comment, index) in comments" :key="index" @click.prevent="selectComment(comment)">
+          <div class="list-group-item list-group-item-action py-3 lh-tight">
+            <div class="d-flex flex-column">
+              <div class="d-flex align-items-center justify-content-between reply-block">
+                <strong class="mb-1" id="reply-member">{{ comment.memberId }}</strong>
+                <div class="col-10 mb-1 small comment-text">{{ comment.content }}</div>
+                <!-- 삭제 버튼 -->
+                <div class="remove">
+                  <img src="@/assets/icons/Remove.png" alt="" @click.stop="deleteComment(comment.commentId)">
+                </div>
+              </div>
+              <!-- 대댓글 작성 인풋 -->
+              <div v-if="selectedComment === comment" class="mt-4 d-flex align-items-center">
+                <input type="text" class="form-control reply-input" placeholder="대댓글 작성"
+                  aria-label="Recipient's username" aria-describedby="reply-button" v-model="addReply" @click.stop>
+                <button class="btn btn-outline-secondary reply-btn" type="button" id="reply-button"
+                  @click.stop="uploadReply()">작성</button>
+              </div>
+              <!-- 대댓글 리스트 -->
+              <div v-for="(reply, rIndex) in comment.reply" :key="`reply-${rIndex}`"
+                class="mt-2 d-flex align-items-center replylist">
+                <p class="m-0">ㄴ <b id="reply-member">{{ reply.memberId }}</b> {{ reply.content }}</p>
+                <!-- 삭제 버튼 -->
+                <div class="remove">
+                  <img src="@/assets/icons/Remove.png" alt="" @click.stop="deleteReply(reply.commentId)">
+                </div>
+              </div>
+            </div>
           </div>
-          <!-- 대댓글 작성 인풋 -->
-          <div v-if="selectedComment === comment" class="mt-4 reply-container">
-            <input type="text" class="form-control reply-input" placeholder="대댓글 작성"
-              aria-label="Recipient's username" aria-describedby="reply-button" v-model="addReply" @click.stop>
-            <button class="btn btn-outline-secondary reply-btn" type="button" id="reply-button"
-              @click.stop="uploadReply()">작성</button>
-          </div>
-          <!-- 대댓글 리스트 -->
-          <div v-for="(reply, rIndex) in comment.reply" :key="`reply-${rIndex}`" class="mt-2" id="reply">
-            <p>ㄴ <b id="reply-member">{{ reply.memberId }}</b> {{ reply.content }}</p>
-            <!-- 삭제 버튼 -->
-            <div class="remove"><img src="@/assets/icons/Remove.png" alt=""
-              @click.stop="deleteReply(reply.commentId)"></div>
-          </div>
-        </button>
+        </div>
       </div>
     </div>
   </div>
@@ -62,16 +68,25 @@
 
 <script setup>
 
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, computed } from 'vue';
 import axios from 'axios';
 import ReportModal from '@/components/modals/ReportModal.vue';
-
+import { useMemberStore, useJwtStore } from '@/stores/member-store';
+import { useRouter } from 'vue-router'
 const props = defineProps({
   currentId: Number
 });
 
 const BASE_URL = 'https://j10a602.p.ssafy.io/api';
 
+
+const id = ref('');
+const password = ref('');
+const showPassword = ref(false);
+
+const router = useRouter();
+const memberStore = useMemberStore();
+const jwtStore = useJwtStore();
 // 몽타쥬 좋아요
 const isLiked = ref(false);
 const toggleLike = () => {
@@ -94,10 +109,10 @@ const getMontageInfo = () => {
   axios.get(`${BASE_URL}/montage/list`)
     .then((response) => {
       const found = response.data.data
-        montageInfo.value = found[props.currentId];
-        console.log('몽타쥬아이디:', props.currentId);
-        console.log('좋아요개수:', montageInfo.value.likeCount);
-        console.log('링크:', montageInfo.value.link);
+      montageInfo.value = found[props.currentId];
+      console.log('몽타쥬아이디:', props.currentId);
+      console.log('좋아요개수:', montageInfo.value.likeCount);
+      console.log('링크:', montageInfo.value.link);
 
     })
     .catch((error) => {
@@ -125,15 +140,15 @@ onMounted(() => {
 
 // 좋아요 추가하기
 const addLike = () => {
-    axios
-      .post(`${BASE_URL}/montage/${props.currentId}/like`)
-      .then((response) => {
-        console.log(response.data.data);
-        isLiked.value = response.data.data;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  axios
+    .post(`${BASE_URL}/montage/${props.currentId}/like`)
+    .then((response) => {
+      console.log(response.data.data);
+      isLiked.value = response.data.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 // currentId 변화 감지시 getCommentReply 함수 실행
@@ -141,14 +156,14 @@ watch(() => props.currentId, (newId, oldId) => {
   getCommentReply();
   getMontageInfo();
   addLike();
-}, { immediate: true }); 
+}, { immediate: true });
 
 // 댓글 추가하기
 const addComment = ref("");
 const uploadComment = () => {
   if (addComment.value.trim().length > 0) {
     const content = {
-      "montageId": 1,
+      "montageId": props.currentId,
       "content": addComment.value,
       "isDeleted": false
     };
@@ -158,7 +173,7 @@ const uploadComment = () => {
         console.log(response.data);
         getCommentReply();
         addComment.value = "";
-        
+
       })
       .catch((error) => {
         console.error(error);
@@ -203,7 +218,7 @@ const uploadReply = () => {
   }
   if (addReply.value.trim().length > 0) {
     const content = {
-      "montageId": 1,
+      "montageId": props.currentId,
       "parentId": selectedComment.value.commentId,
       "content": addReply.value,
       "isDeleted": false
@@ -214,7 +229,7 @@ const uploadReply = () => {
         console.log(response.data);
         getCommentReply();
         addReply.value = "";
- 
+
       })
       .catch((error) => {
         console.error(error);
@@ -238,6 +253,15 @@ const deleteReply = (id) => {
     });
 };
 
+// 총 댓글 개수 구하기
+const totalCommentCount = computed(() => {
+  let count = comments.value.length;
+  for (const comment of comments.value) {
+    count += comment.reply.length;
+  }
+  return count;
+});
+
 </script>
 
 <style scoped>
@@ -248,7 +272,7 @@ const deleteReply = (id) => {
 }
 
 .accordion-body {
-  max-height: 38vh;
+  max-height: 63vh;
   overflow-y: auto;
 }
 
@@ -261,11 +285,15 @@ const deleteReply = (id) => {
   flex-direction: row;
 }
 
-
+.py-3 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 
 .columnthings {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .rowthings {
@@ -274,6 +302,9 @@ const deleteReply = (id) => {
   height: auto;
 }
 
+.replylist {
+  justify-content: space-between;
+}
 
 .like-btn {
   background-color: white;
@@ -308,15 +339,14 @@ p {
 }
 
 #reply {
-  margin-left: 20px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  margin-top: 10px;
+  margin-left: 50px;
+}
 
-}
-#reply img{
+#reply img {
   margin-left: 20px;
 }
+
 #addreply {
   margin-left: 20px;
   width: auto;
@@ -354,11 +384,12 @@ p {
 
 .comment-text {
   font-size: 1em;
-  /* 또는 원하는 크기로 조정 */
 }
 
 #comment-count {
   min-width: 150px;
+  display: flex;
+  align-items: center;
 }
 
 .slide-enter-active,
@@ -367,11 +398,12 @@ p {
 }
 
 .slide-enter,
-.slide-leave-to
-
-/* .slide-leave-active in <2.1.8 */
-  {
+.slide-leave-to {
   height: 0;
   opacity: 0;
+}
+
+.list-group-item {
+  flex-direction: column;
 }
 </style>
