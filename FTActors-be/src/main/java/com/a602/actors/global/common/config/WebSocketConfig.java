@@ -44,7 +44,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	// 웹소켓 핸드셰이크 커넥션을 생성할 경로
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry){
-		registry.addEndpoint("/api/ws-stomp")
+		registry.addEndpoint("/ws-stomp")
 				.setAllowedOrigins("*");
 				// .withSockJS();
 			// .withSockJS();	// 이거 있으면 ws://localhost:8080/api/ws-stomp 접속 안됨.. 왜지?
