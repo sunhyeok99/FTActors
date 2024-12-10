@@ -194,14 +194,14 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 
     // 마감일자 지난 리스트 불러 다 T로 바꿈
     @Override
-//    @Scheduled(cron = "0 0 0 * * *") // 초 분 시 일 월 요일
+    @Scheduled(cron = "0 0 0 * * *") // 초 분 시 일 월 요일
     @Transactional
     public void scheduleExpiredRecruitment() {
         LocalDate currentTime = LocalDate.now();
         String currentDate = currentTime.toString();
         List<Recruitment> list = recruitmentRepository.findByActivatedRecruitment(currentDate);
         for (Recruitment recruitment : list) {
-            System.out.println(recruitment.getTitle());
+        //    System.out.println(recruitment.getTitle());
             recruitment.updatePrivate();
         }
         List<Recruitment> recruitmentList = crawling.getRecruitmentDatas(currentTime.minusDays(1));
